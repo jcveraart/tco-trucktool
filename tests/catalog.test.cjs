@@ -57,10 +57,13 @@ test('all presets fit the actual calculator controls without losing small-van co
       assert.ok(m.price >= F.pE[2] && m.price <= F.pE[3], m.id);
       assert.equal((m.price - F.pE[2]) % F.pE[4], 0, `${m.id}: price would be rounded by the input`);
     }
+    if (m.pD) {
+      assert.ok(m.pD >= F.pD[2] && m.pD <= F.pD[3] && m.pDm && m.pDs, `${m.id}: diesel twin needs price, name and source`);
+    }
+    if (m.ld) assert.ok(m.ld >= F.ld[2] && m.ld <= F.ld[3], m.id);
   }
   const townstar = MODELS.find(m => m.id === 'nissan-townstar-ev-van');
-  assert.equal(mEnergy(townstar), 13.3);
-  assert.ok(mEnergy(townstar) < 15);
+  assert.equal(mEnergy(townstar), 18.6); // official WLTP value, not derived from range
   const fiat = MODELS.find(m => m.id === 'fiat-e-ducato');
   assert.equal(mEnergy(fiat), 29.4);
   assert.equal(mAcc(fiat), 97.8);
