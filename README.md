@@ -1,4 +1,4 @@
-# TCO TruckTool
+# TruckTool
 
 Een rekentool die een nieuwe diesel en een nieuwe elektrische N3 trekker vergelijkt: kosten per kilometer, per jaar en over de afschrijftermijn.
 
