@@ -538,19 +538,14 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 :is(.cta,.fcta):is(:hover,:focus-visible) .chg .cb:nth-of-type(5){animation:chg3 1.8s linear infinite}
 @keyframes chg3{0%,65%{opacity:0}66%,88%{opacity:1}89%,100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){:is(.cta,.fcta):is(:hover,:focus-visible) .chg .cb{animation:none;opacity:1}}
-/* Laadring: bij hover loopt er een lichtring rond de knop en ademt een groene gloed, zoals rond een laadpoort */
-@property --ra{syntax:'<angle>';inherits:false;initial-value:0deg}
+/* Laadring: bij hover pulseert een zachte groene lichtrand rond de knop, zoals rond een laadpoort tijdens het laden */
 .cta.big,.fcta{position:relative;isolation:isolate}
-.cta.big::before,.fcta::before{content:"";position:absolute;inset:-4px;z-index:-1;border-radius:calc(var(--rr,10px) + 4px);padding:3px;background:conic-gradient(from var(--ra),transparent 0 55%,rgba(185,255,217,.35) 70%,#B9FFD9 88%,#fff 94%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:0;transition:opacity .25s;pointer-events:none}
+.cta.big::before,.fcta::before{content:"";position:absolute;inset:-3px;z-index:-1;border-radius:calc(var(--rr,10px) + 3px);border:2px solid #9FF0C6;box-shadow:0 0 10px 1px rgba(159,240,198,.55);opacity:0;transition:opacity .4s;pointer-events:none}
 .fcta{--rr:999px}
-.fcta::before{background:conic-gradient(from var(--ra),transparent 0 55%,rgba(10,143,91,.3) 70%,var(--volt-2) 88%,#7FE3B0 94%,transparent 100%)}
-.cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{opacity:1;animation:ring 1.6s linear infinite}
-.cta.big:is(:hover,:focus-visible){animation:glow 1.6s ease-in-out infinite}
-.fcta:is(:hover,:focus-visible){animation:glow2 1.6s ease-in-out infinite}
-@keyframes ring{to{--ra:360deg}}
-@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(185,255,217,0),0 8px 20px -10px rgba(0,0,0,.35)}50%{box-shadow:0 0 22px 4px rgba(185,255,217,.75),0 8px 20px -10px rgba(0,0,0,.35)}}
-@keyframes glow2{0%,100%{box-shadow:0 0 0 0 rgba(63,168,119,0),0 16px 34px -12px rgba(0,0,0,.5)}50%{box-shadow:0 0 24px 5px rgba(63,168,119,.55),0 16px 34px -12px rgba(0,0,0,.5)}}
-@media (prefers-reduced-motion:reduce){.cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{animation:none;background:#B9FFD9}.cta.big:is(:hover,:focus-visible),.fcta:is(:hover,:focus-visible){animation:none}}
+.fcta::before{border-color:var(--volt-2);box-shadow:0 0 10px 1px rgba(63,168,119,.4)}
+.cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.15}50%{opacity:.85}}
+@media (prefers-reduced-motion:reduce){.cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{animation:none;opacity:.6}}
 .board.flash{animation:bflash 1.6s ease}
 @keyframes bflash{0%{box-shadow:0 0 0 0 rgba(10,143,91,.55),0 40px 70px -50px rgba(0,0,0,.55)}100%{box-shadow:0 0 0 22px rgba(10,143,91,0),0 40px 70px -50px rgba(0,0,0,.55)}}
 .wzs{margin:2px 0 0;font-size:14px;color:var(--ink-3)}
