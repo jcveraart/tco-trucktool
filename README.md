@@ -24,13 +24,16 @@ Simpel en Uitgebreid delen dezelfde invoer, dus wisselen tussen de twee of naar 
 
 ## Opbouw van de calculator
 
-Maximaal twee blokken naast elkaar. Bij Simpel staan Gebruik, Kosten en Belastingen en subsidies in een raster van twee bij twee, met een advertentieplek naast het derde blok. Bij Uitgebreid staan Financiering, Laadpaal en Laden onderweg met een advertentieplek naast het derde blok, en daaronder Tol buitenland over de volle breedte. De content-pagina's hebben een advertentiekolom van 300 px breed (300×600). Advertentieplekken hebben de class `.ad`.
+De calculator is gebouwd rond één vergelijking: diesel links (donker), elektrisch rechts (licht).
 
-De uitkomst toont eerst alleen één zin en het matrixbord met de prijs per kilometer en de besparing. De kostenopbouw, aanvullende cijfers en aannames staan bij Simpel achter uitklapregels, bij Uitgebreid in tabbladen (terugverdientijd, verschil met Simpel, energieprijzen, kostenopbouw). Onderdelen die uit staan klappen in, en bij Tol buitenland kies je eerst de landen.
+1. **Uitkomst bovenaan**: prijs per kilometer en per jaar voor beide trucks, en in één zin het verschil per jaar en over de afschrijftermijn. Zodra je verder scrolt, blijft een smalle versie van de uitkomst onder de kop staan.
+2. **Jouw uitgangspunten**: één rij met de gedeelde gegevens (kilometers, kilometers met heffing, afschrijftermijn, restwaarde, bedrijfsgrootte en subsidie). Klik op een waarde om hem in een klein venster aan te passen; op een telefoon schuift dat venster van onderen in beeld.
+3. **Waar zit het verschil?**: per kostenpost een regel met diesel links en elektrisch rechts, met balken die vanuit het midden naar buiten lopen. Klik op een regel om de cijfers van die post aan te passen: diesel links, elektrisch rechts. Er staat steeds maar één regel open. Bovenaan kies je per kilometer, per jaar of totaal.
+4. **Uitgebreid** voegt aan dezelfde lijst financiering, laadpaal, laden onderweg en tol buitenland toe (elk aan of uit te zetten; bij tol kies je eerst de landen), en toont de terugverdientijd. De waterval en de gevoeligheid voor energieprijzen staan achter uitklapregels.
 
-De vormgeving komt van de Nederlandse snelweg: blauwe bewegwijzering met de letter Overpass (afgeleid van de verkeersbordletter), groene hectometerpaaltjes als stapnummers, een zwart matrixbord met amberkleurige leds (Doto) voor de uitkomst en asfalt met wegmarkering als voet.
+Eén advertentieplek staat als brede band onder de calculator (class `.ad`). Veelgestelde vragen heeft een advertentie in de linkerkolom, Nieuws en Over ons een band onderaan.
 
-Onderin het scherm staat een smalle balk met de live uitkomst zolang de uitkomst zelf nog niet in beeld is. Getallen achter een schuif kun je ook typen. De invoer wordt alleen in de eigen browser bewaard (`localStorage`), zodat bezoekers verder kunnen waar ze waren; Herstel voorbeeldcijfers zet alles terug. Bij de uitkomst staan Kopieer samenvatting en Afdrukken of PDF.
+Getallen achter een schuif kun je ook typen. De invoer wordt alleen in de eigen browser bewaard (`localStorage`), zodat bezoekers verder kunnen waar ze waren; Herstel voorbeeldcijfers zet alles terug. Bij de uitkomst staan Kopieer (samenvatting als tekst) en Print.
 
 ## Twee weergaven
 
