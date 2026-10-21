@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#191B1E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Concept: kop tegen kop. Diesel links op asfalt, elektrisch rechts in het licht, en alles wat je vergelijkt
    staat op die naad: het scorebord bovenaan en de lijst met kosten eronder, met balken die vanuit het midden
@@ -643,6 +643,51 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
 .wsti{margin:-12px 0 20px;color:var(--ink-2);font-size:15px;max-width:620px}
 .st:last-child:nth-child(odd){grid-column:1/-1}
 @media(max-width:640px){.sumb .btn span{display:inline}.add{padding:18px 16px}.addl{width:100%}.sumb{width:100%;justify-content:space-between}}
+
+/* Huisstijl: zakelijk en ingetogen. Een donkere kopbalk, haarlijnen in plaats van zwevende kaarten,
+   kleine hoeken, geen gloed of pulserende effecten, en IBM Plex Sans voor de tekst. */
+:root{--page:#F3F3F0;--line:#DCDCD7;--line-2:#C3C3BD;--soft:#F7F7F5;--text:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif}
+body{font-size:16px}
+/* Kopbalk */
+.top,body::before{background:var(--asph)}
+.top{border-bottom:3px solid var(--volt)}
+.brand{color:#fff;font-weight:600;letter-spacing:0}
+.brand:hover{color:#fff}
+.bmark{border-radius:2px}
+.top .bmark i:first-child,.foot .bmark i:first-child{background:var(--on-asph)}
+#nav a{color:var(--on-asph-2);border-radius:0;padding:8px 12px;font-weight:500}
+#nav a:hover{color:#fff;background:none}
+#nav a[aria-current=page]{color:#fff;background:none;box-shadow:inset 0 -2px 0 var(--volt)}
+.mnu{background:#fff;color:var(--ink);border-radius:4px}
+@media(max-width:900px){#nav{background:var(--asph)}#nav a[aria-current=page]{box-shadow:inset 3px 0 0 var(--volt)}}
+.mini{top:calc(env(safe-area-inset-top,0px) + 67px)}
+/* Koppen */
+.intro h1,.phead h1{font-weight:600;letter-spacing:-.015em}
+.vsh h2,.an h2{font-weight:600;letter-spacing:-.01em}
+/* Kleine hoeken, lijnen in plaats van schaduwen */
+.board,.vsl,.ins,.sum,.add,.pbc,.vt,.mlist,.mspec,.ad,.bec>*,.hmw,dialog.wz,dialog.mdlg,.mpp,.toast,.mcmp,.qt,.prin div{border-radius:6px!important}
+.board{box-shadow:0 0 0 1px var(--line)!important}
+.board.flash{animation:none!important}
+.pbc{box-shadow:0 0 0 1px var(--line)}
+.vt,.btn,.cta,.wbtn,.slv,.mpb,.seg,.seg button,.seg label span,.seg.sm,.seg.sm button,.chip,.qk button,.addc,.mtag,.mode,.mode a,.fcta,.selw select,.mpp input,.msearch input,.mpo,.wzn button,.lnk,.tag{border-radius:4px!important}
+.seg.sm{padding:3px}
+.cta.big,.fcta{box-shadow:none}
+.cta.big::before,.fcta::before{display:none!important}
+.who em,.mtag{border-radius:2px}
+.who em{display:none}
+/* Uitnodiging en knoppen: plat en duidelijk */
+.bcta{background:var(--volt)}
+.cta.big{border-radius:4px;font-weight:600}
+.cta{font-weight:600}
+.fcta{border-radius:4px}
+/* Rustiger kerncijfers en lijsten */
+.in b,.st b{letter-spacing:0}
+.addc i{border-radius:2px}
+.addc[aria-pressed=true] i{border-radius:2px}
+.wzn .num{border-radius:3px}
+.ad{background:var(--soft)}
+.more summary b{font-weight:600}
+.foot{border-top:3px solid var(--volt)}
 </style>
 </head>
 <body>
@@ -1154,7 +1199,7 @@ function payHTML(x){
  const txt=be===null?'Niet terugverdiend':be===0?'Direct':[yr?`${yr} <small>jaar</small>`:'',mo?`${mo} <small>${mo===1?'maand':'maanden'}</small>`:''].filter(Boolean).join(' ')||'0 <small>maanden</small>';
  const note=be===null?'Elektrisch is per jaar niet goedkoper dan diesel.':be===0?'Elektrisch is vanaf de start goedkoper.':be>L?`Pas na de afschrijftermijn van ${L} jaar.`:`Dat is ${nf(be/L*100)}% van de afschrijftermijn van ${L} jaar.`;
  const pct=be===null?0:be===0?100:Math.min(100,be/T2*100);
- const lab=be!==null&&be>0&&be<T2?`<g transform="translate(${Math.min(Math.max(X(be),52),W-52)},${Y(cD(be))-28})"><rect x="-46" y="-15" width="92" height="28" rx="14" fill="#0A8F5B"/><text y="3" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`:'';
+ const lab=be!==null&&be>0&&be<T2?`<g transform="translate(${Math.min(Math.max(X(be),52),W-52)},${Y(cD(be))-28})"><rect x="-46" y="-15" width="92" height="28" rx="4" fill="#0A8F5B"/><text y="3" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`:'';
  return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div></div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b></div><div><span>Lagere gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b></div></div></div><div class="pbbar"><i style="width:${pct}%"></i></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Opgebouwde kosten per jaar, diesel en elektrisch">${grid}${area}<path d="${ln(cD)}" stroke="#B8700E" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="${ln(cE)}" stroke="#0A8F5B" stroke-width="3.5" fill="none" stroke-linecap="round"/>${mk}${lab}${ticks.join('')}</svg><div class="pbk"><span><i style="background:#B8700E"></i>Diesel</span><span><i style="background:#0A8F5B"></i>Elektrisch</span><span>Opgebouwde kosten, inclusief financiering. Restwaarde telt pas mee bij verkoop.</span></div></div>`;
 }
 function sensHTML(sv){
