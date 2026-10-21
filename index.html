@@ -468,6 +468,23 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .intro{align-items:center;padding:30px 0 22px}
 .slv .un:first-child{margin-right:-2px}
 .ws-row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+
+/* Vraagteken en uitlegvenster */
+.slb{display:inline-flex;align-items:center;gap:7px;min-width:0}
+.qi{flex:none;display:inline-grid;place-items:center;width:19px;height:19px;padding:0;border:0;border-radius:50%;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-3);font:700 11px/1 var(--text);cursor:pointer;vertical-align:1px}
+.qi:hover,.qi[aria-expanded=true]{background:var(--ink);color:#fff;box-shadow:none}
+.qt{position:fixed;z-index:60;width:min(340px,calc(100vw - 24px));padding:16px 44px 6px 18px;border-radius:12px;background:var(--ink);color:#E4E2DC;box-shadow:0 24px 50px -18px rgba(0,0,0,.55);font-size:14px;line-height:1.5;outline:0}
+.qt p{margin:0 0 10px}
+.qt .qtt{margin-bottom:6px;font-weight:700;font-size:15px;color:#fff}
+.qtl{display:flex;flex-direction:column;gap:6px;margin:2px 0 12px}
+.qtl a{color:#9BE3BC;font-weight:600;text-decoration-color:rgba(155,227,188,.4)}
+.qtl a:hover{color:#fff}
+.qtx{position:absolute;top:8px;right:8px;display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:8px;background:none;color:#B9B4AA;cursor:pointer}
+.qtx:hover{background:rgba(255,255,255,.08);color:#fff}
+.qtx svg{width:16px;height:16px}
+@media(max-width:640px){.qt{left:0!important;right:0;top:auto!important;bottom:0;width:auto;border-radius:18px 18px 0 0;padding:22px 52px calc(10px + env(safe-area-inset-bottom,0px)) 20px;font-size:15px}}
+.wsl{display:flex;align-items:center;gap:7px}
+.wzb .wst>h3{margin-bottom:22px}
 </style>
 </head>
 <body>
@@ -555,7 +572,7 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
   <div class="phead"><h1 tabindex="-1">Veelgestelde vragen</h1><p>Hoe de calculator rekent, wat de regelingen betekenen en wat je met de uitkomst kunt.</p></div>
   <div class="faqw">
    <aside class="rail">
-    <nav aria-label="Onderwerpen"><button type="button" data-jump="fq1">De berekening</button><button type="button" data-jump="fq2">Subsidies en fiscaal</button><button type="button" data-jump="fq3">Laden en heffing</button><button type="button" data-jump="fq4">Je gegevens</button></nav>
+    <nav aria-label="Onderwerpen"><button type="button" data-jump="fq1">De berekening</button><button type="button" data-jump="fq5">Overstappen op elektrisch</button><button type="button" data-jump="fq2">Subsidies en fiscaal</button><button type="button" data-jump="fq3">Laden en heffing</button><button type="button" data-jump="fq4">Je gegevens</button></nav>
     <div class="ad" aria-label="Advertentie">Advertentie</div>
    </aside>
    <div class="faq">
@@ -568,8 +585,15 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
      <details><summary>Vanaf hoeveel kilometer is elektrisch goedkoper?</summary><p>Dat staat onder de uitkomst bij Elektrisch goedkoper vanaf. We rekenen met al je andere cijfers en zoeken het aantal kilometers per jaar waarbij elektrisch per jaar goedkoper wordt dan diesel. Het aandeel kilometers met heffing blijft daarbij gelijk.</p></details>
      <details><summary>Waarom telt de restwaarde niet mee in de terugverdientijd?</summary><p>De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen. De restwaarde ontvang je pas bij verkoop, daarom telt die daar niet mee. In de kosten per kilometer en per jaar zit de restwaarde wel, via de afschrijving.</p></details>
     </section>
+    <section id="fq5"><h2>Overstappen op elektrisch</h2>
+     <details><summary>Wat zijn zero-emissiezones?</summary><p>Steeds meer gemeenten hebben sinds 1 januari 2025 een zero-emissiezone voor stadslogistiek. Bestel- en vrachtauto's die vanaf 2025 nieuw op kenteken komen, moeten daar uitstootvrij zijn. Voor oudere voertuigen loopt een overgangsregeling per euroklasse af. Met de kentekencheck op <a href="https://opwegnaarzes.nl" target="_blank" rel="noopener">opwegnaarzes.nl</a> zie je hoe lang jouw voertuig nog toegang heeft.</p></details>
+     <details><summary>Kan ik op mijn eigen terrein laden?</summary><p>Meestal wel, maar snelladen of meerdere voertuigen tegelijk laden vraagt vaak een zwaardere netaansluiting. In veel regio's is er netcongestie en een wachtlijst. Kijk vroeg op de capaciteitskaart van Netbeheer Nederland, praat met je netbeheerder en vraag naar oplossingen als een batterij, slim laden of een flexibel contract. <a href="https://rvo.nl/sites/default/files/2024-07/Factsheets-oplossingen-netcongestie-bedrijven-versie-2.pdf" target="_blank" rel="noopener">RVO-factsheets over netcongestie</a>.</p></details>
+     <details><summary>Hoe lang duurt laden?</summary><p>Op eigen terrein laad je meestal 's nachts: een laadpaal van 50 kW vult een accu van 540 kWh in ongeveer elf uur. Een snellader van 350 kW laadt in een pauze een flink deel van de accu. Plan je het laden tijdens de verplichte pauze van de chauffeur, dan kost het nauwelijks extra tijd.</p></details>
+     <details><summary>Wat gebeurt er met de accu na een paar jaar?</summary><p>Een accu verliest langzaam capaciteit, vooral bij veel snelladen en extreme temperaturen. Vraag bij aankoop naar de accugarantie (looptijd en minimale restcapaciteit) en of de accugezondheid uit te lezen is. Dat bepaalt ook voor een groot deel de restwaarde.</p></details>
+     <details><summary>Wat verandert er voor de chauffeur en de planning?</summary><p>Elektrisch rijdt stiller en met minder trillingen, en optrekken gaat soepel. In de planning komen laadmomenten erbij: laad waar mogelijk op eigen terrein en tijdens pauzes. In de winter helpt voorverwarmen terwijl het voertuig nog aan de lader staat; dat spaart actieradius.</p></details>
+    </section>
     <section id="fq2"><h2>Subsidies en fiscaal</h2>
-     <details><summary>Hoe is de AanZET-subsidie berekend?</summary><p>AanZET is een percentage van de aanschafprijs van een elektrische vrachtwagen, met een maximumbedrag. Dat hangt af van de bedrijfsgrootte en van de categorie: N3 (trekker of bakwagen boven 12 ton) of N2 (bakwagen tot 12 ton). In 2026 is dat voor N3 11,1% tot 29% en voor N2 6,1% tot 14,8%. AanZET werkt met aanvraagrondes met een beperkt budget; controleer bij RVO of er een ronde openstaat.</p></details>
+     <details><summary>Hoe is de AanZET-subsidie berekend?</summary><p>AanZET is een percentage van de chassisprijs (zonder opbouw en btw) van een nieuwe zero-emissie vrachtwagen, met een maximumbedrag. Dat hangt af van de bedrijfsgrootte en van de categorie: N3 (boven 12 ton) of N2 vanaf 10.000 kg. In 2026 is dat voor N3 11,1% tot 29% en voor N2 6,1% tot 14,8%. AanZET werkt met aanvraagrondes met een beperkt budget; controleer bij RVO of er een ronde openstaat.</p></details>
      <details><summary>Wat is de MIA en waarom niet samen met AanZET?</summary><p>De MIA is een fiscale regeling: je mag extra aftrekken van de winst. De tool rekent met een grondslag van 90% van de aanschafprijs en 36% extra aftrek daarover, en toont het indicatieve netto belastingvoordeel: 19% bij een winst tot € 200.000 en 25,8% daarboven. AanZET en MIA kunnen niet tegelijk worden gebruikt. Controleer de actuele voorwaarden altijd bij RVO en de Belastingdienst.</p></details>
      <details><summary>Is er subsidie voor een elektrische bestelbus of bus?</summary><p>De landelijke SEBA-subsidie voor elektrische bestelauto's is gestopt, en AanZET geldt alleen voor vrachtwagens. Krijg je een andere bijdrage, bijvoorbeeld van je gemeente of provincie, kies dan bij subsidie voor een eigen bedrag.</p></details>
      <details><summary>Wat is de ERE-opbrengst?</summary><p>Emissiereductie-eenheden kun je als lader van een elektrisch voertuig verkopen. De netto opbrengst per geladen kWh is een actuele aanname die kan veranderen. Pas hem aan naar de prijs die jij kunt krijgen.</p></details>
@@ -675,9 +699,36 @@ const T=()=>VT[vtype],reg=()=>$('reg').value,clsOf=()=>vtype==='bakwagen'?$('cls
 const miaCalc=pE=>{const grond=pE*0.9,aftrek=grond*0.36,rate=reg()==='mia2'?0.258:0.19;return{grond,aftrek,rate,voordeel:aftrek*rate}};
 function subsidy(pE){const r=reg();if(r==='az'&&T().truck){const a=azRow();return Math.min(pE*a[1],a[2])}if(r.startsWith('mia')&&T().truck)return miaCalc(pE).voordeel;if(r==='eigen')return v('subX');return 0}
 
+/* Uitleg op aanvraag: het vraagteken naast een veld opent een klein venster met uitleg en een link naar de bron */
+const TIPS={
+ kmH:{t:'Kilometerheffing',b:['Sinds 1 juli 2026 betalen vrachtwagens (N2 en N3) boven 3.500 kg per kilometer op wegen met heffing: bijna alle snelwegen en een deel van de provinciale en gemeentelijke wegen.','Vul hier in hoeveel van je kilometers over die wegen gaan. Elektrisch betaalt een lager tarief.'],l:[['Tarieven vrachtwagenheffing (Staatscourant)','https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.html']]},
+ wd:{t:'Rijdagen per jaar',b:['Hiermee berekenen we je gemiddelde dagrit: kilometers per jaar gedeeld door rijdagen. Die vergelijken we met de actieradius.','Rijdt het voertuig in ploegen of op wisselende dagen, tel dan de dagen dat het echt rijdt.']},
+ rw:{t:'Restwaarde',b:['Wat het voertuig na de afschrijftermijn nog waard is, als percentage van de aanschafprijs.','Voor elektrische voertuigen is de tweedehandsmarkt nog jong; reken voorzichtig. De conditie van de accu bepaalt een groot deel van de waarde, dus vraag naar een uitleesbare accugezondheid.']},
+ pE:{t:'Aanschafprijs elektrisch',b:['Vraag een offerte inclusief accu en let op levertijd, accugarantie (looptijd en minimale restcapaciteit) en wat er bij service en software-updates is inbegrepen.','AanZET rekent met de prijs van het chassis zonder opbouw en zonder btw.'],l:[['Voorwaarden AanZET','https://www.rvo.nl/subsidies-financiering/aanzet/voorwaarden']]},
+ reg:{t:'Subsidie of regeling',b:['AanZET: subsidie voor een nieuwe zero-emissie vrachtwagen, N3 of N2 vanaf 10.000 kg, als percentage van de chassisprijs. Werkt met aanvraagrondes; de ronde van najaar 2026 is gesloten, de volgende wordt rond maart 2027 verwacht. Ook met financial lease kun je aanvragen.','MIA: extra aftrek van de winst voor investeringen op de Milieulijst. AanZET en MIA gaan niet samen.'],l:[['AanZET bij RVO','https://www.rvo.nl/subsidies-financiering/aanzet'],['MIA\\Vamil voor vervoersmiddelen','https://www.rvo.nl/subsidies-financiering/mia-vamil/ondernemers/mobiliteit']]},
+ cls:{t:'N2 of N3',b:['N2 is een vrachtwagen van 3,5 tot 12 ton, N3 is zwaarder dan 12 ton. Het staat op je kentekenbewijs.','AanZET geldt voor N3 en voor N2 vanaf 10.000 kg, met lagere bedragen voor N2.'],l:[['AanZET bij RVO','https://www.rvo.nl/subsidies-financiering/aanzet']]},
+ le:{t:'Verbruik elektrisch',b:['In kWh per 100 km. Het hangt sterk af van gewicht, snelheid, temperatuur en rijstijl.','Vraag de dealer naar het verbruik op een rit die lijkt op jouw inzet, en reken in de winter met een hoger verbruik.']},
+ sp:{t:'Stroomprijs eigen terrein',b:['De prijs per kWh die je op je eigen terrein betaalt, inclusief netbeheerkosten en energiebelasting, zonder btw.','Met eigen zonnepanelen of slim laden op goedkope uren ligt hij lager. Laden onderweg is duurder; dat reken je door bij Uitgebreid.']},
+ acc:{t:'Bruikbare accu',b:['Het deel van de accu dat je echt gebruikt. Fabrikanten noemen vaak de bruto capaciteit; de bruikbare capaciteit is lager, en je laadt meestal niet tot 100% en rijdt hem niet helemaal leeg.','Actieradius is bruikbare accu gedeeld door verbruik. In de winter ligt hij lager.']},
+ ere:{t:'ERE-opbrengst',b:['Voor stroom die je in je eigen elektrische voertuigen laadt, kun je emissiereductie-eenheden laten inboeken en verkopen. Onder 2 miljoen kWh per jaar loopt dat via een inboekdienstverlener, die je per kWh een vergoeding betaalt.','Je laadpunt heeft daarvoor een geijkte meter nodig.'],l:[['Verdienen met laden (RVO)','https://www.rvo.nl/nieuws/brandstoftransitieverplichting-verdien-met-laden']]},
+ oE:{t:'Onderhoud elektrisch',b:['Een elektrische aandrijving heeft geen motorolie, filters, koppeling of uitlaatsysteem, en de remmen slijten minder doordat de motor afremt en energie terugwint.','Banden slijten vaak wat sneller door het gewicht. Vraag naar een onderhoudscontract en waar de dichtstbijzijnde werkplaats voor elektrische voertuigen zit.']},
+ vE:{t:'Verzekering elektrisch',b:['Vaak hoger door de hogere aanschafwaarde en duurdere reparaties aan accu en elektronica.','Vraag meerdere verzekeraars en vraag uitdrukkelijk naar dekking van de accu.']},
+ tE:{t:'Tarief kilometerheffing',b:['Het tarief hangt af van het gewicht, de CO₂-emissieklasse en de euroklasse. Elektrische vrachtwagens vallen in de laagste CO₂-klasse en betalen het minst.','Van 1 september tot en met 31 december 2026 liggen alle tarieven 22,3% lager.'],l:[['Tarieven vrachtwagenheffing (Staatscourant)','https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.html']]},
+ xfs:{t:'Financiering',b:['Veel elektrische vrachtwagens worden gefinancierd of geleased. Over het geleende deel betaal je rente; over je eigen geld rekenen we een rendementseis, omdat je dat ook anders had kunnen inzetten.','Ook met financial lease kun je AanZET aanvragen.'],l:[['Voorwaarden AanZET','https://www.rvo.nl/subsidies-financiering/aanzet/voorwaarden']]},
+ xl0:{t:'Laadpaal',b:['Een laadpaal van 50 kW laadt een accu van 540 kWh in ongeveer elf uur: genoeg voor een nacht. Snelladers van 150 kW of meer laden in een pauze, maar kosten meer en vragen een zwaardere aansluiting.','Slim laden spreidt het laden over goedkope uren en de ruimte op je aansluiting.']},
+ xla:{t:'Netaansluiting',b:['Laden vraagt vaak een zwaardere aansluiting. In veel regio\'s is er netcongestie en een wachtlijst; begin daarom vroeg.','Kijk op de capaciteitskaart van Netbeheer Nederland, neem contact op met je netbeheerder en vraag naar oplossingen zoals een batterij, slim laden of een flexibel contract.'],l:[['Oplossingen voor netcongestie (RVO)','https://rvo.nl/sites/default/files/2024-07/Factsheets-oplossingen-netcongestie-bedrijven-versie-2.pdf']]},
+ xSp:{t:'SPRILA',b:['Subsidie voor laadpunten op eigen terrein voor je bedrijfsvoertuigen. Aanvragen kan in 2026 tot en met 18 december, met eHerkenning niveau 3.','Voor openbaar toegankelijke laadplekken voor zwaar vervoer is er een aparte regeling, SPULA.'],l:[['SPRILA op Ondernemersplein','https://ondernemersplein.overheid.nl/subsidies-en-regelingen/sprila/']]},
+ xop:{t:'Openbaar laden',b:['Snelladen langs de weg kost per kWh meer dan laden op eigen terrein, en de ERE-opbrengst gaat naar de exploitant.','Voor vrachtwagens komen er steeds meer laadpleinen langs de corridors. Veel exploitanten bieden zakelijke contracten met lagere tarieven.']},
+ xot:{t:'Tijdverlies bij laden',b:['De tijd dat het voertuig stilstaat om te laden, per 100 km die je onderweg laadt.','Laad je tijdens de verplichte pauze van de chauffeur (45 minuten na 4,5 uur rijden), dan is het tijdverlies klein. Zet het dan lager.']},
+ 'i-pb':{t:'Terugverdientijd',b:['Hoe lang het duurt voordat de extra investering in elektrisch is terugverdiend met lagere gebruikskosten: energie, onderhoud, verzekering en heffing.','De restwaarde telt hier niet mee, want die ontvang je pas bij verkoop.']},
+ 'i-km':{t:'Goedkoper vanaf',b:['Het aantal kilometers per jaar waarbij elektrisch per jaar goedkoper wordt dan diesel, met al je andere cijfers gelijk.','Hoe meer je rijdt, hoe zwaarder de lagere kosten per kilometer tegen de hogere aanschaf opwegen.']},
+ 'i-range':{t:'Actieradius',b:['Bruikbare accu gedeeld door het verbruik. De balk laat zien hoe je gemiddelde dagrit zich daartoe verhoudt.','Is de dagrit langer dan de actieradius, dan moet je onderweg laden. Reken dat door bij Uitgebreid, onder Laden onderweg.']},
+ 'i-co2':{t:'CO₂-besparing',b:['Het verschil in uitstoot per jaar: 3,2 kg CO₂ per liter diesel tegenover 0,45 kg per kWh grijze stroom.','Met groene stroom of eigen zonnepanelen is de besparing groter.']}};
+const tipBtn=k=>TIPS[k]?`<button type="button" class="qi" data-tip="${k}" aria-expanded="false" aria-label="Uitleg: ${TIPS[k].t}">?</button>`:'';
+
 /* ===== Bouwstenen voor invoer ===== */
 const decs=s=>(String(s).split('.')[1]||'').length;
-const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><label for="${id}">${lab||f[1]}</label><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div><input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}"></div>`};
+const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div><input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}"></div>`};
 const sw=(id,t,on)=>`<label class="sw2 ln"><input id="${id}" type="checkbox"${on?' checked':''}><span>${t}</span></label>`;
 const vcards=()=>`<div class="vts" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" class="vt" role="radio" data-vt="${k}" aria-checked="false">${VICON[k]}<b>${q.n}</b><small>${q.sub}</small></button>`).join('')}</div>`;
 const dex=(a,b)=>`<div class="dex"><div class="dexc"><p class="dexh"><i class="d"></i>Diesel</p>${a}</div><div class="dexc"><p class="dexh"><i class="e"></i>Elektrisch</p>${b}</div></div>`;
@@ -690,14 +741,14 @@ const STEPS=[['veh','Voertuig'],['use','Gebruik'],['buy','Aanschaf en subsidie']
  ['fin','Financiering','x'],['lad','Laadpaal','x'],['ow','Laden onderweg','x'],['tol','Tol buitenland','xt']];
 const steps=()=>STEPS.filter(s=>!s[2]||(s[2]==='truck'&&T().truck)||(s[2]==='x'&&view==='x')||(s[2]==='xt'&&view==='x'&&T().truck));
 const STEPBODY={
- veh:()=>`${vcards()}<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div>`,
+ veh:()=>`${vcards()}<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div>`,
  use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div><div class="wsec">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
- buy:()=>`${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:26px"><p class="wsl"><label for="reg">Subsidie of regeling</label></p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
+ buy:()=>`${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:26px"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
  en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+'<p class="hint" id="accN"></p>'+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+'</div>'),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
  hef:()=>dex(slider('tD'),slider('tE'))+'<p class="hint">Tarieven vanaf 1 januari 2027.</p>',
  fin:()=>sw('xFin','Meerekenen',1)+`<div class="xg">${slider('xfs')}${slider('xri')}${slider('xre')}</div>`,
- lad:()=>sw('xLad','Meerekenen',1)+`<div class="xg">${sw('xSp','SPRILA-subsidie meenemen',0)}${slider('xl0')}${slider('xla')}${slider('xlo')}${slider('xln')}<p class="hint" id="xsh"></p></div>`,
+ lad:()=>sw('xLad','Meerekenen',1)+`<div class="xg"><div class="ws-row">${sw('xSp','SPRILA-subsidie meenemen',0)}${tipBtn('xSp')}</div>${slider('xl0')}${slider('xla')}${slider('xlo')}${slider('xln')}<p class="hint" id="xsh"></p></div>`,
  ow:()=>sw('xOw','Meerekenen',0)+`<div class="xg">${slider('xos')}${slider('xop')}${slider('xot')}${slider('xoh')}</div>`,
  tol:()=>`<div class="chips">${TOL.map(c=>`<button type="button" class="chip" data-tol="${c[0]}" aria-pressed="false"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</button>`).join('')}</div><div id="tolBody" hidden><div class="tolcap"><span>Binnen je kilometers met heffing</span><b id="xth"></b></div><div class="capbar"><i id="xtb"></i></div><div class="tolg">${TOL.map(c=>`<div class="tc" id="tc_${c[0]}" hidden><div class="tch"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</div><p class="tcr">${tolTxt(c)}</p>${slider('k_'+c[0],`Kilometers per jaar<span class="sr"> in ${c[1]}</span>`)}</div>`).join('')}</div></div>`};
 
@@ -804,10 +855,10 @@ function board(r){
 function insights(r){
  const b=r.x?r.b:r,pb=payback(r),kb=kmBreak(),range=v('acc')/(v('le')/100),day=v('km')/Math.max(1,v('wd')),over=day>range,co2=b.co2d-b.co2e;
  setH($('ins'),
-  `<div class="in"><span>Terugverdientijd</span><b>${ym(pb.be)}</b><small>${pb.be===null?'elektrisch is per jaar niet goedkoper':`afschrijving ${r.L} jaar`}</small></div>`+
-  `<div class="in"><span>Elektrisch goedkoper vanaf</span><b>${kb===0?'Elke afstand':kb===null?'Niet haalbaar':nf(Math.ceil(kb/1000)*1000)+' km'}</b><small>${kb===null?'onder 400.000 km per jaar':'per jaar'}</small></div>`+
-  `<button type="button" class="in" data-step="en"><span>Actieradius</span><b>± ${nf(Math.round(range/5)*5)} km</b><i class="rbar${over?' over':''}" aria-hidden="true"><i style="width:${Math.min(100,day/range*100)}%"></i></i><small class="${over?'warn':''}">Dagrit ± ${nf(Math.round(day/5)*5)} km${over?' · laden onderweg nodig':''}</small></button>`+
-  `<div class="in"><span>CO₂-besparing</span><b>${nf(co2)} ton</b><small>per jaar</small></div>`);
+  `<div class="in"><span class="slb">Terugverdientijd ${tipBtn('i-pb')}</span><b>${ym(pb.be)}</b><small>${pb.be===null?'elektrisch is per jaar niet goedkoper':`afschrijving ${r.L} jaar`}</small></div>`+
+  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Niet haalbaar':nf(Math.ceil(kb/1000)*1000)+' km'}</b><small>${kb===null?'onder 400.000 km per jaar':'per jaar'}</small></div>`+
+  `<div class="in"><span class="slb">Actieradius ${tipBtn('i-range')}</span><b>± ${nf(Math.round(range/5)*5)} km</b><i class="rbar${over?' over':''}" aria-hidden="true"><i style="width:${Math.min(100,day/range*100)}%"></i></i><small class="${over?'warn':''}">Dagrit ± ${nf(Math.round(day/5)*5)} km${over?' · laden onderweg nodig':''}</small></div>`+
+  `<div class="in"><span class="slb">CO₂-besparing ${tipBtn('i-co2')}</span><b>${nf(co2)} ton</b><small>per jaar</small></div>`);
 }
 const units=()=>[['km','Per km'],['jr','Per jaar'],['tot','Totaal']].map(u=>`<button type="button" data-u="${u[0]}" aria-pressed="${u[0]===unit}">${u[1]}</button>`).join('');
 const dfHTML=(df,dd,z)=>Math.abs(df)<z?'gelijk':`<span class="${df<0?'good':'bad'}"><span class="dfl">elektrisch </span>${df<0?'−':'+'}${eur(Math.abs(df),dd)}</span>`;
@@ -850,7 +901,7 @@ function render(){
  $('grW').hidden=!(truck&&rg==='az');$('subXW').hidden=rg!=='eigen';
  document.querySelectorAll('#grs [data-gr]').forEach(e=>e.setAttribute('aria-pressed',+e.dataset.gr===gi));
  setH($('azd'),`<div><small>Werknemers</small><b>${zd[1]}</b></div><i>${zd[3]}</i><div><small>Jaaromzet</small><b>${zd[2]}</b></div>${zd[0].startsWith('Klein')?'<p>Ook non-profitinstellingen vallen in deze categorie.</p>':''}`);
- setH($('subR'),rg==='az'?`${eur(b.sub)} AanZET-subsidie<span>${nf(az[1]*100,1)}% van de aanschafprijs, maximaal ${eur(az[2])} (${clsOf()}). Werkt met aanvraagrondes; controleer bij RVO of er budget is.</span>`:rg.startsWith('mia')?`${eur(b.sub)} netto belastingvoordeel<span>Indicatief bij een BV. Niet samen met AanZET.</span>`:rg==='eigen'?`${eur(b.sub)} subsidie`:`Geen subsidie${truck?'':'<span>AanZET geldt alleen voor vrachtwagens; de SEBA voor bestelauto\'s is gestopt.</span>'}`);
+ setH($('subR'),rg==='az'?`${eur(b.sub)} AanZET-subsidie<span>${nf(az[1]*100,1)}% van de aanschafprijs, maximaal ${eur(az[2])} (${clsOf()}${clsOf()==='N2'?', vanaf 10.000 kg':''}), over de chassisprijs. Werkt met aanvraagrondes; controleer bij RVO of er budget is.</span>`:rg.startsWith('mia')?`${eur(b.sub)} netto belastingvoordeel<span>Indicatief bij een BV. Niet samen met AanZET.</span>`:rg==='eigen'?`${eur(b.sub)} subsidie`:`Geen subsidie${truck?'':'<span>AanZET geldt alleen voor vrachtwagens; de SEBA voor bestelauto\'s is gestopt.</span>'}`);
  $('afsN').textContent=b.sub>0?`Netto ${eur(b.netE)}`:'';
  {const range=v('acc')/(v('le')/100);$('accN').textContent=`Actieradius ± ${nf(Math.round(range/5)*5)} km, in de winter ± ${nf(Math.round(range*.8/5)*5)} km`}
  // Uitgebreid
@@ -963,6 +1014,8 @@ $('wzX').onclick=()=>closeWz(false);
 $('wzP').onclick=()=>{const st=steps(),i=st.findIndex(s=>s[0]===wzStep);if(i>0)go(st[i-1][0])};
 $('wzNx').onclick=()=>{const st=steps(),i=st.findIndex(s=>s[0]===wzStep);if(i<st.length-1)go(st[i+1][0]);else closeWz(true)};
 $('wz').addEventListener('click',e=>{if(e.target===$('wz'))closeWz(false)});
+$('wz').addEventListener('cancel',e=>{if(qtBtn){e.preventDefault();tipClose(true)}});
+['xPanel','wzB'].forEach(id=>$(id).addEventListener('scroll',tipPlace,{passive:true}));
 
 /* ===== Interactie ===== */
 document.addEventListener('click',e=>{
@@ -980,6 +1033,33 @@ document.addEventListener('click',e=>{
  const j=e.target.closest('[data-jump]');if(j){$(j.dataset.jump).scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
+
+
+/* Uitlegvenster */
+let qtBtn=null;
+function tipClose(back){const q=$('qt');if(!q||q.hidden)return;q.hidden=true;if(qtBtn){qtBtn.setAttribute('aria-expanded','false');if(back)qtBtn.focus()}qtBtn=null}
+function tipPlace(){
+ const q=$('qt');if(!qtBtn||!q||q.hidden||innerWidth<=640)return;const r=qtBtn.getBoundingClientRect();
+ if(r.bottom<0||r.top>innerHeight){tipClose(false);return}
+ const w=q.offsetWidth,h=q.offsetHeight;let top=r.bottom+8;if(top+h>innerHeight-8)top=Math.max(8,r.top-h-8);q.style.left=Math.max(8,Math.min(r.left-14,innerWidth-w-8))+'px';q.style.top=top+'px';
+}
+function tipOpen(btn){
+ const k=btn.dataset.tip,tp=TIPS[k];if(!tp)return;if(qtBtn===btn){tipClose(true);return}tipClose(false);
+ let q=$('qt');if(!q){q=document.createElement('div');q.id='qt';q.className='qt';q.setAttribute('role','dialog');q.tabIndex=-1;q.hidden=true}
+ (btn.closest('dialog')||document.body).appendChild(q);
+ q.setAttribute('aria-label',tp.t);
+ q.innerHTML=`<p class="qtt">${tp.t}</p>${tp.b.map(x=>`<p>${x}</p>`).join('')}${tp.l?`<div class="qtl">${tp.l.map(a=>`<a href="${a[1]}" target="_blank" rel="noopener">${a[0]} <span aria-hidden="true">↗</span></a>`).join('')}</div>`:''}<button type="button" class="qtx" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
+ q.hidden=false;qtBtn=btn;btn.setAttribute('aria-expanded','true');
+ tipPlace();q.focus({preventScroll:true});
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('.qi');if(b){e.preventDefault();e.stopPropagation();tipOpen(b);return}
+ if(e.target.closest('.qtx')){tipClose(true);return}
+ if(qtBtn&&!e.target.closest('#qt'))tipClose(false);
+},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&qtBtn){e.preventDefault();e.stopPropagation();tipClose(true)}},true);
+addEventListener('scroll',tipPlace,{passive:true});
+addEventListener('resize',()=>tipClose(false));
 
 /* Klein scorebord zodra het grote uit beeld is */
 function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&(b.bottom<64||b.top>innerHeight);$('mini').classList.toggle('show',show)}

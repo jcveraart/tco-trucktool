@@ -30,6 +30,8 @@ Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main
 4. **Waar zit het verschil?** Per kostenpost een regel met diesel links en elektrisch rechts, met balken vanuit het midden. Een klik op een regel of op een onderdeel van de samenvatting opent het invulvenster op de juiste stap.
 5. **Uitgebreid** zet alle schuiven onder elkaar in een kolom links (op een telefoon boven de uitkomst), met de uitkomst ernaast die live meerekent. Financiering, laadpaal, laden onderweg en (bij vrachtwagens) tol buitenland komen erbij, en de terugverdientijd staat in een grafiek. Een klik op een kostenregel springt naar de juiste schuiven. Waterval en gevoeligheid voor energieprijzen staan achter uitklapregels.
 
+Waar iemand die van diesel komt vragen kan hebben (onderhoud en verzekering elektrisch, stroomprijs, bruikbare accu, ERE, kilometerheffing, AanZET en MIA, N2 of N3, laadpaal, netaansluiting, SPRILA, openbaar laden, laadtijd, financiering en de kerncijfers) staat een klein vraagteken. Dat opent op verzoek een korte uitleg met een link naar de officiële bron; op een telefoon schuift die van onderen in beeld. De teksten staan in `TIPS` bovenaan het script. Veelgestelde vragen heeft een groep *Overstappen op elektrisch* over zero-emissiezones, netcongestie, laden, de accu en de planning.
+
 Elk getal is een schuif die je ook kunt typen; met de pijltjestoetsen verhoog of verlaag je per stap (met Shift per tien stappen).
 
 De invoer wordt alleen in de eigen browser bewaard (`localStorage`). *Herstel voorbeeldcijfers* zet alles terug naar de voorbeeldcijfers van het gekozen voertuig. Bij de uitkomst staan **Deel** (kopieert een korte samenvatting met een link `?s=…` naar precies deze berekening) en **Print**.
