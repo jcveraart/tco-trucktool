@@ -690,6 +690,65 @@ body{font-size:16px}
 .more summary b{font-weight:600}
 .foot{border-top:3px solid var(--volt)}
 .hint+.sl{margin-top:18px}
+
+/* === UI/UX VERBETERINGEN: SCENARIOS, DIRECT MODELBAR, QUICK-ADJUST === */
+.intro-sub{margin:8px 0 0;max-width:760px;color:var(--ink-2);font-size:16px;line-height:1.45}
+.intro-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;margin-bottom:10px;border-radius:20px;background:var(--volt-soft);color:var(--volt-ink);font:600 13px/1 var(--text)}
+
+/* Scenario balk */
+.scenarios-wrap{margin-top:20px;padding:16px 20px;background:var(--card);border-radius:14px;box-shadow:inset 0 0 0 1px var(--line)}
+.scenarios-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.scenarios-title{font:700 15px var(--text);color:var(--ink)}
+.scenarios-hint{font-size:13px;color:var(--ink-3)}
+.scenarios-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sc-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:all .14s ease}
+.sc-card:hover{border-color:var(--ink-2);background:var(--card)}
+.sc-card.active{border-color:var(--volt);background:var(--volt-soft);box-shadow:0 0 0 1px var(--volt)}
+.sc-badge{font:700 11px/1 var(--text);text-transform:uppercase;letter-spacing:.5px;color:var(--volt-ink);margin-bottom:2px}
+.sc-name{font:700 15px/1.2 var(--text);color:var(--ink)}
+.sc-meta{font-size:12px;color:var(--ink-2)}
+
+/* Model bar bovenaan */
+.model-quickbar{display:flex;justify-content:space-between;align-items:center;gap:14px 20px;flex-wrap:wrap;margin-top:12px;padding:12px 18px;background:var(--card);border-radius:12px;border:1px solid var(--line)}
+.mq-left{display:flex;align-items:center;gap:12px;min-width:0}
+.mq-tag{padding:3px 8px;border-radius:6px;background:var(--asph);color:#fff;font:700 11px/1.2 var(--text);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.mq-info{display:flex;flex-direction:column;gap:1px;min-width:0}
+.mq-name{font:700 15px/1.25 var(--text);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mq-sub{font-size:13px;color:var(--ink-3)}
+.mq-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.mq-active-badge{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;margin-top:8px;background:var(--volt-soft);border:1px solid var(--volt-2);border-radius:10px;color:var(--volt-ink);font-size:14px}
+
+/* Quick-adjust direct bijstellen */
+.quick-adjust{margin-top:20px;padding:20px;background:var(--card);border-radius:14px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.qa-head{display:flex;justify-content:space-between;align-items:center;gap:16px 20px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.qa-head-title h3{margin:0;font:700 18px/1.2 var(--text);color:var(--ink)}
+.qa-head-title p{margin:4px 0 0;font-size:13px;color:var(--ink-3)}
+.qa-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.qa-card{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:10px;background:var(--soft);border:1px solid var(--line)}
+.qa-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.qa-label{font:700 14px var(--text);color:var(--ink)}
+.qa-val-box{display:flex;align-items:center;gap:4px;padding:4px 8px;background:var(--card);border:1px solid var(--line-2);border-radius:6px}
+.qa-num-input{width:70px;padding:2px 0;border:0;background:none;color:var(--ink);font:700 15px var(--text);text-align:right}
+.qa-num-input:focus{outline:none}
+.qa-prefix,.qa-unit{font-size:13px;color:var(--ink-3);font-weight:600}
+.qa-slider{width:100%;height:6px;border-radius:3px;background:var(--line);outline:none;-webkit-appearance:none;cursor:pointer}
+.qa-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--ink);cursor:pointer;transition:transform .1s}
+.qa-slider::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.qa-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.qa-chip{padding:2px 7px;border:1px solid var(--line);border-radius:5px;background:var(--card);color:var(--ink-2);font:600 12px var(--text);cursor:pointer;transition:all .1s}
+.qa-chip:hover{border-color:var(--ink);color:var(--ink)}
+.qa-chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.qa-footer-hint{font-size:11px;color:var(--ink-3)}
+
+/* Versterkte rij-highlights in Waar zit het verschil */
+.row.win-e .re b{color:var(--volt-ink);font-weight:800}
+.row.win-e .re .bar{background:var(--volt)!important}
+.row.win-d .rd b{color:var(--amber-ink);font-weight:800}
+
+@media(max-width:900px){
+ .scenarios-grid{grid-template-columns:1fr}
+ .qa-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -712,14 +771,117 @@ body{font-size:16px}
 <section class="page" data-page="calc" id="calc">
  <div class="wrap">
   <div class="intro">
+   <div class="intro-badge">Onafhankelijk · Actuele data 2026 · Prijzen excl. btw</div>
    <h1 tabindex="-1">Diesel of elektrisch?</h1>
+   <p class="intro-sub">Bereken binnen 1 minuut de Total Cost of Ownership (TCO) per kilometer en per jaar. Inclusief AanZET-subsidie, vrachtwagenheffing 2026 en restwaarde.</p>
   </div>
   <div class="pick" aria-label="Voertuig" data-vts></div>
+
+  <!-- Snelstart praktijkscenario's -->
+  <div class="scenarios-wrap" aria-label="Praktijkscenario's">
+   <div class="scenarios-header">
+    <span class="scenarios-title">Direct doorrekenen voor jouw inzet:</span>
+    <span class="scenarios-hint">Kies een praktijkprofiel of pas hieronder zelf de cijfers aan</span>
+   </div>
+   <div class="scenarios-grid" role="radiogroup" aria-label="Praktijkprofiel">
+    <button type="button" class="sc-card" data-scenario="stad">
+     <div class="sc-badge">ZE-zones & Stadsdistributie</div>
+     <div class="sc-name">Veel stops & binnenstad</div>
+     <div class="sc-meta" id="scMetaStad">45.000 km/j · 100% depotladen · € 0,22/kWh</div>
+    </button>
+    <button type="button" class="sc-card" data-scenario="nationaal">
+     <div class="sc-badge">Standaard transport</div>
+     <div class="sc-name">Regionaal & nationaal</div>
+     <div class="sc-meta" id="scMetaNat">85.000 km/j · 85% depot / 15% snelladen</div>
+    </button>
+    <button type="button" class="sc-card" data-scenario="zwaar">
+     <div class="sc-badge">Hoge inzet</div>
+     <div class="sc-name">Intensief & lange afstand</div>
+     <div class="sc-meta" id="scMetaZwaar">130.000 km/j · 65% depot / 35% snelladen</div>
+    </button>
+   </div>
+  </div>
+
+  <!-- Directe modelkeuze -->
+  <div class="model-quickbar" id="mainModelQuickbar">
+   <div class="mq-left">
+    <span class="mq-tag">Voertuigmodel</span>
+    <div class="mq-info">
+     <b class="mq-name" id="mainModelName">Geen specifiek model gekozen</b>
+     <span class="mq-sub" id="mainModelSub">Berekend met representatieve marktgemiddelden voor een trekker</span>
+    </div>
+   </div>
+   <div class="mq-right">
+    <button type="button" class="btn sm" id="mainModelBtn" data-step="buy">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+     <span>Kies model uit catalogus (67)</span>
+    </button>
+    <button type="button" class="lnk sm" id="mainModelReset" hidden>✕ Reset naar gemiddelden</button>
+   </div>
+  </div>
+  <div id="mainModelBadge" class="mq-active-badge" hidden></div>
  </div>
 
  <div class="wrap cg" id="cg">
   <div class="cmain">
    <div class="board" id="board" aria-live="polite"></div>
+
+   <!-- Direct bijstellen: belangrijkste knoppen live op het scherm -->
+   <section class="quick-adjust" id="quickAdjust" aria-label="Belangrijkste cijfers direct aanpassen">
+    <div class="qa-head">
+     <div class="qa-head-title">
+      <h3>Direct bijstellen</h3>
+      <p>Beweeg de schuifknoppen of typ een getal: de TCO en besparing hierboven rekenen live mee.</p>
+     </div>
+     <div class="qa-head-actions">
+      <button type="button" class="btn sm" data-step="use" id="qaFullBtn">
+       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:15px;height:15px"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg>
+       <span>Alle 10 stappen & subsidies instellen →</span>
+      </button>
+     </div>
+    </div>
+    <div class="qa-grid">
+     <!-- Jaarkilometers -->
+     <div class="qa-card">
+      <div class="qa-row">
+       <label for="qKm" class="qa-label">Jaarkilometers</label>
+       <div class="qa-val-box">
+        <input type="number" id="qKmIn" class="qa-num-input" min="5000" max="300000" step="1000">
+        <span class="qa-unit">km</span>
+       </div>
+      </div>
+      <input type="range" id="qKm" class="qa-slider" min="10000" max="250000" step="1000">
+      <div class="qa-chips" id="qKmChips"></div>
+     </div>
+     <!-- Dieselprijs -->
+     <div class="qa-card">
+      <div class="qa-row">
+       <label for="qDp" class="qa-label">Dieselprijs <small>(excl. btw)</small></label>
+       <div class="qa-val-box">
+        <span class="qa-prefix">€</span>
+        <input type="number" id="qDpIn" class="qa-num-input" min="0.80" max="3.00" step="0.01">
+        <span class="qa-unit">/ L</span>
+       </div>
+      </div>
+      <input type="range" id="qDp" class="qa-slider" min="1.00" max="2.50" step="0.01">
+      <div class="qa-footer-hint">Pompprijs excl. btw</div>
+     </div>
+     <!-- Stroomprijs -->
+     <div class="qa-card">
+      <div class="qa-row">
+       <label for="qSp" class="qa-label">Stroomprijs <small>(excl. btw)</small></label>
+       <div class="qa-val-box">
+        <span class="qa-prefix">€</span>
+        <input type="number" id="qSpIn" class="qa-num-input" min="0.05" max="0.80" step="0.01">
+        <span class="qa-unit">/ kWh</span>
+       </div>
+      </div>
+      <input type="range" id="qSp" class="qa-slider" min="0.10" max="0.60" step="0.01">
+      <div class="qa-footer-hint">Depot gem. € 0,18–0,25 · Snelladen € 0,55+</div>
+     </div>
+    </div>
+   </section>
+
    <div class="ins" id="ins"></div>
 
    <section class="story" id="story" aria-labelledby="hSum">
@@ -1129,6 +1291,8 @@ function rowsPaint(r,x){
   $('bD-'+c).style.width=off?0:Math.max(0,dv)/mx*100+'%';$('bE-'+c).style.width=off?0:Math.max(0,ev)/mx*100+'%';
   setH($('df-'+c),off?'staat uit':dfHTML(ev-dv,dd,z));
   $('row-'+c).classList.toggle('off',off);
+  $('row-'+c).classList.toggle('win-e',!off && ev < dv);
+  $('row-'+c).classList.toggle('win-d',!off && dv < ev);
  });
  $('vD-tot').textContent=eur(r.td*k,dd);$('vE-tot').textContent=eur(r.te*k,dd);
  setH($('df-tot'),dfHTML((r.te-r.td)*k,dd,z));
@@ -1139,6 +1303,7 @@ const regLabel=()=>({az:'AanZET',mia1:'MIA',mia2:'MIA',eigen:'Eigen bedrag',geen
 function render(){
  const q=T(),truck=q.truck;
  modelPaint();
+ syncQuickAdjust();
  $('kmH').max=v('km');
  const kmH=truck?Math.min(v('kmH'),v('km')):0;
  for(let i=0;i<2;i++)TOL.forEach(c=>{const k=$('k_'+c[0]);k.max=Math.max(0,kmH-TOL.filter(d=>d[0]!==c[0]).reduce((a,d)=>a+v('k_'+d[0]),0))});
@@ -1477,6 +1642,11 @@ function mpList(){
 function modelPaint(){
  const m=modelActive();
  $('mpB').classList.toggle('on',!!m);$('mpN').textContent=m?mName(m)+(m.st==='komt'?' · verwacht '+m.y:''):'Geen specifiek model';
+ const mn=$('mainModelName'),ms=$('mainModelSub'),mb=$('mainModelBadge'),mr=$('mainModelReset');
+ if(mn)mn.textContent=m?mName(m)+(m.st==='komt'?' · verwacht '+m.y:''):'Geen specifiek model (marktgemiddelden)';
+ if(ms)ms.textContent=m?`Accu ${mFmt(mAcc(m))} kWh · bereik ± ${nf(m.r)} km · ${m.price?eur(m.price):'indicatieve prijs'}`:`Berekend met representatieve cijfers voor een ${T().w}`;
+ if(mb){mb.hidden=!m;if(m)setH(mb,`<span>⚡ Gekoppeld aan <b>${mName(m)}</b> (accu ${mFmt(mAcc(m))} kWh · bereik ± ${nf(m.r)} km · ${m.price?eur(m.price):'prijs indicatief'})</span><button type="button" class="lnk sm" id="mainModelBadgeReset" style="color:var(--volt-ink);font-weight:700;text-decoration:underline;cursor:pointer">✕ Reset naar gemiddelden</button>`);}
+ if(mr)mr.hidden=!m;
  $('mpH').hidden=!m;
  const lk=(s,t)=>s?` <a href="${s[1]}" target="_blank" rel="noopener">${t||s[0]} ↗</a>`:'';
  setH($('mpH'),m?`<b>Elektrisch:</b> ${m.price?`${eur(m.price)} ${m.pt==='list'||!m.pt?'catalogusprijs':'indicatief'}, `:'prijs onbekend, voorbeeldbedrag ingevuld, '}accu ${mFmt(mAcc(m))} kWh, verbruik ${nf(mEnergy(m),1)} kWh/100 km.${lk(m.s,'Bron')}${m.price&&m.ps?lk(m.ps,'Prijs'):''}<br><b>Diesel ter vergelijking:</b> ${(dz=>m.pD?`${m.pDm}, ${eur(m.pD)}, ${nf(dz.ld,1)} l/100 km${m.ld?'':' (geschat)'}.${lk(m.pDs,'Bron')}`:`geschat naar verhouding, ${eur(dz.pD)}${dz.est?'':' (voorbeeldbedrag)'} en ${nf(dz.ld,1)} l/100 km.`)(mDiesel(m))}`:'');
@@ -1678,7 +1848,104 @@ async function syncSupabase() {
  }
 }
 
-build();applyType('trekker');if(!fromURL())load();route(true);
+
+/* === PRAKTIJKSCENARIOS & DIRECT BIJSTELLEN LOGICA === */
+const SCENARIOS = {
+ stad: {
+  label: 'Stads- & Regiodistributie (ZE-zones)',
+  vals: {
+   trekker: { km: 50000, kmH: 35000, sp: 0.22, dp: 1.45, jr: 6 },
+   bakwagen: { km: 35000, kmH: 25000, sp: 0.22, dp: 1.45, jr: 6 },
+   bestel: { km: 22000, kmH: 0, sp: 0.22, dp: 1.45, jr: 5 },
+   bus: { km: 45000, kmH: 0, sp: 0.22, dp: 1.45, jr: 8 }
+  }
+ },
+ nationaal: {
+  label: 'Nationaal transport',
+  vals: {
+   trekker: { km: 90000, kmH: 70000, sp: 0.25, dp: 1.42, jr: 6 },
+   bakwagen: { km: 55000, kmH: 45000, sp: 0.25, dp: 1.42, jr: 7 },
+   bestel: { km: 35000, kmH: 0, sp: 0.25, dp: 1.42, jr: 5 },
+   bus: { km: 70000, kmH: 0, sp: 0.25, dp: 1.42, jr: 8 }
+  }
+ },
+ zwaar: {
+  label: 'Intensief / Lange afstand',
+  vals: {
+   trekker: { km: 130000, kmH: 100000, sp: 0.30, dp: 1.40, jr: 5 },
+   bakwagen: { km: 80000, kmH: 60000, sp: 0.30, dp: 1.40, jr: 6 },
+   bestel: { km: 50000, kmH: 0, sp: 0.30, dp: 1.40, jr: 4 },
+   bus: { km: 95000, kmH: 0, sp: 0.30, dp: 1.40, jr: 7 }
+  }
+ }
+};
+let activeScenarioKey = null;
+
+function applyScenario(key){
+ const sc=SCENARIOS[key];if(!sc)return;
+ activeScenarioKey=key;
+ const cfg=sc.vals[vtype];
+ if(cfg){
+  if(cfg.km!==undefined&&$('km'))setNum($('km'),cfg.km);
+  if(cfg.kmH!==undefined&&$('kmH'))setNum($('kmH'),cfg.kmH);
+  if(cfg.sp!==undefined&&$('sp'))setNum($('sp'),cfg.sp);
+  if(cfg.dp!==undefined&&$('dp'))setNum($('dp'),cfg.dp);
+  if(cfg.jr!==undefined&&$('jr'))setNum($('jr'),cfg.jr);
+  touched=true;fitRanges();render();
+ }
+}
+
+function syncQuickAdjust(){
+ const qk=$('qKm'),qki=$('qKmIn'),qd=$('qDp'),qdi=$('qDpIn'),qs=$('qSp'),qsi=$('qSpIn');
+ if(!qk)return;
+ const rng=RNG[vtype];
+ if(rng&&rng.km){qk.min=rng.km[0];qk.max=rng.km[1]}
+ if(qk!==document.activeElement)qk.value=v('km');
+ if(qki!==document.activeElement)qki.value=Math.round(v('km'));
+ if(qd!==document.activeElement)qd.value=v('dp');
+ if(qdi!==document.activeElement)qdi.value=v('dp').toFixed(2);
+ if(qs!==document.activeElement)qs.value=v('sp');
+ if(qsi!==document.activeElement)qsi.value=v('sp').toFixed(2);
+
+ const chips=$('qKmChips');
+ if(chips){
+  const qs=VT[vtype].q||[];
+  setH(chips,qs.map(n=>`<button type="button" class="qa-chip${n===Math.round(v('km'))?' active':''}" data-qkm="${n}">${nf(n)} km</button>`).join(''));
+ }
+
+ // Scenario meta texts update
+ const mStad=$('scMetaStad'),mNat=$('scMetaNat'),mZw=$('scMetaZwaar');
+ if(mStad&&SCENARIOS.stad.vals[vtype])mStad.textContent=`${nf(SCENARIOS.stad.vals[vtype].km)} km/j · 100% depotladen · € 0,22/kWh`;
+ if(mNat&&SCENARIOS.nationaal.vals[vtype])mNat.textContent=`${nf(SCENARIOS.nationaal.vals[vtype].km)} km/j · 85% depot / 15% snelladen`;
+ if(mZw&&SCENARIOS.zwaar.vals[vtype])mZw.textContent=`${nf(SCENARIOS.zwaar.vals[vtype].km)} km/j · 65% depot / 35% snelladen`;
+
+ document.querySelectorAll('[data-scenario]').forEach(btn=>{
+  const k=btn.dataset.scenario;
+  btn.classList.toggle('active',activeScenarioKey===k);
+ });
+}
+
+function initQuickControls(){
+ const qk=$('qKm'),qki=$('qKmIn'),qd=$('qDp'),qdi=$('qDpIn'),qs=$('qSp'),qsi=$('qSpIn');
+ if(qk)qk.addEventListener('input',()=>{if($('km')){$('km').value=qk.value;activeScenarioKey=null;touched=true;render()}});
+ if(qki)qki.addEventListener('change',()=>{if($('km')){const n=Math.max(1000,+qki.value||1000);$('km').value=n;activeScenarioKey=null;touched=true;fitRanges();render()}});
+ if(qd)qd.addEventListener('input',()=>{if($('dp')){$('dp').value=qd.value;activeScenarioKey=null;touched=true;render()}});
+ if(qdi)qdi.addEventListener('change',()=>{if($('dp')){const n=Math.max(0.1,+qdi.value||0.1);$('dp').value=n;activeScenarioKey=null;touched=true;render()}});
+ if(qs)qs.addEventListener('input',()=>{if($('sp')){$('sp').value=qs.value;activeScenarioKey=null;touched=true;render()}});
+ if(qsi)qsi.addEventListener('change',()=>{if($('sp')){const n=Math.max(0.01,+qsi.value||0.01);$('sp').value=n;activeScenarioKey=null;touched=true;render()}});
+
+ document.addEventListener('click',e=>{
+  const scBtn=e.target.closest('[data-scenario]');
+  if(scBtn){applyScenario(scBtn.dataset.scenario);return}
+  const qkmBtn=e.target.closest('[data-qkm]');
+  if(qkmBtn&&$('km')){$('km').value=qkmBtn.dataset.qkm;activeScenarioKey=null;touched=true;render();return}
+  if(e.target.closest('#mainModelBtn')){openWz('buy');setTimeout(()=>{const b=$('mpB');if(b)b.click()},100);return}
+  if(e.target.closest('#mainModelReset')||e.target.closest('#mainModelBadgeReset')){$('calcModel').value='';fitRanges();touched=true;render();return}
+ });
+}
+
+build();applyType('trekker');
+initQuickControls();if(!fromURL())load();route(true);
 syncSupabase();
 </script>
 </body>
