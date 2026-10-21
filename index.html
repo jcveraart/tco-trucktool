@@ -537,21 +537,29 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .msearch{display:flex;flex-direction:column;gap:5px;flex:1 1 280px;max-width:480px;font:600 14px var(--text);color:var(--ink-2)}
 .msearch input{width:100%;min-height:44px;padding:10px 14px;border:1px solid var(--line-2);border-radius:9px;background:var(--card);color:var(--ink);font:400 16px var(--text)}
 .mcount{margin:0 0 10px;font-size:14px;color:var(--ink-3)}
-.modelpick{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin:0 0 20px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
-.modelpick label{font:600 14px var(--text)}
-.modelpick .selw{flex:1 1 270px;max-width:580px;min-width:0}
-.modelpick select{width:100%;min-height:44px;font-size:16px;text-overflow:ellipsis}
-.modelpick>a{font-size:14px}
-.mpreset{margin:-6px 0 22px;padding:16px 20px;border-radius:12px;background:var(--volt-soft);border:1px solid #B8DCC8}
-.mpreset h2{margin:0 0 10px;font:700 18px/1.3 var(--text)}
-.mpreset dl{display:flex;gap:12px 28px;flex-wrap:wrap;margin:0 0 10px}
-.mpreset dl>div{flex:1 1 145px;min-width:0}
-.mpreset dt{font-size:13px;color:var(--ink-2)}
-.mpreset dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
-.mpreset dd small{display:block;font-size:12px;font-weight:400;color:var(--ink-2)}
-.mpreset p{margin:6px 0;font-size:14px;max-width:900px}
-.mpreset .macts{margin-top:12px}
-@media(max-width:640px){.modelpick{align-items:stretch}.modelpick label{flex-basis:100%}.modelpick .selw{flex-basis:100%;max-width:none}.mpreset{padding:14px}.mpreset dl{gap:10px 20px}}
+/* Modelkeuze in de stap Aanschaf: één rustige regel die een korte, doorzoekbare lijst opent */
+.mpk{position:relative;margin:0 0 22px}
+.mpb{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border:0;border-radius:10px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.mpb:hover,.mpb[aria-expanded=true]{box-shadow:inset 0 0 0 1px var(--ink)}
+.mpb>i{flex:none;width:10px;height:10px;border-radius:2px;background:var(--volt)}
+.mpb>span{flex:1;min-width:0;display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+.mpb small{font-size:14px;color:var(--ink-2)}
+.mpb b{font:600 15px var(--text);color:var(--ink-3)}
+.mpb.on b{color:var(--ink)}
+.mpb[aria-expanded=true] .mchev{transform:rotate(180deg)}
+.mpp{position:absolute;z-index:5;left:0;right:0;top:calc(100% + 6px);padding:8px;border-radius:12px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 18px 40px -16px rgba(0,0,0,.35)}
+.mpp input{width:100%;padding:9px 12px;border:0;border-radius:8px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:400 16px var(--text);outline:0}
+.mpp input:focus{box-shadow:inset 0 0 0 2px var(--ink)}
+.mpl{max-height:264px;overflow:auto;margin-top:6px;overscroll-behavior:contain}
+.mpo{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:8px 10px;border:0;border-radius:8px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.mpo:hover,.mpo:focus-visible{background:var(--soft);outline:0}
+.mpo[aria-selected=true]{background:var(--volt-soft)}
+.mpo span{display:flex;flex-direction:column;min-width:0}
+.mpo small{font-size:12px;color:var(--ink-3)}
+.mpo b{font:600 15px/1.3 var(--text)}
+.mpo em{flex:none;font-style:normal;font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.mpk .hint{margin-top:8px}
+.mpnone{margin:0;padding:12px 10px;font-size:14px;color:var(--ink-3)}
 .mday{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:14px;color:var(--ink-3)}
 .mday i{width:3px;height:15px;border-radius:1px;background:var(--ink)}
 .mlist{border-radius:16px;background:var(--card);box-shadow:0 0 0 1px var(--line);overflow:hidden}
@@ -660,8 +668,6 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
    <nav class="mode" id="modes" aria-label="Rekenwijze"><a href="#" data-mode="b">Simpel</a><a href="#uitgebreid" data-mode="x">Uitgebreid</a></nav>
   </div>
   <div class="pick" aria-label="Voertuig" data-vts></div>
-  <div class="modelpick"><label for="calcModel">Elektrisch model</label><span class="selw"><select id="calcModel" aria-describedby="modelHelp"></select></span><a href="#modellen" id="modelHelp">Bekijk alle modellen</a></div>
-  <section class="mpreset" id="modelPreset" aria-label="Instellingen van je model" hidden></section>
  </div>
 
  <div class="wrap cg" id="cg">
@@ -918,9 +924,11 @@ const sg=n=>(n>0.5?'+ ':n<-0.5?'− ':'')+'€ '+nf(Math.abs(n));
 const STEPS=[['use','Gebruik'],['buy','Aanschaf en afschrijving'],['sub','Subsidie'],['en','Energie en actieradius'],['up','Onderhoud en verzekering'],['hef','Kilometerheffing','truck'],
  ['fin','Financiering','x'],['lad','Laadpaal','x'],['ow','Laden onderweg','x'],['tol','Tol buitenland','xt']];
 const steps=()=>STEPS.filter(s=>!s[2]||(s[2]==='truck'&&T().truck)||(s[2]==='x'&&view==='x')||(s[2]==='xt'&&view==='x'&&T().truck));
+const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+const mpick=()=>`<div class="mpk" id="mpk"><input type="hidden" id="calcModel" value=""><button type="button" class="mpb" id="mpB" aria-haspopup="listbox" aria-expanded="false" aria-controls="mpP"><i aria-hidden="true"></i><span><small>Elektrisch model</small><b id="mpN">Geen specifiek model</b></span>${chev}</button><div class="mpp" id="mpP" hidden><input type="search" id="mpQ" placeholder="Zoek merk of model" aria-label="Zoek een model" autocomplete="off"><div class="mpl" id="mpL" role="listbox" aria-label="Elektrisch model"></div></div><p class="hint" id="mpH" hidden></p></div>`;
 const STEPBODY={
  use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div>`,
- buy:()=>`${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:24px">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
+ buy:()=>`${mpick()}${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:24px">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
  sub:()=>`<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div><div class="wsec"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
  en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+'<p class="hint" id="accN"></p><p class="hint"><a href="#modellen">Accu en actieradius per model</a></p>'+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+'</div>'),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
@@ -941,7 +949,7 @@ function build(){
  $('xrows').insertAdjacentHTML('beforeend',XROWS.map(rowHTML).join(''));
  $('wzB').innerHTML=STEPS.map(s=>`<section class="wst" data-st="${s[0]}" hidden aria-labelledby="wh-${s[0]}"><h3 id="wh-${s[0]}" tabindex="-1">${s[1]}</h3>${STEPBODY[s[0]]()}${s[0]==='up'||s[0]==='hef'?'<div class="up2" data-upsell><p>Ook financiering, een eigen laadpaal of laden onderweg meenemen?</p><button type="button" class="wbtn" data-goX>Uitgebreid rekenen</button></div>':''}</section>`).join('');
  regOptions();
- document.querySelectorAll('#calc input[type=range],#calc input[type=checkbox],#calc select:not(#calcModel)').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
+ document.querySelectorAll('#calc input[type=range],#calc input[type=checkbox],#calc select').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
 }
 function regOptions(){
  const s=$('reg'),cur=s.value,o=T().truck?[['az','AanZET-subsidie'],['mia1','MIA, winst tot € 200.000'],['mia2','MIA, winst boven € 200.000'],['eigen','Eigen subsidiebedrag'],['geen','Geen']]:[['geen','Geen subsidie'],['eigen','Eigen subsidiebedrag']];
@@ -1196,7 +1204,7 @@ $('wzX').onclick=()=>closeWz(false);
 $('wzP').onclick=()=>{const st=steps(),i=st.findIndex(s=>s[0]===wzStep);if(i>0)go(st[i-1][0])};
 $('wzNx').onclick=()=>{const st=steps(),i=st.findIndex(s=>s[0]===wzStep);if(i<st.length-1)go(st[i+1][0]);else closeWz(true)};
 $('wz').addEventListener('click',e=>{if(e.target===$('wz'))closeWz(false)});
-$('wz').addEventListener('cancel',e=>{if(qtBtn){e.preventDefault();tipClose(true)}});
+$('wz').addEventListener('cancel',e=>{if(qtBtn){e.preventDefault();tipClose(true)}else if(!$('mpP').hidden){e.preventDefault();mpOpen(false);$('mpB').focus()}});
 ['xPanel','wzB'].forEach(id=>$(id).addEventListener('scroll',tipPlace,{passive:true}));
 
 /* ===== Interactie ===== */
@@ -1400,33 +1408,45 @@ const mK=m=>Math.max(m.dc||0,m.mcs||0);
 const mName=m=>`${m.b} ${m.m}`;
 const mStat=m=>m.st==='nu'?'Leverbaar':'Verwacht '+m.y;
 const mDag=()=>Math.round(v('km')/Math.max(1,v('wd')));
-function modelOptions(){
- const list=MODELS.filter(m=>m.c===vtype).sort((a,b)=>mName(a).localeCompare(mName(b),'nl'));
- setH($('calcModel'),'<option value="">Geen specifiek model · eigen of voorbeeldcijfers</option>'+list.map(m=>`<option value="${m.id}">${mName(m)}${m.st==='komt'?' · verwacht '+m.y:''}</option>`).join(''));
- $('calcModel').value='';
-}
+function modelOptions(){$('calcModel').value='';$('mpQ').value='';mpList()}
 const modelActive=()=>{const m=MI[$('calcModel').value];return m&&m.c===vtype?m:null};
-function modelPaint(){
- const m=modelActive(),el=$('modelPreset');el.hidden=!m;if(!m)return;
- const ac=Math.abs(v('acc')-mAcc(m))>.01,ec=Math.abs(v('le')-mEnergy(m))>.01,pc=Math.abs(v('pE')-(m.price||VT[m.c].p.pE))>.01;
- const values=`<div><dt>Bruikbare accu</dt><dd>${mFmt(v('acc'))} kWh<small>${ac?'Zelf aangepast':m.u?'Fabrieksopgave':m.ue?'Afgeleid':'Geschat'}</small></dd></div>
-  <div><dt>Elektrisch verbruik</dt><dd>${nf(v('le'),1)} kWh/100 km<small>${ec?'Zelf aangepast':m.consumption?'Fabrieksopgave':'Afgeleid (indicatief)'}</small></dd></div>
-  <div><dt>Aanschaf elektrisch, excl. btw</dt><dd>${eur(v('pE'))}<small>${pc?'Eigen bedrag':m.price?'Catalogusprijs':'Voorbeeldbedrag'}</small></dd></div>`;
- setH(el,`<h2>Modelbasis: ${mName(m)}${m.st==='komt'?' · verwacht '+m.y:''}</h2><dl id="modelValues"></dl>
-  <p>${m.price?'Catalogusprijs zonder opties ingevuld.':'Vul je eigen aanschafprijs in.'} Dieselreferentie en overige kosten blijven eigen of voorbeeldcijfers.</p>
-  <details><summary>Uitvoering, bron en aannames</summary><p>${m.n}</p><p>Bruikbare accu bij de modelkeuze: ${mFmt(mAcc(m))} kWh (${mAssumption(m)}). Fabrieksbereik ter referentie: ${mRange(m)}. ${m.consumption?'Het praktijkverbruik hangt af van je inzet.':'Het afgeleide verbruik gebruikt de opgegeven actieradius en bevat geen laadverlies; pas dit aan op je eigen inzet.'} Controleer de aanschafprijs en overige kosten met je offerte en praktijkgegevens.</p><a href="${m.s[1]}" target="_blank" rel="noopener">Bron: ${m.s[0]} ↗</a></details>
-  <div class="macts"><button class="wbtn" type="button" data-step="buy">Aanschafprijs invullen</button><button class="lnk" type="button" data-mreload="${m.id}">Modelwaarden herstellen</button><a href="#modellen" data-mview="${m.id}">Bekijk dit model</a></div>`);
- setH($('modelValues'),values);
+function mpList(){
+ const cur=$('calcModel').value,q=mNorm($('mpQ').value).split(/\s+/).filter(Boolean);
+ const list=MODELS.filter(m=>m.c===vtype&&q.every(w=>mNorm(mName(m)).includes(w))).sort((a,b)=>mName(a).localeCompare(mName(b),'nl'));
+ setH($('mpL'),(q.length?'':`<button type="button" class="mpo" role="option" data-mp="" aria-selected="${!cur}"><span><b>Geen specifiek model</b><small>Eigen cijfers of voorbeeldcijfers</small></span></button>`)+list.map(m=>`<button type="button" class="mpo" role="option" data-mp="${m.id}" aria-selected="${m.id===cur}"><span><small>${m.b}</small><b>${m.m}</b></span><em>${m.st==='komt'?'verwacht '+m.y:`${mFmt(mAcc(m))} kWh · ${nf(m.r)} km`}</em></button>`).join('')+(list.length?'':'<p class="mpnone">Geen model gevonden.</p>'));
 }
+function modelPaint(){
+ const m=modelActive();
+ $('mpB').classList.toggle('on',!!m);$('mpN').textContent=m?mName(m)+(m.st==='komt'?' · verwacht '+m.y:''):'Geen specifiek model';
+ $('mpH').hidden=!m;
+ setH($('mpH'),m?`Accu ${mFmt(mAcc(m))} kWh en verbruik ${nf(mEnergy(m),1)} kWh/100 km zijn ingevuld${m.price?', en de catalogusprijs':''}. <a href="${m.s[1]}" target="_blank" rel="noopener">Bron: ${m.s[0]} ↗</a>`:'');
+}
+function mpOpen(open){
+ const p=$('mpP');if(p.hidden===!open)return;p.hidden=!open;$('mpB').setAttribute('aria-expanded',open);
+ if(open){$('mpQ').value='';mpList();(innerWidth>640?$('mpQ'):$('mpL').querySelector('[aria-selected=true]')||$('mpQ')).focus({preventScroll:true});const s=$('mpL').querySelector('[aria-selected=true]');if(s)s.scrollIntoView({block:'nearest'})}
+}
+document.addEventListener('click',e=>{
+ if(e.target.closest('#mpB')){mpOpen($('mpP').hidden);return}
+ const o=e.target.closest('[data-mp]');
+ if(o){const id=o.dataset.mp;mpOpen(false);if(id)modelApply(id);else{$('calcModel').value='';touched=true;render()}$('mpB').focus({preventScroll:true});return}
+ if(!$('mpP').hidden&&!e.target.closest('#mpk'))mpOpen(false);
+});
+document.addEventListener('input',e=>{if(e.target.id==='mpQ')mpList()});
+document.addEventListener('keydown',e=>{
+ if($('mpP').hidden||!e.target.closest||!e.target.closest('#mpk'))return;
+ const os=[...$('mpL').querySelectorAll('[data-mp]')],i=os.indexOf(document.activeElement);
+ if(e.key==='Escape'){e.preventDefault();e.stopPropagation();mpOpen(false);$('mpB').focus();return}
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const n=os[e.key==='ArrowDown'?Math.min(os.length-1,i+1):i<=0?-1:i-1];(n||$('mpQ')).focus()}
+ if(e.key==='Enter'&&e.target.id==='mpQ'&&os.length){e.preventDefault();os[0].click()}
+},true);
 function modelApply(id,keepOwnPrice=false){
  const m=MI[id];if(!m)return false;
  if(m.c!==vtype){applyType(m.c);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
- $('calcModel').value=id;
+ $('calcModel').value=id;mpList();
  $('acc').value=mAcc(m);$('le').value=mEnergy(m);if(m.price||!keepOwnPrice)$('pE').value=m.price||VT[m.c].p.pE;
  if(m.c==='bakwagen'){$('cls').value=(m.vc||'n3').toUpperCase();if(m.gvw&&m.gvw<10000)$('reg').value='geen'}
  touched=true;render();return true;
 }
-const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 function mRows(){
  const sort=$('mSort').value,soon=ck('mSoon');
  return MODELS.filter(m=>(mCat==='all'||m.c===mCat)&&(soon||m.st==='nu')&&mMatches(m)).sort((a,b)=>(sort==='b'?mName(a).localeCompare(mName(b),'nl'):sort==='u'?mU(b)-mU(a):sort==='k'?mK(b)-mK(a)||b.r-a.r:b.r-a.r)||mName(a).localeCompare(mName(b),'nl'));
@@ -1481,8 +1501,6 @@ function mUse(id){
 }
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-toastx]'))$('toast').hidden=true;
- const re=e.target.closest('[data-mreload]');if(re){modelApply(re.dataset.mreload,true);return}
- const mv=e.target.closest('[data-mview]');if(mv){mCat=MI[mv.dataset.mview].c;mOpen.add(mv.dataset.mview);$('mSearch').value='';$('mSoon').checked=true;return}
  const c=e.target.closest('[data-mcat]');if(c){mCat=c.dataset.mcat;mPaint();return}
  const r=e.target.closest('[data-mrow]');if(r){const id=r.dataset.mrow;mOpen.has(id)?mOpen.delete(id):mOpen.add(id);mPaint();document.querySelector(`[data-mrow="${id}"]`).focus({preventScroll:true});return}
  const u=e.target.closest('[data-muse]');if(u){mUse(u.dataset.muse);return}
@@ -1491,7 +1509,6 @@ document.addEventListener('click',e=>{
  if(e.target===$('mDlg'))$('mDlg').close();
 });
 document.addEventListener('change',e=>{
- if(e.target.id==='calcModel'){if(e.target.value)modelApply(e.target.value);else{touched=true;render()}return}
  const s=e.target.closest('[data-msel]');if(s){const id=s.dataset.msel;mSel=s.checked?[...mSel.filter(x=>x!==id),id].slice(0,3):mSel.filter(x=>x!==id);mPaint();const n=document.querySelector(`[data-msel="${id}"]`);if(n)n.focus({preventScroll:true});return}
  if(e.target.id==='mSort'||e.target.id==='mSoon')mPaint();
 });
