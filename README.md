@@ -16,8 +16,7 @@ Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main
 
 | Adres | Pagina |
 |---|---|
-| `index.html` | Calculator, Simpel |
-| `index.html#uitgebreid` | Calculator, Uitgebreid |
+| `index.html` | Calculator |
 | `index.html#modellen` | Elektrische modellen |
 | `index.html#faq` | Veelgestelde vragen |
 | `index.html#nieuws` | Nieuws |
@@ -29,7 +28,8 @@ Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main
 2. **Uitkomst**: diesel links (donker), elektrisch rechts (licht), met prijs per kilometer en per jaar en in één zin het verschil. Bij het scrollen blijft een smalle versie onder de kop staan. Daaronder vier kerncijfers: terugverdientijd, vanaf hoeveel kilometer per jaar elektrisch goedkoper is, actieradius tegenover de gemiddelde dagrit (met een waarschuwing als laden onderweg nodig is) en CO₂-besparing.
 3. **Vul je eigen cijfers in**: zolang je nog voorbeeldcijfers ziet, staat direct onder de bedragen een groene balk met één grote knop en de verwachte moeite (*6 korte stappen · ± 2 minuten*). Scrol je daar voorbij, dan verschijnt een zwevende knop (op een telefoon onderin, binnen bereik van je duim). De knop opent een invulvenster met per stap één onderwerp en hooguit vier of vijf schuiven: gebruik, aanschaf en afschrijving, subsidie (met N2 of N3 bij een bakwagen), energie en actieradius, onderhoud en verzekering, en bij vrachtwagens kilometerheffing. Bovenin staat de stap en één geruststellende regel (*Weet je iets niet? Laat het voorbeeld staan.*), onderin rekent de uitkomst live mee. Na de laatste stap licht de uitkomst even op en verdwijnt de uitnodiging; dan verschijnt de samenvatting *Jouw cijfers* met een knop Aanpassen.
 4. **Waar zit het verschil?** Per kostenpost een regel met diesel links en elektrisch rechts, met balken vanuit het midden. Een klik op een regel of op een onderdeel van de samenvatting opent het invulvenster op de juiste stap.
-5. **Uitgebreid** zet alle schuiven onder elkaar in een kolom links (op een telefoon boven de uitkomst), met de uitkomst ernaast die live meerekent. Financiering, laadpaal, laden onderweg en (bij vrachtwagens) tol buitenland komen erbij, en de terugverdientijd staat in een grafiek. Een klik op een kostenregel springt naar de juiste schuiven. Waterval en gevoeligheid voor energieprijzen staan achter uitklapregels.
+5. **Ook meenemen**: onder de verschillenlijst staan financiering, laadpaal, laden onderweg en (bij vrachtwagens) tol buitenland als knoppen. Ze staan standaard uit; een klik zet de post aan en opent de bijbehorende stap in het invulvenster, waar je hem ook weer uitzet. Aan staande posten verschijnen als extra regels in de lijst, met het bedrag per jaar op de knop. Het oude adres `#uitgebreid` opent gewoon de calculator.
+6. **Wanneer verdien je het terug?** De terugverdientijd in een grafiek. Daaronder klappen open: wat als energieprijzen veranderen (break-even prijzen en tabel), wat de extra kosten met de besparing doen (alleen als er iets aan staat), goed om te weten en de uitgangspunten.
 
 Waar iemand die van diesel komt vragen kan hebben (onderhoud en verzekering elektrisch, stroomprijs, bruikbare accu, ERE, kilometerheffing, AanZET en MIA, N2 of N3, laadpaal, netaansluiting, SPRILA, openbaar laden, laadtijd, financiering en de kerncijfers) staat een klein vraagteken. Dat opent op verzoek een korte uitleg met een link naar de officiële bron; op een telefoon schuift die van onderen in beeld. De teksten staan in `TIPS` bovenaan het script. Veelgestelde vragen heeft een groep *Overstappen op elektrisch* over zero-emissiezones, netcongestie, laden, de accu en de planning.
 
@@ -48,7 +48,7 @@ Onder **Modellen** staat per voertuig (trekker, bakwagen, bestelbus, bus) wat er
 - Een klik op een model klapt de details open: toelichting, specificaties, hoe de actieradius zich verhoudt tot je dagrit, en de bron.
 - Met het vinkje links zet je tot drie modellen naast elkaar in een vergelijking.
 - Zoek op merk of model, ook zonder accenten, bijvoorbeeld `Citroen`. De categorieën tonen hoeveel modellen bij je zoekopdracht passen. De catalogus bevat op 21 oktober 2026 **67 modellen**: 31 bestelbussen, 14 bakwagens, 11 trekkers en 11 bussen.
-- **Reken met dit model**, ook vanuit de vergelijking, kiest hetzelfde model als de keuze **Elektrisch model** in de stap Aanschaf van het invulvenster (bij Uitgebreid in de kolom met cijfers). Die keuze opent een korte, doorzoekbare lijst met alleen de modellen van de gekozen voertuigsoort; aangekondigde modellen staan erbij als verwacht.
+- **Reken met dit model**, ook vanuit de vergelijking, kiest hetzelfde model als de keuze **Elektrisch model** in de stap Aanschaf van het invulvenster . Die keuze opent een korte, doorzoekbare lijst met alleen de modellen van de gekozen voertuigsoort; aangekondigde modellen staan erbij als verwacht.
 - Bij een modelkeuze worden accu en elektrisch verbruik ingevuld. Expliciet door de fabrikant opgegeven verbruik heeft voorrang. Anders gebruiken we een indicatieve afleiding: bruikbare accu gedeeld door opgegeven actieradius, maal 100. Die afleiding is gebaseerd op het fabrieksbereik en bevat geen laadverlies; vervang hem door je praktijkverbruik. Als alleen bruto of een niet nader gespecificeerde capaciteit bekend is, schatten we bruikbaar op 90% daarvan en vermelden we die aanname.
 - Onder de modelkeuze staat in één regel wat er is ingevuld, met de bron. Aanschafprijs wordt alleen als modelprijs ingevuld als een officiële prijs voor diezelfde uitvoering bekend is; anders blijft het duidelijk gelabelde categorievoorbeeld staan. Dieselreferentie en overige kosten blijven eigen of voorbeeldcijfers.
 - Eigen invoer en modelkeuze blijven behouden na herladen en in een deellink. Kies het model opnieuw om accu en verbruik terug te zetten. **Herstel voorbeeldcijfers** en wisselen van voertuigsoort wissen de modelkeuze.
@@ -59,7 +59,7 @@ De optionele ontwikkelcontrole heeft alleen Node.js nodig: `node --test tests/ca
 
 ## Rekenmethode
 
-De afschrijving per jaar is de aanschafprijs, bij elektrisch verminderd met de subsidie of het MIA-voordeel, min de restwaarde, gedeeld door de afschrijftermijn. Energie is kilometers maal verbruik maal prijs, bij elektrisch min de ERE-opbrengst. Onderhoud is kilometers maal tarief, verzekering een vast bedrag per jaar, kilometerheffing (alleen vrachtwagens) het aantal kilometers met heffing maal het tarief. In Uitgebreid worden kilometers in het buitenland uit de Nederlandse heffing gehaald en tegen het tarief van het betreffende land gerekend.
+De afschrijving per jaar is de aanschafprijs, bij elektrisch verminderd met de subsidie of het MIA-voordeel, min de restwaarde, gedeeld door de afschrijftermijn. Energie is kilometers maal verbruik maal prijs, bij elektrisch min de ERE-opbrengst. Onderhoud is kilometers maal tarief, verzekering een vast bedrag per jaar, kilometerheffing (alleen vrachtwagens) het aantal kilometers met heffing maal het tarief. Met tol buitenland aan worden kilometers in het buitenland uit de Nederlandse heffing gehaald en tegen het tarief van het betreffende land gerekend.
 
 De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen. De restwaarde is hierin niet meegenomen, want die ontvang je pas bij verkoop.
 
