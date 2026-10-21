@@ -691,6 +691,35 @@ body{font-size:16px}
 .foot{border-top:3px solid var(--volt)}
 .hint+.sl{margin-top:18px}
 
+
+/* Directe bediening: beperkt tot de belangrijkste keuzes */
+.qbar{margin:0 0 24px;padding:20px 24px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 8px 24px -12px rgba(0,0,0,.08)}
+.qbh{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.qbh h2{font:700 18px/1.2 var(--text);color:var(--ink);letter-spacing:-.01em;margin:0}
+.qbg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 26px}
+@media(max-width:820px){.qbg{grid-template-columns:1fr;gap:18px}}
+.qbc{display:flex;flex-direction:column;min-width:0}
+.qbl{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:14px;font-weight:600;color:var(--ink-2)}
+.qbl small{font-size:13px;color:var(--ink-3);font-weight:400}
+.qbsub-val{font-size:14px;font-weight:700;color:var(--volt-ink);font-variant-numeric:tabular-nums}
+.qbeg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qbe-item{display:flex;flex-direction:column;gap:5px}
+.qbe-item label{font-size:13px;color:var(--ink-3);font-weight:500}
+.sl-mini{margin-top:2px;height:4px}
+.mp-wrap{display:flex;align-items:flex-start;gap:8px}
+.mp-wrap .mpk{flex:1;margin:0}
+.mp-clear{flex:none;width:38px;height:42px;border:0;border-radius:8px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-2);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.mp-clear:hover{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.wz-mref{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;border-radius:10px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);margin-bottom:18px}
+.wz-minfo{display:flex;flex-direction:column;gap:2px}
+.wz-minfo .wsl{font-size:12px;color:var(--ink-3);margin:0}
+.wz-minfo b{font:600 15px var(--text);color:var(--ink)}
+.mname-badge{display:inline-flex;align-items:center;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:8px;padding:3px 9px;border-radius:4px;background:var(--volt-soft);color:var(--volt-ink);font:600 13px/1.2 var(--text);vertical-align:middle}
+.win-badge{display:none}
+.cta.big.cta-green-prominent{background:var(--volt)!important;color:#fff!important;font-weight:700!important;box-shadow:0 6px 18px -4px rgba(10,143,91,.28)!important;border:2px solid var(--volt)!important;transition:all .2s ease}
+.cta.big.cta-green-prominent:hover{background:#07734A!important;color:#fff!important;border-color:#07734A!important;transform:translateY(-1px)}
+@media(max-width:560px){.qbar{padding:16px}.qbh{margin-bottom:14px}.qbg{gap:16px}.qbl{align-items:flex-start}.qbe-item .slv{align-self:flex-start}}
+
 </style>
 </head>
 <body>
@@ -720,6 +749,26 @@ body{font-size:16px}
 
  <div class="wrap cg" id="cg">
   <div class="cmain">
+   <!-- Belangrijkste aannames direct aanpassen, zonder formulier te openen -->
+   <section class="qbar" id="qbar" aria-label="Direct aanpassen">
+    <div class="qbh"><h2>Jouw uitgangspunten</h2><button class="lnk" type="button" data-reset>Herstel voorbeeldcijfers</button></div>
+    <div class="qbg">
+     <div class="qbc qbc-model">
+      <div class="qbl"><span>Elektrisch model</span><small id="qbModCnt">67 modellen</small></div>
+      <div class="mp-wrap"><div class="mpk" id="mpk">
+       <input type="hidden" id="calcModel" value="">
+       <button type="button" class="mpb" id="mpB" aria-haspopup="listbox" aria-expanded="false" aria-controls="mpP"><i aria-hidden="true"></i><span><small>Model</small><b id="mpN">Geen specifiek model</b></span><svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+       <div class="mpp" id="mpP" hidden><input type="search" id="mpQ" placeholder="Zoek merk of model" aria-label="Zoek een model" autocomplete="off"><div class="mpl" id="mpL" role="listbox" aria-label="Elektrisch model"></div></div><p class="hint" id="mpH" hidden></p>
+      </div><button type="button" class="mp-clear" id="mpClear" title="Herstel voorbeeldwaarden voor deze voertuigcategorie" hidden aria-label="Herstel modelkeuze en voorbeeldwaarden">×</button></div>
+     </div>
+     <div class="qbc qbc-km"><div class="qbl"><label for="qbKm_v">Kilometers per jaar</label><span class="slv"><input class="slin" id="qbKm_v" data-for="km" type="text" inputmode="numeric" size="7" aria-label="Kilometers per jaar"><span class="un">km</span></span></div><input id="qbKm" class="qb-sl" type="range" min="5000" max="250000" data-mx="250000" step="1000" value="100000" aria-label="Kilometers per jaar schuifregelaar"><div class="qk" id="qbKmPills" role="group" aria-label="Veelgekozen kilometers"></div></div>
+     <div class="qbc qbc-sub" id="qbSubCell"><div class="qbl"><span>AanZET-subsidie</span><b class="qbsub-val" id="qbSubVal">€ 83.200</b></div><div class="seg sm" id="qbSubSeg" role="group" aria-label="AanZET bedrijfsgrootte"><button type="button" data-qsub="2">Klein</button><button type="button" data-qsub="1">Middel</button><button type="button" data-qsub="0">Groot</button><button type="button" data-qsub="none">Geen</button></div></div>
+     <div class="qbc qbc-energy"><div class="qbl"><span>Energieprijzen</span><small>excl. btw</small></div><div class="qbeg">
+      <div class="qbe-item"><label for="qbDp_v">Diesel</label><span class="slv"><span class="un">€</span><input class="slin" id="qbDp_v" data-for="dp" type="text" inputmode="decimal" size="4" aria-label="Dieselprijs"><span class="un">/L</span></span><input id="qbDp" class="qb-sl sl-mini" type="range" min="1" max="3" step="0.01" value="2" aria-label="Dieselprijs per liter"></div>
+      <div class="qbe-item"><label for="qbSp_v">Stroom eigen terrein</label><span class="slv"><span class="un">€</span><input class="slin" id="qbSp_v" data-for="sp" type="text" inputmode="decimal" size="4" aria-label="Stroomprijs eigen terrein"><span class="un">/kWh</span></span><input id="qbSp" class="qb-sl sl-mini" type="range" min="0.05" max="0.8" step="0.01" value="0.25" aria-label="Stroomprijs per kWh"></div>
+     </div></div>
+    </div>
+   </section>
    <div class="board" id="board" aria-live="polite"></div>
    <div class="ins" id="ins"></div>
 
@@ -977,7 +1026,7 @@ const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentCo
 const mpick=()=>`<div class="mpk" id="mpk"><input type="hidden" id="calcModel" value=""><button type="button" class="mpb" id="mpB" aria-haspopup="listbox" aria-expanded="false" aria-controls="mpP"><i aria-hidden="true"></i><span><small>Elektrisch model</small><b id="mpN">Geen specifiek model</b></span>${chev}</button><div class="mpp" id="mpP" hidden><input type="search" id="mpQ" placeholder="Zoek merk of model" aria-label="Zoek een model" autocomplete="off"><div class="mpl" id="mpL" role="listbox" aria-label="Elektrisch model"></div></div><p class="hint" id="mpH" hidden></p></div>`;
 const STEPBODY={
  use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div>`,
- buy:()=>`${mpick()}${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:24px">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
+ buy:()=>`<div class="wsec wz-mref"><div class="wz-minfo"><span class="wsl">Gekozen model</span><b id="wzModelName">Geen specifiek model (marktgemiddelde)</b></div><button type="button" class="btn" id="wzPickModel">Model kiezen</button></div>${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:24px">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
  sub:()=>`<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div><div class="wsec"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
  en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+'<p class="hint" id="accN"></p><p class="hint"><a href="#modellen">Accu en actieradius per model</a></p>'+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+'</div>'),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
@@ -998,7 +1047,18 @@ function build(){
  $('xrows').insertAdjacentHTML('beforeend',XROWS.map(rowHTML).join(''));
  $('wzB').innerHTML=STEPS.map(s=>`<section class="wst" data-st="${s[0]}" hidden aria-labelledby="wh-${s[0]}"><h3 id="wh-${s[0]}" tabindex="-1">${s[1]}</h3>${STEPBODY[s[0]]()}</section>`).join('');
  regOptions();
+ [['qbKm','km'],['qbDp','dp'],['qbSp','sp']].forEach(([quick,full])=>$(quick).addEventListener('input',()=>{$(full).value=$(quick).value;$(full).dispatchEvent(new Event('input',{bubbles:true}))}));
+ $('qbKmPills').addEventListener('click',e=>{const b=e.target.closest('[data-qkm]');if(b){$('km').value=b.dataset.qkm;$('km').dispatchEvent(new Event('input',{bubbles:true}))}});
+ $('qbSubSeg').addEventListener('click',e=>{const b=e.target.closest('[data-qsub]');if(!b)return;if(b.dataset.qsub==='none')$('reg').value='geen';else{$('reg').value='az';$('gr').value=b.dataset.qsub}touched=true;render()});
+ $('mpClear').addEventListener('click',()=>{const base=VT[vtype].p;['pE','pD','ld','le','acc'].forEach(id=>setNum($(id),base[id]));$('calcModel').value='';fitRanges();$('mpQ').value='';mpList();touched=true;render()});
+ $('wzPickModel').addEventListener('click',()=>{closeWz(false);$('qbar').scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center'});setTimeout(()=>mpOpen(true),250)});
  document.querySelectorAll('#calc input[type=range],#calc input[type=checkbox],#calc select').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
+}
+function updateQuickSub(){
+ if(!$('qbar'))return;const truck=T().truck;$('qbSubCell').hidden=!truck;
+ const m=modelActive(),underAzet=!!(m&&m.gvw&&m.gvw<10000),eligible=truck&&reg()==='az'&&!underAzet,cl=clsOf(),gi=Math.round(v('gr')),az=AZT[cl][gi]||AZT.N3[1],amount=eligible?Math.min(v('pE')*az[1],az[2]):0;
+ $('qbSubVal').textContent=underAzet?'Niet van toepassing (< 10 ton)':eligible?eur(amount)+' subsidie':reg().startsWith('mia')?eur(subsidy(v('pE')))+' MIA':reg()==='eigen'?eur(v('subX'))+' eigen subsidie':'Geen subsidie';
+ document.querySelectorAll('[data-qsub]').forEach(b=>{b.disabled=underAzet&&b.dataset.qsub!=='none';b.setAttribute('aria-pressed',b.dataset.qsub==='none'?reg()==='geen':reg()==='az'&&+b.dataset.qsub===gi)});
 }
 function regOptions(){
  const s=$('reg'),cur=s.value,o=T().truck?[['az','AanZET-subsidie'],['mia1','MIA, winst tot € 200.000'],['mia2','MIA, winst boven € 200.000'],['eigen','Eigen subsidiebedrag'],['geen','Geen']]:[['geen','Geen subsidie'],['eigen','Eigen subsidiebedrag']];
@@ -1098,9 +1158,9 @@ function kmBreak(){
 const ICON={share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg>',pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg>'};
 function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km,m=modelActive();
- const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span></div>`;
+ const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<span class="mname-badge">${mName(m)}</span>`:''}${win?'<span class="win-badge">Voordeligst</span>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span></div>`;
  const n=coreSteps().length;
- const inv=`<div class="bcta"><div class="bct"><b>${touched?'Jouw berekening':`Voorbeeldcijfers voor een ${T().w}`}</b><span>${touched?'Pas kilometers, tarieven of subsidie aan':`${n} korte stappen · ± 2 minuten`}</span></div><button type="button" class="cta big" data-step="use">Bereken met eigen waardes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
+ const inv=`<div class="bcta"><div class="bct"><b>${touched?'Jouw berekening':`Voorbeeldcijfers voor een ${T().w}`}</b><span>${touched?'Pas ook details als onderhoud, financiering en laden aan':'Pas je aannames en optionele kosten aan'}</span></div><button type="button" class="cta big cta-green-prominent" data-step="use"><span>Bereken met eigen waardes</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
  setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+inv+
   `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p><div class="acts"><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div></div>`);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
@@ -1144,6 +1204,9 @@ function render(){
  const q=T(),truck=q.truck;
  modelPaint();
  $('kmH').max=v('km');
+ $('qbKm').max=$('km').max;$('qbKm').min=$('km').min;$('qbKm').value=v('km');if(document.activeElement!==$('qbKm_v'))$('qbKm_v').value=nf(v('km'));
+ setH($('qbKmPills'),q.q.map(n=>`<button type="button" data-qkm="${n}" aria-pressed="${n===v('km')}">${nf(n)}</button>`).join(''));
+ if(document.activeElement!==$('qbDp_v'))$('qbDp_v').value=nf(v('dp'),2);if(document.activeElement!==$('qbSp_v'))$('qbSp_v').value=nf(v('sp'),2);$('qbDp').value=v('dp');$('qbSp').value=v('sp');updateQuickSub();
  const kmH=truck?Math.min(v('kmH'),v('km')):0;
  for(let i=0;i<2;i++)TOL.forEach(c=>{const k=$('k_'+c[0]);k.max=Math.max(0,kmH-TOL.filter(d=>d[0]!==c[0]).reduce((a,d)=>a+v('k_'+d[0]),0))});
  const x=calcX(),r=x,b=x.b,L=r.L;
@@ -1481,8 +1544,9 @@ function mpList(){
 }
 function modelPaint(){
  const m=modelActive();
- $('mpB').classList.toggle('on',!!m);$('mpN').textContent=m?mName(m)+(m.st==='komt'?' · verwacht '+m.y:''):'Geen specifiek model';
-
+ $('mpB').classList.toggle('on',!!m);$('mpN').textContent=m?mName(m)+(m.st==='komt'?' · verwacht '+m.y:''):'Geen specifiek model (marktgemiddelde)';
+ $('qbModCnt').textContent=`${MODELS.filter(q=>q.c===vtype).length} modellen`;
+ $('mpClear').hidden=!m;if($('wzModelName'))$('wzModelName').textContent=m?mName(m)+(m.st==='komt'?' · verwacht '+m.y:''):'Geen specifiek model (marktgemiddelde)';
  $('mpH').hidden=!m;
  const lk=(s,t)=>s?` <a href="${s[1]}" target="_blank" rel="noopener">${t||s[0]} ↗</a>`:'';
  setH($('mpH'),m?`<b>Elektrisch:</b> ${m.price?`${eur(m.price)} ${m.pt==='list'||!m.pt?'catalogusprijs':'indicatief'}, `:'prijs onbekend, voorbeeldbedrag ingevuld, '}accu ${mFmt(mAcc(m))} kWh, verbruik ${nf(mEnergy(m),1)} kWh/100 km.${lk(m.s,'Bron')}${m.price&&m.ps?lk(m.ps,'Prijs'):''}<br><b>Diesel ter vergelijking:</b> ${(dz=>m.pD?`${m.pDm}, ${eur(m.pD)}, ${nf(dz.ld,1)} l/100 km${m.ld?'':' (geschat)'}.${lk(m.pDs,'Bron')}`:`geschat naar verhouding, ${eur(dz.pD)}${dz.est?'':' (voorbeeldbedrag)'} en ${nf(dz.ld,1)} l/100 km.`)(mDiesel(m))}`:'');
