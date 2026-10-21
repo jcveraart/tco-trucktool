@@ -13,7 +13,7 @@ Uitbreiding en broncontrole: 21 oktober 2026. De catalogus telt 67 modellen: 31 
 
 ## Gebruik in de rekentool
 
-De dropdown en beide knoppen om met een model te rekenen gebruiken dezelfde functie. De categorie wordt gekozen en accu en elektrisch verbruik worden ingevuld. Gebruik wordt binnen dezelfde voertuigsoort behouden; een andere voertuigsoort laadt de bijbehorende scenario-voorbeelden.
+De modelkeuze in de stap Aanschaf en beide knoppen om met een model te rekenen gebruiken dezelfde functie. De categorie wordt gekozen en accu en elektrisch verbruik worden ingevuld. Gebruik wordt binnen dezelfde voertuigsoort behouden; een andere voertuigsoort laadt de bijbehorende scenario-voorbeelden.
 
 Bruikbare accu heeft voorrang op afgeleide capaciteit. Bij alleen bruto of onbekend accutype is 90% van de opgegeven capaciteit een **expliciete schatting**, afgerond op hele kWh. Bij een bekende bruikbare capaciteit blijven decimalen behouden.
 
@@ -36,7 +36,7 @@ Een modelprijs wordt alleen ingevuld als die voor dezelfde uitvoering is onderbo
 
 ## Controle
 
-`node --test tests/catalog.test.cjs` controleert syntax, dekking, unieke identifiers, datavelden, presetgrenzen, decimalen en bekende verwarringen tussen accutypen/configuraties. Daarnaast zijn alle 67 dropdownkeuzes in de browser doorlopen. Zoeken zonder accenten, lege resultaten, alle sorteervolgordes, aangekondigde modellen, drie modellen vergelijken, starten vanuit vergelijking, eigen invoer, herladen, delen, herstellen en wisselen van voertuigsoort zijn interactief gecontroleerd.
+`node --test tests/catalog.test.cjs` controleert syntax, dekking, unieke identifiers, datavelden, presetgrenzen, decimalen en bekende verwarringen tussen accutypen/configuraties. Daarnaast zijn alle 67 modelkeuzes in de browser doorlopen. Zoeken zonder accenten, lege resultaten, alle sorteervolgordes, aangekondigde modellen, drie modellen vergelijken, starten vanuit vergelijking, eigen invoer, herladen, delen, herstellen en wisselen van voertuigsoort zijn interactief gecontroleerd.
 
 ## Bronnen per model
 
