@@ -47,9 +47,15 @@ Onder **Modellen** staat per voertuig (trekker, bakwagen, bestelbus, bus) wat er
 - Filter op voertuig, zet aangekondigde modellen aan of uit, en sorteer op actieradius, accu, snelladen of merk.
 - Een klik op een model klapt de details open: toelichting, specificaties, hoe de actieradius zich verhoudt tot je dagrit, en de bron.
 - Met het vinkje links zet je tot drie modellen naast elkaar in een vergelijking.
-- **Reken met dit model** kiest het juiste voertuig in de calculator en neemt de bruikbare accu over. Is alleen de bruto capaciteit bekend, dan rekenen we met 90% daarvan; bij de Tesla Semi is de accu afgeleid uit actieradius maal verbruik. Prijs en verbruik vul je daarna zelf in.
+- Zoek op merk of model, ook zonder accenten, bijvoorbeeld `Citroen`. De categorieën tonen hoeveel modellen bij je zoekopdracht passen. De catalogus bevat op 21 oktober 2026 **67 modellen**: 31 bestelbussen, 14 bakwagens, 11 trekkers en 11 bussen.
+- **Reken met dit model**, ook vanuit de vergelijking, kiest dezelfde modelbasis als de dropdown **Elektrisch model** bovenaan de calculator. De dropdown volgt de gekozen voertuigsoort en vermeldt aangekondigde modellen apart.
+- Bij een modelkeuze worden accu en elektrisch verbruik ingevuld. Expliciet door de fabrikant opgegeven verbruik heeft voorrang. Anders gebruiken we een indicatieve afleiding: bruikbare accu gedeeld door opgegeven actieradius, maal 100. Die afleiding is gebaseerd op het fabrieksbereik en bevat geen laadverlies; vervang hem door je praktijkverbruik. Als alleen bruto of een niet nader gespecificeerde capaciteit bekend is, schatten we bruikbaar op 90% daarvan en vermelden we die aanname.
+- De groene modelbasis toont per veld of het om een fabrieksopgave, afleiding, schatting, voorbeeldbedrag of eigen aanpassing gaat. Aanschafprijs wordt alleen als modelprijs ingevuld als een officiële prijs voor diezelfde uitvoering bekend is; anders blijft het duidelijk gelabelde categorievoorbeeld staan. Dieselreferentie en overige kosten blijven eigen of voorbeeldcijfers.
+- Eigen invoer en modelkeuze blijven behouden na herladen en in een deellink. **Modelwaarden herstellen** laadt de accu en het verbruik opnieuw; een eigen aanschafprijs blijft behouden als de catalogus geen prijs voor dat model heeft. **Herstel voorbeeldcijfers** en wisselen van voertuigsoort wissen de modelkeuze.
 
-De gegevens staan in `MODELS` in het script: per model het voertuig (`c`), merk en model, bruto en bruikbare accu (`g`, `u`, of afgeleid `ue`), actieradius (`r`), laadvermogen CCS en MCS (`dc`, `mcs`), status (`nu` of `komt` met jaar `y`), een korte toelichting en de bron. Het zijn opgaven van fabrikanten; houd ze bij als er nieuwe modellen of uitvoeringen komen.
+De gegevens staan in `MODELS` in het script: per model het voertuig (`c`), merk en model, bruto en bruikbare accu (`g`, `u`, of afgeleid `ue`), opgegeven capaciteit waarvan bruto/netto onbekend is (`a`), actieradius (`r`), meetcyclus (`rc`), laadvermogen CCS en MCS (`dc`, `mcs`), status (`nu` of `komt` met jaar `y`), een korte toelichting en de bron. Optionele velden zijn verbruik in kWh/100 km (`consumption`), prijs excl. btw voor die uitvoering (`price`), gewicht in kg (`gvw`), N2/N3 (`vc`) en datum van broncontrole (`checked`). Het zijn opgaven van fabrikanten; houd ze bij als er nieuwe modellen of uitvoeringen komen. Zie [bronkeuzes en aannames](docs/model-data.md).
+
+De optionele ontwikkelcontrole heeft alleen Node.js nodig: `node --test tests/catalog.test.cjs`. De website zelf blijft één statisch HTML-bestand, zonder installatie of build-stap.
 
 ## Rekenmethode
 
@@ -64,3 +70,4 @@ Bovenaan het script in `index.html` staan alle velden met bereik en standaardwaa
 ## Disclaimer
 
 Dit is een rekenvoorbeeld en geen financieel of fiscaal advies. Voorbeeldcijfers, subsidiebedragen (AanZET, MIA, SPRILA) en tarieven zijn indicatief. Controleer ze altijd bij RVO en de Belastingdienst.
+
