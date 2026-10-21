@@ -510,6 +510,25 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mopt{display:flex;align-items:center;gap:12px 22px;flex-wrap:wrap}
 .mopt .selw select{padding:8px 38px 8px 12px;font-size:15px;background:var(--card)}
 .msrt{display:flex;align-items:center;gap:10px;font:600 15px var(--text);color:var(--ink-2)}
+.mfind{display:flex;align-items:end;gap:12px 24px;flex-wrap:wrap;margin:0 0 16px}
+.msearch{display:flex;flex-direction:column;gap:5px;flex:1 1 280px;max-width:480px;font:600 14px var(--text);color:var(--ink-2)}
+.msearch input{width:100%;min-height:44px;padding:10px 14px;border:1px solid var(--line-2);border-radius:9px;background:var(--card);color:var(--ink);font:400 16px var(--text)}
+.mcount{margin:0 0 10px;font-size:14px;color:var(--ink-3)}
+.modelpick{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin:0 0 20px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.modelpick label{font:600 14px var(--text)}
+.modelpick .selw{flex:1 1 270px;max-width:580px;min-width:0}
+.modelpick select{width:100%;min-height:44px;font-size:16px;text-overflow:ellipsis}
+.modelpick>a{font-size:14px}
+.mpreset{margin:-6px 0 22px;padding:16px 20px;border-radius:12px;background:var(--volt-soft);border:1px solid #B8DCC8}
+.mpreset h2{margin:0 0 10px;font:700 18px/1.3 var(--text)}
+.mpreset dl{display:flex;gap:12px 28px;flex-wrap:wrap;margin:0 0 10px}
+.mpreset dl>div{flex:1 1 145px;min-width:0}
+.mpreset dt{font-size:13px;color:var(--ink-2)}
+.mpreset dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+.mpreset dd small{display:block;font-size:12px;font-weight:400;color:var(--ink-2)}
+.mpreset p{margin:6px 0;font-size:14px;max-width:900px}
+.mpreset .macts{margin-top:12px}
+@media(max-width:640px){.modelpick{align-items:stretch}.modelpick label{flex-basis:100%}.modelpick .selw{flex-basis:100%;max-width:none}.mpreset{padding:14px}.mpreset dl{gap:10px 20px}}
 .mday{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:14px;color:var(--ink-3)}
 .mday i{width:3px;height:15px;border-radius:1px;background:var(--ink)}
 .mlist{border-radius:16px;background:var(--card);box-shadow:0 0 0 1px var(--line);overflow:hidden}
@@ -618,6 +637,8 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
    <nav class="mode" id="modes" aria-label="Rekenwijze"><a href="#" data-mode="b">Simpel</a><a href="#uitgebreid" data-mode="x">Uitgebreid</a></nav>
   </div>
   <div class="pick" aria-label="Voertuig" data-vts></div>
+  <div class="modelpick"><label for="calcModel">Elektrisch model</label><span class="selw"><select id="calcModel" aria-describedby="modelHelp"></select></span><a href="#modellen" id="modelHelp">Bekijk alle modellen</a></div>
+  <section class="mpreset" id="modelPreset" aria-label="Instellingen van je model" hidden></section>
  </div>
 
  <div class="wrap cg" id="cg">
@@ -686,9 +707,10 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
     <label class="msrt" for="mSort">Sorteer op <span class="selw"><select id="mSort"><option value="r">Actieradius</option><option value="u">Accu</option><option value="k">Snelladen</option><option value="b">Merk</option></select></span></label>
    </div>
   </div>
+  <div class="mfind"><label class="msearch" for="mSearch">Zoek merk of model<input id="mSearch" type="search" placeholder="Bijvoorbeeld Kangoo, Ford of eCitaro" autocomplete="off" aria-controls="mList"></label><p class="mcount" id="mCount" role="status" aria-live="polite"></p></div>
   <p class="mday" id="mDay" hidden></p>
   <div class="mlist" id="mList"></div>
-  <p class="mdisc">De cijfers zijn opgaven van de fabrikant, vaak onder gunstige omstandigheden. In de winter en met zware lading ligt de actieradius lager. Uitvoeringen, prijzen en levertijden verschillen per land; vraag een offerte bij de dealer.</p>
+  <p class="mdisc">De cijfers zijn opgaven van de fabrikant, vaak onder gunstige omstandigheden. Bestelbussen tonen de gecombineerde WLTP-actieradius; bij vrachtwagens en bussen verschillen de meetomstandigheden. Bruto, bruikbare en niet nader gespecificeerde accucapaciteit staan apart vermeld. In de winter en met zware lading ligt de actieradius lager. Uitvoeringen, prijzen en levertijden verschillen per land; vraag een offerte bij de dealer.</p>
   <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
  </div>
  <div class="mcmp" id="mBar" hidden><span id="mBarT"></span><button class="lnk" type="button" data-mclear>Wis</button><button class="cta" type="button" id="mGo">Vergelijk</button></div>
@@ -795,9 +817,9 @@ const BRAND='Stekker of diesel';
 const FIELDS=[
  ['km','Kilometers per jaar',5000,250000,1000,'km',100000],['kmH','Waarvan met kilometerheffing',0,250000,1000,'km',75000],['wd','Rijdagen per jaar',100,365,5,'dagen',250],
  ['jr','Afschrijftermijn',3,12,1,'jaar',6],['rw','Restwaarde',0,40,1,'%',10],
- ['pD','Aanschafprijs',10000,400000,500,'€',130000],['pE','Aanschafprijs',20000,800000,500,'€',285000],['subX','Subsidiebedrag',0,200000,500,'€',0],
+ ['pD','Aanschafprijs',10000,400000,100,'€',130000],['pE','Aanschafprijs',20000,800000,100,'€',285000],['subX','Subsidiebedrag',0,200000,500,'€',0],
  ['ld','Verbruik',5,60,0.5,'l/100 km',30],['dp','Dieselprijs excl. btw',1,3,0.01,'€/L',2],
- ['le','Verbruik',15,200,1,'kWh/100 km',115],['sp','Stroomprijs eigen terrein',0.05,0.8,0.01,'€/kWh',0.25],['acc','Bruikbare accu',30,900,1,'kWh',540],['ere','ERE-opbrengst',0,0.3,0.01,'€/kWh',0.12],
+ ['le','Verbruik',5,200,0.1,'kWh/100 km',115],['sp','Stroomprijs eigen terrein',0.05,0.8,0.01,'€/kWh',0.25],['acc','Bruikbare accu',30,900,0.1,'kWh',540],['ere','ERE-opbrengst',0,0.3,0.01,'€/kWh',0.12],
  ['oD','Onderhoud',0,0.5,0.01,'€/km',0.12],['oE','Onderhoud',0,0.5,0.01,'€/km',0.08],['vD','Verzekering',0,25000,100,'€/jaar',7000],['vE','Verzekering',0,25000,100,'€/jaar',9500],
  ['tD','Tarief',0,0.4,0.001,'€/km',0.201],['tE','Tarief',0,0.4,0.001,'€/km',0.038],
  ['xfs','Gefinancierd deel',0,100,5,'%',80],['xri','Rente lening',0,12,0.1,'%',6],['xre','Rendement eigen geld',0,12,0.1,'%',4],
@@ -897,7 +919,7 @@ function build(){
  $('xrows').insertAdjacentHTML('beforeend',XROWS.map(rowHTML).join(''));
  $('wzB').innerHTML=STEPS.map(s=>`<section class="wst" data-st="${s[0]}" hidden aria-labelledby="wh-${s[0]}"><h3 id="wh-${s[0]}" tabindex="-1">${s[1]}</h3>${STEPBODY[s[0]]()}${s[0]==='up'||s[0]==='hef'?'<div class="up2" data-upsell><p>Ook financiering, een eigen laadpaal of laden onderweg meenemen?</p><button type="button" class="wbtn" data-goX>Uitgebreid rekenen</button></div>':''}</section>`).join('');
  regOptions();
- document.querySelectorAll('#calc input[type=range],#calc input[type=checkbox],#calc select').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
+ document.querySelectorAll('#calc input[type=range],#calc input[type=checkbox],#calc select:not(#calcModel)').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
 }
 function regOptions(){
  const s=$('reg'),cur=s.value,o=T().truck?[['az','AanZET-subsidie'],['mia1','MIA, winst tot € 200.000'],['mia2','MIA, winst boven € 200.000'],['eigen','Eigen subsidiebedrag'],['geen','Geen']]:[['geen','Geen subsidie'],['eigen','Eigen subsidiebedrag']];
@@ -910,6 +932,7 @@ function applyType(t){
  vtype=t;
  Object.entries(VT[t].p).forEach(([id,val])=>{const e=$(id);if(!e)return;e.max=e.dataset.mx;e.defaultValue=val;e.value=val});
  regOptions();$('reg').value=VT[t].reg;
+ modelOptions();
 }
 
 /* Typbare waarde naast een schuif */
@@ -920,7 +943,7 @@ function commitSl(i){
  if(!isNaN(n)){r.value=Math.min(+r.max,Math.max(+r.min,n));r.dispatchEvent(new Event('input',{bubbles:true}))}
  i.value=nf(+r.value,d);
 }
-document.addEventListener('change',e=>{if(e.target.matches('.slin'))commitSl(e.target)});
+document.addEventListener('focusout',e=>{if(e.target.matches('.slin'))commitSl(e.target)});
 document.addEventListener('keydown',e=>{
  if(!e.target.matches||!e.target.matches('.slin'))return;
  if(e.key==='Enter'){e.preventDefault();commitSl(e.target);e.target.select();return}
@@ -1019,6 +1042,7 @@ const facts=rows=>rows.filter(Boolean).map(q=>`<div><dt>${q[0]}</dt><dd>${q[1]}<
 const regLabel=()=>({az:'AanZET',mia1:'MIA',mia2:'MIA',eigen:'Eigen bedrag',geen:'Geen'})[reg()]||'Geen';
 function render(){
  const q=T(),truck=q.truck;
+ modelPaint();
  $('kmH').max=v('km');
  const kmH=truck?Math.min(v('kmH'),v('km')):0;
  for(let i=0;i<2;i++)TOL.forEach(c=>{const k=$('k_'+c[0]);k.max=Math.max(0,kmH-TOL.filter(d=>d[0]!==c[0]).reduce((a,d)=>a+v('k_'+d[0]),0))});
@@ -1198,7 +1222,7 @@ addEventListener('scroll',tipPlace,{passive:true});
 addEventListener('resize',()=>tipClose(false));
 
 /* Klein scorebord zodra het grote uit beeld is */
-function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&(b.bottom<64||b.top>innerHeight);$('mini').classList.toggle('show',show);
+function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&b.bottom<64;$('mini').classList.toggle('show',show);
  const c=document.querySelector('.bcta'),r=c&&c.getBoundingClientRect();$('fcta').hidden=!(c&&page==='calc'&&!$('wz').open&&(r.bottom<64||r.top>innerHeight))}
 addEventListener('scroll',mini,{passive:true});
 
@@ -1234,7 +1258,7 @@ function stateObj(){const o={};document.querySelectorAll('#calc input[id],#calc 
 const b64e=s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d=s=>decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/'))));
 function shareURL(){return location.href.split(/[?#]/)[0]+'?s='+b64e(JSON.stringify({t:vtype,v:stateObj()}))+(view==='x'?'#uitgebreid':'')}
-function summ(){const x=view==='x',r=x?calcX():calc(),d=r.td-r.te;return`Diesel of elektrisch: ${T().w} (${x?'uitgebreid':'simpel'})\n${nf(r.km)} km per jaar, ${r.L} jaar\n\nDiesel: ${eur(r.td/r.km,2)} per km, ${eur(r.td)} per jaar\nElektrisch: ${eur(r.te/r.km,2)} per km, ${eur(r.te)} per jaar\n${d>=0?'Elektrisch':'Diesel'} is ${eur(Math.abs(d)*r.L)} goedkoper over ${r.L} jaar.\n\nBekijk de berekening: ${shareURL()}`}
+function summ(){const x=view==='x',r=x?calcX():calc(),d=r.td-r.te,m=modelActive();return`Diesel of elektrisch: ${T().w} (${x?'uitgebreid':'simpel'})${m?'\nModelbasis: '+mName(m):''}\n${nf(r.km)} km per jaar, ${r.L} jaar\n\nDiesel: ${eur(r.td/r.km,2)} per km, ${eur(r.td)} per jaar\nElektrisch: ${eur(r.te/r.km,2)} per km, ${eur(r.te)} per jaar\n${d>=0?'Elektrisch':'Diesel'} is ${eur(Math.abs(d)*r.L)} goedkoper over ${r.L} jaar.\n\nBekijk de berekening: ${shareURL()}`}
 function fromURL(){try{const q=new URLSearchParams(location.search).get('s');if(!q)return false;const s=JSON.parse(b64d(q));if(VT[s.t])applyType(s.t);Object.entries(s.v||{}).forEach(([id,val])=>{const e=$(id);if(!e)return;if(e.type==='checkbox')e.checked=!!+val;else e.value=val});touched=true;history.replaceState(null,'',location.href.split('?')[0].split('#')[0]+location.hash);return true}catch(e){return false}}
 async function copyText(t){
  try{await navigator.clipboard.writeText(t);return true}catch(e){}
@@ -1267,66 +1291,147 @@ function tween(key,els,vals,fmts){
  step(t0);t.raf=requestAnimationFrame(step);
 }
 function fillRanges(){document.querySelectorAll('input[type=range]').forEach(r=>{const a=+r.min,b=+r.max;r.style.setProperty('--f',b>a?(r.value-a)/(b-a):0)})}
-/* ===== Modellen: opgaven van fabrikanten. g bruto accu, u bruikbaar, ue afgeleid, r actieradius, dc snelladen CCS, mcs megawattladen (kW) ===== */
+/* ===== Modellen: g bruto, u bruikbaar, ue afgeleid, a capaciteit waarvan bruto/netto onbekend; r bereik, rc meetcyclus; dc/mcs laadvermogen (kW); checked broncontrole. ===== */
 const MCAT=[['all','Alle'],['trekker','Trekker'],['bakwagen','Bakwagen'],['bestel','Bestelbus'],['bus','Bus']];
 const MODELS=[
- {c:'trekker',b:'Mercedes-Benz',m:'eActros 600',g:621,r:500,dc:400,mcs:1000,st:'nu',n:'Drie LFP-accupakketten, samen 621 kWh. Voorbereid op megawattladen (MCS). Tot 44 ton.',s:['The Driven','https://thedriven.io/2024/06/11/mercedes-benz-unveils-eactros-600-long-haul-electric-truck-with-500km-range/']},
- {c:'trekker',b:'Tesla',m:'Semi (Europa)',ue:550,r:550,mcs:800,st:'komt',y:2027,n:'Aangekondigd voor Europa, leveringen vanaf 2027. Tesla noemt 550 km bij 40 ton en een verbruik van ongeveer 1 kWh per km. De accugrootte is nog niet bekendgemaakt. Laadt tot 800 kW.',s:['Electrek','https://electrek.co/2026/09/11/tesla-european-semi-specs-550-km-800-kw/']},
- {c:'trekker',b:'Volvo',m:'FH Aero Electric',g:780,u:725,r:700,mcs:700,st:'nu',n:'780 kWh geïnstalleerd, waarvan 725 kWh bruikbaar. In productie sinds september 2026.',s:['electrive','https://www.electrive.com/2026/04/14/volvo-trucks-increases-range-of-flagship-e-truck-to-700-km/']},
- {c:'trekker',b:'DAF',m:'XF Electric',g:525,gt:'210–525',u:462,ut:'185–462',r:500,rt:'tot 500',dc:325,st:'nu',n:'De accu kies je in stappen, zodat je niet meer gewicht en geld meeneemt dan je inzet vraagt. In serieproductie sinds september 2025.',s:['electrive','https://www.electrive.com/2025/09/22/daf-begins-series-production-of-xd-and-xf-electric-electric-trucks']},
- {c:'trekker',b:'MAN',m:'eTGX',g:552,u:528,r:660,mcs:750,st:'nu',n:'4×2-trekker met 528 kWh netto. Als 6×2 met 644 kWh noemt MAN tot 720 km. Voorbereid op megawattladen tot 750 kW.',s:['Automotive World','https://www.automotiveworld.com/news/new-man-etgx-claims-720-km-range-and-3-efficiency-gain/']},
- {c:'trekker',b:'Scania',m:'R-serie elektrisch',u:560,r:720,mcs:750,st:'nu',n:'Nieuwe accu-indeling met tot 560 kWh bruikbaar. Scania noemt 720 km, en meer dan 800 km in de zuinigste uitvoering. Laadt via MCS tot 750 kW.',s:['EHVT','https://www.electrichybridvehicletechnology.com/news/scania-electric-trucks-now-available-with-560kwh-battery-and-800km-plus-range.html']},
- {c:'trekker',b:'Renault Trucks',m:'E-Tech T 780',g:780,u:624,r:660,rt:'600–660',mcs:700,st:'komt',y:2026,n:'780 kWh, waarvan 624 kWh netto, met 8 jaar of 1,2 miljoen km garantie op de accu. Ook als T 585: 585 kWh en ongeveer 500 km.',s:['trans.info','https://trans.info/en/renault-trucks-range-660-476692']},
- {c:'trekker',b:'Iveco',m:'S-eWay',g:603,r:600,dc:350,st:'nu',n:'Vanaf 2026 met een LFP-accu van 603 kWh. Laadt tot 350 kW.',s:['electrive','https://www.electrive.com/2025/06/13/iveco-to-start-fitting-the-s-eway-with-lfp-batteries-from-2026']},
- {c:'bakwagen',b:'Mercedes-Benz',m:'eActros 300/400',g:448,gt:'336–448',u:388,ut:'291–388',r:400,rt:'330–400',dc:160,st:'nu',n:'Drie (300) of vier (400) accupakketten van 112 kWh, waarvan elk 97 kWh bruikbaar. De 400 km is gemeten in distributie zonder aanhanger bij 20 °C.',s:['Mercedes-Benz Trucks','https://www.mercedes-benz-trucks.com/en_GB/emobility/world/your-benefits/usability.html']},
- {c:'bakwagen',b:'DAF',m:'XD Electric',g:525,gt:'210–525',u:462,ut:'185–462',r:500,rt:'tot 500',dc:325,st:'nu',n:'Dezelfde accu-opbouw als de XF Electric, voor regionale distributie.',s:['DAF','https://dealers.daf.com/-/media/files/document-library/infosheets/electric/daf-xd-electric-infosheet-xde-en-556205.pdf']},
- {c:'bakwagen',b:'DAF',m:'XB Electric',g:282,gt:'141–282',u:248,ut:'124–248',r:350,rt:'tot 350',dc:150,st:'nu',n:'Lichte distributie van 12 tot 19 ton. Snelladen van 20 naar 80% duurt 40 tot 70 minuten.',s:['DAF','https://www.daf.co.uk/-/media/files/document-library/infosheets/electric/daf-xb-electric-infosheet-xbe-en-556205.pdf']},
- {c:'bakwagen',b:'Volvo',m:'FM Electric',g:540,gt:'180–540',r:300,rt:'tot 300',st:'nu',n:'Twee tot zes accupakketten. Laden duurt volgens Volvo ongeveer 2,5 uur met DC en 9,5 uur met AC.',s:['Volvo Trucks','https://www.volvotrucks.co.uk/en-gb/trucks/electric/volvo-fm-electric.html']},
- {c:'bakwagen',b:'MAN',m:'eTGL',g:160,u:160,r:235,dc:250,st:'nu',n:'12-tonner voor de stad, met twee pakketten van 80 kWh. Van 10 naar 80% in ongeveer 30 minuten, tot 6,6 ton laadvermogen.',s:['electrive','https://www.electrive.com/2024/09/04/man-adds-12-tonne-model-to-its-electric-truck-portfolio']},
- {c:'bakwagen',b:'Renault Trucks',m:'E-Tech D 16 t',g:375,r:330,dc:150,st:'nu',n:'Vier accupakketten, samen 375 kWh. Met een uur DC-laden onderweg ongeveer 450 km.',s:['Renault Trucks','https://www.renault-trucks.de/sites/default/files/2024-09/Renault%20Trucks%20E-TECH%20D16%20MED%20P4x2_0.pdf']},
- {c:'bestel',b:'Mercedes-Benz',m:'eSprinter',u:113,r:400,rt:'± 400',st:'nu',n:'Met de grootste accu van 113 kWh bruikbaar.',s:["L'argus",'https://www.largus.fr/actualite-automobile/essai-mercedes-esprinter-2024-enfin-digne-de-l-etoile-30032096.html']},
- {c:'bestel',b:'Ford',m:'E-Transit',u:89,r:402,dc:180,st:'nu',n:'Met de grote accu van 89 kWh; de 68 kWh-versie haalt 316 km. Van 10 naar 80% in ongeveer 28 minuten.',s:['electrive','https://www.electrive.com/2024/04/23/ford-gives-e-transit-larger-battery-for-400-kilometres-range']},
- {c:'bestel',b:'Renault',m:'Master E-Tech',g:87,r:460,st:'nu',n:'Volgens WLTP vanaf ongeveer 21 kWh per 100 km, zuinig voor deze klasse.',s:['ecomento','https://ecomento.de/2024/02/01/neuer-master-e-tech-electric-bietet-bis-zu-460-kilometer/']},
- {c:'bestel',b:'Fiat',m:'E-Ducato',g:110,r:420,st:'nu',n:'WLTP-verbruik ongeveer 33 kWh per 100 km. Standaard AC-laden met 11 kW.',s:['firmenauto','https://www.firmenauto.de/fahrzeuge/transporter/fiat-e-ducato-mehr-power-mehr-reichweite/']},
- {c:'bus',b:'Mercedes-Benz',m:'eCitaro',g:666,gt:'444–666',r:600,rt:'tot 600',dc:300,st:'nu',n:'Stadsbus met vier tot zes NMC4-pakketten van 111 kWh. Mercedes noemt tot 600 km, ook aan het eind van de accuduur. 10 jaar accugarantie.',s:['Mercedes-Benz Bus','https://www.mercedes-benz-bus.com/en_DE/models/ecitaro.html']},
- {c:'bus',b:'Mercedes-Benz',m:'eCitaro G',g:777,gt:'444–777',r:480,rt:'tot 480',dc:300,st:'nu',n:'Gelede stadsbus met tot zeven NMC4-pakketten.',s:['Mercedes-Benz Bus','https://www.mercedes-benz-bus.com/en_DE/models/ecitaro.html']},
- {c:'bus',b:'VDL',m:'Citea LE-122',g:575,r:600,rt:'500–600',st:'nu',n:'Nieuwe generatie met de accu in de vloer in plaats van op het dak. VDL noemt 500 tot 600 km, en 250 km in een strenge winter.',s:['electrive','https://www.electrive.net/2025/03/21/transdev-bestellt-42-elektrobusse-bei-vdl/']},
- {c:'bus',b:'Yutong',m:'T12E touringcar',g:400,r:350,st:'nu',n:'Elektrische touringcar met LFP-accu en een verbruik onder 1,05 kWh per km. Een Oostenrijkse vervoerder rekent met ongeveer 380 km.',s:['electrive','https://www.electrive.com/2026/02/26/three-battery-electric-yutong-coaches-deployed-in-austria/']}];
-MODELS.forEach(m=>m.id=(m.b+' '+m.m).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
+ {"c":"trekker","b":"Mercedes-Benz","m":"eActros 600","g":621,"r":500,"dc":400,"mcs":1000,"st":"nu","n":"Drie LFP-accupakketten: 621 kWh geïnstalleerd en 600 kWh bruikbaar. Fabrieksbereik tot 500 km, afhankelijk van gewicht en omstandigheden. CCS tot 400 kW en voorbereid op megawattladen.","s":["Mercedes-Benz Trucks","https://www.mercedes-benz-trucks.com/content/dam/brandhub/markets/gb/files/product-sheets/eActros-600-product-sheet.pdf.coredownload.pdf"],"u":600,"rt":"tot 500","checked":"2026-10-21"},
+ {"c":"trekker","b":"Tesla","m":"Semi (Europa)","ue":550,"r":550,"mcs":800,"st":"komt","y":2027,"n":"Aangekondigd voor Europa, leveringen vanaf 2027. Tesla noemt 550 km bij 40 ton en een verbruik van ongeveer 1 kWh per km. De accugrootte is nog niet bekendgemaakt. Laadt tot 800 kW.","s":["Tesla","https://www.tesla.com/en_GB/semi"],"consumption":100,"checked":"2026-10-21"},
+ {"c":"trekker","b":"Volvo","m":"FH Aero Electric","g":780,"u":725,"r":700,"mcs":700,"st":"nu","n":"780 kWh geïnstalleerd, waarvan 725 kWh bruikbaar. In productie sinds september 2026.","s":["electrive","https://www.electrive.com/2026/04/14/volvo-trucks-increases-range-of-flagship-e-truck-to-700-km/"]},
+ {"c":"trekker","b":"DAF","m":"XF Electric","g":525,"gt":"210–525","u":462,"ut":"185–462","r":500,"rt":"tot 500","dc":325,"st":"nu","n":"De accu kies je in stappen, zodat je niet meer gewicht en geld meeneemt dan je inzet vraagt. In serieproductie sinds september 2025.","s":["electrive","https://www.electrive.com/2025/09/22/daf-begins-series-production-of-xd-and-xf-electric-electric-trucks"]},
+ {"c":"trekker","b":"MAN","m":"eTGX (nieuwe generatie 2027)","r":660,"st":"komt","n":"Aangekondigde 4×2-generatie met zes accupakketten van samen maximaal 552 kWh. De 660 km is een interne richtwaarde bij 20 °C, 60% belading en snelweginzet. Verkoopstart gepland voor april 2027, productie vanaf zomer 2027. MAN specificeert hier geen exacte bruikbare capaciteit.","s":["MAN Truck & Bus","https://www.man.eu/global/en/truck/all-models/the-man-tgx/the-man-etgx/the-new-man-etgx.html"],"a":552,"rt":"tot 660","y":2027,"checked":"2026-10-21"},
+ {"c":"trekker","b":"Scania","m":"R-serie elektrisch","u":560,"r":515,"mcs":750,"st":"nu","n":"Configuratie met 560 kWh bruikbaar: Scania noemt maximaal 515 km bij 42 ton treingewicht, 560 km bij 29 ton en 360 km bij 64 ton. De later aangekondigde 720 km gebruikt extra accu’s achter de cabine en wordt daarom niet met deze accu gecombineerd.","s":["Scania","https://www.scania.com/group/en/home/products-and-services/trucks/battery-electric-truck.html"],"rt":"tot 515","dc":375,"checked":"2026-10-21"},
+ {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 780","g":780,"r":660,"rt":"tot 660","mcs":700,"st":"nu","n":"6×2-trekker met 780 kWh en maximaal 660 km volgens Renault Trucks. De fabrikant noemt een gebruiksvenster tot 95%; de hier afgeleide 741 kWh is dus een indicatieve maximale bruikbare energie, geen afzonderlijk gepubliceerde netto capaciteit. CCS tot 350 kW en MCS tot 700 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"ue":741,"derived":"afgeleid uit 95% van 780 kWh; maximaal gebruiksvenster","dc":350,"checked":"2026-10-21"},
+ {"c":"trekker","b":"Iveco","m":"S-eWay","g":603,"r":600,"dc":350,"st":"nu","n":"De LFP-uitvoering heeft 603 kWh geïnstalleerde capaciteit, waarvan volgens IVECO 97% bruikbaar is (afgerond 585 kWh). Fabrieksbereik tot 600 km. DC-snelladen tot 350 kW; belading en rijprofiel bepalen het praktijkbereik.","s":["IVECO","https://www.iveco.com/estonia/-/media/IVECOdotcom/Content/Products/S-eWay_2026/Brochure/IVECO-S-eWay_EN.pdf?rev=-1"],"ue":585,"derived":"afgeleid uit 97% van 603 kWh, afgerond","rt":"tot 600","checked":"2026-10-21"},
+ {"c":"bakwagen","b":"Mercedes-Benz","m":"eActros 300/400","g":448,"gt":"336–448","u":388,"ut":"291–388","r":400,"rt":"330–400","dc":160,"st":"nu","n":"Drie (300) of vier (400) accupakketten van 112 kWh, waarvan elk 97 kWh bruikbaar. De 400 km is gemeten in distributie zonder aanhanger bij 20 °C.","s":["Mercedes-Benz Trucks","https://www.mercedes-benz-trucks.com/en_GB/emobility/world/your-benefits/usability.html"]},
+ {"c":"bakwagen","b":"DAF","m":"XD Electric","g":525,"gt":"210–525","u":462,"ut":"185–462","r":500,"rt":"tot 500","dc":325,"st":"nu","n":"Dezelfde accu-opbouw als de XF Electric, voor regionale distributie.","s":["DAF","https://dealers.daf.com/-/media/files/document-library/infosheets/electric/daf-xd-electric-infosheet-xde-en-556205.pdf"]},
+ {"c":"bakwagen","b":"DAF","m":"XB Electric","g":282,"gt":"141–282","u":248,"ut":"124–248","r":350,"rt":"tot 350","dc":150,"st":"nu","n":"Lichte distributie van 12 tot 19 ton. Snelladen van 20 naar 80% duurt 40 tot 70 minuten.","s":["DAF","https://www.daf.co.uk/-/media/files/document-library/infosheets/electric/daf-xb-electric-infosheet-xbe-en-556205.pdf"]},
+ {"c":"bakwagen","b":"Volvo","m":"FM Electric","g":540,"gt":"360–540","r":470,"rt":"tot 470","st":"nu","n":"De actuele generatie met vier tot zes accupakketten: maximaal 540 kWh geïnstalleerd en 460 kWh bruikbaar. Volvo noemt tot 470 km; de opbouw en inzet bepalen het daadwerkelijke bereik. DC-laden van 20 tot 80% in ongeveer 65 minuten.","s":["Volvo Trucks Nederland","https://www.volvotrucks.nl/nl-nl/trucks/electric/volvo-fm-electric.html"],"u":460,"dc":350,"vc":"n3","checked":"2026-10-21"},
+ {"c":"bakwagen","b":"MAN","m":"eTGL","g":160,"u":160,"r":235,"dc":250,"st":"nu","n":"12-tonner voor de stad, met twee pakketten van 80 kWh. Van 10 naar 80% in ongeveer 30 minuten, tot 6,6 ton laadvermogen.","s":["electrive","https://www.electrive.com/2024/09/04/man-adds-12-tonne-model-to-its-electric-truck-portfolio"],"vc":"n2","gvw":12000},
+ {"c":"bakwagen","b":"Renault Trucks","m":"E-Tech D 16 t","g":375,"r":330,"dc":150,"st":"nu","n":"Vier accupakketten, samen 375 kWh. Met een uur DC-laden onderweg ongeveer 450 km.","s":["Renault Trucks","https://www.renault-trucks.de/sites/default/files/2024-09/Renault%20Trucks%20E-TECH%20D16%20MED%20P4x2_0.pdf"]},
+ {"c":"bestel","b":"Mercedes-Benz","m":"eSprinter","u":81,"r":268,"rt":"268","dc":115,"st":"nu","n":"N1-voorbeeld: gesloten bestelwagen L2 met 81 kWh bruikbare accu en 3,5 ton toegestane massa. Mercedes-Benz publiceert voor deze Nederlandse L2-configuratie 268 km WLTP. De grotere 113 kWh-uitvoering met hogere toegestane massa heeft andere waarden; laaduitrusting verschilt per uitvoering.","s":["Mercedes-Benz Nederland","https://certified.vans.mercedes-benz.nl/mercedes-benz/esprinter/esprinter-320-bestelwagen-l2/occ21613999"],"gvw":3500,"checked":"2026-10-21"},
+ {"c":"bestel","b":"Ford","m":"E-Transit","u":89,"r":341,"rt":"341","dc":180,"st":"nu","n":"N1-bestelwagen 350 L3H2 Trend met 89 kWh bruikbaar en 135 kW motor. De Europese prijslijst noemt 341 km WLTP gecombineerd en 26,1 kWh/100 km voor deze 3,5-tonuitvoering. De eerder genoemde 402 km hoort bij een zwaardere, op 90 km/u begrensde uitvoering. DC tot 180 kW.","s":["Ford Europa (Finland)","https://www.ford.fi/content/dam/guxeu/fi/documents/pricelists/cv/transit-van/PL-ford-e-transit.pdf"],"consumption":26.1,"gvw":3500,"checked":"2026-10-21"},
+ {"c":"bestel","b":"Renault","m":"Master E-Tech","a":87,"r":410,"rt":"tot 410","dc":130,"st":"nu","n":"N1-referentie met 87 kWh long-range-accu en 3,5 ton toegestane massa. Renault communiceert tot 410 km WLTP voor deze generatie. De 460 km van de 4-tonuitvoering wordt hier niet als N1-bereik gebruikt. Carrosserie, uitrusting en snelheid beïnvloeden het bereik; DC tot 130 kW.","s":["Renault","https://www.renault.is/cars/master-e-tech-rafmagn/master.html"],"gvw":3500,"checked":"2026-10-21"},
+ {"c":"bestel","b":"Fiat","m":"E-Ducato","g":110.6,"u":97.8,"r":378,"rt":"378","dc":150,"st":"nu","n":"N1 L3H2 gesloten bestelwagen van 3,5 ton. De Nederlandse prijslijst van 1 september 2026 noemt 110,6 kWh geïnstalleerd, 97,8 kWh bruikbaar, 378 km WLTP gecombineerd en 29,4 kWh/100 km. Catalogusprijs € 53.700 excl. btw en opties. De 424 km van de 4,25-tonversie wordt hier niet gebruikt. AC standaard 22 kW.","s":["Fiat Professional Nederland","https://www.fiat.nl/professional/modellen/e-ducato/prijslijst"],"consumption":29.4,"price":53700,"gvw":3500,"checked":"2026-10-21"},
+ {"c":"bus","b":"Mercedes-Benz","m":"eCitaro","g":666,"gt":"444–666","r":600,"rt":"tot 600","dc":300,"st":"nu","n":"Stadsbus met vier tot zes NMC4-pakketten van 111 kWh. Mercedes noemt tot 600 km, ook aan het eind van de accuduur. 10 jaar accugarantie.","s":["Mercedes-Benz Bus","https://www.mercedes-benz-bus.com/en_DE/models/ecitaro.html"]},
+ {"c":"bus","b":"Mercedes-Benz","m":"eCitaro G","g":777,"gt":"444–777","r":480,"rt":"tot 480","dc":300,"st":"nu","n":"Gelede stadsbus met tot zeven NMC4-pakketten.","s":["Mercedes-Benz Bus","https://www.mercedes-benz-bus.com/en_DE/models/ecitaro.html"]},
+ {"c":"bus","b":"VDL","m":"Citea LE-122","g":575,"r":600,"rt":"500–600","st":"nu","n":"Nieuwe generatie met de accu in de vloer in plaats van op het dak. VDL noemt 500 tot 600 km, en 250 km in een strenge winter.","s":["electrive","https://www.electrive.net/2025/03/21/transdev-bestellt-42-elektrobusse-bei-vdl/"]},
+ {"c":"bus","b":"Yutong","m":"T12E touringcar","g":400,"r":350,"st":"nu","n":"Elektrische touringcar met LFP-accu en een verbruik onder 1,05 kWh per km. Een Oostenrijkse vervoerder rekent met ongeveer 380 km.","s":["electrive","https://www.electrive.com/2026/02/26/three-battery-electric-yutong-coaches-deployed-in-austria/"]},
+ {"c":"bestel","b":"Citroën","m":"ë-Berlingo Van","a":54,"r":337,"rt":"tot 337","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Compacte elektrische bestelwagen. De actuele Nederlandse modelpagina noemt 54 kWh en maximaal 337 km WLTP gecombineerd; de uitvoering en uitrusting bepalen het werkelijke homologatiebereik.","s":["Citroën Nederland","https://www.citroen.nl/modellen/bedrijfswagens/e-berlingo-van.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Citroën","m":"ë-Jumpy Comfort Range","a":75,"r":356,"rt":"tot 356","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Middelgrote bestelwagen met de 75 kWh-accu. Citroën noemt voor Comfort Range maximaal 356 km WLTP gecombineerd. Ook verkrijgbaar als Urban Range met een kleinere accu.","s":["Citroën Nederland","https://www.citroen.nl/modellen/bedrijfswagens/e-jumpy.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Peugeot","m":"E-Partner","a":50,"r":343,"rt":"tot 343","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Compacte bestelwagen met een 50 kWh-accu. Peugeot noemt maximaal 343 km WLTP; beschikbare lengtes, uitrusting en belading beïnvloeden de actieradius.","s":["Peugeot Nederland","https://www.peugeot.nl/showroom/peugeot-partner/elektrisch.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Peugeot","m":"E-Expert 75 kWh","a":75,"r":352,"rt":"tot 352","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Middelgrote elektrische bestelwagen met de 75 kWh-accu en maximaal 352 km WLTP gecombineerd. De kleinere 49 kWh-uitvoering haalt volgens Peugeot tot 223 km.","s":["Peugeot Nederland","https://www.peugeot.nl/showroom/peugeot-expert/faq.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Opel","m":"Combo Cargo Electric","a":50,"r":343,"rt":"tot 343","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Compacte elektrische bestelwagen met een 50 kWh-accu. De Nederlandse modelpagina noemt maximaal 343 km; de gekozen uitvoering en opties bepalen het homologatiebereik. Leverbaar in twee lengtes.","s":["Opel Nederland","https://www.opel.nl/bedrijfswagens/combo-modellen/nieuwe-combo-electric/overzicht.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Opel","m":"Vivaro Electric 75 kWh","a":75,"r":350,"rt":"tot 350","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Middelgrote elektrische bestelwagen met de 75 kWh-accu. Opel noemt in zijn elektrische modellenoverzicht maximaal 350 km WLTP. Leverbaar in twee lengtes en meerdere carrosserievarianten.","s":["Opel Nederland","https://www.opel.nl/elektrisch-rijden/elektrische-bedrijfswagens.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Fiat","m":"E-Doblò","a":50,"r":343,"rt":"tot 343","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Compacte elektrische bestelwagen met de 50 kWh-accu en maximaal 343 km WLTP gecombineerd. Verkrijgbaar in de lengtes M en XL; volgens Fiat is laden tot 80% in circa 30 minuten mogelijk.","s":["Fiat Professional Nederland","https://www.fiat.nl/professional/modellen/e-doblo"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Fiat","m":"E-Scudo 75 kWh","a":75,"r":352,"rt":"tot 352","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Middelgrote bestelwagen met de 75 kWh-accu. Fiat noemt maximaal 352 km WLTP gecombineerd en circa 45 minuten snelladen tot 80%. Het bereik verschilt per carrosserie en uitvoering.","s":["Fiat Professional Nederland","https://www.fiat.nl/professional/modellen/e-scudo/features"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Toyota","m":"Proace City Electric","a":50,"r":330,"rt":"tot 330","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Compacte elektrische bestelwagen met de 50 kWh-accu. Toyota noemt in zijn Nederlandse bereikoverzicht en FAQ maximaal 330 km WLTP gecombineerd. Verkrijgbaar als L1 en Long L2.","s":["Toyota Nederland","https://www.toyota.nl/modellen/proace-city"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Toyota","m":"Proace Electric 75 kWh","a":75,"r":350,"rt":"tot 350","rc":"WLTP gecombineerd","dc":100,"st":"nu","n":"Middelgrote elektrische bestelwagen met de 75 kWh-accu en maximaal 350 km WLTP gecombineerd. Ook leverbaar met een kleinere accu van 50 kWh; carrosserie en uitrusting beïnvloeden het bereik.","s":["Toyota Nederland","https://www.toyota.nl/modellen/proace"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Renault","m":"Kangoo Van E-Tech electric","u":45,"r":295,"rt":"tot 295","rc":"WLTP gecombineerd","dc":80,"st":"nu","n":"Compacte bestelwagen met 45 kWh bruikbare accucapaciteit. De actuele Nederlandse modelpagina noemt maximaal 295 km WLTP, afhankelijk van uitvoering, uitrusting en lader. DC-snelladen is afhankelijk van de gekozen laaduitrusting.","s":["Renault Nederland","https://bedrijfswagens.renault.nl/modellen/kangoo-e-tech-electric.html?bodyTypeCode=PT1261_kastenwagen"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Nissan","m":"Townstar EV Van","a":44,"r":301,"rt":"tot 301","rc":"WLTP gecombineerd","st":"nu","n":"Compacte elektrische bestelwagen in de lengtes L1 en L2. De actuele Nederlandse aandrijflijnpagina noemt 44 kWh en maximaal 301 km WLTP gecombineerd. Laaduitrusting en bereik verschillen per versie.","s":["Nissan Nederland","https://www.nissan.nl/voertuigen/nieuw/townstar/motor.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Mercedes-Benz","m":"eCitan","a":45,"r":284,"rt":"tot 284","rc":"WLTP gecombineerd","dc":75,"st":"nu","n":"Compacte gesloten bestelwagen met een 45 kWh-accu en maximaal 284 km WLTP gecombineerd. Mercedes-Benz Nederland noemt DC-snelladen tot 75 kW als optie. Beschikbaarheid en laaduitrusting verschillen per versie.","s":["Mercedes-Benz Nederland","https://www.mercedes-benz.nl/vans/models/ecitan/panel-van/overview.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Ford","m":"E-Transit Custom","u":71,"r":370,"rt":"tot 370","dc":125,"st":"nu","n":"Modeljaar 2026 met 71 kWh bruikbaar. Fabrieksopgave tot 370 km WLTP; 10–80% laden duurt circa 29 minuten. Bereik varieert per uitvoering.","s":["Ford Nederland","https://fordmediacenter.nl/meer-kilometers-minder-wachttijd-ford-e-transit-custom-geeft-jouw-werkdag-een-upgrade/"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Ford","m":"E-Transit Courier","a":46,"r":325,"rt":"tot 325","dc":100,"st":"nu","n":"Bijgewerkte 46 kWh-uitvoering uit 2026. Tot 325 km WLTP en AC-laden met 11 kW; 10–80% DC-laden in minder dan 30 minuten.","s":["Ford Nederland","https://fordmediacenter.nl/ford-e-transit-courier-krijgt-grotere-batterij-meer-actieradius-verbeterde-connectiviteit-en-inzetbaarheid/"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Volkswagen","m":"ID. Buzz Cargo","u":79,"r":459,"rt":"tot 459","dc":185,"st":"nu","n":"Cargo met 79 kWh netto en 210 kW achterwielaandrijving: tot 459 km WLTP gecombineerd. De 4MOTION-versie en de kleinere 59 kWh-accu hebben een ander bereik. Laadvolume 3,9 m³.","s":["Volkswagen Bedrijfswagens","https://www.vwbedrijfswagens.nl/nl/modellen/id-buzz-cargo.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Volkswagen","m":"e-Transporter","u":70.9,"r":372,"rt":"tot 372","dc":125,"st":"nu","n":"Bijgewerkte accu met 70,9 kWh bruikbaar. Tot 372 km WLTP, afhankelijk van uitvoering; 10–80% snelladen duurt circa 29 minuten. Keuze uit twee lengtes en twee dakhoogtes.","s":["Volkswagen Bedrijfswagens","https://www.vwbedrijfswagens.nl/nl/modellen/e-transporter.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Renault","m":"Trafic Van E-Tech (nieuwe generatie)","a":81,"r":470,"rt":"tot 470","dc":190,"st":"komt","y":2026,"n":"Nieuwe 800V-generatie met 81 kWh long range, L1H1. Volgens Renault bestelbaar medio november 2026. De opgegeven 470 km en laadprestaties zijn voorlopig, in afwachting van WLTP-typegoedkeuring; 60 kWh volgt in 2027.","s":["Renault Nederland","https://bedrijfswagens.renault.nl/trafic-van/trafic-e-tech-electric.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Opel","m":"Movano Electric","a":110,"r":430,"rt":"tot 430","dc":150,"st":"nu","n":"110 kWh-accu en tot 430 km WLTP volgens Opel, afhankelijk van carrosserie en opties. Tot 17 m³ laadvolume; DC-laden tot 80% duurt circa 55 minuten.","s":["Opel Nederland","https://www.opel.nl/bedrijfswagens/movano-modellen/nieuwe-movano-electric/overzicht.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Peugeot","m":"E-Boxer","a":110,"r":424,"rt":"tot 424","dc":150,"st":"nu","n":"110 kWh-uitvoering met een fabrieksopgave tot 424 km WLTP gecombineerd, afhankelijk van carrosserie en toegestane massa. Tot 17 m³ laadvolume; 0–80% DC-laden in circa 55 minuten.","s":["Peugeot Nederland","https://www.peugeot.nl/content/dam/peugeot/netherlands/b2c/brochures/model/boxer/11032026-Prijzen-en-specificaties-Peugeot-E-Boxer.pdf"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Citroën","m":"ë-Jumper","a":110,"r":424,"rt":"tot 424","dc":150,"st":"nu","n":"110 kWh-uitvoering: tot 424 km WLTP gecombineerd, afhankelijk van configuratie. Laadvolume 13–17 m³. Snelladen van 0 naar 80% duurt volgens Citroën circa 55 minuten.","s":["Citroën Nederland","https://www.citroen.nl/modellen/bedrijfswagens/e-jumper.html"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Toyota","m":"Proace Max Electric","a":110,"r":424,"rt":"tot 424","dc":150,"st":"nu","n":"110 kWh-accu met tot 424 km gecombineerd WLTP-bereik volgens Toyota Nederland. Verkrijgbaar als L3H2, L3H3 en L4H3; bereik verschilt per uitvoering. Tot 17 m³ laadvolume.","s":["Toyota Nederland","https://www.toyota.nl/modellen/proace-max"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"IVECO","m":"eDaily","g":74,"r":265,"rt":"tot 265","dc":80,"st":"nu","n":"35S-bestelwagen (3,5 ton) met twee geïnstalleerde 37 kWh-modules. WLTP-opgave 265 km voor H1 met wielbasis 3.520 mm onder de testvoorwaarden uit de brochure. De vaak genoemde 400 km is een stedelijke simulatie voor andere configuraties.","s":["IVECO Nederland","https://info.iveco.nl/hubfs/Brochure%20IVECO%20eDaily.pdf?hsLang=nl-nl"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Maxus","m":"eDeliver 3","a":50,"r":227,"dc":57,"st":"nu","n":"Gesloten bestelwagen L1 met 50 kWh-accu volgens de actuele Nederlandse prijslijst: 227 km WLTP gecombineerd, 322 km in de stad. Laadvolume 4,8 m³. De chassis-cabine heeft andere waarden.","s":["Maxus Nederland","https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-3-v3.pdf"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Maxus","m":"eDeliver 5","a":64,"r":335,"dc":70,"st":"nu","n":"L1H1 met 64 kWh-accu: 335 km WLTP gecombineerd en 6,6 m³ laadvolume. Hogere of langere carrosserieën halen minder kilometers. DC-laden van 20 naar 80% duurt circa 36 minuten.","s":["Maxus Nederland","https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-5-v2.pdf"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Maxus","m":"eDeliver 7","a":88,"r":370,"dc":90,"st":"nu","n":"L1H1 met 88 kWh-accu: 370 km WLTP gecombineerd. Er zijn ook 77 kWh-, langere, hogere en AWD-uitvoeringen met afwijkend bereik. DC-laden van 20 naar 80% duurt circa 43 minuten.","s":["Maxus Nederland","https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-7-v7.pdf"],"checked":"2026-10-21"},
+ {"c":"bestel","b":"Maxus","m":"eDeliver 9","a":88,"r":347,"dc":90,"st":"nu","n":"L2H2 met 88 kWh-accu: 347 km WLTP gecombineerd volgens de Nederlandse prijslijst. Dit is de vernieuwde uitvoering; oudere 89 kWh-versies hebben andere specificaties. Laadvolume 9,7 m³.","s":["Maxus Nederland","https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-9-v4.pdf"],"checked":"2026-10-21"},
+ {"c":"bakwagen","b":"Volvo","m":"FL Electric","a":565,"r":450,"rt":"tot 450","dc":150,"st":"nu","n":"Compact distributiechassis voor 12 tot 18,6 ton. Hier staat de grootste accukeuze van 565 kWh met de door Volvo opgegeven maximale actieradius; een kleinere accu biedt meer laadvermogen. Volvo specificeert op deze pagina niet of de capaciteit bruto of bruikbaar is.","s":["Volvo Trucks","https://www.volvotrucks.com/en-en/trucks/electric/volvo-fl-electric.html"],"checked":"2026-10-21"},
+ {"c":"bakwagen","b":"Volvo","m":"FE Electric","vc":"n3","a":375,"r":275,"rt":"tot 275","dc":150,"st":"nu","n":"Distributie-, bouw- en inzamelchassis tot 28 ton, ook met lage instap. Grootste accukeuze van 375 kWh. Volvo geeft tot 275 km op; de opbouw en inzet bepalen de haalbare afstand. Bruto of bruikbaar wordt bij deze capaciteit niet vermeld.","s":["Volvo Trucks","https://www.volvotrucks.com/en-en/trucks/electric/volvo-fe-electric.html"],"checked":"2026-10-21"},
+ {"c":"bakwagen","b":"Volvo","m":"FM Low Entry","vc":"n3","a":360,"r":200,"rt":"tot 200","dc":250,"st":"nu","n":"Lage cabine voor stadsdistributie en gemeentelijke inzet tot 32 ton. Vier accupakketten van samen 360 kWh; Volvo noemt tot 200 km. De bron maakt geen onderscheid tussen bruto en bruikbare accucapaciteit.","s":["Volvo Trucks","https://www.volvotrucks.com/en-en/trucks/electric/volvo-fm-low-entry.html"],"checked":"2026-10-21"},
+ {"c":"bakwagen","b":"Volvo","m":"FMX Electric","vc":"n3","g":540,"u":460,"r":470,"rt":"tot 470","dc":350,"st":"nu","n":"Elektrisch bouwchassis voor onder meer kipper, kraan of betonmixer. Grootste uitvoering met zes accupakketten: 540 kWh geïnstalleerd en maximaal 460 kWh bruikbaar. Volvo noemt tot 470 km; opbouw, belading en terrein beïnvloeden de actieradius.","s":["Volvo Trucks","https://www.volvotrucks.com/en-en/trucks/electric/volvo-fmx-electric.html"],"checked":"2026-10-21"},
+ {"c":"bakwagen","b":"FUSO","m":"eCanter 9C18e L","vc":"n2","g":124,"u":116,"r":200,"rt":"tot 200","dc":104,"st":"nu","n":"Licht chassis van 8,55 ton met het L-accupakket: 124 kWh geïnstalleerd, 116 kWh bruikbaar. De 200 km is door FUSO getest met gesloten laadbak, 50% van het laadvermogen en 20 °C. AC-laden kan met 22 kW.","s":["FUSO technische gegevens","https://www.fuso-trucks.com/wp-content/uploads/sites/2/2024/05/eCanter_Technical-Datasheets_2024_EN_855T.pdf"],"checked":"2026-10-21","gvw":8550},
+ {"c":"bakwagen","b":"MAN","m":"eTGM (4 accupakketten)","vc":"n3","u":320,"r":480,"rt":"tot 480","dc":375,"st":"komt","y":2026,"n":"Distributiechassis van 16,01 tot 16,5 ton. Vier pakketten geven 320 kWh bruikbaar en volgens MAN tot 480 km zonder aanhanger; met aanhanger noemt MAN maximaal 285 km. Interne fabriekswaarden. Productiestart verwacht in december 2026.","s":["MAN Truck & Bus","https://www.man.eu/uk/en/truck/all-models/the-man-tgm-and-man-tgl/the-man-etgm/overview.html"],"checked":"2026-10-21"},
+ {"c":"bakwagen","b":"MAN","m":"eTGS 4×2 chassis","vc":"n3","u":480,"r":820,"rt":"tot 820","dc":375,"mcs":750,"st":"nu","n":"Zwaar distributiechassis met zes accupakketten en 480 kWh bruikbaar. MAN noemt maximaal 820 km als interne richtwaarde bij solo-inzet, 20 °C, 60% belading en gunstig stads- en regionaal verkeer. Dit is geen snelweg- of WLTP-actieradius; laat de eigen inzet doorrekenen.","s":["MAN Truck & Bus","https://www.man.eu/uk/en/truck/all-models/the-man-tgs/the-man-etgs/overview.html"],"checked":"2026-10-21"},
+ {"c":"bakwagen","b":"Renault Trucks","m":"E-Tech D Wide 375","vc":"n3","a":375,"r":315,"rt":"tot 315","dc":150,"st":"nu","n":"Distributie- en inzamelchassis van 19 tot 26 ton. Dit betreft de configuratie met maximaal 375 kWh en tot 315 km uit de fabrieksdocumentatie. Renault vermeldt bij deze capaciteit niet expliciet bruto of bruikbaar. Het rijprofiel en de opbouw bepalen het praktijkbereik.","s":["Renault Trucks","https://www.renault-trucks.at/press-release/renault-trucks-e-tech-d-wide-erste-praxiseinsatze"],"checked":"2026-10-21"},
+ {"c":"bus","b":"Solaris","m":"Urbino 12 electric (modulair)","a":600,"at":"> 600","r":600,"rt":"> 600","rc":"SORT 2","st":"nu","n":"Stadsbus van 12 meter met modulaire aandrijving. Solaris noemt zes dakpakketten met samen meer dan 600 kWh en een bereik boven 600 km op basis van SORT 2-verbruik. Exacte bruto/netto-capaciteit en laadvermogen worden op deze pagina niet gespecificeerd. Ook pantograafladen is mogelijk.","s":["Solaris Bus & Coach","https://www.solarisbus.com/en/urbino-12-electric-with-modular-drive"],"checked":"2026-10-21"},
+ {"c":"bus","b":"Solaris","m":"Urbino 18 electric (modulair)","a":800,"at":"> 800","r":600,"rt":"tot 600","rc":"e-SORT 2","st":"nu","n":"Gelede stadsbus van 18 meter. De grootste accuconfiguratie bevat meer dan 800 kWh; Solaris geeft 600 km op, berekend uit het e-SORT 2-verbruik. Exacte bruto/netto-capaciteit en laadvermogen worden op deze pagina niet gespecificeerd. Laden via stekker of pantograaf.","s":["Solaris Bus & Coach","https://www.solarisbus.com/en/urbino-18-electric"],"checked":"2026-10-21"},
+ {"c":"bus","b":"MAN","m":"Lion’s City 10 E","g":356,"u":320,"r":310,"rt":"tot 310","dc":150,"st":"nu","n":"Compacte stadsbus van circa 10,6 meter met vier pakketten. De 320 kWh bruikbaar en tot 310 km horen bij de Maximum Range-accustrategie; belading, route en klimaatregeling beïnvloeden het bereik.","s":["MAN brochure Lion’s City E","https://www.man.eu/content/dam/man/countries/doc/bw-master/bus/eventassets-1/Brochure-MAN-Lions-City-E-IT.pdf/_jcr_content/renditions/original./Brochure-MAN-Lions-City-E-IT.pdf"],"checked":"2026-10-21"},
+ {"c":"bus","b":"MAN","m":"Lion’s City 12 E","g":445,"u":400,"r":380,"rt":"tot 380","dc":150,"st":"nu","n":"Stadsbus van circa 12,2 meter met vijf pakketten. Deze 445 kWh-configuratie biedt maximaal 400 kWh bruikbaar bij de Maximum Range-accustrategie. MAN noemt tot 380 km onder gunstige inzetomstandigheden.","s":["MAN brochure Lion’s City E","https://www.man.eu/content/dam/man/countries/doc/bw-master/bus/eventassets-1/Brochure-MAN-Lions-City-E-IT.pdf/_jcr_content/renditions/original./Brochure-MAN-Lions-City-E-IT.pdf"],"checked":"2026-10-21"},
+ {"c":"bus","b":"MAN","m":"Lion’s City 18 E","g":623,"u":560,"r":350,"rt":"tot 350","dc":150,"st":"nu","n":"Gelede stadsbus van circa 18,1 meter met zeven pakketten. Tot 560 kWh bruikbaar volgens de Maximum Range-accustrategie. Het technische fabrieksblad noemt 350 km onder gunstige omstandigheden, afhankelijk van accustrategie, belading en klimaatregeling.","s":["MAN technische gegevens","https://media.man.eu/is/content/MAN/man_lions_city_datenblatt_18-E_ENpdf"],"checked":"2026-10-21"},
+ {"c":"bus","b":"BYD","m":"eBus B12.b","a":500,"r":600,"rt":"tot 600","st":"nu","n":"Stadsbus van 12 meter met Blade Battery in het chassis en plaats voor maximaal 105 reizigers. BYD noemt maximaal 500 kWh en tot 600 km op één lading. De bron specificeert de testcyclus, bruto/netto-capaciteit en het laadvermogen niet.","s":["BYD Europe","https://bydeurope.com/byd-ebus-b12"],"checked":"2026-10-21"},
+ {"c":"bus","b":"Karsan","m":"e-ATA 12","a":528,"r":500,"rt":"tot 500","st":"nu","n":"Lagevloer-stadsbus van 12 meter met een LFP-accu tot 528 kWh. Karsan noemt 500 km onder realistische omstandigheden, afhankelijk van accugrootte en rijprofiel; er staat geen gestandaardiseerde testcyclus bij. Laden via DC-stekker en optioneel pantograaf; bruto/netto en laadpiek niet gespecificeerd.","s":["Karsan","https://www.karsan.com/en/electric-bus/e-ata-12"],"checked":"2026-10-21"},
+ {"c":"trekker","b":"MAN","m":"eTGX (huidige generatie)","a":480,"r":570,"rt":"tot 570","dc":375,"mcs":750,"st":"nu","n":"4×2-trekker met zes accupakketten, samen 480 kWh volgens de technische modeltabel. De 570 km is een interne richtwaarde onder gunstige omstandigheden, geen WLTP-cijfer. De apart vermelde nieuwe generatie met 660 km volgt in 2027.","s":["MAN Truck & Bus","https://www.man.eu/uk/en/truck/all-models/the-man-tgx/the-man-etgx/overview.html"],"checked":"2026-10-21"},
+ {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 540","a":540,"r":450,"rt":"tot 450","dc":350,"st":"nu","n":"Elektrische 4×2-trekker voor regionaal vervoer, met maximaal 540 kWh en tot 450 km volgens Renault Trucks. Bereik is afhankelijk van treingewicht en inzet. DC-snelladen via CCS tot 350 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"checked":"2026-10-21"},
+ {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 585","a":585,"r":500,"rt":"tot 500","dc":350,"st":"nu","n":"6×2-trekker met e-as, afgestemd op laadvermogen. Renault Trucks noemt 585 kWh en maximaal 500 km. Andere belading, opbouw en omstandigheden geven een ander bereik; CCS-laden tot 350 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"checked":"2026-10-21"}];
+MODELS.forEach(m=>m.id=(m.b+' '+m.m).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
 const MI={};MODELS.forEach(m=>MI[m.id]=m);
 let mCat=null,mOpen=new Set(),mSel=[];
-/* Bruikbare accu: opgegeven, afgeleid, of geschat op 90% van bruto */
-const mU=m=>m.u||m.ue||Math.round(m.g*.9/5)*5;
-const mUq=m=>m.u?'bruikbaar':m.ue?'afgeleid':'bruto';
+/* 90% is een expliciete aanname, ook als de fabrikant bruto/netto niet vermeldt. */
+const mU=m=>m.u||m.ue||Math.round((m.g||m.a)*.9);
+const mCap=m=>m.u||m.ue||m.g||m.a;
+const mFmt=n=>nf(n,Number.isInteger(n)?0:1);
+const mCapText=m=>m.u||m.ue?(m.ut||mFmt(m.u||m.ue)):m.g?(m.gt||mFmt(m.g)):(m.at||mFmt(m.a));
+const mUq=m=>m.u?'bruikbaar':m.ue?'afgeleid':m.g?'bruto':'type niet vermeld';
+const mAcc=m=>Math.min(F.acc[3],Math.max(F.acc[2],Math.round(mU(m)*10)/10));
+const mEnergy=m=>Math.min(F.le[3],Math.max(F.le[2],Math.round((m.consumption||mAcc(m)/m.r*100)*10)/10));
+const mAssumption=m=>m.u?'opgave bruikbaar':m.ue?(m.derived||'afgeleid uit actieradius en verbruik'):m.g?'geschat: 90% van bruto':'geschat: 90% van opgegeven capaciteit; bruto/netto onbekend';
+const mRange=m=>`${m.rt||nf(m.r)} km${m.rc?' ('+m.rc+')':m.c==='bestel'?' (WLTP gecombineerd)':''}`;
 const mK=m=>Math.max(m.dc||0,m.mcs||0);
 const mName=m=>`${m.b} ${m.m}`;
 const mStat=m=>m.st==='nu'?'Leverbaar':'Verwacht '+m.y;
 const mDag=()=>Math.round(v('km')/Math.max(1,v('wd')));
+function modelOptions(){
+ const list=MODELS.filter(m=>m.c===vtype).sort((a,b)=>mName(a).localeCompare(mName(b),'nl'));
+ setH($('calcModel'),'<option value="">Geen specifiek model · eigen of voorbeeldcijfers</option>'+list.map(m=>`<option value="${m.id}">${mName(m)}${m.st==='komt'?' · verwacht '+m.y:''}</option>`).join(''));
+ $('calcModel').value='';
+}
+const modelActive=()=>{const m=MI[$('calcModel').value];return m&&m.c===vtype?m:null};
+function modelPaint(){
+ const m=modelActive(),el=$('modelPreset');el.hidden=!m;if(!m)return;
+ const ac=Math.abs(v('acc')-mAcc(m))>.01,ec=Math.abs(v('le')-mEnergy(m))>.01,pc=Math.abs(v('pE')-(m.price||VT[m.c].p.pE))>.01;
+ const values=`<div><dt>Bruikbare accu</dt><dd>${mFmt(v('acc'))} kWh<small>${ac?'Zelf aangepast':m.u?'Fabrieksopgave':m.ue?'Afgeleid':'Geschat'}</small></dd></div>
+  <div><dt>Elektrisch verbruik</dt><dd>${nf(v('le'),1)} kWh/100 km<small>${ec?'Zelf aangepast':m.consumption?'Fabrieksopgave':'Afgeleid (indicatief)'}</small></dd></div>
+  <div><dt>Aanschaf elektrisch, excl. btw</dt><dd>${eur(v('pE'))}<small>${pc?'Eigen bedrag':m.price?'Catalogusprijs':'Voorbeeldbedrag'}</small></dd></div>`;
+ setH(el,`<h2>Modelbasis: ${mName(m)}${m.st==='komt'?' · verwacht '+m.y:''}</h2><dl id="modelValues"></dl>
+  <p>${m.price?'Catalogusprijs zonder opties ingevuld.':'Vul je eigen aanschafprijs in.'} Dieselreferentie en overige kosten blijven eigen of voorbeeldcijfers.</p>
+  <details><summary>Uitvoering, bron en aannames</summary><p>${m.n}</p><p>Bruikbare accu bij de modelkeuze: ${mFmt(mAcc(m))} kWh (${mAssumption(m)}). Fabrieksbereik ter referentie: ${mRange(m)}. ${m.consumption?'Het praktijkverbruik hangt af van je inzet.':'Het afgeleide verbruik gebruikt de opgegeven actieradius en bevat geen laadverlies; pas dit aan op je eigen inzet.'} Controleer de aanschafprijs en overige kosten met je offerte en praktijkgegevens.</p><a href="${m.s[1]}" target="_blank" rel="noopener">Bron: ${m.s[0]} ↗</a></details>
+  <div class="macts"><button class="wbtn" type="button" data-step="buy">Aanschafprijs invullen</button><button class="lnk" type="button" data-mreload="${m.id}">Modelwaarden herstellen</button><a href="#modellen" data-mview="${m.id}">Bekijk dit model</a></div>`);
+ setH($('modelValues'),values);
+}
+function modelApply(id,keepOwnPrice=false){
+ const m=MI[id];if(!m)return false;
+ if(m.c!==vtype){applyType(m.c);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
+ $('calcModel').value=id;
+ $('acc').value=mAcc(m);$('le').value=mEnergy(m);if(m.price||!keepOwnPrice)$('pE').value=m.price||VT[m.c].p.pE;
+ if(m.c==='bakwagen'){$('cls').value=(m.vc||'n3').toUpperCase();if(m.gvw&&m.gvw<10000)$('reg').value='geen'}
+ touched=true;render();return true;
+}
 const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 function mRows(){
  const sort=$('mSort').value,soon=ck('mSoon');
- return MODELS.filter(m=>(mCat==='all'||m.c===mCat)&&(soon||m.st==='nu')).sort((a,b)=>sort==='b'?mName(a).localeCompare(mName(b),'nl'):sort==='u'?mU(b)-mU(a):sort==='k'?mK(b)-mK(a)||b.r-a.r:b.r-a.r);
+ return MODELS.filter(m=>(mCat==='all'||m.c===mCat)&&(soon||m.st==='nu')&&mMatches(m)).sort((a,b)=>(sort==='b'?mName(a).localeCompare(mName(b),'nl'):sort==='u'?mU(b)-mU(a):sort==='k'?mK(b)-mK(a)||b.r-a.r:b.r-a.r)||mName(a).localeCompare(mName(b),'nl'));
 }
+const mNorm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+const mMatches=m=>mNorm($('mSearch').value).split(/\s+/).filter(Boolean).every(q=>mNorm(mName(m)).includes(q));
 const mBar=(m,mx,dg)=>`<span class="mbar${dg&&m.r<dg?' short':''}" aria-hidden="true"><i style="width:${Math.min(100,m.r/mx*100)}%"></i>${dg?`<em style="left:${Math.min(100,dg/mx*100)}%"></em>`:''}</span>`;
-const mBatt=m=>m.u||m.ue?`${m.ut||nf(m.u||m.ue)} kWh ${m.u?'bruikbaar':'(afgeleid)'}`:'Niet opgegeven';
+const mBatt=m=>m.u||m.ue?`${m.ut||mFmt(m.u||m.ue)} kWh ${m.u?'bruikbaar':'(afgeleid)'}`:'Niet opgegeven';
 const mCharge=m=>[m.dc?`CCS tot ${nf(m.dc)} kW`:'',m.mcs?`MCS tot ${nf(m.mcs)} kW`:''].filter(Boolean).join(' · ')||'Niet opgegeven';
 function mBody(m){
- const dg=m.c===vtype?mDag():0,a=Math.min(900,mU(m));
+ const dg=m.c===vtype?mDag():0,a=mAcc(m);
  return`<div class="mrb" id="mb-${m.id}"><p>${m.n}</p>
-  <dl class="mspec"><div><dt>Accu bruto</dt><dd>${m.g?(m.gt||nf(m.g))+' kWh':'Niet opgegeven'}</dd></div><div><dt>Accu bruikbaar</dt><dd>${mBatt(m)}</dd></div><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km${m.c==='bestel'?' (WLTP)':''}</dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div></dl>
+  <dl class="mspec"><div><dt>${m.a?'Accu (type niet vermeld)':'Accu bruto'}</dt><dd>${m.g?(m.gt||mFmt(m.g))+' kWh':m.a?(m.at||mFmt(m.a))+' kWh':'Niet opgegeven'}</dd></div><div><dt>Accu bruikbaar</dt><dd>${mBatt(m)}</dd></div><div><dt>Actieradius</dt><dd>${mRange(m)}</dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div></dl>
   ${dg?`<p class="mfit">Opgegeven actieradius is <b>${nf(m.r/dg,1)}×</b> je dagrit van ${nf(dg)} km. Reken in de winter met ongeveer 20% minder.</p>`:''}
-  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met dit model <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><p class="hint">Neemt de accu over: ${nf(a)} kWh${m.u?'':m.ue?', afgeleid uit actieradius en verbruik':', geschat op 90% van bruto'}.</p><a class="msrc" href="${m.s[1]}" target="_blank" rel="noopener">Bron: ${m.s[0]} <span aria-hidden="true">↗</span></a></div></div>`;
+  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met dit model <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><p class="hint">Start met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Vul je eigen aanschafprijs in.</p><a class="msrc" href="${m.s[1]}" target="_blank" rel="noopener">Bron: ${m.s[0]} <span aria-hidden="true">↗</span></a>${m.checked?'<span class="hint">Gecontroleerd '+new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z'))+'</span>':''}</div></div>`;
 }
 function mPaint(){
  if(!mCat)mCat=vtype;
  const list=mRows(),mx=Math.max(1,...list.map(m=>m.r)),dg=mDag(),soon=ck('mSoon');
- setH($('mCat'),MCAT.map(c=>`<button type="button" data-mcat="${c[0]}" aria-pressed="${c[0]===mCat}">${c[1]}<small>${MODELS.filter(m=>(c[0]==='all'||m.c===c[0])&&(soon||m.st==='nu')).length}</small></button>`).join(''));
+ setH($('mCat'),MCAT.map(c=>`<button type="button" data-mcat="${c[0]}" aria-pressed="${c[0]===mCat}">${c[1]}<small>${MODELS.filter(m=>(c[0]==='all'||m.c===c[0])&&(soon||m.st==='nu')&&mMatches(m)).length}</small></button>`).join(''));
+ $('mCount').textContent=`${list.length} ${list.length===1?'model':'modellen'} gevonden · ${MODELS.length} in de catalogus`;
  const showDag=list.some(m=>m.c===vtype);
  $('mDay').hidden=!showDag;
  setH($('mDay'),`<i aria-hidden="true"></i>Jouw dagrit in de calculator: ${nf(dg)} km (${T().n.toLowerCase()})`);
  setH($('mList'),list.length?`<div class="mcols" aria-hidden="true"><span>Model</span><span>Accu</span><span>Actieradius</span><span>Snelladen</span><span></span></div>`+list.map(m=>{
   const o=mOpen.has(m.id),sel=mSel.includes(m.id),d=m.c===vtype?dg:0;
-  return`<article class="mr${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${m.id}" aria-expanded="${o}" aria-controls="mb-${m.id}"><span class="mn"><small>${m.b}</small><b>${m.m}${m.st==='komt'?`<span class="mtag">Verwacht ${m.y}</span>`:''}</b></span><span class="mf" data-l="Accu"><span><b>${nf(m.u||m.ue||m.g)}</b> kWh</span><small>${mUq(m)}</small></span><span class="mf mrg" data-l="Actieradius"><span><b>${nf(m.r)}</b> km</span>${mBar(m,mx,d)}</span><span class="mf" data-l="Snelladen">${mK(m)?`<span><b>${nf(mK(m))}</b> kW</span><small>${m.mcs?'MCS':'CCS'}</small>`:'<span>–</span>'}</span>${chev}</button>${o?mBody(m):''}</article>`}).join(''):`<p class="mnone">Geen modellen met deze keuze.</p>`);
+  return`<article class="mr${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${m.id}" aria-expanded="${o}" aria-controls="mb-${m.id}"><span class="mn"><small>${m.b}</small><b>${m.m}${m.st==='komt'?`<span class="mtag">Verwacht ${m.y}</span>`:''}</b></span><span class="mf" data-l="Accu"><span><b>${mCapText(m)}</b> kWh</span><small>${mUq(m)}</small></span><span class="mf mrg" data-l="Actieradius"><span><b>${m.rt||nf(m.r)}</b> km</span>${mBar(m,mx,d)}</span><span class="mf" data-l="Snelladen">${mK(m)?`<span><b>${nf(mK(m))}</b> kW</span><small>${m.mcs?'MCS':'CCS'}</small>`:'<span>–</span>'}</span>${chev}</button>${o?mBody(m):''}</article>`}).join(''):`<p class="mnone">Geen modellen met deze keuze. Probeer een andere zoekterm of kies Alle.</p>`);
  $('mBar').hidden=!mSel.length||page!=='modellen'||$('mDlg').open;
  $('mBarT').textContent=mSel.length===1?'1 model gekozen · kies er nog een':`${mSel.length} modellen gekozen`;
  $('mGo').disabled=mSel.length<2;
@@ -1336,8 +1441,8 @@ function mCompare(){
  const row=(lab,f,num)=>`<tr><th scope="row">${lab}</th>${ms.map(m=>`<td${num&&ms.length>1&&num(m)===best(num)&&num(m)>0?' class="best"':''}>${f(m)}</td>`).join('')}</tr>`;
  $('mDlgB').innerHTML=`<table class="mct"><thead><tr><th></th>${ms.map(m=>`<th scope="col"><small>${m.b}</small><b>${m.m}</b></th>`).join('')}</tr></thead><tbody>
   ${row('Soort',m=>VT[m.c].n)}${row('Status',mStat)}
-  ${row('Accu bruto',m=>m.g?(m.gt||nf(m.g))+' kWh':'–')}${row('Accu bruikbaar',m=>m.u||m.ue?`${m.ut||nf(m.u||m.ue)} kWh${m.u?'':' (afgeleid)'}`:`≈ ${nf(mU(m))} kWh (geschat)`,mU)}
-  ${row('Actieradius',m=>`${m.rt||nf(m.r)} km${m.c==='bestel'?' (WLTP)':''}${mBar(m,mx,0)}`,m=>m.r)}
+  ${row('Accu bruto',m=>m.g?(m.gt||mFmt(m.g))+' kWh':'–')}${row('Accu type niet vermeld',m=>m.a?(m.at||mFmt(m.a))+' kWh':'–')}${row('Accu bruikbaar',m=>m.u||m.ue?`${m.ut||mFmt(m.u||m.ue)} kWh${m.u?'':' (afgeleid)'}`:`≈ ${nf(mU(m))} kWh (90% geschat)`,mU)}
+  ${row('Actieradius',m=>`${mRange(m)}${mBar(m,mx,0)}`,m=>m.r)}
   ${row('Snelladen',m=>mCharge(m),mK)}
   ${row('',m=>`<button class="wbtn" type="button" data-muse="${m.id}">Reken hiermee</button>`)}</tbody></table>`;
  const d=$('mDlg');if(!d.open)d.showModal();mPaint();
@@ -1345,16 +1450,17 @@ function mCompare(){
 function mUse(id){
  const m=MI[id];if(!m)return;
  if($('mDlg').open)$('mDlg').close();
- if(m.c!==vtype){applyType(m.c);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
- const a=Math.min(900,mU(m));$('acc').value=a;touched=true;
- if(location.hash&&location.hash!=='#')location.hash='';else route(false);
+ if(!modelApply(id))return;
+ history.pushState(null,'',view==='x'?'#uitgebreid':location.pathname+location.search);route(false);
  const t=$('toast');
- t.innerHTML=`<span>Accu van de <b>${mName(m)}</b> overgenomen: ${nf(a)} kWh. Vul nog je eigen prijs en verbruik in.</span><button class="cta" type="button" data-step="buy" data-toastx>Prijs invullen</button><button class="wzx" type="button" data-toastx aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
+ t.innerHTML=`<span><b>${mName(m)}</b> gekozen. Accu en verbruik staan klaar; controleer je aanschafprijs en overige cijfers.</span><button class="cta" type="button" data-step="buy" data-toastx>Prijs invullen</button><button class="wzx" type="button" data-toastx aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
  t.hidden=false;clearTimeout(t._t);t._t=setTimeout(()=>{t.hidden=true},9000);
  requestAnimationFrame(()=>{const b=$('board');b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')});
 }
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-toastx]'))$('toast').hidden=true;
+ const re=e.target.closest('[data-mreload]');if(re){modelApply(re.dataset.mreload,true);return}
+ const mv=e.target.closest('[data-mview]');if(mv){mCat=MI[mv.dataset.mview].c;mOpen.add(mv.dataset.mview);$('mSearch').value='';$('mSoon').checked=true;return}
  const c=e.target.closest('[data-mcat]');if(c){mCat=c.dataset.mcat;mPaint();return}
  const r=e.target.closest('[data-mrow]');if(r){const id=r.dataset.mrow;mOpen.has(id)?mOpen.delete(id):mOpen.add(id);mPaint();document.querySelector(`[data-mrow="${id}"]`).focus({preventScroll:true});return}
  const u=e.target.closest('[data-muse]');if(u){mUse(u.dataset.muse);return}
@@ -1363,12 +1469,15 @@ document.addEventListener('click',e=>{
  if(e.target===$('mDlg'))$('mDlg').close();
 });
 document.addEventListener('change',e=>{
+ if(e.target.id==='calcModel'){if(e.target.value)modelApply(e.target.value);else{touched=true;render()}return}
  const s=e.target.closest('[data-msel]');if(s){const id=s.dataset.msel;mSel=s.checked?[...mSel.filter(x=>x!==id),id].slice(0,3):mSel.filter(x=>x!==id);mPaint();const n=document.querySelector(`[data-msel="${id}"]`);if(n)n.focus({preventScroll:true});return}
  if(e.target.id==='mSort'||e.target.id==='mSoon')mPaint();
 });
+document.addEventListener('input',e=>{if(e.target.id==='mSearch')mPaint()});
 $('mGo').onclick=mCompare;
 $('mDlg').addEventListener('close',mPaint);
 build();applyType('trekker');if(!fromURL())load();route(true);
 </script>
 </body>
 </html>
+
