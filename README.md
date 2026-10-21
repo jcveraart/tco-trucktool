@@ -26,6 +26,10 @@ Simpel en Uitgebreid delen dezelfde invoer, dus wisselen tussen de twee of naar 
 
 Maximaal twee blokken naast elkaar. Bij Simpel staan Gebruik, Kosten en Belastingen en subsidies in een raster van twee bij twee, met een advertentieplek naast het derde blok. Bij Uitgebreid staan Financiering, Laadpaal en Laden onderweg met een advertentieplek naast het derde blok, en daaronder Tol buitenland over de volle breedte. De content-pagina's hebben een advertentiekolom van 300 px breed (300×600). Advertentieplekken hebben de class `.ad`.
 
+De uitkomst toont eerst alleen één zin en het matrixbord met de prijs per kilometer en de besparing. De kostenopbouw, aanvullende cijfers en aannames staan bij Simpel achter uitklapregels, bij Uitgebreid in tabbladen (terugverdientijd, verschil met Simpel, energieprijzen, kostenopbouw). Onderdelen die uit staan klappen in, en bij Tol buitenland kies je eerst de landen.
+
+De vormgeving komt van de Nederlandse snelweg: blauwe bewegwijzering met de letter Overpass (afgeleid van de verkeersbordletter), groene hectometerpaaltjes als stapnummers, een zwart matrixbord met amberkleurige leds (Doto) voor de uitkomst en asfalt met wegmarkering als voet.
+
 Onderin het scherm staat een smalle balk met de live uitkomst zolang de uitkomst zelf nog niet in beeld is. Getallen achter een schuif kun je ook typen. De invoer wordt alleen in de eigen browser bewaard (`localStorage`), zodat bezoekers verder kunnen waar ze waren; Herstel voorbeeldcijfers zet alles terug. Bij de uitkomst staan Kopieer samenvatting en Afdrukken of PDF.
 
 ## Twee weergaven
