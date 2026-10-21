@@ -1578,7 +1578,108 @@ document.addEventListener('change',e=>{
 document.addEventListener('input',e=>{if(e.target.id==='mSearch')mPaint()});
 $('mGo').onclick=mCompare;
 $('mDlg').addEventListener('close',mPaint);
+
+/* ===== Supabase Live Data Integration ===== */
+const SB_URL = 'https://zarvyblveyomngypwvhw.supabase.co';
+const SB_KEY = 'sb_publishable_srfj19l9xWDSkdirFz6RtQ_RperxnNH';
+
+async function syncSupabase() {
+ try {
+  const [resModels, resCats] = await Promise.all([
+   fetch(SB_URL + '/rest/v1/vehicle_models?select=*', {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+   }),
+   fetch(SB_URL + '/rest/v1/vehicle_categories?select=*', {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+   })
+  ]);
+
+  if (resCats.ok) {
+   const cats = await resCats.json();
+   if (Array.isArray(cats)) {
+    cats.forEach(c => {
+     if (VT[c.id]) {
+      const v = VT[c.id];
+      if (c.default_annual_km != null) v.km = c.default_annual_km;
+      if (c.default_toll_km != null) v.kmH = c.default_toll_km;
+      if (c.default_work_days != null) v.d = c.default_work_days;
+      if (c.default_depreciation_years != null) v.L = c.default_depreciation_years;
+      if (c.default_residual_value_pct != null) v.rw = parseFloat(c.default_residual_value_pct);
+      if (c.default_diesel_price_per_l != null) v.dp = parseFloat(c.default_diesel_price_per_l);
+      if (c.default_electricity_price_per_kwh != null) v.sp = parseFloat(c.default_electricity_price_per_kwh);
+      if (c.default_ere_yield_per_kwh != null) v.ere = parseFloat(c.default_ere_yield_per_kwh);
+      if (c.default_diesel_consumption != null) v.ld = parseFloat(c.default_diesel_consumption);
+      if (c.default_electric_consumption != null) v.le = parseFloat(c.default_electric_consumption);
+      if (c.default_battery_kwh != null) v.acc = parseFloat(c.default_battery_kwh);
+      if (c.default_insurance_diesel_annual != null) v.vD = parseFloat(c.default_insurance_diesel_annual);
+      if (c.default_insurance_electric_annual != null) v.vE = parseFloat(c.default_insurance_electric_annual);
+      if (c.default_maintenance_diesel_per_km != null) v.oD = parseFloat(c.default_maintenance_diesel_per_km);
+      if (c.default_maintenance_electric_per_km != null) v.oE = parseFloat(c.default_maintenance_electric_per_km);
+      if (c.default_toll_diesel_per_km != null) v.tD = parseFloat(c.default_toll_diesel_per_km);
+      if (c.default_toll_electric_per_km != null) v.tE = parseFloat(c.default_toll_electric_per_km);
+      if (Array.isArray(c.quick_select_km)) v.q = c.quick_select_km;
+     }
+    });
+   }
+  }
+
+  if (resModels.ok) {
+   const rows = await resModels.json();
+   if (Array.isArray(rows) && rows.length > 0) {
+    const list = rows.map(r => {
+     const m = {
+      id: r.id,
+      c: r.category_id,
+      b: r.brand,
+      m: r.model,
+      st: r.status
+     };
+     if (r.release_year != null) m.y = r.release_year;
+     if (r.gross_battery_kwh != null) m.g = parseFloat(r.gross_battery_kwh);
+     if (r.gross_battery_text) m.gt = r.gross_battery_text;
+     if (r.usable_battery_kwh != null) m.u = parseFloat(r.usable_battery_kwh);
+     if (r.usable_battery_text) m.ut = r.usable_battery_text;
+     if (r.estimated_usable_battery_kwh != null) m.ue = parseFloat(r.estimated_usable_battery_kwh);
+     if (r.advertised_battery_kwh != null) m.a = parseFloat(r.advertised_battery_kwh);
+     if (r.advertised_battery_text) m.at = r.advertised_battery_text;
+     if (r.derived_method) m.derived = r.derived_method;
+     if (r.range_km != null) m.r = parseInt(r.range_km, 10);
+     if (r.range_text) m.rt = r.range_text;
+     if (r.range_condition) m.rc = r.range_condition;
+     if (r.consumption_kwh_per_100km != null) m.consumption = parseFloat(r.consumption_kwh_per_100km);
+     if (r.dc_fast_charge_kw != null) m.dc = parseInt(r.dc_fast_charge_kw, 10);
+     if (r.mcs_charge_kw != null) m.mcs = parseInt(r.mcs_charge_kw, 10);
+     if (r.indicative_price_eur != null) m.price = parseFloat(r.indicative_price_eur);
+     if (r.indicative_price_text) m.pt = r.indicative_price_text;
+     if (r.price_source_name) m.ps = [r.price_source_name, r.price_source_url || ''];
+     if (r.diesel_ref_model) m.pDm = r.diesel_ref_model;
+     if (r.diesel_ref_price_eur != null) m.pD = parseFloat(r.diesel_ref_price_eur);
+     if (r.diesel_ref_consumption_l_per_100km != null) m.ld = parseFloat(r.diesel_ref_consumption_l_per_100km);
+     if (r.diesel_price_source_name) m.pDs = [r.diesel_price_source_name, r.diesel_price_source_url || ''];
+     if (r.gvw_kg != null) m.gvw = parseInt(r.gvw_kg, 10);
+     if (r.description) m.n = r.description;
+     if (r.source_name) m.s = [r.source_name, r.source_url || ''];
+     if (r.last_verified_at) m.checked = r.last_verified_at;
+     return m;
+    });
+
+    MODELS.length = 0;
+    list.forEach(m => MODELS.push(m));
+    Object.keys(MI).forEach(k => delete MI[k]);
+    MODELS.forEach(m => { MI[m.id] = m; });
+
+    if (typeof mPaint === 'function') mPaint();
+    if (typeof modelPaint === 'function') modelPaint();
+    if (typeof render === 'function') render();
+   }
+  }
+ } catch (err) {
+  /* Offline / fallback */
+ }
+}
+
 build();applyType('trekker');if(!fromURL())load();route(true);
+syncSupabase();
 </script>
 </body>
 </html>
