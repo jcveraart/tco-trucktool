@@ -25,12 +25,14 @@ Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main
 ## Opbouw van de calculator
 
 1. **Wat vergelijk je?** Trekker (N3), bakwagen (N2 of N3), bestelbus (N1) of bus (M3). Elk voertuig heeft eigen voorbeeldcijfers en eigen regels: kilometerheffing en AanZET gelden alleen voor vrachtwagens, en bij een bakwagen kies je N2 of N3 (dat bepaalt de AanZET-tabel).
-2. **Uitkomst**: diesel links (donker), elektrisch rechts (licht), met prijs per kilometer en per jaar en in één zin het verschil. Bij het scrollen blijft een smalle versie onder de kop staan.
+2. **Uitkomst**: diesel links (donker), elektrisch rechts (licht), met prijs per kilometer en per jaar en in één zin het verschil. Bij het scrollen blijft een smalle versie onder de kop staan. Daaronder vier kerncijfers: terugverdientijd, vanaf hoeveel kilometer per jaar elektrisch goedkoper is, actieradius tegenover de gemiddelde dagrit (met een waarschuwing als laden onderweg nodig is) en CO₂-besparing.
 3. **Jouw cijfers**: een samenvatting van de belangrijkste invoer en één duidelijke knop, *Vul je eigen cijfers in*. Die opent een invulvenster dat per stap één onderwerp vraagt: voertuig, gebruik, aanschaf en subsidie, energie, onderhoud en verzekering, en bij vrachtwagens kilometerheffing. Links staan de stappen (je kunt vrij springen), onderin rekent de uitkomst live mee. Veelgekozen waarden staan als knoppen klaar; getallen kun je typen, schuiven of met de pijltjestoetsen ophogen. Op een telefoon vult het venster het hele scherm.
 4. **Waar zit het verschil?** Per kostenpost een regel met diesel links en elektrisch rechts, met balken vanuit het midden. Een klik op een regel of op een onderdeel van de samenvatting opent het invulvenster op de juiste stap.
-5. **Uitgebreid** voegt financiering, laadpaal, laden onderweg en (bij vrachtwagens) tol buitenland toe, als extra stappen en extra regels, en toont de terugverdientijd. Waterval en gevoeligheid voor energieprijzen staan achter uitklapregels.
+5. **Uitgebreid** zet alle schuiven onder elkaar in een kolom links (op een telefoon boven de uitkomst), met de uitkomst ernaast die live meerekent. Financiering, laadpaal, laden onderweg en (bij vrachtwagens) tol buitenland komen erbij, en de terugverdientijd staat in een grafiek. Een klik op een kostenregel springt naar de juiste schuiven. Waterval en gevoeligheid voor energieprijzen staan achter uitklapregels.
 
-De invoer wordt alleen in de eigen browser bewaard (`localStorage`). *Herstel voorbeeldcijfers* zet alles terug naar de voorbeeldcijfers van het gekozen voertuig. Bij de uitkomst staan Kopieer (samenvatting als tekst) en Print.
+Elk getal is een schuif die je ook kunt typen; met de pijltjestoetsen verhoog of verlaag je per stap (met Shift per tien stappen).
+
+De invoer wordt alleen in de eigen browser bewaard (`localStorage`). *Herstel voorbeeldcijfers* zet alles terug naar de voorbeeldcijfers van het gekozen voertuig. Bij de uitkomst staan **Deel** (kopieert een korte samenvatting met een link `?s=…` naar precies deze berekening) en **Print**.
 
 Advertentieplekken hebben de class `.ad`: een brede band onder de calculator, een kolom bij Veelgestelde vragen en een band onder Nieuws en Over ons.
 
@@ -42,7 +44,7 @@ De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (ex
 
 ## Aanpassen
 
-Bovenaan het script in `index.html` staan de voertuigen met hun voorbeeldcijfers (`VT`), de AanZET-tabellen voor N2 en N3 (`AZT`), de velden (`SL`, `NU`, `MR`, `HF`, `XF`), tolling per land (`TOL`) en de stappen van het invulvenster (`STEPS`). De berekening staat in `calc()` en `calcX()`. Kleuren en lettertypes staan als variabelen bovenaan de stylesheet (`:root`). De naam van de site staat in `BRAND` en in de kop en voet van de HTML.
+Bovenaan het script in `index.html` staan alle velden met bereik en standaardwaarde (`FIELDS`), de voertuigen met hun voorbeeldcijfers (`VT`), de AanZET-tabellen voor N2 en N3 (`AZT`), tolling per land (`TOL`) en de stappen van het invulvenster (`STEPS`). De berekening staat in `calc()` en `calcX()`. Kleuren en lettertypes staan als variabelen bovenaan de stylesheet (`:root`). De naam van de site staat in `BRAND` en in de kop en voet van de HTML.
 
 ## Disclaimer
 
