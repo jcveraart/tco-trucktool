@@ -485,6 +485,23 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 @media(max-width:640px){.qt{left:0!important;right:0;top:auto!important;bottom:0;width:auto;border-radius:18px 18px 0 0;padding:22px 52px calc(10px + env(safe-area-inset-bottom,0px)) 20px;font-size:15px}}
 .wsl{display:flex;align-items:center;gap:7px}
 .wzb .wst>h3{margin-bottom:22px}
+
+/* Eén duidelijke uitnodiging: in het scorebord, en zwevend zolang je nog niets hebt ingevuld */
+.bcta{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;padding:18px clamp(18px,3.4vw,40px);background:var(--volt);color:#fff}
+.bct b{display:block;font:700 18px/1.25 var(--text)}
+.bct span{display:block;margin-top:2px;font-size:14px;color:#D2F0E0}
+.cta.big{padding:15px 26px;border-radius:10px;background:#fff;color:var(--ink);font:700 17px var(--text);box-shadow:0 8px 20px -10px rgba(0,0,0,.35)}
+.cta.big:hover{background:#F2F7F4;color:var(--ink)}
+.cta.big svg{width:20px;height:20px}
+.tagb{border:0;background:none;padding:0;color:var(--volt-ink);font:600 14px var(--text);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.fcta{position:fixed;z-index:24;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:14px 24px;background:var(--volt);color:#fff;font:700 16px var(--text);box-shadow:0 16px 34px -12px rgba(0,0,0,.5);cursor:pointer}
+.fcta:hover{background:var(--volt-ink)}
+.fcta svg{width:18px;height:18px}
+.board.flash{animation:bflash 1.6s ease}
+@keyframes bflash{0%{box-shadow:0 0 0 0 rgba(10,143,91,.55),0 40px 70px -50px rgba(0,0,0,.55)}100%{box-shadow:0 0 0 22px rgba(10,143,91,0),0 40px 70px -50px rgba(0,0,0,.55)}}
+.wzs{margin:2px 0 0;font-size:14px;color:var(--ink-3)}
+@media(max-width:640px){.bcta{padding:16px 14px}.cta.big{width:100%;justify-content:center}.fcta{left:12px;right:12px;transform:none;justify-content:center;border-radius:12px}}
+@media (prefers-reduced-motion:reduce){.board.flash{animation:none}}
 </style>
 </head>
 <body>
@@ -519,7 +536,7 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
    <div class="ins" id="ins"></div>
 
    <section class="story" id="story" aria-labelledby="hSum">
-    <div class="sumh"><h2 id="hSum">Jouw cijfers</h2><div class="sumb"><button class="lnk" type="button" data-reset>Herstel voorbeeldcijfers</button><button class="cta" id="wzOpen" type="button" data-step="use"><span id="wzOpenT">Vul je eigen cijfers in</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></div>
+    <div class="sumh"><h2 id="hSum">Jouw cijfers</h2><div class="sumb"><button class="lnk" type="button" data-reset>Herstel voorbeeldcijfers</button><button class="wbtn" id="wzOpen" type="button" data-step="use"><span id="wzOpenT">Aanpassen</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div></div>
     <div class="sum" id="sum"></div>
    </section>
 
@@ -552,12 +569,13 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
    </div>
   </div>
  </div>
+ <button class="fcta" id="fcta" type="button" data-step="use" hidden>Vul je eigen cijfers in <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
  <div class="mini" id="mini" aria-hidden="true"><span class="md">Diesel <b id="mD"></b></span><span class="mm" id="mM"></span><span class="me"><b id="mE"></b> Elektrisch</span></div>
 
  <!-- Invulvenster (Simpel). Bij Uitgebreid staan dezelfde stappen in de kolom links. -->
  <dialog class="wz" id="wz" aria-labelledby="wzT">
   <div class="wzi">
-   <div class="wzh"><div><p class="wzk" id="wzK"></p><h2 id="wzT">Jouw cijfers</h2></div><button class="wzx" id="wzX" type="button" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+   <div class="wzh"><div><p class="wzk" id="wzK"></p><h2 id="wzT">Jouw cijfers</h2><p class="wzs">Weet je iets niet? Laat het voorbeeld staan.</p></div><button class="wzx" id="wzX" type="button" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
    <div class="wzpg" aria-hidden="true"><i id="wzPg"></i></div>
    <nav class="wzn" id="wzN" aria-label="Stappen"></nav>
    <div class="wzb" id="wzB"></div>
@@ -737,13 +755,13 @@ const tolTxt=c=>(c[2]===c[3]?`Diesel en elektrisch ${tr(c[3])} per km`:c[2]===0?
 const sg=n=>(n>0.5?'+ ':n<-0.5?'− ':'')+'€ '+nf(Math.abs(n));
 
 /* ===== Stappen: in Simpel in het invulvenster, in Uitgebreid allemaal onder elkaar in de kolom links ===== */
-const STEPS=[['veh','Voertuig'],['use','Gebruik'],['buy','Aanschaf en subsidie'],['en','Energie en actieradius'],['up','Onderhoud en verzekering'],['hef','Kilometerheffing','truck'],
+const STEPS=[['use','Gebruik'],['buy','Aanschaf en afschrijving'],['sub','Subsidie'],['en','Energie en actieradius'],['up','Onderhoud en verzekering'],['hef','Kilometerheffing','truck'],
  ['fin','Financiering','x'],['lad','Laadpaal','x'],['ow','Laden onderweg','x'],['tol','Tol buitenland','xt']];
 const steps=()=>STEPS.filter(s=>!s[2]||(s[2]==='truck'&&T().truck)||(s[2]==='x'&&view==='x')||(s[2]==='xt'&&view==='x'&&T().truck));
 const STEPBODY={
- veh:()=>`${vcards()}<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div>`,
- use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div><div class="wsec">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
- buy:()=>`${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:26px"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
+ use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div>`,
+ buy:()=>`${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:24px">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
+ sub:()=>`<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div><div class="wsec"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
  en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+'<p class="hint" id="accN"></p>'+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+'</div>'),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
  hef:()=>dex(slider('tD'),slider('tE'))+'<p class="hint">Tarieven vanaf 1 januari 2027.</p>',
@@ -846,8 +864,9 @@ const ICON={share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km;
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span></div>`;
- setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
-  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p><span class="tag">${touched?'Jouw cijfers':'Voorbeeldcijfers'}</span><div class="acts"><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div></div>`);
+ const n=steps().length,inv=!touched&&view==='b'?`<div class="bcta"><div class="bct"><b>Voorbeeldcijfers voor een ${T().w}</b><span>${n} korte stappen · ± 2 minuten</span></div><button type="button" class="cta big" data-step="use">Vul je eigen cijfers in <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`:'';
+ setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+inv+
+  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p>${touched?`<button type="button" class="tag tagb" data-step="use">Jouw cijfers · aanpassen</button>`:''}<div class="acts"><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div></div>`);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
  tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
  $('mD').textContent=eur(r.td/km,2);$('mE').textContent=eur(r.te/km,2);$('mM').textContent=even?'≈':(cheap?'−':'+')+nf(pc)+'%';
@@ -890,6 +909,7 @@ function render(){
  const x=view==='x'?calcX():null,r=x||calc(),b=x?x.b:r,L=r.L;
  // Voertuig
  document.querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
+ $('clsW').hidden=vtype!=='bakwagen';
  document.querySelectorAll('[data-cls]').forEach(e=>e.setAttribute('aria-pressed',e.dataset.cls===$('cls').value));
  // Gebruik
  setH($('qk-km'),q.q.map(n=>`<button type="button" data-km="${n}" aria-pressed="${n===v('km')}">${nf(n)}</button>`).join(''));
@@ -910,13 +930,13 @@ function render(){
  const used=TOL.reduce((a,c)=>a+v('k_'+c[0]),0);$('xth').textContent=`${nf(used)} van ${nf(kmH)} km`;$('xtb').style.width=(kmH?Math.min(100,used/kmH*100):0)+'%';
  ['xFin','xLad','xOw'].forEach(id=>{$(id).closest('.wst').querySelector('.xg').hidden=!ck(id)});
  {const big=gi===0,pc=big?20:40,sv0=Math.min(v('xl0')*pc/100,big?44000:88000);setH($('xsh'),ck('xSp')?(sv0>=2500?`<b>Subsidie ${eur(sv0)}</b> (${pc}%, maximaal ${eur(big?44000:88000)})`:`Subsidie ${eur(sv0)}: te laag, het minimum is € 2.500`):'')}
- $('xrows').hidden=!x;$('xAn').hidden=!x;$('bUp').hidden=!!x;$('asX').hidden=!x;$('story').hidden=!!x;
+ $('xrows').hidden=!x;$('xAn').hidden=!x;$('bUp').hidden=!!x;$('asX').hidden=!x;$('story').hidden=!!x||!touched;
  $('upT').textContent=truck?'Financiering, laadpaal, laden onderweg en buitenlandse tol.':'Financiering, laadpaal en laden onderweg.';
  document.querySelectorAll('[data-upsell]').forEach(e=>e.hidden=!!x);
  layout();
  // Samenvatting van jouw cijfers
- $('wzOpenT').textContent=touched?'Pas je cijfers aan':'Vul je eigen cijfers in';
- setH($('sum'),[['use','Kilometers per jaar',`${nf(v('km'))} km`],['use','Afschrijving',`${L} jaar · ${v('rw')}%`],['buy','Aanschaf',`${eur(v('pD'))} · ${eur(v('pE'))}`],['buy','Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],['en','Energie',`${eur(v('dp'),2)} · ${eur(v('sp'),2)}`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
+ 
+ setH($('sum'),[['use','Kilometers per jaar',`${nf(v('km'))} km`],['use','Afschrijving',`${L} jaar · ${v('rw')}%`],['buy','Aanschaf',`${eur(v('pD'))} · ${eur(v('pE'))}`],['sub','Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],['en','Energie',`${eur(v('dp'),2)} · ${eur(v('sp'),2)}`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
  // Uitkomst
  board(r);insights(r);rowsPaint(r,x);
  if(x){
@@ -989,7 +1009,7 @@ function layout(){
  const x=view==='x',host=x?$('xPanel'):$('wzB'),st=steps().map(s=>s[0]);
  $('cg').classList.toggle('x',x);$('xPanel').hidden=!x;
  STEPS.forEach(s=>{const el=document.querySelector(`.wst[data-st="${s[0]}"]`);if(el.parentNode!==host)host.appendChild(el);
-  if(x)el.hidden=!st.includes(s[0])||(s[0]==='veh'&&vtype!=='bakwagen');else el.hidden=s[0]!==wzStep});
+  if(x)el.hidden=!st.includes(s[0]);else el.hidden=s[0]!==wzStep});
  if(x&&$('wz').open)$('wz').close();
 }
 function wzNav(){
@@ -1007,9 +1027,9 @@ function go(k,focus=true){
 }
 function openWz(k){
  if(view==='x'){const el=document.querySelector(`.wst[data-st="${k}"]`);if(!el||el.hidden)return;el.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');$('wh-'+k).focus({preventScroll:true});return}
- const d=$('wz');if(!d.open)d.showModal();go(k||'use');
+ const d=$('wz');if(!d.open)d.showModal();go(k||'use');mini();
 }
-function closeWz(show){$('wz').close();if(show)$('board').scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'})}
+function closeWz(show){$('wz').close();if(show){touched=true;render();const b=$('board');b.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center'});b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')}mini()}
 $('wzX').onclick=()=>closeWz(false);
 $('wzP').onclick=()=>{const st=steps(),i=st.findIndex(s=>s[0]===wzStep);if(i>0)go(st[i-1][0])};
 $('wzNx').onclick=()=>{const st=steps(),i=st.findIndex(s=>s[0]===wzStep);if(i<st.length-1)go(st[i+1][0]);else closeWz(true)};
@@ -1062,7 +1082,8 @@ addEventListener('scroll',tipPlace,{passive:true});
 addEventListener('resize',()=>tipClose(false));
 
 /* Klein scorebord zodra het grote uit beeld is */
-function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&(b.bottom<64||b.top>innerHeight);$('mini').classList.toggle('show',show)}
+function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&(b.bottom<64||b.top>innerHeight);$('mini').classList.toggle('show',show);
+ const c=document.querySelector('.bcta'),r=c&&c.getBoundingClientRect();$('fcta').hidden=!(c&&page==='calc'&&!$('wz').open&&(r.bottom<64||r.top>innerHeight))}
 addEventListener('scroll',mini,{passive:true});
 
 /* ===== Pagina's ===== */
