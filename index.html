@@ -688,6 +688,7 @@ body{font-size:16px}
 .ad{background:var(--soft)}
 .more summary b{font-weight:600}
 .foot{border-top:3px solid var(--volt)}
+.hint+.sl{margin-top:18px}
 </style>
 </head>
 <body>
@@ -1006,17 +1007,34 @@ const v=id=>parseFloat($(id).value)||0,ck=id=>$(id).checked;
 /* Voorbeeldcijfers van een voertuig laden */
 function applyType(t){
  vtype=t;
- Object.entries(VT[t].p).forEach(([id,val])=>{const e=$(id);if(!e)return;e.max=e.dataset.mx;e.defaultValue=val;e.value=val});
+ Object.entries(VT[t].p).forEach(([id,val])=>{const e=$(id);if(!e)return;absRange(e);e.defaultValue=val;e.value=val});
  regOptions();$('reg').value=VT[t].reg;
- modelOptions();
+ modelOptions();fitRanges();
 }
+/* Schuifbereik per voertuig, zodat een bestelbus niet op een schaal voor trekkers staat: [min, max] */
+const RNG={
+ trekker:{km:[20000,250000],pD:[60000,250000],pE:[150000,500000],ld:[20,45],le:[70,180],acc:[200,900],vD:[2000,15000],vE:[2000,20000],oD:[0,.3],oE:[0,.3],subX:[0,150000]},
+ bakwagen:{km:[10000,150000],pD:[40000,200000],pE:[80000,400000],ld:[12,40],le:[40,160],acc:[100,700],vD:[1000,12000],vE:[1000,15000],oD:[0,.25],oE:[0,.25],subX:[0,100000]},
+ bestel:{km:[5000,80000],pD:[15000,80000],pE:[20000,100000],ld:[5,15],le:[12,40],acc:[30,130],vD:[500,6000],vE:[500,6000],oD:[0,.15],oE:[0,.15],subX:[0,20000]},
+ bus:{km:[20000,150000],pD:[150000,450000],pE:[250000,800000],ld:[20,50],le:[60,200],acc:[200,900],vD:[2000,20000],vE:[2000,25000],oD:[0,.4],oE:[0,.4],subX:[0,250000]}};
+const nice=(x,up)=>{if(!x)return 0;const s=Math.pow(10,Math.floor(Math.log10(Math.abs(x))))/5;return(up?Math.ceil:Math.floor)(x/s)*s};
+function absRange(e){const f=F[e.id];if(f&&e.type==='range'){e.min=f[2];e.max=e.dataset.mx}}
+/* Bereik rond het gekozen model, anders rond het voertuig. Een eigen waarde buiten het bereik verbreedt het. */
+function fitRanges(){
+ const R={...RNG[vtype]},m=modelActive();
+ if(m){R.acc=[nice(mAcc(m)*.5),nice(mAcc(m)*1.5,1)];R.le=[nice(mEnergy(m)*.5),nice(mEnergy(m)*1.6,1)];
+  if(m.price)R.pE=[nice(m.price*.6),nice(m.price*1.4,1)];if(m.pD)R.pD=[nice(m.pD*.6),nice(m.pD*1.4,1)];if(m.ld)R.ld=[nice(m.ld*.6),nice(m.ld*1.5,1)]}
+ Object.entries(R).forEach(([id,[a,b]])=>{const e=$(id),f=F[id];if(!e)return;const val=+e.value;
+  e.min=Math.max(f[2],Math.min(a,val));e.max=Math.min(f[3],Math.max(b,val));e.value=val});
+}
+function setNum(e,val){if(e.type==='range'){absRange(e)}e.value=val}
 
 /* Typbare waarde naast een schuif */
 function syncSl(){document.querySelectorAll('.slin').forEach(i=>{if(i===document.activeElement)return;const r=$(i.dataset.for);i.value=nf(+r.value,decs(r.step))})}
 function commitSl(i){
  const r=$(i.dataset.for),s=i.value.trim(),d=decs(r.step);
  const n=parseFloat(d&&!s.includes(',')?s:d?s.replace(/\./g,'').replace(',','.'):s.replace(/\D/g,''));
- if(!isNaN(n)){r.value=Math.min(+r.max,Math.max(+r.min,n));r.dispatchEvent(new Event('input',{bubbles:true}))}
+ if(!isNaN(n)){const f=F[r.id],c=f?Math.min(f[3],Math.max(f[2],n)):Math.min(+r.max,Math.max(+r.min,n));if(f&&r.id!=='kmH'&&!r.id.startsWith('k_')){if(c>+r.max)r.max=nice(c,1);if(c<+r.min)r.min=nice(c)}r.value=c;r.dispatchEvent(new Event('input',{bubbles:true}))}
  i.value=nf(+r.value,d);
 }
 document.addEventListener('focusout',e=>{if(e.target.matches('.slin'))commitSl(e.target)});
@@ -1329,7 +1347,7 @@ const b64e=s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/
 const b64d=s=>decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/'))));
 function shareURL(){return location.href.split(/[?#]/)[0]+'?s='+b64e(JSON.stringify({t:vtype,v:stateObj()}))}
 function summ(){const r=calcX(),d=r.td-r.te,m=modelActive();return`Diesel of elektrisch: ${T().w}${m?'\nModelbasis: '+mName(m):''}\n${nf(r.km)} km per jaar, ${r.L} jaar\n\nDiesel: ${eur(r.td/r.km,2)} per km, ${eur(r.td)} per jaar\nElektrisch: ${eur(r.te/r.km,2)} per km, ${eur(r.te)} per jaar\n${d>=0?'Elektrisch':'Diesel'} is ${eur(Math.abs(d)*r.L)} goedkoper over ${r.L} jaar.\n\nBekijk de berekening: ${shareURL()}`}
-function fromURL(){try{const q=new URLSearchParams(location.search).get('s');if(!q)return false;const s=JSON.parse(b64d(q));if(VT[s.t])applyType(s.t);Object.entries(s.v||{}).forEach(([id,val])=>{const e=$(id);if(!e)return;if(e.type==='checkbox')e.checked=!!+val;else e.value=val});touched=true;history.replaceState(null,'',location.href.split('?')[0].split('#')[0]+location.hash);return true}catch(e){return false}}
+function fromURL(){try{const q=new URLSearchParams(location.search).get('s');if(!q)return false;const s=JSON.parse(b64d(q));if(VT[s.t])applyType(s.t);Object.entries(s.v||{}).forEach(([id,val])=>{const e=$(id);if(!e)return;if(e.type==='checkbox')e.checked=!!+val;else setNum(e,val)});fitRanges();touched=true;history.replaceState(null,'',location.href.split('?')[0].split('#')[0]+location.hash);return true}catch(e){return false}}
 async function copyText(t){
  try{await navigator.clipboard.writeText(t);return true}catch(e){}
  try{const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}catch(e){return false}
@@ -1346,8 +1364,8 @@ addEventListener('afterprint',()=>{reopen.forEach(d=>d.open=false);reopen=[]});
 /* Invoer onthouden in deze browser, en terugzetten */
 const KEY='stekkerofdiesel-v3';
 function save(){try{localStorage.setItem(KEY,JSON.stringify({touched,vtype,v:stateObj()}))}catch(e){}}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;if(VT[s.vtype])applyType(s.vtype);['km'].concat(Object.keys(s.v||{})).forEach(id=>{const e=$(id);if(!e||!(id in s.v))return;if(e.type==='checkbox')e.checked=!!+s.v[id];else e.value=s.v[id]});touched=!!s.touched}catch(e){}}
-function reset(){document.querySelectorAll('#calc input[type=range]').forEach(r=>{r.max=r.dataset.mx});document.querySelectorAll('#calc input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';applyType(vtype);touched=false;tolSel.clear();render()}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;if(VT[s.vtype])applyType(s.vtype);['km'].concat(Object.keys(s.v||{})).forEach(id=>{const e=$(id);if(!e||!(id in s.v))return;if(e.type==='checkbox')e.checked=!!+s.v[id];else setNum(e,s.v[id])});fitRanges();touched=!!s.touched}catch(e){}}
+function reset(){document.querySelectorAll('#calc input[type=range]').forEach(absRange);document.querySelectorAll('#calc input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';applyType(vtype);touched=false;tolSel.clear();render()}
 
 const TW={};
 function tween(key,els,vals,fmts){
@@ -1468,7 +1486,7 @@ function mpOpen(open){
 document.addEventListener('click',e=>{
  if(e.target.closest('#mpB')){mpOpen($('mpP').hidden);return}
  const o=e.target.closest('[data-mp]');
- if(o){const id=o.dataset.mp;mpOpen(false);if(id)modelApply(id);else{$('calcModel').value='';touched=true;render()}$('mpB').focus({preventScroll:true});return}
+ if(o){const id=o.dataset.mp;mpOpen(false);if(id)modelApply(id);else{$('calcModel').value='';fitRanges();touched=true;render()}$('mpB').focus({preventScroll:true});return}
  if(!$('mpP').hidden&&!e.target.closest('#mpk'))mpOpen(false);
 });
 document.addEventListener('input',e=>{if(e.target.id==='mpQ')mpList()});
@@ -1483,7 +1501,8 @@ function modelApply(id,keepOwnPrice=false){
  const m=MI[id];if(!m)return false;
  if(m.c!==vtype){applyType(m.c);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
  $('calcModel').value=id;mpList();
- $('acc').value=mAcc(m);$('le').value=mEnergy(m);if(m.price||!keepOwnPrice)$('pE').value=m.price||VT[m.c].p.pE;
+ setNum($('acc'),mAcc(m));setNum($('le'),mEnergy(m));if(m.price||!keepOwnPrice)setNum($('pE'),m.price||VT[m.c].p.pE);if(m.pD)setNum($('pD'),m.pD);if(m.ld)setNum($('ld'),m.ld);
+ fitRanges();
  if(m.c==='bakwagen'){$('cls').value=(m.vc||'n3').toUpperCase();if(m.gvw&&m.gvw<10000)$('reg').value='geen'}
  touched=true;render();return true;
 }
