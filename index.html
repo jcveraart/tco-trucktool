@@ -2,441 +2,396 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>TCO TruckTool · Diesel of elektrisch</title>
-<meta name="description" content="Vergelijk een nieuwe diesel- en een nieuwe elektrische trekker op kosten per kilometer, per jaar en over de afschrijftermijn. Met AanZET, MIA, kilometerheffing, laadpaal, financiering en buitenlandse tol.">
-<meta name="theme-color" content="#1A4E9B">
+<meta name="description" content="Diesel of elektrisch? Vergelijk een nieuwe diesel- en een nieuwe elektrische trekker op kosten per kilometer, per jaar en over de afschrijftermijn. Met AanZET, MIA, kilometerheffing, laadpaal, financiering en buitenlandse tol.">
+<meta name="theme-color" content="#191B1E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Doto:wght@700;800&family=Overpass+Mono:wght@400;500;600&family=Overpass:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Concept: de Nederlandse snelweg. Bewegwijzering in blauw en wit met de letter van de verkeersborden,
-   stappen als groene hectometerpaaltjes, de uitkomst op een zwart matrixbord met amberkleurige leds,
-   en asfalt met wegmarkering als voet. Maximaal twee blokken naast elkaar.
-   Advertentieplekken (.ad) staan naast het derde blok van elke calculator en naast de content-pagina's. */
+/* Concept: kop tegen kop. Diesel links op asfalt, elektrisch rechts in het licht, en alles wat je vergelijkt
+   staat op die naad: het scorebord bovenaan en de lijst met kosten eronder, met balken die vanuit het midden
+   naar buiten groeien. Je situatie lees je als één zin; klik op een vet woord om het aan te passen.
+   Eén ding tegelijk: details klappen pas open als je erom vraagt. */
 :root{
- --road:#E8EBEE;--plate:#fff;--sunk:#F3F5F7;
- --tarmac:#1F2327;--ink-2:#4B535C;--ink-3:#77808A;
- --line:#D2D7DD;--line-2:#B5BDC6;
- --sign:#1A4E9B;--sign-2:#143E7C;--sign-soft:#E6EDF7;
- --post:#1E7A4E;--post-2:#2E8B66;--post-soft:#E2F0E7;
- --shield:#C62630;--warn:#9E570F;
- --matrix:#0E1012;--housing:#30363C;--led:#FFB327;--led-2:#C98A1D;--led-g:#62E08F;--led-r:#FF6450;
- --sans:'Overpass','Arial Narrow',Arial,sans-serif;
- --mono:'Overpass Mono',ui-monospace,Menlo,Consolas,monospace;
- --dots:'Doto','Overpass Mono',ui-monospace,monospace;
- --w:1180px;--r:6px;
+ --page:#ECEEEA;--card:#fff;--soft:#F6F7F4;
+ --ink:#15171A;--ink-2:#4F565D;--ink-3:#7A8188;--line:#D7DBD5;--line-2:#BCC2BB;
+ --asph:#191B1E;--asph-2:#24282C;--asph-3:#383D43;--on-asph:#F1EFE9;--on-asph-2:#A7ADB2;
+ --amber:#F2A33A;--amber-ink:#B8700E;
+ --volt:#0A8F5B;--volt-2:#3FA877;--volt-soft:#DCF0E5;--volt-ink:#07734A;
+ --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+ --text:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --w:1200px;
  color-scheme:light}
 *{box-sizing:border-box}
-html{scroll-padding-top:80px;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--road);color:var(--tarmac);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
-a{color:var(--sign);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
-a:hover{color:var(--sign-2);text-decoration-thickness:2px}
-:focus-visible{outline:3px solid var(--sign);outline-offset:2px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);font:17px/1.55 var(--text);-webkit-font-smoothing:antialiased}
+a{color:var(--volt-ink);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{max-width:var(--w);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-@media(min-width:700px){.wrap{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+@media(min-width:760px){.wrap{padding-left:max(36px,env(safe-area-inset-left,0px));padding-right:max(36px,env(safe-area-inset-right,0px))}}
 h1,h2,h3{margin:0;text-wrap:balance}
-.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-/* Kop: wit bord, wegnummer-schild als logo */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--plate);border-bottom:3px solid var(--sign)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--plate)}
-.topin{display:flex;align-items:center;gap:20px;height:62px}
-.brand{display:inline-flex;align-items:center;gap:10px;margin-right:auto;color:var(--tarmac);text-decoration:none;font:800 20px/1 var(--sans);letter-spacing:-.01em}
-.brand:hover{color:var(--tarmac)}
-.shield{display:inline-block;background:var(--shield);color:#fff;font:800 13px/1 var(--sans);letter-spacing:.04em;padding:6px 8px 4px;border-radius:5px;box-shadow:inset 0 0 0 2px var(--shield),inset 0 0 0 3.5px #fff}
-#nav{display:flex;gap:2px}
-#nav a{color:var(--ink-2);text-decoration:none;font:600 16px var(--sans);padding:9px 12px 7px;border-radius:4px}
-#nav a:hover{color:var(--tarmac);background:var(--sunk)}
-#nav a[aria-current=page]{color:var(--sign);box-shadow:inset 0 -3px 0 var(--sign);border-radius:0}
-.mnu{display:none;border:1.5px solid var(--line-2);background:var(--plate);color:var(--tarmac);border-radius:4px;padding:8px 12px 6px;font:700 14px var(--sans);cursor:pointer;align-items:center;gap:8px}
-.mnu i{display:block;width:14px;height:10px;border-top:2px solid;border-bottom:2px solid;position:relative;margin-top:-2px}
-.mnu i::after{content:"";position:absolute;left:0;right:0;top:2px;border-top:2px solid}
-@media(max-width:780px){
+/* Kop */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--page)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--page)}
+.topin{display:flex;align-items:center;gap:20px;height:64px}
+.brand{display:inline-flex;align-items:center;gap:10px;margin-right:auto;color:var(--ink);text-decoration:none;font:700 20px/1 var(--text);letter-spacing:-.01em}
+.brand:hover{color:var(--ink)}
+.bmark{display:inline-flex;width:22px;height:22px;border-radius:6px;overflow:hidden}
+.bmark i{flex:1}.bmark i:first-child{background:var(--asph)}.bmark i:last-child{background:var(--volt)}
+#nav{display:flex;gap:4px}
+#nav a{color:var(--ink-2);text-decoration:none;font:600 16px var(--text);padding:8px 13px;border-radius:8px}
+#nav a:hover{color:var(--ink);background:rgba(21,23,26,.06)}
+#nav a[aria-current=page]{color:var(--page);background:var(--ink)}
+.mnu{display:none;border:0;background:var(--ink);color:var(--page);border-radius:8px;padding:9px 16px;font:600 15px var(--text);cursor:pointer}
+@media(max-width:820px){
  .mnu{display:inline-flex}
- #nav{display:none;position:absolute;left:0;right:0;top:65px;flex-direction:column;gap:0;background:var(--plate);border-bottom:3px solid var(--sign);padding:6px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));box-shadow:0 16px 30px -18px rgba(31,35,39,.4)}
+ #nav{display:none;position:absolute;left:0;right:0;top:64px;flex-direction:column;gap:2px;background:var(--page);padding:6px max(16px,env(safe-area-inset-right,0px)) 18px max(16px,env(safe-area-inset-left,0px));box-shadow:0 20px 30px -22px rgba(0,0,0,.45)}
  #nav.open{display:flex}
- #nav a{padding:13px 0 11px;border-bottom:1px solid var(--line);font-size:17px}
- #nav a:last-child{border-bottom:0}
- #nav a[aria-current=page]{box-shadow:none}
+ #nav a{padding:13px 16px;font-size:18px}
 }
 
-/* Paginakop */
-.lede{padding:44px 0 30px;max-width:720px}
-.lede h1{font:900 clamp(36px,5.6vw,64px)/.98 var(--sans);letter-spacing:-.025em;outline:0}
-.lede h1 span{display:block;color:var(--sign)}
-.lede p{margin:16px 0 0;max-width:580px;color:var(--ink-2);font-size:18px;line-height:1.5}
-.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px;align-items:center;padding:40px 0 34px}
-.hero .lede{padding:0}
-@media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr);gap:26px;padding-top:30px}}
+/* Opening van de calculator */
+.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px 40px;flex-wrap:wrap;padding:34px 0 26px}
+.intro h1{font:700 clamp(32px,4.2vw,48px)/1.1 var(--text);letter-spacing:-.02em;outline:0}
+.intro p{margin:10px 0 0;max-width:600px;color:var(--ink-2);font-size:18px}
+.mode{display:inline-flex;padding:4px;border-radius:10px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.mode a{padding:9px 18px;border-radius:7px;color:var(--ink-2);text-decoration:none;font:700 16px var(--text);white-space:nowrap}
+.mode a:hover{color:var(--ink)}
+.mode a[aria-current=page]{background:var(--ink);color:#fff}
 
-/* Het bewegwijzeringsbord */
-.sign{background:var(--sign);color:#fff;border-radius:16px;padding:20px 26px 18px;box-shadow:inset 0 0 0 6px var(--sign),inset 0 0 0 9px #fff,0 18px 34px -24px rgba(20,62,124,.7)}
-.sgr{display:flex;align-items:center;gap:16px;padding:12px 4px;font:800 clamp(28px,3.6vw,42px)/1 var(--sans);letter-spacing:-.01em}
-.sgr+.sgr{border-top:3px solid #fff}
-.sgr.r{justify-content:flex-end;text-align:right}
-.sgr svg{flex:none;width:.95em;height:.95em}
-.pict{flex:none;display:grid;place-items:center;width:1.15em;height:1.15em;background:#fff;color:var(--sign);border-radius:5px}
-.pict svg{width:.72em;height:.72em}
-.sgf{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px;padding:10px 4px 0;border-top:3px solid #fff;font:700 15px/1.2 var(--sans)}
-.sgf .shield{box-shadow:inset 0 0 0 2px var(--shield),inset 0 0 0 3.5px #fff}
-@media(max-width:560px){.sign{padding:12px 18px 10px;border-radius:12px;box-shadow:inset 0 0 0 5px var(--sign),inset 0 0 0 7.5px #fff}.sgr{font-size:24px;padding:8px 2px}.sgf{display:none}.hero{gap:20px;padding:26px 0 24px}}
+/* Scorebord */
+.board{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:22px;overflow:hidden;background:var(--card);box-shadow:0 40px 70px -50px rgba(0,0,0,.55)}
+.bd{display:flex;flex-direction:column;gap:6px;min-width:0;padding:30px clamp(18px,3.4vw,40px) 34px}
+.bd.d{background:var(--asph);color:var(--on-asph)}
+.bd.e{align-items:flex-end;text-align:right}
+.who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font:600 15px var(--text)}
+.bd.d .who{color:var(--on-asph-2)}.bd.e .who{color:var(--ink-2);flex-direction:row-reverse}
+.who::before{content:"";width:10px;height:10px;border-radius:2px}.bd.d .who::before{background:var(--amber)}.bd.e .who::before{background:var(--volt);order:1}
+.who em{font:600 12px var(--text);font-style:normal;padding:2px 8px;border-radius:4px}
+.bd.d .who em{background:var(--asph-3);color:var(--on-asph)}.bd.e .who em{background:var(--volt-soft);color:var(--volt-ink)}
+.big{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 10px;margin-top:6px;font:700 clamp(44px,6.2vw,82px)/.95 var(--display);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.bd.e .big{justify-content:flex-end}
+.big small{font:600 17px var(--text);letter-spacing:0;opacity:.7}
+.bsub{font-size:17px;opacity:.75;font-variant-numeric:tabular-nums}
+.bfoot{grid-column:1/-1;display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;padding:14px clamp(18px,3.4vw,40px);background:var(--soft);border-top:1px solid var(--line);color:var(--ink)}
+.bfoot p b{color:var(--volt-ink)}.bfoot.neg p b{color:var(--amber-ink)}
+.bfoot p{margin:0;margin-right:auto;font-size:18px;font-weight:500}
+.bfoot p b{font-weight:700;font-variant-numeric:tabular-nums}
+.tag{font:500 13px var(--text);color:var(--ink-3)}
+.acts{display:flex;gap:6px}
+.btn{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:8px;padding:7px 12px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink);font:600 14px var(--text);cursor:pointer}
+.btn:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.btn svg{width:15px;height:15px}
+@media(max-width:640px){.board{border-radius:16px}.bd{padding:20px 14px 26px}.who{font-size:13px;letter-spacing:.1em}.big small{font-size:13px;flex-basis:100%}.bsub{font-size:13px}.bfoot p{font-size:15px}.btn span{display:none}}
 
-/* Simpel / Uitgebreid als rijstroken */
-.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 34px}
-.modes a{display:flex;align-items:center;gap:14px;padding:14px 18px 12px;border-radius:var(--r);background:var(--plate);border:1.5px solid var(--line);color:var(--tarmac);text-decoration:none}
-.modes a:hover{border-color:var(--sign)}
-.modes a svg{flex:none;width:26px;height:26px;color:var(--ink-3)}
-.modes a b{display:block;font:800 19px/1.15 var(--sans)}
-.modes a small{display:block;font-size:14px;color:var(--ink-3);line-height:1.3}
-.modes a[aria-current=page]{background:var(--sign);border-color:var(--sign);color:#fff;box-shadow:inset 0 0 0 3px var(--sign),inset 0 0 0 5px #fff}
-.modes a[aria-current=page] small,.modes a[aria-current=page] svg{color:#D6E2F4}
-@media(max-width:560px){.modes a{padding:12px 12px 10px;gap:10px}.modes a small{display:none}.modes a svg{width:22px;height:22px}}
+/* Klein scorebord dat meeschuift */
+.mini{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:20;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;font-variant-numeric:tabular-nums;transform:translateY(-140%);transition:transform .2s ease;box-shadow:0 12px 24px -18px rgba(0,0,0,.6)}
+.mini.show{transform:none}
+.mini:not(.show){visibility:hidden;transition:transform .2s ease,visibility 0s .2s}
+.mini>span{display:flex;align-items:center;gap:10px;padding:9px max(16px,env(safe-area-inset-left,0px));font:600 15px var(--text)}
+.mini b{font:800 22px/1 var(--display)}
+.mini .md{background:var(--asph);color:var(--on-asph);justify-content:flex-end}.mini .md b{color:var(--amber)}
+.mini .me{background:var(--card);padding-right:max(16px,env(safe-area-inset-right,0px))}.mini .me b{color:var(--volt)}
+.mini .mm{background:var(--page);padding:9px 14px;font:800 18px var(--display)}
+@media (prefers-reduced-motion:reduce){.mini{transition:none}}
 
-.sech{display:flex;align-items:baseline;justify-content:space-between;gap:8px 16px;flex-wrap:wrap}
-.sech h2{font:800 28px/1.15 var(--sans);letter-spacing:-.015em}
-.note{margin:6px 0 18px;color:var(--ink-3);font-size:15px}
-.note .pre-ex{font-family:var(--mono);font-size:14px;color:var(--ink-3);background:var(--plate);border:1px solid var(--line);border-radius:3px;padding:1px 5px}
-.lnk{border:0;background:none;padding:0;color:var(--sign);font:700 15px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.lnk:hover{color:var(--sign-2)}
+/* Uitgangspunten: een rij waarden, klik om aan te passen */
+.story{position:relative;margin-top:40px}
+.sth{display:flex;align-items:baseline;justify-content:space-between;gap:8px 20px;flex-wrap:wrap}
+.sth h2{font:700 20px/1.2 var(--text)}
+.sth span{color:var(--ink-3);font-size:15px;margin-right:auto}
+.params{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;margin-top:12px;border-radius:14px;overflow:hidden;background:var(--line);box-shadow:0 0 0 1px var(--line)}
+@media(max-width:1020px){.params{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.params{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tok{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;padding:14px 16px 13px;border:0;background:var(--card);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.tok .pl{font-size:13px;line-height:1.3;color:var(--ink-3)}
+.tok b{font:700 21px/1.15 var(--text);font-variant-numeric:tabular-nums}
+.tok small{font-size:13px;font-weight:600;color:var(--volt-ink)}
+.tok:hover{background:var(--soft)}.tok:hover b{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.tok[aria-expanded=true]{background:var(--soft);box-shadow:inset 0 -3px 0 var(--ink)}
+.lnk{border:0;background:none;padding:0;color:var(--ink);font:600 15px var(--text);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;cursor:pointer}
+.lnk:hover{color:var(--volt-ink)}
+.pop{position:absolute;z-index:40;width:min(400px,calc(100vw - 32px));padding:18px 18px 14px;border-radius:16px;background:var(--card);box-shadow:0 30px 60px -24px rgba(0,0,0,.45),0 0 0 1px var(--line)}
+.poph{margin:0 0 12px;font:700 16px var(--text)}
+.popf{display:flex;justify-content:flex-end;margin-top:16px}
+.popok{border:0;border-radius:999px;padding:9px 20px;background:var(--ink);color:#fff;font:700 15px var(--text);cursor:pointer}
+@media(max-width:640px){.pop{position:fixed;left:0!important;right:0;top:auto!important;bottom:0;width:auto;border-radius:18px 18px 0 0;padding:20px max(18px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}}
 
-/* Blokken: maximaal twee naast elkaar */
-.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.g2>.wide{grid-column:1/-1}
-@media(max-width:860px){.g2{grid-template-columns:minmax(0,1fr)}}
-.pn{background:var(--plate);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px 24px;min-width:0}
-.pnh{display:flex;align-items:center;gap:12px;margin:0 0 18px;min-height:30px}
-.pnh .n{flex:none;display:grid;place-items:center;width:24px;height:32px;border-radius:3px;background:var(--post);color:#fff;font:800 15px/1 var(--sans);box-shadow:inset 0 0 0 1.5px var(--post),inset 0 0 0 2.5px rgba(255,255,255,.75)}
-.pnh h3{font:800 19px/1.2 var(--sans)}
-.pnh .sw2{margin-left:auto}
-.sub{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:22px 0 10px;font:700 15px var(--sans)}
-.sub:first-child{margin-top:0}
-.sub small{font-weight:400;color:var(--ink-3);font-size:14px}
-.hint{margin:10px 0 0;color:var(--ink-3);font-size:14px;line-height:1.5}
-.hint b{color:var(--ink-2);font-weight:700}
-@media(max-width:560px){.pn{padding:18px 16px 20px}}
-
-/* Schuiven met typbare waarde */
-.sl+.sl{margin-top:16px}
+/* Schuif met typbare waarde */
+.sl{--fill:var(--ink);--track:var(--line);--thumb:var(--card)}
+.sl+.sl,.sl+.fld,.fld+.fld,.fld+.sl{margin-top:16px}
 .slh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.slh label{font-size:15px;color:var(--ink-2);line-height:1.3}
-.slv{display:inline-flex;align-items:baseline;gap:5px;flex:none;background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:2px 8px 1px;cursor:text}
-.slv:hover{border-color:var(--line-2)}
-.slv:focus-within{background:var(--plate);border-color:var(--sign);box-shadow:0 0 0 3px var(--sign-soft)}
-.slin{width:auto;field-sizing:content;min-width:2ch;border:0;background:none;outline:0;padding:0;text-align:right;font:600 15px var(--mono);color:var(--tarmac);font-variant-numeric:tabular-nums}
-.un{font-size:13px;color:var(--ink-3);white-space:nowrap}
-input[type=range]{display:block;width:100%;-webkit-appearance:none;appearance:none;height:28px;margin:4px 0 0;padding:0;background:transparent;cursor:pointer;touch-action:pan-y}
-input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--sign) calc(var(--f,0)*(100% - 22px) + 11px),var(--line) calc(var(--f,0)*(100% - 22px) + 11px))}
-input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--line)}
-input[type=range]::-moz-range-progress{height:6px;border-radius:3px;background:var(--sign)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;margin-top:-8px;width:22px;height:22px;border-radius:50%;background:var(--plate);border:3px solid var(--sign);box-shadow:0 1px 3px rgba(0,0,0,.2)}
-input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--plate);border:3px solid var(--sign)}
+.slh label{font-size:15px;line-height:1.3}
+.slv{display:inline-flex;align-items:baseline;gap:5px;flex:none;border-radius:6px;padding:2px 8px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);cursor:text}
+.slv:focus-within{box-shadow:inset 0 0 0 2px var(--fill)}
+.slin{width:auto;field-sizing:content;min-width:2ch;border:0;background:none;outline:0;padding:0;text-align:right;font:700 16px var(--text);color:inherit;font-variant-numeric:tabular-nums}
+.un{font-size:14px;opacity:.65;white-space:nowrap}
+input[type=range]{display:block;width:100%;-webkit-appearance:none;appearance:none;height:30px;margin:4px 0 0;padding:0;background:transparent;cursor:pointer;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--fill) calc(var(--f,0)*(100% - 24px) + 12px),var(--track) calc(var(--f,0)*(100% - 24px) + 12px))}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--track)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:3px;background:var(--fill)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;margin-top:-9px;width:24px;height:24px;border-radius:50%;background:var(--thumb);border:3px solid var(--fill);box-shadow:0 2px 5px rgba(0,0,0,.2)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--thumb);border:3px solid var(--fill)}
 input[type=range]:focus-visible{outline:0}
-input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px var(--sign-soft)}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(120,130,130,.3)}
 
-/* Invoervelden */
-.cell{display:flex;align-items:baseline;gap:4px;min-width:0;background:var(--plate);border:1.5px solid var(--line);border-radius:4px;padding:9px 10px 7px;cursor:text;transition:border-color .12s}
-.cell:hover{border-color:var(--line-2)}
-.cell:focus-within{border-color:var(--sign);box-shadow:0 0 0 3px var(--sign-soft)}
-.cell input{flex:1;width:100%;min-width:0;border:0;background:none;outline:0;padding:0;font:500 16px/1.25 var(--mono);color:var(--tarmac);font-variant-numeric:tabular-nums}
-.cell input.pre{color:var(--ink-3);font-weight:400}
-.cell input.pre:focus{color:var(--tarmac)}
-.cell.off{opacity:.45}
-.fg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.fld{display:flex;flex-direction:column;gap:5px;min-width:0}
-.fld .fl{font-size:14px;color:var(--ink-2);line-height:1.3}
-@media(max-width:420px){.fg{grid-template-columns:minmax(0,1fr)}}
+/* Velden */
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fl{font-size:15px;line-height:1.3}
+.cell{display:flex;align-items:baseline;gap:5px;min-width:0;border-radius:8px;padding:10px 12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);cursor:text}
+.cell:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
+.cell:focus-within{background:var(--card);box-shadow:inset 0 0 0 2px var(--ink)}
+.cell input{flex:1;width:100%;min-width:0;border:0;background:none;outline:0;padding:0;font:600 17px/1.25 var(--text);color:var(--ink);font-variant-numeric:tabular-nums}
+.cell input.pre{color:var(--ink-3);font-weight:500}
+.cell input.pre:focus{color:var(--ink)}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.fg .fld+.fld{margin-top:0}
+.hint{margin:12px 0 0;font-size:14px;line-height:1.5;color:var(--ink-3)}
+.hint b{font-weight:700;color:inherit}
 
-/* Diesel/elektrisch naast elkaar */
-.vt{display:grid;grid-template-columns:minmax(80px,.85fr) minmax(0,1fr) minmax(0,1fr);gap:8px 10px;align-items:center}
-.vth{display:flex;align-items:center;gap:7px;font:800 14px var(--sans);padding:0 2px}
-.vtl{font-size:15px;color:var(--ink-2);line-height:1.25}
-.vtl small{display:block;margin-top:2px;font-size:12px;color:var(--ink-3)}
-.na{color:var(--ink-3);font-size:14px;padding-left:12px}
-.sw{display:inline-block;width:10px;height:10px;border-radius:2px;flex:none}
-.sw.d{background:var(--tarmac)}.sw.e{background:var(--post)}
-@media(max-width:420px){.vt{gap:8px 6px}.cell{padding:9px 7px 7px}.vtl{font-size:13px}.cell input{font-size:15px}}
-
-/* Schakelaar en keuzeknoppen */
-.sw2{display:inline-flex;align-items:center;gap:9px;font-size:15px;color:var(--ink-2);cursor:pointer;user-select:none}
-.sw2 input{-webkit-appearance:none;appearance:none;flex:none;width:38px;height:22px;margin:0;border-radius:11px;background:var(--line-2);position:relative;cursor:pointer;transition:background .15s}
-.sw2 input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .15s}
-.sw2 input:checked{background:var(--sign)}
-.sw2 input:checked::after{left:19px}
-.sw2.row{margin:0 0 16px}
-.ere{margin-top:14px}
-.seg{display:inline-flex;flex-wrap:wrap;background:var(--sunk);border:1px solid var(--line);border-radius:5px;padding:3px;gap:3px;max-width:100%}
-.seg.full{display:flex}.seg.full>*{flex:1}
-.seg button,.seg label span{display:block;border:0;background:none;border-radius:3px;padding:8px 13px 6px;font:700 14px var(--sans);color:var(--ink-2);cursor:pointer;text-align:center;white-space:nowrap}
+/* Schakelaar en keuzes */
+.sw2{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;cursor:pointer;user-select:none}
+.sw2 input{-webkit-appearance:none;appearance:none;flex:none;width:42px;height:24px;margin:0;border-radius:12px;background:var(--line-2);position:relative;cursor:pointer;transition:background .15s}
+.sw2 input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:left .15s}
+.sw2 input:checked{background:var(--volt)}
+.sw2 input:checked::after{left:21px}
+.sw2.row{display:flex;margin:0 0 16px}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.seg>*{flex:1}
+.seg button,.seg label span{display:block;border:0;background:none;border-radius:8px;padding:9px 12px;font:600 15px var(--text);color:var(--ink-2);cursor:pointer;text-align:center;white-space:nowrap}
 .seg label{position:relative;display:block}
 .seg label input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.seg button:hover,.seg label:hover span{color:var(--tarmac);background:var(--plate)}
-.seg button[aria-pressed=true],.seg label input:checked+span{background:var(--sign);color:#fff}
-.seg label input:focus-visible+span{outline:3px solid var(--sign);outline-offset:1px}
-@media(max-width:420px){.seg button,.seg label span{padding:8px 8px 6px;font-size:13px}}
-.sz{display:grid;grid-template-columns:1fr auto 1fr;gap:2px 12px;align-items:center;margin-top:10px;padding:10px 14px 8px;border-radius:4px;background:var(--sunk);font-size:14px}
-.sz small{display:block;font-size:12px;color:var(--ink-3)}.sz b{font:600 14px var(--mono)}.sz i{font-style:normal;color:var(--ink-3)}
+.seg button:hover,.seg label:hover span{color:var(--ink);background:var(--card)}
+.seg button[aria-pressed=true],.seg label input:checked+span{background:var(--ink);color:#fff}
+.seg label input:focus-visible+span{outline:3px solid var(--ink);outline-offset:1px}
+.seg.sm{display:inline-flex;border-radius:999px}.seg.sm button{border-radius:999px;padding:6px 14px;font-size:14px}
+.sz{display:grid;grid-template-columns:1fr auto 1fr;gap:2px 12px;align-items:center;margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--soft);font-size:14px}
+.sz small{display:block;font-size:12px;color:var(--ink-3)}.sz b{font-weight:700}.sz i{font-style:normal;color:var(--ink-3)}
 .sz p{grid-column:1/-1;margin:4px 0 0;color:var(--ink-3);font-size:12px}
-.amt{display:flex;justify-content:space-between;gap:12px;margin-top:12px;padding-top:12px;border-top:2px solid var(--tarmac);font-weight:800}
-.amt span:last-child{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.pamt{display:flex;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:2px solid var(--ink);font-weight:700}
+
+/* Kop tegen kop: de kostenlijst */
+.vs{margin-top:56px}
+.vsh{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 24px;flex-wrap:wrap}
+.vsh h2{font:700 clamp(24px,2.8vw,32px)/1.2 var(--text);letter-spacing:-.01em}
+.vsh p{margin:8px 0 0;color:var(--ink-3);font-size:16px}
+.vsl{margin-top:22px;border-radius:20px;overflow:hidden;background:var(--card);box-shadow:0 30px 60px -50px rgba(0,0,0,.5)}
+.grid3{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,210px) minmax(0,1fr)}
+.colh>span{padding:12px 22px 10px;font:600 14px var(--text)}
+.colh .cd{background:var(--asph);color:var(--on-asph-2);text-align:right}
+.colh .cm{background:var(--soft)}
+.colh .ce{color:var(--ink-2)}
+.row{border-top:1px solid var(--line)}
+.rh{width:100%;border:0;padding:0;margin:0;background:none;font:inherit;color:inherit;text-align:inherit;cursor:pointer}
+.rh>span{display:flex;align-items:center;gap:14px;min-width:0;padding:18px 22px}
+.rd{background:var(--asph);color:var(--on-asph);justify-content:flex-end;box-shadow:inset 0 1px 0 var(--asph-3)}
+.re{justify-content:flex-start}
+.rl{flex-direction:column;justify-content:center;align-items:center!important;gap:2px!important;padding:12px 10px!important;background:var(--soft);text-align:center}
+.rl b{font:700 17px/1.2 var(--text)}
+.rl small{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.rl small .good{color:var(--volt-ink);font-weight:600}.rl small .bad{color:var(--amber-ink);font-weight:600}
+.rl i{display:block;width:10px;height:10px;margin-top:4px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg);transition:transform .2s}
+.rh[aria-expanded=true] .rl i{transform:rotate(225deg);margin-top:10px}
+.rh:hover .rl{background:#EDEFEA}
+.rh:hover .rl b{text-decoration:underline;text-underline-offset:3px}
+.rv{flex:none;font:700 19px var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{display:block;height:12px;max-width:70%;transition:width .35s ease}
+.rd .bar{background:var(--amber);border-radius:6px 2px 2px 6px}
+.re .bar{background:var(--volt);border-radius:2px 6px 6px 2px}
+.row.off .rv{opacity:.45;font-weight:500}
+.ed{border-top:1px solid var(--line)}
+.ed>div{padding:22px 24px 26px;min-width:0}
+.edd{background:var(--asph-2);color:var(--on-asph)}
+.edm{background:var(--soft);font-size:14px;color:var(--ink-3);text-align:center}
+.edf{grid-column:1/-1;background:var(--soft)}
+.edd .sl{--fill:var(--amber);--track:var(--asph-3);--thumb:var(--asph)}
+.ede .sl{--fill:var(--volt)}
+.edd .slv,.edd .cell{background:var(--asph);box-shadow:inset 0 0 0 1px var(--asph-3)}
+.edd .cell:focus-within,.edd .slv:focus-within{box-shadow:inset 0 0 0 2px var(--amber)}
+.edd .cell input{color:var(--on-asph)}.edd .cell input.pre{color:#868D93}
+.edd .hint,.edd .na{color:var(--on-asph-2)}
+.edd :focus-visible{outline-color:var(--amber)}
+.na{margin:0;font-size:15px}
+.tot{border-top:2px solid var(--ink)}
+.tot>span{display:flex;align-items:center;gap:14px;min-width:0;padding:18px 22px}
+.tot .rd{justify-content:flex-end}
+.tot .rv{font:700 24px var(--display)}
+.tot .rl b{font:700 17px var(--text)}
+.xh{border-top:2px solid var(--ink);background:var(--soft);padding:10px 22px;font:600 14px var(--text);color:var(--ink-2);text-align:center}
+@media(max-width:700px){
+ .grid3{grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr)}
+ .colh>span{padding:12px 12px 8px;font-size:12px;letter-spacing:.1em}
+ .rh>span{gap:8px;padding:15px 10px}
+ .rl b{font-size:13px}.rl small{font-size:11px}.rl .dfl{display:none}
+ .rv{font-size:15px}.bar{height:8px;max-width:50%}
+ .tot .rv{font-size:20px}.tot>span{padding:15px 10px}
+ .ed{display:block}.ed>div{padding:18px 16px 22px}.edm{display:none}
+}
+
+/* Uitgebreid: terugverdientijd en verdieping */
+.an{margin-top:56px}
+.an h2{font:700 clamp(24px,2.8vw,32px)/1.2 var(--text);letter-spacing:-.01em}
+.pbc{margin-top:20px;padding:clamp(18px,3vw,30px);border-radius:20px;background:var(--card)}
+.pbt{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px 32px}
+.pbn{font:700 clamp(44px,5.4vw,68px)/.95 var(--display)}
+.pbn small{font:600 18px var(--text);color:var(--ink-3);letter-spacing:0}
+.pbs{margin-top:8px;color:var(--ink-2);font-size:17px}
+.pbq{display:flex;gap:32px;flex-wrap:wrap}
+.pbq div{display:flex;flex-direction:column}
+.pbq span{font-size:14px;color:var(--ink-3)}
+.pbq b{font:700 20px var(--text);font-variant-numeric:tabular-nums}
+.pbq small{font:400 13px var(--text);color:var(--ink-3)}
+.pbbar{height:8px;border-radius:4px;background:var(--soft);margin-top:20px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.pbbar i{display:block;height:100%;background:var(--volt)}
+.pbc svg{display:block;width:100%;height:auto;margin-top:18px;overflow:visible}
+.pbc text{font:500 12px var(--text);fill:var(--ink-3)}
+.pbk{display:flex;gap:6px 18px;flex-wrap:wrap;margin-top:12px;font-size:14px;color:var(--ink-3)}
+.pbk i{display:inline-block;width:18px;height:4px;margin-right:6px;vertical-align:middle;border-radius:2px}
+.wfp{position:relative;display:flex;height:240px;border-bottom:2px solid var(--ink)}
+.wc{position:relative;flex:1;min-width:0}
+.wbar{position:absolute;left:18%;right:18%;border-radius:4px}
+.wcn{position:absolute;left:82%;width:36%;border-top:1.5px dashed var(--line-2);z-index:1}
+.wval{position:absolute;left:-6px;right:-6px;text-align:center;font:700 14px var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.wc.off .wval{color:var(--ink-3);font-weight:500}
+.wl{display:flex}.wl span{flex:1;padding:10px 2px 0;text-align:center;font-size:14px;font-weight:600;line-height:1.25;color:var(--ink-2)}
+@media(max-width:600px){.wval{font-size:10px;left:-4px;right:-4px;letter-spacing:-.03em}.wl span{font-size:11px}}
+.bec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:700px){.bec{grid-template-columns:minmax(0,1fr)}}
+.bc2{padding:18px 20px;border-radius:14px;background:var(--card);min-width:0}
+.bc2>small{display:block;font:600 15px var(--text);color:var(--ink-2)}
+.bc2>b{display:block;margin-top:2px;font:700 34px/1.05 var(--display);font-variant-numeric:tabular-nums}
+.bc2>b small{font:600 15px var(--text);color:var(--ink-3)}
+.bc2 p{margin:0;font-size:14px;color:var(--ink-2)}
+.trk{position:relative;height:8px;margin:36px 0 42px;border-radius:4px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.trk i{position:absolute;top:0;bottom:0;border-radius:4px;background:#A6D8BD}
+.trk u{position:absolute;top:-6px;width:3px;height:20px;margin-left:-1.5px;background:var(--ink);text-decoration:none}
+.trk .now{position:absolute;top:-6px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:var(--volt);border:4px solid #fff;box-shadow:0 0 0 1px var(--volt)}
+.trk em{position:absolute;left:50%;top:-26px;transform:translateX(-50%);font:600 12px var(--text);font-style:normal;color:var(--ink-2);white-space:nowrap}
+.trk em.lo{top:30px}
+.trk .tk{position:absolute;top:12px;width:1px;height:5px;background:var(--line-2)}
+.trk .tk s{position:absolute;top:7px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--ink-3);text-decoration:none}
+.hmw{margin-top:14px;padding:16px 18px;border-radius:14px;background:var(--card)}
+.hmw>small{display:block;font-size:14px;color:var(--ink-2)}
+.hm{width:100%;max-width:700px;border-collapse:separate;border-spacing:4px;margin:8px -4px 0;font:600 14px var(--text);font-variant-numeric:tabular-nums}
+.hm th,.hm td{padding:10px 4px;text-align:center;border:0}
+.hm th{font-weight:500;color:var(--ink-3)}.hm th:first-child{text-align:left;font-size:12px;white-space:nowrap}
+.hm td{border-radius:6px;min-width:52px}
+.hm td.cur{outline:3px solid var(--ink);outline-offset:-3px}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* Uitklappers */
+.more{margin-top:48px}
+.more>details{border-top:1px solid var(--line-2)}
+.more>details:last-child{border-bottom:1px solid var(--line-2)}
+.more summary{list-style:none;cursor:pointer;position:relative;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 16px;padding:17px 44px 15px 0}
+.more summary::-webkit-details-marker,.faq summary::-webkit-details-marker{display:none}
+.more summary b{font:700 19px/1.2 var(--text)}
+.more summary span{color:var(--ink-3);font-size:16px}
+.more summary::after,.faq summary::after{content:"";position:absolute;right:6px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(currentColor,currentColor) center/14px 2px no-repeat,linear-gradient(currentColor,currentColor) center/2px 14px no-repeat;transition:transform .2s}
+.more details[open] summary::after,.faq details[open] summary::after{transform:rotate(45deg)}
+.more summary:hover b{color:var(--volt-ink)}
+.more details>:not(summary){margin-bottom:28px}
+.more details>p{max-width:820px;color:var(--ink-2)}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;margin:0}
+.facts div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.facts dt{color:var(--ink-2)}.facts dd{margin:0;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:700px){.facts{grid-template-columns:minmax(0,1fr)}}
+
+/* Overstap naar Uitgebreid */
+.up{display:flex;align-items:center;justify-content:space-between;gap:14px 32px;flex-wrap:wrap;margin-top:20px;padding:20px 24px;border-radius:14px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.up b{display:block;font:700 19px/1.25 var(--text)}
+.up span{display:block;margin-top:2px;color:var(--ink-3)}
+.cta{display:inline-flex;align-items:center;gap:10px;border-radius:8px;padding:11px 18px;background:var(--ink);color:#fff;font:600 15px var(--text);text-decoration:none;white-space:nowrap}
+.cta:hover{background:#000;color:#fff}
+.cta svg{width:18px;height:18px}
+
+/* Tol */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:6px 15px 6px 6px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);font:600 15px var(--text);color:var(--ink);cursor:pointer}
+.chip:hover{box-shadow:inset 0 0 0 2px var(--ink)}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;box-shadow:none}
+.oval{display:inline-grid;place-items:center;min-width:32px;height:22px;padding:0 6px;border:2px solid var(--ink);border-radius:50%;background:#fff;color:var(--ink);font:700 11px/1 var(--text)}
+.chip[aria-pressed=true] .oval{border-color:#fff}
+#tolBody{margin-top:22px}
+.tolcap{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px 14px;font-size:15px;color:var(--ink-2)}
+.tolcap b{color:var(--ink);font-variant-numeric:tabular-nums}
+.capbar{height:6px;margin:8px 0 6px;border-radius:3px;background:var(--line);overflow:hidden}
+.capbar i{display:block;height:100%;background:var(--ink);transition:width .2s}
+.tolg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 36px}
+.tc{padding:16px 0 8px;border-top:1px solid var(--line)}
+.tch{display:flex;align-items:center;gap:10px;font-weight:700}
+.tcr{margin:4px 0 6px;font-size:13px;color:var(--ink-3)}
 
 /* Advertentie */
-.ad{display:grid;place-items:center;min-height:250px;border:1.5px dashed var(--line-2);border-radius:var(--r);background:var(--sunk);color:var(--ink-3);font:700 11px var(--sans);letter-spacing:.16em;text-transform:uppercase}
-.side{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:start}
-.side>*{min-width:0}
-.side>.ad{position:sticky;top:90px;min-height:600px}
-@media(max-width:960px){.side{grid-template-columns:minmax(0,1fr)}.side>.ad{position:static;min-height:250px}}
-
-/* Wegmarkering als scheiding */
-.lane{height:5px;margin:56px 0 30px;background:repeating-linear-gradient(90deg,var(--line-2) 0 42px,transparent 42px 70px)}
-
-/* Uitkomst */
-.resh{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap}
-.resh h2{font:800 28px/1.15 var(--sans);letter-spacing:-.015em}
-.resh .meta{color:var(--ink-3);font:500 14px var(--mono);margin-right:auto}
-.acts{display:flex;gap:8px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--line-2);background:var(--plate);color:var(--tarmac);border-radius:4px;padding:8px 12px 6px;font:700 14px var(--sans);cursor:pointer;text-decoration:none}
-.btn:hover{border-color:var(--sign);color:var(--sign)}
-.btn svg{width:16px;height:16px;margin-top:-2px}
-.verdict{margin:14px 0 20px;max-width:860px;font:800 clamp(22px,2.8vw,30px)/1.2 var(--sans);letter-spacing:-.01em}
-
-/* Matrixbord boven de weg */
-.gantry{padding:10px;border-radius:8px;background:var(--housing)}
-.gantry::before{content:"";display:block;height:8px;margin:0 6px 10px;border-radius:2px;background:repeating-linear-gradient(135deg,#8E969F 0 7px,#727A83 7px 14px)}
-.lanes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.drip{position:relative;min-width:0;border-radius:4px;padding:16px 18px 14px;background:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1.4px) 0 0/5px 5px,var(--matrix);color:var(--led);font-family:var(--dots);text-transform:uppercase;text-shadow:0 0 7px rgba(255,179,39,.45)}
-.drip .lt{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:700;font-size:17px;letter-spacing:.1em}
-.drip .g{color:var(--led-g);text-shadow:0 0 7px rgba(98,224,143,.5);font-size:14px}
-.drip .lv{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 10px;margin-top:8px;font-weight:800;font-size:clamp(34px,6vw,70px);line-height:1;letter-spacing:.02em}
-.drip .lv small{font-size:.32em;font-weight:700;letter-spacing:.08em}
-.drip .ls{margin-top:10px;color:var(--led-2);font-weight:700;font-size:15px;letter-spacing:.06em;line-height:1.5;text-shadow:none}
-.drip.wide{margin-top:10px;display:flex;align-items:center;gap:6px 22px;flex-wrap:wrap}
-.drip.wide .lt{flex:none}
-.drip.wide .lv{margin-top:0;font-size:clamp(34px,5vw,56px)}
-.drip.wide .ls{margin-top:0}
-.drip.wide.neg .lt{color:var(--led-r);text-shadow:0 0 7px rgba(255,100,80,.5)}
-@media(max-width:560px){.gantry{padding:7px}.lanes{gap:7px}.drip{padding:12px 11px 10px}.drip .lt{font-size:13px;letter-spacing:.06em}.drip .ls{font-size:12px;letter-spacing:.03em}.drip .g{font-size:11px}}
-
-.blk{margin-top:44px}
-.blkh{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap;margin-bottom:12px}
-.blkh h3{font:800 22px/1.25 var(--sans);letter-spacing:-.01em}
-.bt{width:100%;border-collapse:collapse;font-size:15px}
-.bt th{padding:0 0 8px 10px;border-bottom:2px solid var(--tarmac);text-align:right;font:800 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
-.bt td{padding:10px 0 8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
-.bt th:first-child,.bt td:first-child{padding-left:0;text-align:left;white-space:normal}
-.bt td:first-child{font-family:var(--sans);font-size:15px}
-.bt tr.tot td{border-top:2px solid var(--tarmac);border-bottom:0;font-weight:700}
-.bt tr.z td{color:var(--ink-3)}
-.bt tr[data-c]{cursor:pointer}
-.bt tr[data-c]:hover td{background:var(--sunk)}
-.bt tr.on td{background:var(--sign-soft)}
-.bt .good{color:var(--post)}.bt .bad{color:var(--warn)}
-.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
-@media(max-width:420px){.bt td{font-size:12px;padding-left:6px}.bt td:first-child{font-size:13px}.bt th{padding-left:6px;font-size:10px}}
-.dot{display:inline-block;flex:none;width:10px;height:10px;border-radius:2px}
-.bt td .dot{margin-right:9px}
-
-/* Horizontale gestapelde staven */
-.hbr+.hbr{margin-top:18px}
-.hbl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px;font-size:15px}
-.hbl span{display:flex;align-items:center;gap:7px;font-weight:800}
-.hbl b{font:600 14px var(--mono);font-variant-numeric:tabular-nums}
-.hb{display:flex;gap:2px;height:32px;min-width:12px}
-.hb button{display:block;min-width:0;height:100%;border:0;padding:0;margin:0;cursor:pointer;transition:opacity .15s}
-.hb button:first-child{border-radius:4px 0 0 4px}.hb button:last-child{border-radius:0 4px 4px 0}.hb button:only-child{border-radius:4px}
-.hb button.on{box-shadow:inset 0 0 0 2px var(--tarmac)}
-.lg{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:18px}
-.lgb{display:inline-flex;align-items:center;gap:7px;border:0;background:none;border-radius:4px;padding:6px 8px 4px;margin-left:-8px;font:500 14px var(--sans);color:var(--ink-2);cursor:pointer;transition:opacity .15s}
-.lgb:hover{background:var(--plate)}.lgb.on{background:var(--sign-soft);color:var(--tarmac);font-weight:700}
-.dim{opacity:.28}
-.cbd{margin-top:12px;padding:11px 14px 9px;border-radius:4px;background:var(--plate);border:1px solid var(--line);font-size:14px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px 18px}
-.cbd b{display:flex;align-items:center;gap:7px;color:var(--tarmac)}
-
-.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin:0}
-.facts div{display:flex;justify-content:space-between;gap:16px;padding:11px 0 9px;border-bottom:1px solid var(--line);font-size:15px}
-.facts dt{color:var(--ink-2)}.facts dd{margin:0;font:600 14px var(--mono);text-align:right;font-variant-numeric:tabular-nums}
-@media(max-width:700px){.facts{grid-template-columns:minmax(0,1fr)}}
-.faq summary{list-style:none;cursor:pointer;position:relative}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"";position:absolute;right:4px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(currentColor,currentColor) center/14px 2.5px no-repeat,linear-gradient(currentColor,currentColor) center/2.5px 14px no-repeat;transition:transform .2s}
-.faq details[open] summary::after{transform:rotate(45deg)}
-
-/* Verdieping: één ding tegelijk */
-.more{margin-top:30px;border-top:2px solid var(--tarmac)}
-.more>details{border-bottom:1px solid var(--line)}
-.more summary{list-style:none;cursor:pointer;position:relative;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 14px;padding:16px 40px 14px 0}
-.more summary::-webkit-details-marker{display:none}
-.more summary b{font:800 18px var(--sans)}
-.more summary span{color:var(--ink-3);font-size:15px}
-.more summary:hover b{color:var(--sign)}
-.more summary::after{content:"";position:absolute;right:6px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(currentColor,currentColor) center/14px 2.5px no-repeat,linear-gradient(currentColor,currentColor) center/2.5px 14px no-repeat;transition:transform .2s}
-.more details[open] summary::after{transform:rotate(45deg)}
-.more details>:not(summary){margin-bottom:24px}
-.more details>p{max-width:820px;color:var(--ink-2);font-size:15px}
-.tabs{display:flex;flex-wrap:wrap;margin:34px 0 20px;border-bottom:2px solid var(--tarmac)}
-.tabs button{border:0;background:none;margin-bottom:-2px;padding:12px 16px 9px;border-bottom:4px solid transparent;font:800 16px var(--sans);color:var(--ink-3);cursor:pointer}
-.tabs button:hover{color:var(--tarmac)}
-.tabs button[aria-selected=true]{color:var(--sign);border-bottom-color:var(--sign)}
-.tpan>.hint:first-child{margin:0 0 16px}
-@media(max-width:560px){.tabs{display:grid;grid-template-columns:1fr 1fr}.tabs button{padding:10px 6px 8px;font-size:14px;text-align:left}}
-.offn{margin:0}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--plate);border-radius:999px;padding:5px 14px 4px 5px;font:700 15px var(--sans);color:var(--tarmac);cursor:pointer}
-.chip:hover{border-color:var(--sign)}
-.chip[aria-pressed=true]{border-color:var(--sign);background:var(--sign-soft);color:var(--sign-2)}
-.chip .oval{height:20px;min-width:30px;font-size:11px}
-#tolBody{margin-top:20px}
-.news time{display:block}
-
-/* Afrit naar Uitgebreid */
-.next{display:flex;justify-content:space-between;align-items:center;gap:14px 24px;flex-wrap:wrap;margin-top:32px;padding:22px 26px;border-radius:12px;background:var(--sign);color:#fff;box-shadow:inset 0 0 0 5px var(--sign),inset 0 0 0 7.5px #fff}
-.next b{display:block;font:800 22px/1.2 var(--sans)}
-.next span{color:#D6E2F4;font-size:15px}
-.cta{display:inline-flex;align-items:center;gap:10px;border-radius:5px;padding:12px 18px 10px;background:#fff;color:var(--sign);font:800 16px var(--sans);text-decoration:none;white-space:nowrap}
-.cta:hover{color:var(--sign-2);background:#EEF3FA}
-.cta svg{width:18px;height:18px;margin-top:-2px}
-
-/* Uitgebreid */
-.basis{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin:0 0 30px;padding:10px 14px 8px;border-radius:var(--r);background:var(--plate);border:1px solid var(--line);font:500 14px var(--mono);color:var(--ink-2)}
-.basis .bsl{font:800 13px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--sign);border-radius:3px;padding:4px 8px 2px}
-.basis i{font-style:normal;color:var(--line-2)}
-.basis a{margin-left:auto;font:700 14px var(--sans)}
-.xg{transition:opacity .15s}
-.tolcap{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px 14px;margin:-4px 0 8px;font-size:15px;color:var(--ink-2)}
-.tolcap b{font:600 14px var(--mono);color:var(--tarmac)}
-.capbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-bottom:16px}
-.capbar i{display:block;height:100%;background:var(--sign);transition:width .2s}
-.tolg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 36px}
-.tc{padding:14px 0 10px;border-top:1px solid var(--line);transition:opacity .15s}
-.tc.off .slh label,.tc.off .tcr{opacity:.7}
-.tch{display:flex;align-items:center;gap:10px}
-.oval{display:inline-grid;place-items:center;min-width:34px;height:22px;padding:2px 7px 0;border:2px solid var(--tarmac);border-radius:50%;background:#fff;font:800 12px/1 var(--sans);letter-spacing:.02em}
-.tcn{font-weight:800;font-size:16px}
-.tcr{margin:4px 0 6px;font-size:13px;color:var(--ink-3)}
-@media(max-width:760px){.tolg{grid-template-columns:minmax(0,1fr)}}
-
-.wfp{position:relative;display:flex;height:240px;border-bottom:2px solid var(--tarmac)}
-.wc{position:relative;flex:1;min-width:0}
-.wbar{position:absolute;left:16%;right:16%;border-radius:3px}
-.wcn{position:absolute;left:84%;width:32%;border-top:1px dashed var(--line-2);z-index:1}
-.wval{position:absolute;left:-6px;right:-6px;text-align:center;font:600 13px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
-.wc.off .wval{color:var(--ink-3);font-weight:400}
-.wl{display:flex}.wl span{flex:1;padding:10px 2px 0;text-align:center;font-size:14px;font-weight:600;line-height:1.25;color:var(--ink-2)}
-@media(max-width:600px){.wval{font-size:9px;left:-4px;right:-4px;letter-spacing:-.04em}.wl span{font-size:11px}}
-
-.pbc{padding:clamp(16px,2.5vw,22px);border:1px solid var(--line);border-radius:var(--r);background:var(--plate)}
-.pbt{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px 28px}
-.pbn{font:900 clamp(30px,3.8vw,42px)/1.05 var(--sans);letter-spacing:-.02em}
-.pbn small{font:700 16px var(--sans);color:var(--ink-3);letter-spacing:0}
-.pbs{margin-top:6px;color:var(--ink-2);font-size:15px}
-.pbq{display:flex;gap:28px;flex-wrap:wrap}
-.pbq div{display:flex;flex-direction:column}
-.pbq span{font-size:13px;color:var(--ink-3)}
-.pbq b{font:600 16px var(--mono);font-variant-numeric:tabular-nums}
-.pbq small{font:400 12px var(--sans);color:var(--ink-3)}
-.pbbar{height:6px;border-radius:3px;background:var(--line);margin-top:16px;overflow:hidden}
-.pbbar i{display:block;height:100%;background:var(--post)}
-.pbc svg{display:block;width:100%;height:auto;margin-top:14px;overflow:visible}
-.pbc text{font:500 11px var(--mono);fill:var(--ink-3)}
-.pbk{display:flex;gap:6px 18px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink-3)}
-.pbk i{display:inline-block;width:16px;height:3px;margin-right:6px;vertical-align:middle;border-radius:2px}
-
-.bec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-@media(max-width:700px){.bec{grid-template-columns:minmax(0,1fr)}}
-.bc2{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--plate);min-width:0}
-.bc2>small{display:block;font:700 14px var(--sans);color:var(--ink-2)}
-.bc2>b{display:block;margin-top:4px;font:900 30px/1.15 var(--sans);font-variant-numeric:tabular-nums}
-.bc2>b small{font:700 15px var(--sans);color:var(--ink-3)}
-.bc2 p{margin:0;font-size:14px;color:var(--ink-2)}
-.trk{position:relative;height:6px;margin:34px 0 40px;border-radius:3px;background:var(--line)}
-.trk i{position:absolute;top:0;bottom:0;border-radius:3px;background:#A9D3BC}
-.trk u{position:absolute;top:-6px;width:3px;height:18px;margin-left:-1.5px;background:var(--tarmac);text-decoration:none}
-.trk .now{position:absolute;top:-5px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--sign);border:3px solid #fff;box-shadow:0 0 0 1px var(--sign)}
-.trk em{position:absolute;left:50%;top:-24px;transform:translateX(-50%);font:700 11px var(--sans);font-style:normal;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
-.trk em.lo{top:30px}
-.trk .tk{position:absolute;top:10px;width:1px;height:5px;background:var(--line-2)}
-.trk .tk s{position:absolute;top:7px;left:50%;transform:translateX(-50%);font:400 10px var(--mono);color:var(--ink-3);text-decoration:none}
-.hmw{margin-top:16px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);background:var(--plate)}
-.hmw>small{display:block;font-size:14px;color:var(--ink-2)}
-.hm{width:100%;max-width:680px;border-collapse:separate;border-spacing:4px;margin:8px -4px 0;font:600 13px var(--mono);font-variant-numeric:tabular-nums}
-.hm th,.hm td{padding:10px 4px 8px;text-align:center;border:0}
-.hm th{font-weight:500;color:var(--ink-3)}.hm th:first-child{text-align:left;font:600 11px var(--sans);white-space:nowrap}
-.hm td{border-radius:3px;min-width:52px}
-.hm td.cur{outline:2.5px solid var(--tarmac);outline-offset:-2.5px}
-
-/* Live uitkomst onderin, als klein matrixbord */
-.live{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--matrix);border-top:4px solid var(--housing);color:var(--led);font-family:var(--dots);text-transform:uppercase;transform:translateY(110%);transition:transform .22s ease;padding-bottom:env(safe-area-inset-bottom,0px)}
-.live:not(.show){visibility:hidden;transition:transform .22s ease,visibility 0s .22s}
-.live.show{transform:none}
-.livein{display:flex;align-items:center;gap:8px 26px;min-height:60px;font-weight:700;font-size:15px;letter-spacing:.06em;text-shadow:0 0 6px rgba(255,179,39,.4)}
-.livein b{font-weight:800;font-size:20px}
-.livein .lsv{margin-left:auto}
-.livein button{border:1.5px solid var(--led);background:none;color:var(--led);border-radius:3px;padding:7px 12px 5px;font:700 13px var(--sans);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
-.livein button:hover{background:var(--led);color:var(--matrix)}
-@media(max-width:640px){.livein{gap:2px 14px;padding-top:8px;padding-bottom:8px;font-size:12px}.livein .lsv{margin-left:0}.livein button{margin-left:auto}.livein .ld{display:none}.livein b{font-size:17px}}
-@media (prefers-reduced-motion:reduce){.live{transition:none}}
+.ad{display:grid;place-items:center;min-height:250px;border-radius:14px;background:repeating-linear-gradient(135deg,transparent 0 12px,rgba(21,23,26,.035) 12px 13px),var(--soft);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-3);font:600 11px var(--text);letter-spacing:.18em;text-transform:uppercase}
+.ad.band{min-height:110px;margin:64px 0 0}
 
 /* Content-pagina's */
-.faq h2{display:inline-block;margin:38px 0 8px;padding:6px 11px 4px;border-radius:4px;background:var(--sign);color:#fff;font:800 13px var(--sans);letter-spacing:.08em;text-transform:uppercase;box-shadow:inset 0 0 0 2px var(--sign),inset 0 0 0 3.5px #fff}
-.faq h2:first-child{margin-top:0}
-.faq details{border-bottom:1px solid var(--line)}
-.faq summary{padding:17px 36px 15px 0;font:700 19px/1.35 var(--sans)}
-.faq summary:hover{color:var(--sign)}
-.faq details p{margin:-4px 0 18px;max-width:700px;color:var(--ink-2)}
-.news article{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 32px;padding:26px 0;border-top:2px solid var(--tarmac)}
-.news article+article{border-top:1px solid var(--line)}
-.news time{font:600 14px var(--mono);color:var(--ink-2)}
-.news .kick{display:inline-block;margin-top:8px;padding:3px 7px 1px;border-radius:3px;background:var(--post);color:#fff;font:800 11px var(--sans);letter-spacing:.08em;text-transform:uppercase}
-.news h2{margin:0 0 8px;font:800 25px/1.2 var(--sans);letter-spacing:-.01em}
-.news p{margin:0;color:var(--ink-2);max-width:680px}
-.news .src{display:inline-flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-weight:700;font-size:15px}
-.more{margin:0;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-3);font-size:15px}
-@media(max-width:700px){.news article{grid-template-columns:minmax(0,1fr)}}
-.prose>p:first-child{margin-top:0;font:700 23px/1.4 var(--sans);color:var(--tarmac)}
-.prose p{max-width:700px;color:var(--ink-2)}
-.prose h2{margin:44px 0 10px;font:800 25px/1.25 var(--sans)}
-.prin{margin:28px 0 0}
-.prin div{display:grid;grid-template-columns:200px minmax(0,1fr);gap:4px 32px;padding:18px 0 16px;border-top:1px solid var(--line)}
-.prin div:first-child{border-top:2px solid var(--tarmac)}
-.prin dt{font:800 19px/1.35 var(--sans)}.prin dd{margin:0;color:var(--ink-2)}
+.phead{padding:36px 0 30px;max-width:820px}
+.phead h1{font:700 clamp(32px,4.2vw,48px)/1.1 var(--text);letter-spacing:-.02em;outline:0}
+.phead p{margin:16px 0 0;color:var(--ink-2);font-size:19px;max-width:600px}
+.faqw{display:grid;grid-template-columns:260px minmax(0,1fr);gap:56px;align-items:start}
+.rail{position:sticky;top:96px;display:flex;flex-direction:column;gap:24px}
+.rail nav{display:flex;flex-direction:column;gap:2px}
+.rail button{border:0;background:none;text-align:left;padding:9px 14px;border-radius:8px;font:600 16px var(--text);color:var(--ink-2);cursor:pointer}
+.rail button:hover{background:var(--card);color:var(--ink)}
+.faq section{scroll-margin-top:96px}
+.faq section+section{margin-top:44px}
+.faq h2{margin-bottom:4px;font:700 21px/1.2 var(--text)}
+.faq details{border-bottom:1px solid var(--line-2)}
+.faq summary{list-style:none;cursor:pointer;position:relative;padding:16px 44px 14px 0;font:600 17px/1.4 var(--text)}
+.faq summary:hover{color:var(--volt-ink)}
+.faq details p{margin:-2px 0 20px;max-width:700px;color:var(--ink-2)}
+@media(max-width:900px){.faqw{grid-template-columns:minmax(0,1fr);gap:28px}.rail{display:contents}.rail nav{flex-direction:row;flex-wrap:wrap;gap:6px}.rail nav button{background:var(--card);padding:8px 14px;font-size:15px}.rail .ad{order:3}.faq{order:2}}
+.tl{position:relative;max-width:900px;padding-left:170px}
+.tl::before{content:"";position:absolute;left:128px;top:10px;bottom:10px;width:2px;background:var(--line-2)}
+.tli{position:relative;padding:4px 0 44px}
+.tli time{position:absolute;left:-170px;top:6px;width:104px;text-align:right;font:700 15px/1.3 var(--text);color:var(--ink-2)}
+.tli::before{content:"";position:absolute;left:-48px;top:8px;width:14px;height:14px;border-radius:50%;background:var(--volt);border:3px solid var(--page);z-index:1}
+.tli .kick2{display:inline-block;padding:2px 8px;border-radius:4px;background:var(--card);font:600 13px var(--text);color:var(--ink-2)}
+.tli h2{margin:10px 0 6px;font:700 23px/1.25 var(--text)}
+.tli p{margin:0;color:var(--ink-2);max-width:640px}
+.tli .src{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;font-weight:600}
+.tli.soon::before{background:var(--line-2)}
+.tli.soon p{color:var(--ink-3)}
+@media(max-width:700px){.tl{padding-left:32px}.tl::before{left:6px}.tli time{position:static;display:block;width:auto;text-align:left;margin-bottom:6px}.tli::before{left:-32px;top:4px}}
+.prose{max-width:760px}
+.prose>p:first-child{margin-top:0;font:500 21px/1.5 var(--text);color:var(--ink)}
+.prose p{color:var(--ink-2)}
+.prose h2{margin:44px 0 10px;font:700 26px/1.2 var(--text)}
+.prin{margin:30px 0 0}
+.prin div{display:grid;grid-template-columns:190px minmax(0,1fr);gap:4px 28px;padding:18px 0;border-top:1px solid var(--line-2)}
+.prin dt{font:700 18px/1.3 var(--text)}.prin dd{margin:0;color:var(--ink-2)}
 @media(max-width:700px){.prin div{grid-template-columns:minmax(0,1fr)}}
-.disc{margin-top:36px;padding:16px 18px 14px;border:2px solid var(--tarmac);border-radius:var(--r);background:var(--plate);color:var(--ink-2);font-size:15px}
+.disc{margin-top:40px;padding:18px 20px;border-radius:14px;background:var(--card);color:var(--ink-2);font-size:15px}
 
-/* Voet: asfalt met wegmarkering */
-.foot{margin-top:90px;background:var(--tarmac);color:#C4CAD1;font-size:15px;padding-bottom:env(safe-area-inset-bottom,0px)}
-.foot::before{content:"";display:block;height:5px;background:repeating-linear-gradient(90deg,#fff 0 42px,transparent 42px 70px);opacity:.85;transform:translateY(26px)}
-.fin{display:flex;justify-content:space-between;gap:24px 48px;flex-wrap:wrap;padding-top:60px}
+/* Voet: de weg */
+.foot{margin-top:110px;background:var(--asph);color:var(--on-asph-2);font-size:15px;padding-bottom:env(safe-area-inset-bottom,0px)}
+.fin{display:flex;justify-content:space-between;gap:24px 48px;flex-wrap:wrap;padding-top:48px}
 .fin .brand{color:#fff}
-.fin p{margin:12px 0 0;max-width:340px;color:#9AA3AD}
-.fin nav{display:flex;flex-wrap:wrap;gap:8px 22px;align-content:flex-start}
-.fin nav a{color:#E3E7EB;text-decoration:none;font-weight:600}.fin nav a:hover{color:#fff;text-decoration:underline}
-.fdis{margin-top:32px;padding:18px 0 36px;border-top:1px solid #3A4047;font-size:14px;color:#9AA3AD}
-
-#tip{position:fixed;left:0;top:0;z-index:50;max-width:240px;padding:10px 12px 8px;border-radius:4px;background:var(--tarmac);color:#fff;font:400 13px/1.4 var(--sans);box-shadow:0 10px 30px -8px rgba(0,0,0,.4);pointer-events:none;opacity:0;transition:opacity .08s}
-#tip.show{opacity:1}
-#tip b{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-weight:800}
-#tip span{display:block;color:#D3D8DE}
-#tip strong{display:block;margin-top:1px;font:600 18px var(--mono)}
-#tip small{display:block;margin-top:3px;font-size:12px;color:#AEB6BF}
+.fin p{margin:12px 0 0;max-width:340px}
+.fin nav{display:flex;flex-wrap:wrap;gap:8px 24px;align-content:flex-start}
+.fin nav a{color:var(--on-asph);text-decoration:none;font-weight:600}.fin nav a:hover{color:var(--amber)}
+.fdis{margin-top:36px;padding:20px 0 40px;border-top:1px solid var(--asph-3);font-size:14px}
 
 @media print{
  body{background:#fff}
- .top,.modes,.ad,.live,.acts,.next,.foot,.lnk,#tip,.sign,.lane{display:none!important}
- .hero{display:block;padding-top:0}
- .pn,.pbc,.bc2,.hmw,.gantry{break-inside:avoid}
- .gantry,.drip{background:#fff!important;color:#000;text-shadow:none!important;border:1px solid #000}
- .drip .ls,.drip .g{color:#333}
- .g2{gap:10px}
+ .top,.mini,.mode,.ad,.acts,.up,.foot,.lnk,.pop{display:none!important}
+ .board,.vsl,.pbc{box-shadow:none;break-inside:avoid}
 }
 </style>
 </head>
 <body>
 <header class="top">
  <div class="wrap topin">
-  <a class="brand" href="#" aria-label="TCO TruckTool, naar de calculator"><span class="shield">TCO</span>TruckTool</a>
-  <button class="mnu" id="mnu" type="button" aria-expanded="false" aria-controls="nav"><i></i>Menu</button>
+  <a class="brand" href="#" aria-label="TCO TruckTool, naar de calculator"><span class="bmark" aria-hidden="true"><i></i><i></i></span>TCO TruckTool</a>
+  <button class="mnu" id="mnu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav id="nav" aria-label="Hoofdmenu">
    <a href="#" data-nav="calc">Calculator</a>
    <a href="#faq" data-nav="faq">Veelgestelde vragen</a>
@@ -448,87 +403,59 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px var(-
 
 <main id="app">
 <!-- ===== Calculator ===== -->
-<section class="page" data-page="calc">
+<section class="page" data-page="calc" id="calc">
  <div class="wrap">
-  <div class="hero">
-   <div class="lede">
-    <h1 tabindex="-1">Diesel of elektrisch? <span>Reken het na.</span></h1>
-    <p id="ledeP">Vergelijk een nieuwe diesel- en een nieuwe elektrische N3-trekker op kosten per kilometer, per jaar en over de hele afschrijftermijn. Met je eigen cijfers.</p>
+  <div class="intro">
+   <div>
+    <h1 tabindex="-1">Diesel of elektrisch?</h1>
+    <p id="ledeP"></p>
    </div>
-   <div class="sign" role="img" aria-label="Wegwijzer met links Diesel en rechts Elektrisch">
-    <div class="sgr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 18 6.5 6.5M6 15V6h9"/></svg><span class="pict"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M4 3h10v18H4zM6.5 5.5v5h5v-5z"/><path d="M14 8h2.5l2.5 2.5V18a1.5 1.5 0 0 0 3 0V9l-3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>Diesel</div>
-    <div class="sgr r">Elektrisch<span class="pict"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 2 4 14h6.5l-1 8L19 10h-6.5z"/></svg></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18 17.5 6.5M9 6h9v9"/></svg></div>
-    <div class="sgf"><span class="shield">TCO</span>Kosten per km, per jaar en over de afschrijftermijn</div>
-   </div>
+   <nav class="mode" id="modes" aria-label="Rekenwijze"><a href="#" data-mode="b">Simpel</a><a href="#uitgebreid" data-mode="x">Uitgebreid</a></nav>
   </div>
-  <nav class="modes" id="modes" aria-label="Rekenwijze">
-   <a href="#" data-mode="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V4M6 10l6-6 6 6"/></svg><span><b>Simpel</b><small>Aanschaf, energie, onderhoud en heffing</small></span></a>
-   <a href="#uitgebreid" data-mode="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-7M12 14 6 5M12 14l6-9M6 5v4.5M6 5h4.5M18 5v4.5M18 5h-4.5"/></svg><span><b>Uitgebreid</b><small>Plus financiering, laadpaal, tol en laden onderweg</small></span></a>
-  </nav>
+  <div class="board" id="board" aria-live="polite"></div>
+ </div>
+ <div class="mini" id="mini" aria-hidden="true"><span class="md">Diesel <b id="mD"></b></span><span class="mm" id="mM"></span><span class="me"><b id="mE"></b> Elektrisch</span></div>
 
-  <!-- Simpel -->
-  <div id="vB">
-   <div class="sech"><h2>Jouw situatie</h2><button class="lnk" id="rs" type="button">Herstel voorbeeldcijfers</button></div>
-   <p class="note">Getallen in <span class="pre-ex">lichtgrijs</span> zijn voorbeeldcijfers. Vervang ze door je eigen cijfers; de uitkomst rekent direct mee.</p>
-   <div class="g2" id="inB">
-    <section class="pn"><div class="pnh"><span class="n">1</span><h3>Gebruik</h3></div><div id="p1"></div></section>
-    <section class="pn"><div class="pnh"><span class="n">2</span><h3>Kosten</h3></div><div id="p2"></div></section>
-    <section class="pn"><div class="pnh"><span class="n">3</span><h3>Belastingen en subsidies</h3></div><div id="p3"></div></section>
-    <aside class="ad" aria-label="Advertentie">Advertentie</aside>
+ <div class="wrap">
+  <section class="story" id="story" aria-labelledby="hStory">
+   <div class="sth"><h2 id="hStory">Jouw uitgangspunten</h2><span>Klik op een waarde om hem aan te passen.</span><button class="lnk" id="rs" type="button">Herstel voorbeeldcijfers</button></div>
+   <div class="params">
+    <button type="button" class="tok" data-pop="km" aria-expanded="false"><span class="pl">Kilometers per jaar</span><b id="t-km"></b></button>
+    <button type="button" class="tok" data-pop="kmH" aria-expanded="false"><span class="pl">Waarvan met kilometerheffing</span><b id="t-kmH"></b></button>
+    <button type="button" class="tok" data-pop="jr" aria-expanded="false"><span class="pl">Afschrijftermijn</span><b id="t-jr"></b></button>
+    <button type="button" class="tok" data-pop="rw" aria-expanded="false"><span class="pl">Restwaarde</span><b id="t-rw"></b></button>
+    <button type="button" class="tok" data-pop="gr" aria-expanded="false"><span class="pl">Bedrijfsgrootte</span><b id="t-gr"></b></button>
+    <button type="button" class="tok" data-pop="sub" aria-expanded="false"><span class="pl">Subsidie of regeling</span><b id="t-sub"></b><small id="t-amt"></small></button>
    </div>
+   <div id="pops"></div>
+  </section>
 
-   <div class="lane" aria-hidden="true"></div>
-   <section class="res" id="outB" aria-labelledby="hB">
-    <div class="resh"><h2 id="hB">Uitkomst</h2><span class="meta" id="chip"></span><div class="acts"><button class="btn" type="button" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Kopieer samenvatting</span></button><button class="btn" type="button" data-print><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg>Afdrukken of PDF</button></div></div>
-    <p class="verdict" id="sub" aria-live="polite"></p>
-    <div id="heroB"></div>
-    <div class="more">
-     <details><summary><b>Kostenopbouw</b><span>Per onderdeel, met grafiek</span></summary>
-      <div class="g2">
-       <div><div class="blkh"><h3>Per onderdeel</h3><div class="seg" id="unitB"></div></div><div class="tw" id="tblB"></div><p class="hint">Verschil is elektrisch ten opzichte van diesel. Een min betekent goedkoper. Klik op een regel om hem in de grafiek te volgen.</p></div>
-       <div><div class="blkh"><h3 id="chT">Totale kosten</h3></div><div id="chartB"></div></div>
-      </div>
-     </details>
-     <details><summary><b>Goed om te weten</b><span>Subsidie, stroom, ERE, heffing en CO₂</span></summary><dl class="facts" id="factsB"></dl></details>
-     <details><summary><b>Uitgangspunten en aannames</b><span>Waar de voorbeeldcijfers vandaan komen</span></summary><p>Uitgangspunten uit het voorbeeld: aanschaf, afschrijftermijn, restwaarde, verbruik, diesel- en stroomprijs, ERE, kilometers met kilometerheffing, en kilometerheffingstarieven (€ 0,201 diesel en € 0,038 elektrisch, geldend vanaf 1 januari 2027). Subsidie volgens de AanZET-tabel voor een N3 trekker (percentage van de aanschafprijs, begrensd door het maximumbedrag). Alternatief is de MIA: 36% extra aftrek over 90% van de aanschafprijs, hier indicatief berekend als netto belastingvoordeel bij 19% of 25,8% vennootschapsbelasting. AanZET en MIA kunnen niet samen.</p><p>Mijn aannames (aan te passen): verzekering, onderhoud en CO₂-factoren (3,2 kg per liter diesel, 0,45 kg per kWh grijze stroom). Exclusief chauffeur, overhead en btw. Laadpaal, financiering, tol in het buitenland en laden onderweg staan bij Uitgebreid.</p></details>
-    </div>
-    <div class="next"><div><b>Realistischer rekenen?</b><span>Voeg financiering, laadpaal, buitenlandse tol en laden onderweg toe. Je invoer wordt overgenomen.</span></div><a class="cta" href="#uitgebreid">Uitgebreid <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
-   </section>
-  </div>
-
-  <!-- Uitgebreid -->
-  <div id="vX" hidden>
-   <div class="basis" id="bs"></div>
-   <div class="sech"><h2>Aanvullende kosten</h2><button class="lnk" id="rsx" type="button">Herstel voorbeeldcijfers</button></div>
-   <p class="note">Elk onderdeel kun je met de schakelaar aan- of uitzetten. Zo zie je precies wat het met de besparing doet.</p>
-   <div class="g2" id="inX">
-    <section class="pn" id="px1"></section>
-    <section class="pn" id="px2"></section>
-    <section class="pn" id="px4"></section>
-    <aside class="ad" aria-label="Advertentie">Advertentie</aside>
-    <section class="pn wide" id="px3"></section>
+  <section class="vs" aria-labelledby="hVs">
+   <div class="vsh"><div><h2 id="hVs">Waar zit het verschil?</h2><p>Klik op een regel om de cijfers van diesel en elektrisch aan te passen.</p></div><div class="seg sm" id="unit" role="group" aria-label="Eenheid"></div></div>
+   <div class="vsl">
+    <div class="grid3 colh" aria-hidden="true"><span class="cd">Diesel</span><span class="cm"></span><span class="ce">Elektrisch</span></div>
+    <div id="rows"></div>
+    <div id="xrows" hidden><div class="xh">Uitgebreid</div></div>
+    <div class="grid3 tot"><span class="rd"><b class="rv" id="vD-tot"></b></span><span class="rl"><b>Totaal</b><small id="df-tot"></small></span><span class="re"><b class="rv" id="vE-tot"></b></span></div>
    </div>
+  </section>
 
-   <div class="lane" aria-hidden="true"></div>
-   <section class="res" id="outX" aria-labelledby="hX">
-    <div class="resh"><h2 id="hX">Uitkomst uitgebreid</h2><span class="meta" id="chipx"></span><div class="acts"><button class="btn" type="button" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Kopieer samenvatting</span></button><button class="btn" type="button" data-print><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg>Afdrukken of PDF</button></div></div>
-    <p class="verdict" id="subx" aria-live="polite"></p>
-    <div id="heroX"></div>
-    <div class="tabs" role="tablist" aria-label="Verdieping">
-     <button type="button" role="tab" id="tb-pb" aria-controls="tp-pb" aria-selected="true">Terugverdientijd</button>
-     <button type="button" role="tab" id="tb-wf" aria-controls="tp-wf" aria-selected="false" tabindex="-1">Verschil met Simpel</button>
-     <button type="button" role="tab" id="tb-sn" aria-controls="tp-sn" aria-selected="false" tabindex="-1">Energieprijzen</button>
-     <button type="button" role="tab" id="tb-bd" aria-controls="tp-bd" aria-selected="false" tabindex="-1">Kostenopbouw</button>
-    </div>
-    <div class="tpan" role="tabpanel" id="tp-pb" aria-labelledby="tb-pb"><div id="pbX"></div></div>
-    <div class="tpan" role="tabpanel" id="tp-wf" aria-labelledby="tb-wf" hidden><p class="hint">Wat elk aanvullend onderdeel doet met de besparing per jaar.</p><div id="wfX" style="padding-top:22px"></div></div>
-    <div class="tpan" role="tabpanel" id="tp-sn" aria-labelledby="tb-sn" hidden><p class="hint">Vanaf welke prijzen elektrisch niet meer goedkoper is, en wat de besparing per jaar doet bij andere diesel- en stroomprijzen.</p><div id="snX"></div></div>
-    <div class="tpan" role="tabpanel" id="tp-bd" aria-labelledby="tb-bd" hidden><div class="blkh"><h3>Per onderdeel</h3><div class="seg" id="unitX"></div></div><div class="tw" id="tblX"></div><p class="hint">Verschil is elektrisch ten opzichte van diesel. Een min betekent goedkoper.</p></div>
-    <div class="more">
-     <details><summary><b>Goed om te weten</b><span>Financiering, laadpaal, tol en heffing</span></summary><dl class="facts" id="factsX"></dl></details>
-     <details><summary><b>Uitgangspunten en aannames</b><span>Waar de voorbeeldcijfers vandaan komen</span></summary><p>Alle voorbeeldbedragen bij Uitgebreid zijn mijn aannames en aan te passen: rente, rendementseis, netaansluiting, onderhoud en netkosten van de laadpaal, tolbedragen per kilometer en prijs en tijdverlies bij laden onderweg. Controleer tarieven per land bij de tolbeheerder. Elke aanvullende post kun je uitzetten.</p></details>
-    </div>
-   </section>
+  <div class="up" id="bUp"><div><b>Realistischer rekenen?</b><span>Neem financiering, een eigen laadpaal, laden onderweg en buitenlandse tol mee.</span></div><a class="cta" href="#uitgebreid">Reken uitgebreid <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
+
+  <section class="an" id="xAn" hidden aria-labelledby="hAn">
+   <h2 id="hAn">Wanneer verdien je het terug?</h2>
+   <div id="pbX"></div>
+   <div class="more">
+    <details><summary><b>Wat doen de extra posten?</b><span>Van Simpel naar Uitgebreid, per onderdeel</span></summary><div id="wfX" style="padding-top:24px"></div></details>
+    <details><summary><b>Wat als energie duurder wordt?</b><span>Break-even en een tabel met diesel- en stroomprijzen</span></summary><div id="snX"></div></details>
+   </div>
+  </section>
+
+  <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
+
+  <div class="more">
+   <details><summary><b>Goed om te weten</b><span id="factsS">Subsidie, stroom, ERE, heffing en CO₂</span></summary><dl class="facts" id="facts"></dl></details>
+   <details><summary><b>Uitgangspunten</b><span>Waar de voorbeeldcijfers vandaan komen</span></summary><p>Uitgangspunten uit het voorbeeld: aanschaf, afschrijftermijn, restwaarde, verbruik, diesel- en stroomprijs, ERE, kilometers met kilometerheffing, en kilometerheffingstarieven (€ 0,201 diesel en € 0,038 elektrisch, geldend vanaf 1 januari 2027). Subsidie volgens de AanZET-tabel voor een N3 trekker (percentage van de aanschafprijs, begrensd door het maximumbedrag). Alternatief is de MIA: 36% extra aftrek over 90% van de aanschafprijs, hier indicatief berekend als netto belastingvoordeel bij 19% of 25,8% vennootschapsbelasting. AanZET en MIA kunnen niet samen.</p><p>Mijn aannames (aan te passen): verzekering, onderhoud en CO₂-factoren (3,2 kg per liter diesel, 0,45 kg per kWh grijze stroom). Exclusief chauffeur, overhead en btw.</p><p id="asX" hidden>Bij Uitgebreid zijn alle voorbeeldbedragen mijn aannames en aan te passen: rente, rendementseis, netaansluiting, onderhoud en netkosten van de laadpaal, tolbedragen per kilometer en prijs en tijdverlies bij laden onderweg. Controleer tarieven per land bij de tolbeheerder.</p></details>
   </div>
  </div>
 </section>
@@ -536,26 +463,33 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px var(-
 <!-- ===== Veelgestelde vragen ===== -->
 <section class="page" data-page="faq" hidden>
  <div class="wrap">
-  <div class="lede"><h1 tabindex="-1">Veelgestelde vragen</h1><p>Hoe de calculator rekent, wat de regelingen betekenen en wat je met de uitkomst kunt.</p></div>
-  <div class="side">
+  <div class="phead"><h1 tabindex="-1">Veelgestelde vragen</h1><p>Hoe de calculator rekent, wat de regelingen betekenen en wat je met de uitkomst kunt.</p></div>
+  <div class="faqw">
+   <aside class="rail">
+    <nav aria-label="Onderwerpen"><button type="button" data-jump="fq1">De berekening</button><button type="button" data-jump="fq2">Subsidies en fiscaal</button><button type="button" data-jump="fq3">Laden en heffing</button><button type="button" data-jump="fq4">Je gegevens</button></nav>
+    <div class="ad" aria-label="Advertentie">Advertentie</div>
+   </aside>
    <div class="faq">
-    <h2>De berekening</h2>
-    <details><summary>Wat is TCO?</summary><p>Total Cost of Ownership: alle kosten van een truck over de gebruiksduur, niet alleen de aanschafprijs. Zo zie je of een duurdere elektrische truck zich terugverdient via lagere energie-, onderhouds- en heffingskosten.</p></details>
-    <details><summary>Wat is het verschil tussen Simpel en Uitgebreid?</summary><p>Simpel is de snelle basisberekening. Uitgebreid neemt jouw invoer over en voegt financiering (rente en rendementseis op eigen geld), een eigen laadpaal, tol in het buitenland en laden onderweg toe. Elke post kun je aan- of uitzetten. Zo zie je precies wat elk onderdeel doet met de besparing.</p></details>
-    <details><summary>Hoe betrouwbaar is de uitkomst?</summary><p>De uitkomst is zo goed als je invoer. Subsidie, verzekering, onderhoud en heffing zijn aannames die per bedrijf verschillen. Chauffeur, overhead en btw zijn niet meegenomen, financiering alleen bij Uitgebreid. Gebruik de tool als eerste vergelijking, niet als financieel of fiscaal advies.</p></details>
-    <details><summary>Waarom telt de restwaarde niet mee in de terugverdientijd?</summary><p>De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen. De restwaarde ontvang je pas bij verkoop, daarom telt die daar niet mee. In de kosten per kilometer en per jaar zit de restwaarde wel, via de afschrijving.</p></details>
-    <h2>Subsidies en fiscaal</h2>
-    <details><summary>Hoe is de AanZET-subsidie berekend?</summary><p>De subsidie is een percentage van de aanschafprijs van de elektrische truck, begrensd door een maximumbedrag. Het percentage en het maximum hangen af van de bedrijfsgrootte. De calculator rekent met de regeling voor een N3 trekker.</p></details>
-    <details><summary>Wat is de MIA en waarom niet samen met AanZET?</summary><p>De MIA is een fiscale regeling: je mag extra aftrekken van de winst. De tool rekent met een grondslag van 90% van de aanschafprijs en 36% extra aftrek daarover, en toont het indicatieve netto belastingvoordeel: 19% bij een winst tot € 200.000 en 25,8% daarboven. AanZET en MIA kunnen niet tegelijk worden gebruikt, dus je kiest er één. Controleer de actuele voorwaarden altijd bij RVO en de Belastingdienst.</p></details>
-    <details><summary>Wat is de ERE-opbrengst?</summary><p>Emissiereductie-eenheden kun je als lader van een elektrische truck verkopen. De netto opbrengst per geladen kWh is een actuele aanname die kan veranderen. Pas hem aan naar de prijs die jij kunt krijgen.</p></details>
-    <h2>Laden en heffing</h2>
-    <details><summary>Hoe werkt de kilometerheffing in de berekening?</summary><p>De vrachtwagenheffing geldt per gereden kilometer op wegen met kilometerheffing, met een lager tarief voor elektrisch. In de tool vul je zelf in hoeveel kilometers over wegen met kilometerheffing gaan en welk tarief per kilometer geldt. De beginwaarden zijn indicatief; controleer de actuele tarieven op vrachtwagenheffing.nl.</p></details>
-    <details><summary>Hoe zit het met de laadpaal?</summary><p>De laadpaal zit in de uitgebreide berekening. Er is gerekend met één laadpaal van 50 kW inclusief installatie. De investering na SPRILA-subsidie (mkb 40% met een maximum van € 88.000, grote ondernemingen 20% met een maximum van € 44.000, minimaal € 2.500 subsidie) is verdeeld over de afschrijftermijn, plus kosten voor netaansluiting, onderhoud en vaste netkosten.</p></details>
-    <h2>Je gegevens</h2>
-    <details><summary>Worden mijn gegevens opgeslagen?</summary><p>Je invoer wordt alleen in je eigen browser bewaard, zodat je de volgende keer verder kunt waar je was. Er gaat niets naar een server. Met Herstel voorbeeldcijfers zet je alles terug.</p></details>
-    <details><summary>Kan ik de uitkomst delen of bewaren?</summary><p>Ja. Bij de uitkomst staat Kopieer samenvatting, dan heb je de belangrijkste cijfers als tekst op je klembord voor een mail of bericht. Met Afdrukken of PDF bewaar je de hele berekening, inclusief je invoer.</p></details>
+    <section id="fq1"><h2>De berekening</h2>
+     <details><summary>Wat is TCO?</summary><p>Total Cost of Ownership: alle kosten van een truck over de gebruiksduur, niet alleen de aanschafprijs. Zo zie je of een duurdere elektrische truck zich terugverdient via lagere energie-, onderhouds- en heffingskosten.</p></details>
+     <details><summary>Wat is het verschil tussen Simpel en Uitgebreid?</summary><p>Simpel is de snelle basisberekening. Uitgebreid neemt jouw invoer over en voegt financiering (rente en rendementseis op eigen geld), een eigen laadpaal, tol in het buitenland en laden onderweg toe. Elke post kun je aan- of uitzetten. Zo zie je precies wat elk onderdeel doet met de besparing.</p></details>
+     <details><summary>Hoe betrouwbaar is de uitkomst?</summary><p>De uitkomst is zo goed als je invoer. Subsidie, verzekering, onderhoud en heffing zijn aannames die per bedrijf verschillen. Chauffeur, overhead en btw zijn niet meegenomen, financiering alleen bij Uitgebreid. Gebruik de tool als eerste vergelijking, niet als financieel of fiscaal advies.</p></details>
+     <details><summary>Waarom telt de restwaarde niet mee in de terugverdientijd?</summary><p>De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen. De restwaarde ontvang je pas bij verkoop, daarom telt die daar niet mee. In de kosten per kilometer en per jaar zit de restwaarde wel, via de afschrijving.</p></details>
+    </section>
+    <section id="fq2"><h2>Subsidies en fiscaal</h2>
+     <details><summary>Hoe is de AanZET-subsidie berekend?</summary><p>De subsidie is een percentage van de aanschafprijs van de elektrische truck, begrensd door een maximumbedrag. Het percentage en het maximum hangen af van de bedrijfsgrootte. De calculator rekent met de regeling voor een N3 trekker.</p></details>
+     <details><summary>Wat is de MIA en waarom niet samen met AanZET?</summary><p>De MIA is een fiscale regeling: je mag extra aftrekken van de winst. De tool rekent met een grondslag van 90% van de aanschafprijs en 36% extra aftrek daarover, en toont het indicatieve netto belastingvoordeel: 19% bij een winst tot € 200.000 en 25,8% daarboven. AanZET en MIA kunnen niet tegelijk worden gebruikt, dus je kiest er één. Controleer de actuele voorwaarden altijd bij RVO en de Belastingdienst.</p></details>
+     <details><summary>Wat is de ERE-opbrengst?</summary><p>Emissiereductie-eenheden kun je als lader van een elektrische truck verkopen. De netto opbrengst per geladen kWh is een actuele aanname die kan veranderen. Pas hem aan naar de prijs die jij kunt krijgen.</p></details>
+    </section>
+    <section id="fq3"><h2>Laden en heffing</h2>
+     <details><summary>Hoe werkt de kilometerheffing in de berekening?</summary><p>De vrachtwagenheffing geldt per gereden kilometer op wegen met kilometerheffing, met een lager tarief voor elektrisch. In de tool vul je zelf in hoeveel kilometers over wegen met kilometerheffing gaan en welk tarief per kilometer geldt. De beginwaarden zijn indicatief; controleer de actuele tarieven op vrachtwagenheffing.nl.</p></details>
+     <details><summary>Hoe zit het met de laadpaal?</summary><p>De laadpaal zit in de uitgebreide berekening. Er is gerekend met één laadpaal van 50 kW inclusief installatie. De investering na SPRILA-subsidie (mkb 40% met een maximum van € 88.000, grote ondernemingen 20% met een maximum van € 44.000, minimaal € 2.500 subsidie) is verdeeld over de afschrijftermijn, plus kosten voor netaansluiting, onderhoud en vaste netkosten.</p></details>
+    </section>
+    <section id="fq4"><h2>Je gegevens</h2>
+     <details><summary>Worden mijn gegevens opgeslagen?</summary><p>Je invoer wordt alleen in je eigen browser bewaard, zodat je de volgende keer verder kunt waar je was. Er gaat niets naar een server. Met Herstel voorbeeldcijfers zet je alles terug.</p></details>
+     <details><summary>Kan ik de uitkomst delen of bewaren?</summary><p>Ja. Bij de uitkomst staat een knop om de samenvatting te kopiëren, dan heb je de belangrijkste cijfers als tekst op je klembord voor een mail of bericht. Met de printknop bewaar je de berekening als PDF.</p></details>
+    </section>
    </div>
-   <aside class="ad" aria-label="Advertentie">Advertentie</aside>
   </div>
  </div>
 </section>
@@ -563,37 +497,33 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px var(-
 <!-- ===== Nieuws ===== -->
 <section class="page" data-page="nieuws" hidden>
  <div class="wrap">
-  <div class="lede"><h1 tabindex="-1">Nieuws</h1><p>Wijzigingen in heffingen, subsidies en tarieven die invloed hebben op je berekening.</p></div>
-  <div class="side">
-   <div class="news">
-    <article><div><time datetime="2026-07-01">1 juli 2026</time><span class="kick">Kilometerheffing</span></div><div><h2>Vrachtwagenheffing is gestart</h2><p>Sinds 1 juli 2026 geldt een kilometerheffing voor vrachtwagens zwaarder dan 3.500 kg. Het tarief per gereden kilometer hangt af van het gewicht en de emissieklasse.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#">Reken het na in de calculator</a></div></div></article>
-    <article><div><time datetime="2026-09-01">1 september 2026</time><span class="kick">Tarieven</span></div><div><h2>Tijdelijk lagere tarieven tot en met 31 december 2026</h2><p>Van 1 september tot en met 31 december 2026 liggen de tarieven 22,3% lager dan in de wet. De calculator rekent met de tarieven vanaf 1 januari 2027; pas de kilometerheffing aan om de tijdelijke korting mee te nemen.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#">Pas de kilometerheffing aan</a></div></div></article>
-    <p class="more">Meer nieuws over subsidies, tarieven en elektrische vrachtwagens volgt.</p>
-   </div>
-   <aside class="ad" aria-label="Advertentie">Advertentie</aside>
+  <div class="phead"><h1 tabindex="-1">Nieuws</h1><p>Wat er verandert aan heffingen, subsidies en tarieven, en wat dat doet met je berekening.</p></div>
+  <div class="tl">
+   <article class="tli"><time datetime="2026-07-01">1 juli 2026</time><span class="kick2">Kilometerheffing</span><h2>Vrachtwagenheffing is gestart</h2><p>Sinds 1 juli 2026 geldt een kilometerheffing voor vrachtwagens zwaarder dan 3.500 kg. Het tarief per gereden kilometer hangt af van het gewicht en de emissieklasse.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#">Reken het na</a></div></article>
+   <article class="tli"><time datetime="2026-09-01">1 september 2026</time><span class="kick2">Tarieven</span><h2>Tijdelijk 22,3% lagere tarieven</h2><p>Van 1 september tot en met 31 december 2026 liggen de tarieven 22,3% lager dan in de wet. De calculator rekent met de tarieven vanaf 1 januari 2027. Open de regel Kilometerheffing in de calculator om de tijdelijke korting mee te nemen.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#">Naar de calculator</a></div></article>
+   <article class="tli soon"><time datetime="2027-01-01">1 januari 2027</time><span class="kick2">Vooruitblik</span><h2>Wettelijke tarieven</h2><p>De tijdelijke korting stopt en de tarieven uit de wet gaan gelden. Dit zijn de tarieven waarmee de calculator standaard rekent.</p></article>
   </div>
+  <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
  </div>
 </section>
 
 <!-- ===== Over ons ===== -->
 <section class="page" data-page="over" hidden>
  <div class="wrap">
-  <div class="lede"><h1 tabindex="-1">Over ons</h1></div>
-  <div class="side">
-   <div class="prose">
-    <p>De TCO TruckTool helpt vervoerders de overstap naar elektrisch door te rekenen met hun eigen cijfers, zonder verkooppraatje.</p>
-    <dl class="prin">
-     <div><dt>Onafhankelijk</dt><dd>De tool heeft geen merkvoorkeur. Je vergelijkt een diesel- en een elektrische truck op basis van jouw eigen cijfers.</dd></div>
-     <div><dt>Transparant</dt><dd>Alle uitgangspunten staan in beeld en zijn aan te passen: aanschaf, afschrijftermijn, restwaarde, verbruik, energieprijzen, ERE, subsidie en kilometerheffing.</dd></div>
-     <div><dt>Totale kosten</dt><dd>De tool rekent per kilometer, per jaar en over de hele afschrijftermijn, met afschrijving, energie, onderhoud, verzekering en kilometerheffing. Bij Uitgebreid komen financiering, laadpaal, buitenlandse tol en laden onderweg erbij.</dd></div>
-    </dl>
-    <h2>Zo rekenen we</h2>
-    <p>De afschrijving per jaar is de aanschafprijs, bij elektrisch verminderd met de subsidie of het MIA-voordeel, min de restwaarde, gedeeld door de afschrijftermijn. Energie is kilometers maal verbruik maal prijs, bij elektrisch min de ERE-opbrengst. Onderhoud is kilometers maal tarief, verzekering een vast bedrag per jaar, kilometerheffing het aantal kilometers met heffing maal het tarief.</p>
-    <p>Bij Uitgebreid worden kilometers in het buitenland uit de Nederlandse heffing gehaald en tegen het tarief van het betreffende land gerekend. De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen.</p>
-    <p class="disc">Dit is een rekenvoorbeeld en geen financieel of fiscaal advies. Subsidiebedragen (AanZET, MIA, SPRILA) en tarieven zijn indicatief. Controleer ze altijd bij RVO en de Belastingdienst.</p>
-   </div>
-   <aside class="ad" aria-label="Advertentie">Advertentie</aside>
+  <div class="phead"><h1 tabindex="-1">Over ons</h1></div>
+    <div class="prose">
+   <p>De TCO TruckTool helpt vervoerders de overstap naar elektrisch door te rekenen met hun eigen cijfers, zonder verkooppraatje.</p>
+   <dl class="prin">
+    <div><dt>Onafhankelijk</dt><dd>De tool heeft geen merkvoorkeur. Je vergelijkt een diesel- en een elektrische truck op basis van jouw eigen cijfers.</dd></div>
+    <div><dt>Transparant</dt><dd>Alle uitgangspunten staan in beeld en zijn aan te passen: aanschaf, afschrijftermijn, restwaarde, verbruik, energieprijzen, ERE, subsidie en kilometerheffing.</dd></div>
+    <div><dt>Totale kosten</dt><dd>De tool rekent per kilometer, per jaar en over de hele afschrijftermijn, met afschrijving, energie, onderhoud, verzekering en kilometerheffing. Bij Uitgebreid komen financiering, laadpaal, buitenlandse tol en laden onderweg erbij.</dd></div>
+   </dl>
+   <h2>Zo rekenen we</h2>
+   <p>De afschrijving per jaar is de aanschafprijs, bij elektrisch verminderd met de subsidie of het MIA-voordeel, min de restwaarde, gedeeld door de afschrijftermijn. Energie is kilometers maal verbruik maal prijs, bij elektrisch min de ERE-opbrengst. Onderhoud is kilometers maal tarief, verzekering een vast bedrag per jaar, kilometerheffing het aantal kilometers met heffing maal het tarief.</p>
+   <p>Bij Uitgebreid worden kilometers in het buitenland uit de Nederlandse heffing gehaald en tegen het tarief van het betreffende land gerekend. De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen.</p>
+   <p class="disc">Dit is een rekenvoorbeeld en geen financieel of fiscaal advies. Subsidiebedragen (AanZET, MIA, SPRILA) en tarieven zijn indicatief. Controleer ze altijd bij RVO en de Belastingdienst.</p>
   </div>
+  <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
  </div>
 </section>
 </main>
@@ -601,52 +531,70 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px var(-
 <footer class="foot">
  <div class="wrap">
   <div class="fin">
-   <div><a class="brand" href="#"><span class="shield">TCO</span>TruckTool</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische trekkers.</p></div>
+   <div><a class="brand" href="#"><span class="bmark" aria-hidden="true"><i></i><i></i></span>TCO TruckTool</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische trekkers.</p></div>
    <nav aria-label="Voettekst"><a href="#">Calculator</a><a href="#uitgebreid">Uitgebreid</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#over-ons">Over ons</a></nav>
   </div>
   <div class="fdis">© TCO TruckTool · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst.</div>
  </div>
 </footer>
 
-<div class="live" id="live" aria-hidden="true"><div class="wrap livein"><span class="ld">Diesel <b id="lvD"></b>/km</span><span class="ld">Elektrisch <b id="lvE"></b>/km</span><span class="lsv" id="lvS"></span><button type="button" id="lvB" tabindex="-1">Bekijk uitkomst</button></div></div>
-<div id="tip" role="tooltip"></div>
-
 <script>
-const SL=[['km','Kilometers per jaar',20000,200000,1000,'km',100000],['kmH','Waarvan op wegen met kilometerheffing',0,200000,1000,'km',75000],['ld','Verbruik diesel',15,60,0.5,'l/100 km',30],['le','Verbruik elektrisch',60,200,1,'kWh/100 km',115],['jr','Afschrijftermijn',3,10,1,'jaar',6],['rw','Restwaarde',0,30,1,'%',10]];
+const SL=[['km','Kilometers per jaar',20000,200000,1000,'km',100000],['kmH','Kilometers op wegen met kilometerheffing',0,200000,1000,'km',75000],['ld','Verbruik diesel',15,60,0.5,'l/100 km',30],['le','Verbruik elektrisch',60,200,1,'kWh/100 km',115],['jr','Afschrijftermijn',3,10,1,'jaar',6],['rw','Restwaarde',0,30,1,'%',10]];
 const NU=[['pD','Aanschaf diesel','€',130000,1000],['pE','Aanschaf elektrisch','€',285000,1000],['dp','Dieselprijs excl. btw','€/L',2,0.01],['sp','Stroom eigen terrein','€/kWh',0.25,0.01],['ere','Netto ERE-opbrengst','€/kWh',0.12,0.01]];
 const MR=[['vD','Verzekering diesel','€/jaar',7000,250],['vE','Verzekering elektrisch','€/jaar',9500,250],['oD','Onderhoud diesel','€/km',0.12,0.01],['oE','Onderhoud elektrisch','€/km',0.08,0.01]];
 const HF=[['tD','Kilometerheffing diesel','€/km',0.201,0.001],['tE','Kilometerheffing elektrisch','€/km',0.038,0.001]];
-let miaHi=false,unitB='km',unitX='jr';
+let miaHi=false,unit='km',touched=false,view='b',page=null;
 const SZD=[['Groot','≥ 250','> € 50 miljoen','of'],['Middelgroot','< 250','< € 50 miljoen','en'],['Klein of non-profit','< 50','< € 10 miljoen','en']];
 const miaCalc=pE=>{const grond=pE*0.9,aftrek=grond*0.36,rate=miaHi?0.258:0.19;return{grond,aftrek,rate,voordeel:aftrek*rate}};
-let selCat=null,lastR=null,lastX=null;
 const AZ=[['Groot',0.111,43900],['Middelgroot',0.21,83200],['Klein of non-profit',0.29,115200]];
-const $=id=>document.getElementById(id),nf=(n,d=0)=>new Intl.NumberFormat('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n),eur=(n,d=0)=>(n<0?'-':'')+'€\u00a0'+nf(Math.abs(n),d);
+const $=id=>document.getElementById(id),nf=(n,d=0)=>new Intl.NumberFormat('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n),eur=(n,d=0)=>(n<0?'-':'')+'€ '+nf(Math.abs(n),d);
 const reduced=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* Alleen opnieuw tekenen wat echt verandert, zodat een klik op een onderdeel niet verloren gaat */
+const setH=(el,h)=>{if(el._h!==h){el._h=h;el.innerHTML=h}};
 
 /* ===== Bouwstenen voor invoer ===== */
 const fdec=f=>f[4]>=1?0:Math.round(-Math.log10(f[4]));
 const inp=f=>{const d=fdec(f),eu=f[2][0]==='€',su=eu?f[2].slice(1):f[2];return`${eu?'<span class="un">€</span>':''}<input id="${f[0]}" class="pre" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" data-dec="${d}" value="${nf(f[3],d)}" data-d="${nf(f[3],d)}">${su?`<span class="un">${su}</span>`:''}`};
-const cell=f=>`<label class="cell" for="${f[0]}"><span class="sr">${f[1]}</span>${inp(f)}</label>`;
 const fld=f=>`<label class="fld" for="${f[0]}"><span class="fl">${f[1]}</span><span class="cell">${inp(f)}</span></label>`;
 const sdec=s=>s[4]<1?1:0;
-const slider=(s,lab)=>`<div class="sl"><div class="slh"><label for="${s[0]}">${lab||s[1]}</label><span class="slv"><input class="slin" id="${s[0]}_v" data-for="${s[0]}" type="text" inputmode="${sdec(s)?'decimal':'numeric'}" autocomplete="off" size="${nf(s[3],sdec(s)).length}" aria-label="${s[1]} in ${s[5]}"><span class="un">${s[5]}</span></span></div><input id="${s[0]}" type="range" min="${s[2]}" max="${s[3]}" step="${s[4]}" value="${s[6]}"></div>`;
-const vhead='<div></div><div class="vth"><i class="sw d"></i>Diesel</div><div class="vth"><i class="sw e"></i>Elektrisch</div>';
+const slider=(s,lab)=>`<div class="sl"><div class="slh"><label for="${s[0]}">${lab||s[1]}</label><span class="slv"><input class="slin" id="${s[0]}_v" data-for="${s[0]}" type="text" inputmode="${sdec(s)?'decimal':'numeric'}" autocomplete="off" size="${nf(s[3],sdec(s)).length}" aria-label="${s[1]} in ${s[5]}"><span class="un">${s[5]}</span></span></div><input id="${s[0]}" type="range" min="${s[2]}" max="${s[3]}" data-mx="${s[3]}" step="${s[4]}" value="${s[6]}"></div>`;
+const sw=(id,t,on)=>`<label class="sw2 row"><input id="${id}" type="checkbox"${on?' checked':''}><span>${t}</span></label>`;
 
+/* ===== Uitgebreid: gegevens ===== */
+const SLX=[['xfs','Gefinancierd deel',0,100,5,'%',80],['xos','Aandeel onderweg geladen',0,60,5,'%',20]];
+const XF={fin:[['xri','Rente lening','%',6,0.1],['xre','Rendement eigen geld','%',4,0.1]],
+ lad:[['xl0','Investering laadpaal (bruto)','€',15200,100],['xla','Netaansluiting en voorbereiding','€',5000,500],['xlo','Onderhoud en beheer','€/jaar',400,50],['xln','Vaste netkosten (capaciteit)','€/jaar',600,50]],
+ ow:[['xop','Prijs openbaar laden','€/kWh',0.55,0.01],['xot','Tijdverlies per 100 km geladen','min',6,1],['xoh','Kosten stilstand','€/uur',60,5]]};
+const TOLC={vl:'B',wa:'B',fr:'F',de:'D',it:'I',pl:'PL',at:'A'},tolSel=new Set();
+const TOL=[['vl','Vlaanderen',0.038,0.245],['wa','Wallonië',0.205,0.205],['fr','Frankrijk',0.30,0.30,'Tolwegen in concessie, gemiddeld tarief'],['de','Duitsland',0,0.348],['it','Italië',0.20,0.20,'Tolwegen in concessie, gemiddeld tarief'],['pl','Polen',0.13,0.13],['at','Oostenrijk',0.118,0.509]];
+const tr=n=>eur(n,Math.round(n*1000)%10?3:2);
+const tolTxt=c=>(c[2]===c[3]?`Diesel en elektrisch ${tr(c[3])} per km`:c[2]===0?`Elektrisch geen tol · diesel ${tr(c[3])} per km`:`Elektrisch ${tr(c[2])} · diesel ${tr(c[3])} per km`)+(c[4]?` · ${c[4]}`:'');
+const sg=n=>(n>0.5?'+ ':n<-0.5?'− ':'')+'€ '+nf(Math.abs(n));
+
+/* ===== Opbouw van de pagina ===== */
+const ROWS=[['afs','Aanschaf'],['en','Energie'],['ond','Onderhoud'],['ver','Verzekering'],['hef','Kilometerheffing']];
+const XROWS=[['fin','Financiering','xFin'],['lad','Laadpaal','xLad'],['tij','Laden onderweg','xOw'],['tol','Tol buitenland','']];
+const two=(c,sub,a,b)=>`<div class="grid3 ed" id="ed-${c}" hidden><div class="edd">${a}</div><div class="edm">${sub}</div><div class="ede">${b}</div></div>`;
+const full=(c,h)=>`<div class="grid3 ed" id="ed-${c}" hidden><div class="edf">${h}</div></div>`;
+const rowHead=(c,n)=>`<button type="button" class="grid3 rh" aria-expanded="false" aria-controls="ed-${c}"><span class="rd"><b class="rv" id="vD-${c}"></b><i class="bar" id="bD-${c}"></i></span><span class="rl"><b>${n}</b><small id="df-${c}"></small><i aria-hidden="true"></i></span><span class="re"><i class="bar" id="bE-${c}"></i><b class="rv" id="vE-${c}"></b></span></button>`;
+const EDIT={
+ afs:()=>two('afs','Afschrijving per jaar, na restwaarde en subsidie. Die pas je aan in de zin hierboven.',fld(NU[0]),fld(NU[1])+'<p class="hint" id="afsN"></p>'),
+ en:()=>two('en','Verbruik en prijs per brandstof.',slider(SL[2])+fld(NU[2]),slider(SL[3])+fld(NU[3])+fld(NU[4])+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+'</div>'),
+ ond:()=>two('ond','Onderhoud per gereden kilometer.',fld(MR[2]),fld(MR[3])),
+ ver:()=>two('ver','Verzekering per jaar.',fld(MR[0]),fld(MR[1])),
+ hef:()=>two('hef','Tarieven vanaf 1 januari 2027. Het aantal kilometers met heffing staat in de zin hierboven.',fld(HF[0]),fld(HF[1])),
+ fin:()=>full('fin',sw('xFin','Financiering meerekenen',1)+`<div class="xg">${slider(SLX[0])}<div class="fg" style="margin-top:16px">${fld(XF.fin[0])}${fld(XF.fin[1])}</div><p class="hint">Annuïteitenlening over de afschrijftermijn, voor beide trucks. Over je eigen geld reken je een rendementseis, want dat geld kan elders renderen.</p></div>`),
+ lad:()=>two('lad','Alleen elektrisch heeft een laadpunt nodig.','<p class="na">Diesel tankt bij de pomp. Geen laadpaal nodig.</p>',sw('xLad','Laadpaal meerekenen',1)+`<div class="xg">${sw('xSp','SPRILA-subsidie meenemen',0)}<div class="fg">${XF.lad.map(fld).join('')}</div><p class="hint" id="xsh"></p></div>`),
+ tij:()=>two('tij','Openbaar laden is duurder, levert geen ERE op en kost tijd.','<p class="na">Diesel tankt onderweg zonder noemenswaardig tijdverlies.</p>',sw('xOw','Laden onderweg meerekenen',0)+`<div class="xg">${slider(SLX[1])}<div class="fg" style="margin-top:16px">${XF.ow.map(fld).join('')}</div></div>`),
+ tol:()=>full('tol',`<p class="hint" style="margin:0 0 14px">Rijd je ook in het buitenland? Kies de landen. Die kilometers gaan van je kilometers met heffing af en worden tegen het tarief van dat land gerekend.</p><div class="chips">${TOL.map(c=>`<button type="button" class="chip" data-tol="${c[0]}" aria-pressed="false"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</button>`).join('')}</div><div id="tolBody" hidden><div class="tolcap"><span>Buitenlandse kilometers binnen je kilometers met heffing</span><b id="xth"></b></div><div class="capbar"><i id="xtb"></i></div><div class="tolg">${TOL.map(c=>`<div class="tc" id="tc_${c[0]}" hidden><div class="tch"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</div><p class="tcr">${tolTxt(c)}</p>${slider(['k_'+c[0],'Kilometers per jaar in '+c[1],0,200000,1000,'km',0],`Kilometers per jaar<span class="sr"> in ${c[1]}</span>`)}</div>`).join('')}</div></div>`)};
+const POPS=[['km','',slider(SL[0])],['kmH','',slider(SL[1])],['jr','',slider(SL[4])],['rw','',slider(SL[5])],
+ ['gr','Bedrijfsgrootte',`<div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div><p class="hint">Bepaalt de AanZET-subsidie en bij Uitgebreid ook de SPRILA-subsidie.</p>`],
+ ['sub','Subsidie of fiscale regeling',`<div class="seg" role="radiogroup" aria-label="Subsidie of fiscale regeling"><label><input type="radio" name="subk" id="aSub" checked><span>AanZET</span></label><label><input type="radio" name="subk" id="aMia"><span>MIA</span></label><label><input type="radio" name="subk" id="aNone"><span>Geen</span></label></div><p class="hint" id="azh"></p><div id="miab" hidden><p class="poph" style="margin:16px 0 8px">Winst per jaar</p><div class="seg"><button type="button" data-mia="0">Tot € 200.000</button><button type="button" data-mia="1">Boven € 200.000</button></div></div><div class="pamt"><span id="pamtL"></span><span id="pamtV"></span></div>`]];
 function build(){
- miaHi=false;
- $('p1').innerHTML=SL.map(s=>slider(s)).join('');
- const VT=[['Aanschaf','',NU[0],NU[1]],['Energieprijs','diesel excl. btw · stroom eigen terrein',NU[2],NU[3]],['Verzekering','',MR[0],MR[1]],['Onderhoud','',MR[2],MR[3]]];
- $('p2').innerHTML=`<div class="vt">${vhead}${VT.map(r=>`<div class="vtl">${r[0]}${r[1]?`<small>${r[1]}</small>`:''}</div>${cell(r[2])}${cell(r[3])}`).join('')}<div class="vtl">ERE-opbrengst<small>netto per geladen kWh</small></div><div class="na" aria-hidden="true">—</div>${cell(NU[4])}</div><label class="sw2 ere"><input id="aERE" type="checkbox" checked><span>ERE-opbrengst meerekenen</span></label>`;
- $('p3').innerHTML=`<div class="sub">Kilometerheffing <small>tarieven vanaf 1 jan 2027</small></div>
- <div class="vt">${vhead}<div class="vtl">Per kilometer</div>${cell(HF[0])}${cell(HF[1])}</div>
- <div class="sub">Bedrijfsgrootte</div>
- <div class="seg full" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1">
- <div class="sz" id="azd"></div>
- <div class="sub">Regeling</div>
- <div class="seg full" role="radiogroup" aria-label="Subsidie of fiscale regeling"><label><input type="radio" name="subk" id="aSub" checked><span>AanZET</span></label><label><input type="radio" name="subk" id="aMia"><span>MIA</span></label><label><input type="radio" name="subk" id="aNone"><span>Geen</span></label></div>
- <p class="hint" id="azh"></p><div id="azr"></div><div id="miab"></div>`;
- bindIn('#inB',render);
+ $('rows').innerHTML=ROWS.map(q=>`<div class="row" id="row-${q[0]}">${rowHead(q[0],q[1])}${EDIT[q[0]]()}</div>`).join('');
+ $('xrows').insertAdjacentHTML('beforeend',XROWS.map(q=>`<div class="row" id="row-${q[0]}">${rowHead(q[0],q[1])}${EDIT[q[0]]()}</div>`).join(''));
+ $('pops').innerHTML=POPS.map(p=>`<div class="pop" id="pop-${p[0]}" role="dialog" aria-label="${p[1]||SL.find(s=>s[0]===p[0])[1]}" hidden>${p[1]?`<p class="poph">${p[1]}</p>`:''}${p[2]}<div class="popf"><button type="button" class="popok">Klaar</button></div></div>`).join('');
+ bindIn('#calc',()=>{touched=true;render()});
 }
 function bindIn(root,fn){
  document.querySelectorAll(root+' input[data-dec]').forEach(e=>{
@@ -655,14 +603,14 @@ function bindIn(root,fn){
    if(d===0){const before=e.value.slice(0,e.selectionStart).replace(/\D/g,'').length,digits=e.value.replace(/\D/g,'');e.value=digits?nf(+digits):'';let c=0,i=0;for(;i<e.value.length&&c<before;i++){if(/\d/.test(e.value[i]))c++}e.setSelectionRange(i,i)}
    else e.value=e.value.replace(/[^\d.,]/g,'');
    e.classList.toggle('pre',e.value===e.dataset.d);fn()});
-  e.addEventListener('blur',()=>{e.value=nf(v(e.id),d);e.classList.toggle('pre',e.value===e.dataset.d);fn()});
+  e.addEventListener('blur',()=>{e.value=nf(v(e.id),d);e.classList.toggle('pre',e.value===e.dataset.d);render()});
  });
  document.querySelectorAll(root+' input[type=range],'+root+' input[type=checkbox],'+root+' input[type=radio]').forEach(e=>e.addEventListener('input',fn));
 }
 const v=id=>{const e=$(id),s=e.value.trim();if(e.dataset.dec===undefined)return parseFloat(s)||0;return parseFloat(e.dataset.dec==='0'?s.replace(/\D/g,''):s.replace(',','.'))||0},ck=id=>$(id).checked;
 
-/* Typbare waarde naast een schuif: toon de schuifwaarde, en zet bij Enter of verlaten de schuif op het getypte getal */
-function syncSl(root){document.querySelectorAll(root+' .slin').forEach(i=>{if(i===document.activeElement)return;const r=$(i.dataset.for);i.value=nf(+r.value,+r.step<1?1:0)})}
+/* Typbare waarde naast een schuif */
+function syncSl(){document.querySelectorAll('.slin').forEach(i=>{if(i===document.activeElement)return;const r=$(i.dataset.for);i.value=nf(+r.value,+r.step<1?1:0)})}
 function commitSl(i){
  const r=$(i.dataset.for),s=i.value.trim(),dec=+r.step<1;
  const n=parseFloat(dec&&!s.includes(',')?s:dec?s.replace(/\./g,'').replace(',','.'):s.replace(/\D/g,''));
@@ -673,7 +621,8 @@ document.addEventListener('change',e=>{if(e.target.matches('.slin'))commitSl(e.t
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('.slin')){e.preventDefault();commitSl(e.target);e.target.select()}});
 document.addEventListener('focusin',e=>{if(e.target.matches('.slin'))setTimeout(()=>e.target.select(),0)});
 
-const CAT=[['afs','Aanschaf (incl. restwaarde)','#3D6CB0'],['en','Energie (na ERE)','#2E8B66'],['ond','Onderhoud','#D0A030'],['ver','Verzekering','#C8603C'],['hef','Kilometerheffing','#8A70C8']];
+/* ===== Berekening ===== */
+const CAT=[['afs','Aanschaf (incl. restwaarde)'],['en','Energie (na ERE)'],['ond','Onderhoud'],['ver','Verzekering'],['hef','Kilometerheffing']];
 function calc(o={}){
  const g=k=>k in o?o[k]:v(k);
  const L=Math.max(1,Math.round(g('jr'))),km=Math.max(1,g('km')),kmH=Math.min(g('kmH'),km),rw=g('rw')/100,pE=g('pE'),pD=g('pD');
@@ -685,108 +634,7 @@ function calc(o={}){
  const tot=x=>CAT.reduce((s,c)=>s+x[c[0]],0),td=tot(D),te=tot(E);
  return{D,E,td,te,L,km,netE,sub,kwh,ereV,stroom:kwh*g('sp'),co2d:lit*3.2/1000,co2e:kwh*0.45/1000,hefDiff:D.hef-E.hef};
 }
-
-/* ===== Gedeelde uitkomst-onderdelen ===== */
-const verdict=(td,te,L)=>{const d=td-te,pc=Math.abs(d)/td*100;if(pc<0.5)return`Diesel en elektrisch zijn over ${L} jaar ongeveer even duur.`;return d>0?`Elektrisch is ${nf(pc)}% goedkoper. Over ${L} jaar scheelt dat ${eur(d*L)}.`:`Elektrisch is ${nf(pc)}% duurder. Over ${L} jaar kost dat ${eur(-d*L)} extra.`};
-function hero(key,box,td,te,km,L){
- const d=td-te,cheap=d>=0,even=Math.abs(d)/td<0.005;
- const lane=(n,t,best)=>`<div class="drip"><div class="lt"><span>${n}</span>${best?'<span class="g">Goedkoopst</span>':''}</div><div class="lv"><span data-tw>${eur(t/km,2)}</span><small>/km</small></div><div class="ls">${eur(t)} per jaar<br>${eur(t*L)} in ${L} jaar</div></div>`;
- box.innerHTML=`<div class="gantry"><div class="lanes">${lane('Diesel',td,!cheap&&!even)}${lane('Elektrisch',te,cheap&&!even)}</div><div class="drip wide${cheap?'':' neg'}"><div class="lt">${cheap?'Besparing elektrisch':'Meerkosten elektrisch'}</div><div class="lv"><span data-tw>${eur(Math.abs(d))}</span><small>/jaar</small></div><div class="ls">${eur(Math.abs(d)/km,2)} per km · ${eur(Math.abs(d)*L)} in ${L} jaar</div></div></div>`;
- tween(key,box.querySelectorAll('[data-tw]'),[td/km,te/km,Math.abs(d)],[n=>eur(n,2),n=>eur(n,2),n=>eur(n)]);
-}
-const units=(L,cur,attr)=>[['km','Per km'],['jr','Per jaar'],['tot',`Over ${L} jaar`]].map(u=>`<button type="button" data-${attr}="${u[0]}" aria-pressed="${u[0]===cur}">${u[1]}</button>`).join('');
-function bdTable(cats,D,E,km,L,unit,sel){
- const k=unit==='km'?1/km:unit==='tot'?L:1,dd=unit==='km'?2:0,f=n=>eur(n*k,dd);
- const df=n=>{const x=n*k;if(Math.abs(x)<(dd?0.005:0.5))return'<span>—</span>';return`<span class="${x<0?'good':'bad'}">${x<0?'−':'+'} ${eur(Math.abs(x),dd)}</span>`};
- const tD=cats.reduce((s,c)=>s+D[c[0]],0),tE=cats.reduce((s,c)=>s+E[c[0]],0);
- return`<table class="bt"><thead><tr><th scope="col">Onderdeel</th><th scope="col">Diesel</th><th scope="col">Elektrisch</th><th scope="col">Verschil</th></tr></thead><tbody>${cats.map(c=>{const z=Math.abs(D[c[0]])<0.5&&Math.abs(E[c[0]])<0.5;return`<tr${sel?` data-c="${c[0]}"`:''}${z?' class="z"':''}><td>${sel?`<i class="dot" style="background:${c[2]}"></i>`:''}${c[1]}</td><td>${f(D[c[0]])}</td><td>${f(E[c[0]])}</td><td>${df(E[c[0]]-D[c[0]])}</td></tr>`}).join('')}<tr class="tot"><td>Totaal</td><td>${f(tD)}</td><td>${f(tE)}</td><td>${df(tE-tD)}</td></tr></tbody></table>`;
-}
-const facts=rows=>rows.filter(Boolean).map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('');
-
-function render(){
- $('kmH').max=v('km');
- syncSl('#p1');
- const gi=Math.round(v('gr')),az=AZ[gi]||AZ[1],zd=SZD[gi]||SZD[1];
- document.querySelectorAll('#grs [data-gr]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.gr===gi));
- $('azd').innerHTML=`<div><small>Werknemers</small><b>${zd[1]}</b></div><i>${zd[3]}</i><div><small>Jaaromzet</small><b>${zd[2]}</b></div>${zd[0].startsWith('Klein')?'<p>Ook non-profitinstellingen vallen in deze categorie.</p>':''}`;
- const mc=miaCalc(v('pE'));
- $('azh').textContent=ck('aSub')?`AanZET: ${nf(az[1]*100,1)}% van de aanschaf, maximaal ${eur(az[2])}.`:ck('aMia')?'MIA: 36% extra aftrek over 90% van de aanschafprijs.':'Geen subsidie of fiscaal voordeel.';
- $('azr').innerHTML=ck('aSub')?`<div class="amt"><span>Subsidie</span><span>${eur(Math.min(v('pE')*az[1],az[2]))}</span></div>`:'';
- $('miab').innerHTML=ck('aMia')?`<div class="sub" style="margin-top:16px">Winst per jaar</div><div class="seg full"><button type="button" data-mia="0" aria-pressed="${!miaHi}">Tot € 200.000</button><button type="button" data-mia="1" aria-pressed="${miaHi}">Boven € 200.000</button></div><div class="amt"><span>Belastingvoordeel</span><span>${eur(mc.voordeel)}</span></div><p class="hint">Netto belastingvoordeel, indicatief bij een BV. AanZET en MIA kunnen niet samen.</p>`:'';
- $('ere').closest('.cell').classList.toggle('off',!ck('aERE'));
- const r=calc(),L=r.L;
- $('sub').textContent=verdict(r.td,r.te,L);
- $('chip').textContent=`${nf(r.km)} km per jaar · ${L} jaar`;
- hero('b',$('heroB'),r.td,r.te,r.km,L);
- $('unitB').innerHTML=units(L,unitB,'ub');
- $('tblB').innerHTML=bdTable(CAT,r.D,r.E,r.km,L,unitB,true);
- $('chT').textContent=`Totale kosten over ${L} jaar`;
- const mx=Math.max(r.td,r.te,1);
- const row=(n,c,x,t)=>`<div class="hbr"><div class="hbl"><span><i class="sw ${c}"></i>${n}</span><b>${eur(t*L)}</b></div><div class="hb" data-n="${n}" style="width:${Math.max(0,t)/mx*100}%">${CAT.map(k=>{const q=Math.max(0,x[k[0]]);return q>0?`<button type="button" data-c="${k[0]}" aria-label="${n}, ${k[1]}: ${eur(q*L)}" style="flex:${q} 1 0;background:${k[2]}"></button>`:''}).join('')}</div></div>`;
- $('chartB').innerHTML=`${row('Diesel','d',r.D,r.td)}${row('Elektrisch','e',r.E,r.te)}<div class="lg">${CAT.map(c=>`<button type="button" class="lgb" data-c="${c[0]}" aria-pressed="false"><i class="dot" style="background:${c[2]}"></i>${c[1]}</button>`).join('')}</div><div class="cbd" id="cbd"></div>`;
- $('factsB').innerHTML=facts([
-  [ck('aMia')?'MIA-voordeel':'Subsidie',eur(r.sub)],
-  ['Netto aanschaf elektrisch',eur(r.netE)],
-  ['Stroom per jaar',`${eur(r.stroom)} · ${nf(r.kwh)} kWh`],
-  ['ERE-opbrengst per jaar',eur(r.ereV)],
-  ['Kilometerheffing elektrisch',`${eur(Math.abs(r.hefDiff))} ${r.hefDiff>=0?'minder':'meer'} per jaar`],
-  ['CO₂-reductie',`± ${nf(r.co2d-r.co2e)} ton per jaar`]]);
- lastR=r;paintSel();live();save();
-}
-function paintSel(){
- const r=lastR;if(!r)return;
- document.querySelectorAll('#outB [data-c]').forEach(e=>{const on=e.dataset.c===selCat;e.classList.toggle('on',on);e.classList.toggle('dim',!!selCat&&!on&&!e.matches('tr'));if(e.matches('button'))e.setAttribute('aria-pressed',on)});
- const el=$('cbd');if(!el)return;
- if(!selCat){el.innerHTML='<span>Klik op een onderdeel in de grafiek, de legenda of de tabel om de bijdrage te zien.</span>';return}
- const c=CAT.find(x=>x[0]===selCat),L=r.L,d=r.D[selCat]*L,e=r.E[selCat]*L;
- el.innerHTML=`<b><i class="dot" style="background:${c[2]}"></i>${c[1]}</b><span>Diesel ${eur(d)} (${nf(d/(r.td*L)*100)}% van het totaal)</span><span>Elektrisch ${eur(e)} (${nf(e/(r.te*L)*100)}% van het totaal)</span><span>Verschil ${eur(Math.abs(d-e))}, elektrisch ${e<=d?'lager':'hoger'}</span>`;
-}
-$('outB').addEventListener('click',e=>{const t=e.target.closest('[data-c]');if(!t)return;selCat=selCat===t.dataset.c?null:t.dataset.c;paintSel()});
-const tip=$('tip');
-function showTip(t,x,y){
- const r=lastR;if(!r)return;const c=CAT.find(q=>q[0]===t.dataset.c),L=r.L,dot=`<i class="dot" style="background:${c[2]}"></i>`;let h;
- if(t.classList.contains('lgb')){h=`<b>${dot}${c[1]}</b><span>Diesel ${eur(r.D[c[0]]*L)}</span><span>Elektrisch ${eur(r.E[c[0]]*L)}</span><small>totaal over ${L} jaar</small>`}
- else{const n=t.closest('.hb').dataset.n,o=n==='Diesel'?r.D:r.E,tot=n==='Diesel'?r.td:r.te,a=o[c[0]]*L;h=`<b>${dot}${c[1]}</b><span>${n}</span><strong>${eur(a)}</strong><small>over ${L} jaar · ${nf(a/(tot*L)*100)}% van het totaal</small>`}
- tip.innerHTML=h;tip.classList.add('show');
- const w=tip.offsetWidth,hh=tip.offsetHeight;let px=x+14,py=y+14;if(px+w>innerWidth-8)px=x-w-14;if(py+hh>innerHeight-8)py=y-hh-14;
- tip.style.left=Math.max(8,px)+'px';tip.style.top=Math.max(8,py)+'px';
-}
-const hideTip=()=>tip.classList.remove('show'),tipT=e=>e.target.closest('.hb [data-c],.lgb');
-$('outB').addEventListener('mousemove',e=>{const t=tipT(e);t?showTip(t,e.clientX,e.clientY):hideTip()});
-$('outB').addEventListener('mouseleave',hideTip);
-$('outB').addEventListener('focusin',e=>{const t=tipT(e);if(!t)return;const b=t.getBoundingClientRect();showTip(t,b.right,b.top)});
-$('outB').addEventListener('focusout',hideTip);
-addEventListener('scroll',hideTip,{passive:true});
-$('rs').onclick=()=>{build();render()};
-$('p3').addEventListener('click',e=>{
- const m=e.target.closest('[data-mia]');if(m){miaHi=m.dataset.mia==='1';render();return}
- const g=e.target.closest('[data-gr]');if(g){$('gr').value=g.dataset.gr;render()}
-});
-$('unitB').addEventListener('click',e=>{const b=e.target.closest('[data-ub]');if(b){unitB=b.dataset.ub;render()}});
-
-/* ===== Uitgebreide berekening ===== */
-let view='b';
-const SLX=[['xfs','Gefinancierd deel',0,100,5,'%',80],['xos','Aandeel onderweg geladen',0,60,5,'%',20]];
-const XF={fin:[['xri','Rente lening','%',6,0.1],['xre','Rendement eigen geld','%',4,0.1]],
- lad:[['xl0','Investering laadpaal (bruto)','€',15200,100],['xla','Netaansluiting en voorbereiding','€',5000,500],['xlo','Onderhoud en beheer','€/jaar',400,50],['xln','Vaste netkosten (capaciteit)','€/jaar',600,50]],
- ow:[['xop','Prijs openbaar laden','€/kWh',0.55,0.01],['xot','Tijdverlies per 100 km geladen','min',6,1],['xoh','Kosten stilstand','€/uur',60,5]]};
 const CATX=[...CAT,['lad','Laadpaal'],['fin','Financiering'],['tol','Tol buitenland'],['tij','Tijdverlies laden onderweg']];
-const TOLC={vl:'B',wa:'B',fr:'F',de:'D',it:'I',pl:'PL',at:'A'},tolSel=new Set();
-const TOL=[['vl','Vlaanderen',0.038,0.245],['wa','Wallonië',0.205,0.205],['fr','Frankrijk',0.30,0.30,'Tolwegen in concessie, gemiddeld tarief'],['de','Duitsland',0,0.348],['it','Italië',0.20,0.20,'Tolwegen in concessie, gemiddeld tarief'],['pl','Polen',0.13,0.13],['at','Oostenrijk',0.118,0.509]];
-const tr=n=>eur(n,Math.round(n*1000)%10?3:2);
-const tolTxt=c=>(c[2]===c[3]?`Diesel en elektrisch ${tr(c[3])} per km`:c[2]===0?`Elektrisch geen tol · diesel ${tr(c[3])} per km`:`Elektrisch ${tr(c[2])} · diesel ${tr(c[3])} per km`)+(c[4]?` · ${c[4]}`:'');
-const sg=n=>(n>0.5?'+ ':n<-0.5?'− ':'')+'€\u00a0'+nf(Math.abs(n));
-const px=(tg,t,sl,fs,h,off)=>`<div class="pnh"><h3>${t}</h3><label class="sw2"><input id="${tg}" type="checkbox" checked><span>Meerekenen</span></label></div><p class="hint offn" hidden>${off}</p><div class="xg">${sl?`<div style="margin-bottom:16px">${slider(sl)}</div>`:''}<div class="fg">${fs.map(f=>fld(f)).join('')}</div>${h?`<p class="hint">${h}</p>`:''}</div>`;
-function buildX(){
- $('px1').innerHTML=px('xFin','Financiering',SLX[0],XF.fin,'Annuïteitenlening over de afschrijftermijn, voor beide trucks. Over je eigen geld reken je een rendementseis.','Staat uit. Zet aan om rente en rendement op eigen geld mee te rekenen.');
- $('px2').innerHTML=px('xLad','Laadpaal',null,XF.lad,'','Staat uit. Zet aan om een eigen laadpaal van 50 kW mee te rekenen.');
- $('px3').innerHTML=`<div class="pnh"><h3>Tol buitenland</h3></div><p class="hint" style="margin:-8px 0 14px">Rijd je ook in het buitenland? Kies de landen. Die kilometers gaan van je kilometers met heffing af en worden tegen het tarief van dat land gerekend.</p><div class="chips">${TOL.map(c=>`<button type="button" class="chip" data-tol="${c[0]}" aria-pressed="false"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</button>`).join('')}</div><div id="tolBody" hidden><div class="tolcap"><span>Buitenlandse kilometers, binnen je kilometers op wegen met heffing</span><b id="xth"></b></div><div class="capbar"><i id="xtb"></i></div><div class="tolg">${TOL.map(c=>`<div class="tc" id="tc_${c[0]}" hidden><div class="tch"><span class="oval">${TOLC[c[0]]}</span><span class="tcn">${c[1]}</span></div><p class="tcr">${tolTxt(c)}</p>${slider(['k_'+c[0],'Kilometers per jaar in '+c[1],0,200000,1000,'km',0],`Kilometers per jaar<span class="sr"> in ${c[1]}</span>`)}</div>`).join('')}</div></div>`;
- $('px4').innerHTML=px('xOw','Laden onderweg',SLX[1],XF.ow,'Openbaar laden is duurder, levert geen ERE op en kost tijd. Dat tijdverlies telt als stilstandkosten.','Staat uit. Zet aan als je ook onderweg laadt, tegen een hoger tarief en met tijdverlies.');
- $('px2').querySelector('.xg').insertAdjacentHTML('afterbegin','<label class="sw2 row"><input id="xSp" type="checkbox"><span>SPRILA-subsidie meenemen</span></label>');
- $('px2').querySelector('.fg').insertAdjacentHTML('afterend','<p class="hint" id="xsh"></p>');
- $('xOw').checked=false;
- bindIn('#inX',renderX);
-}
 function calcX(o={}){
  const b=calc(o),g=k=>k in o?o[k]:v(k),L=b.L,km=b.km,pD=g('pD'),pE=g('pE'),rw=g('rw')/100;
  const D={...b.D,lad:0,fin:0,tol:0,tij:0},E={...b.E,lad:0,fin:0,tol:0,tij:0};
@@ -804,61 +652,110 @@ function calcX(o={}){
  const tot=o=>CATX.reduce((s,c)=>s+o[c[0]],0);
  return{b,D,E,td:tot(D),te:tot(E),L,km,kwhOw,spr,dFin:D.fin-E.fin,dLad:-E.lad,dTol:(D.tol+D.hef-b.D.hef)-(E.tol+E.hef-b.E.hef),dOw:-((E.en-b.E.en)+E.tij)};
 }
-function payHTML(x){
- const b=x.b,L=x.L,g=v,inv=ck('xLad')?g('xl0'):0,aans=ck('xLad')?g('xla'):0;
- const upD=g('pD'),upE=g('pE')-b.sub+(ck('xLad')?inv-x.spr+aans:0);
- const opD=x.D.ond+x.D.ver+x.D.en+x.D.hef+x.D.tol+x.D.tij+x.D.fin,opE=x.E.ond+x.E.ver+x.E.en+x.E.hef+x.E.tol+x.E.tij+x.E.fin+(ck('xLad')?g('xlo')+g('xln'):0);
- const sv=opD-opE,gap=upE-upD,be=gap<=0?0:sv>0?gap/sv:null;
- const T=Math.max(L,be!==null?Math.min(Math.ceil(be)+1,15):L),W=Math.round(Math.max(480,Math.min(900,$('outX').clientWidth||640))),H=280,mL=58,mR=8,mT=14,mB=26,cD=t=>upD+opD*t,cE=t=>upE+opE*t;
- const hi0=Math.max(cD(T),cE(T),cD(0),cE(0)),lo0=Math.min(cD(0),cE(0),cD(T),cE(T)),raw=(hi0-lo0)/4||1,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mg).find(m=>m>=raw),lo=Math.max(0,Math.floor(lo0/stp)*stp),hi=Math.ceil(hi0/stp)*stp,nT=Math.round((hi-lo)/stp);
- const X=t=>mL+t/T*(W-mL-mR),Y=c=>mT+(1-(c-lo)/((hi-lo)||1))*(H-mT-mB);
- const ln=f=>`M${X(0).toFixed(1)},${Y(f(0)).toFixed(1)}L${X(T).toFixed(1)},${Y(f(T)).toFixed(1)}`;
- let area='',mk='';
- if(be!==null&&be<T){const bx=X(be),by=Y(cD(be));area=`<path d="M${bx},${by}L${X(T)},${Y(cD(T))}L${X(T)},${Y(cE(T))}Z" fill="#2E8B66" opacity=".18"/>`;
-  mk=`<line x1="${bx}" x2="${bx}" y1="${mT}" y2="${H-mB}" stroke="#1F2327" stroke-opacity=".3" stroke-dasharray="3 4"/><circle cx="${bx}" cy="${by}" r="6" fill="#fff" stroke="#1E7A4E" stroke-width="3"/>`;}
- const ticks=[];for(let t=0;t<=T;t++)ticks.push(`<text x="${X(t)}" y="${H-6}" text-anchor="${t===0?'start':t===T?'end':'middle'}">${t===0?'Start':t}</text>`);
- const grid=Array.from({length:nT+1},(_,i)=>i/nT).map(f=>{const y=mT+f*(H-mT-mB),c=lo+(1-f)*(hi-lo);return`<line x1="${mL}" x2="${W-mR}" y1="${y}" y2="${y}" stroke="#1F2327" stroke-opacity=".08"/><text x="${mL-8}" y="${y+4}" text-anchor="end">€ ${nf(Math.round(c/1000))}k</text>`}).join('');
- const M=be===null?0:Math.round(be*12),yr=Math.floor(M/12),mo=M%12;
- const txt=be===null?'Niet terugverdiend':be===0?'Direct':[yr?`${yr} <small>jaar</small>`:'',mo?`${mo} <small>${mo===1?'maand':'maanden'}</small>`:''].filter(Boolean).join(' ')||'0 <small>maanden</small>';
- const note=be===null?'Elektrisch is per jaar niet goedkoper dan diesel.':be===0?'Elektrisch is vanaf de start goedkoper.':be>L?`Pas na de afschrijftermijn van ${L} jaar.`:`${nf(be/L*100)}% van de afschrijftermijn van ${L} jaar.`;
- const pct=be===null?0:be===0?100:Math.min(100,be/T*100);
- const lab=be!==null&&be>0&&be<T?`<g transform="translate(${Math.min(Math.max(X(be),52),W-52)},${Y(cD(be))-26})"><rect x="-44" y="-15" width="88" height="26" rx="13" fill="#1E7A4E"/><text y="2" text-anchor="middle" style="fill:#fff;font-weight:600;font-size:12px">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`:'';
- return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div></div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b></div><div><span>Besparing gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b></div></div></div><div class="pbbar"><i style="width:${pct}%"></i></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Opgebouwde kosten per jaar, diesel en elektrisch">${grid}${area}<path d="${ln(cD)}" stroke="#1F2327" stroke-width="3" fill="none" stroke-linecap="round"/><path d="${ln(cE)}" stroke="#1E7A4E" stroke-width="3" fill="none" stroke-linecap="round"/>${mk}${lab}${ticks.join('')}</svg><div class="pbk"><span><i style="background:#1F2327"></i>Diesel</span><span><i style="background:#1E7A4E"></i>Elektrisch</span><span>Opgebouwde kosten per jaar, inclusief financiering. Restwaarde telt pas mee bij verkoop en is niet meegenomen.</span></div></div>`;
+
+/* ===== Weergave ===== */
+const ICON={copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg>'};
+function board(r){
+ const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km;
+ const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span></div>`;
+ setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
+  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p><span class="tag">${touched?'Met jouw cijfers':'Met voorbeeldcijfers'}</span><div class="acts"><button class="btn" type="button" data-copy aria-label="Kopieer samenvatting">${ICON.copy}<span>Kopieer</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div></div>`);
+ const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
+ tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
+ $('mD').textContent=eur(r.td/km,2);$('mE').textContent=eur(r.te/km,2);$('mM').textContent=even?'≈':(cheap?'−':'+')+nf(pc)+'%';
 }
-function renderX(){
- if(view!=='x')return;
- const kmH=Math.min(v('kmH'),v('km')),onT=()=>TOL.filter(c=>v('k_'+c[0])>0);
+const units=()=>[['km','Per km'],['jr','Per jaar'],['tot','Totaal']].map(u=>`<button type="button" data-u="${u[0]}" aria-pressed="${u[0]===unit}">${u[1]}</button>`).join('');
+const dfHTML=(df,dd,z)=>Math.abs(df)<z?'gelijk':`<span class="${df<0?'good':'bad'}"><span class="dfl">elektrisch </span>${df<0?'−':'+'}${eur(Math.abs(df),dd)}</span>`;
+function rowsPaint(r,x){
+ const k=unit==='km'?1/r.km:unit==='tot'?r.L:1,dd=unit==='km'?2:0,z=dd?0.005:0.5;
+ const list=ROWS.map(q=>q[0]).concat(x?XROWS.map(q=>q[0]):[]);
+ const offOf=c=>{const q=XROWS.find(y=>y[0]===c);return!!(q&&q[2]&&!ck(q[2]))};
+ const mx=Math.max(1e-9,...list.map(c=>offOf(c)?0:Math.max(r.D[c],r.E[c])*k));
+ const vt=n=>Math.abs(n)<z?'—':eur(n,dd);
+ list.forEach(c=>{
+  const off=offOf(c),dv=r.D[c]*k,ev=r.E[c]*k;
+  $('vD-'+c).textContent=off?'uit':vt(dv);$('vE-'+c).textContent=off?'uit':vt(ev);
+  $('bD-'+c).style.width=off?0:Math.max(0,dv)/mx*100+'%';$('bE-'+c).style.width=off?0:Math.max(0,ev)/mx*100+'%';
+  setH($('df-'+c),off?'staat uit':dfHTML(ev-dv,dd,z));
+  $('row-'+c).classList.toggle('off',off);
+ });
+ $('vD-tot').textContent=eur(r.td*k,dd);$('vE-tot').textContent=eur(r.te*k,dd);
+ setH($('df-tot'),dfHTML((r.te-r.td)*k,dd,z));
+ setH($('unit'),units());
+}
+const facts=rows=>rows.filter(Boolean).map(q=>`<div><dt>${q[0]}</dt><dd>${q[1]}</dd></div>`).join('');
+const GR=['Groot','Middelgroot','Klein of non-profit'];
+function render(){
+ $('kmH').max=v('km');
+ const kmH=Math.min(v('kmH'),v('km'));
  for(let i=0;i<2;i++)TOL.forEach(c=>{const k=$('k_'+c[0]);k.max=Math.max(0,kmH-TOL.filter(d=>d[0]!==c[0]).reduce((a,d)=>a+v('k_'+d[0]),0))});
- TOL.forEach(c=>{if(v('k_'+c[0])>0)tolSel.add(c[0]);const on=tolSel.has(c[0]);$('tc_'+c[0]).hidden=!on;document.querySelector(`[data-tol="${c[0]}"]`).setAttribute('aria-pressed',on)});$('tolBody').hidden=!tolSel.size;
- syncSl('#inX');
- const used=onT().reduce((a,c)=>a+v('k_'+c[0]),0);
- $('xth').textContent=`${nf(used)} van ${nf(kmH)} km`;$('xtb').style.width=(kmH?Math.min(100,used/kmH*100):0)+'%';
- ['xFin','xLad','xOw'].forEach(id=>{const pn=$(id).closest('.pn');pn.querySelector('.xg').hidden=!ck(id);pn.querySelector('.offn').hidden=ck(id)});
- const big=Math.round(v('gr'))===0;
- const x=calcX(),b=x.b,L=x.L,km=x.km,diff=x.td-x.te;
- {const pc=big?20:40,sv0=Math.min(v('xl0')*pc/100,big?44000:88000);$('xsh').innerHTML=ck('xSp')?`Grote ondernemingen maximaal 20% staatssteun, met een maximum van € 44.000. Mkb maximaal 40%, met een maximum van € 88.000. Het subsidiebedrag moet minimaal € 2.500 zijn.<br><b>${big?'Grote onderneming':AZ[Math.round(v('gr'))][0]}: ${pc}%. ${x.spr>0?'Subsidie '+eur(x.spr):'Subsidie '+eur(sv0)+', te laag voor SPRILA'}.</b>`:'SPRILA staat uit. De bedrijfsgrootte kies je bij Simpel.'}
- $('bs').innerHTML=`<span class="bsl">Uit Simpel</span>`+[`${nf(km)} km per jaar`,`${L} jaar`,`Diesel ${eur(v('pD'))}`,`Elektrisch ${eur(v('pE'))}`,`${ck('aMia')?'MIA-voordeel':'Subsidie'} ${eur(b.sub)}`,`${b.td-b.te>=0?'Besparing':'Meerkosten'} ${eur(Math.abs(b.td-b.te))} per jaar`].map(t=>`<span>${t}</span>`).join('<i aria-hidden="true">·</i>')+`<a href="#">Aanpassen</a>`;
- $('subx').textContent=verdict(x.td,x.te,L);
- $('chipx').textContent=`${nf(km)} km per jaar · ${L} jaar · inclusief ingeschakelde onderdelen`;
- hero('x',$('heroX'),x.td,x.te,km,L);
- const items=[['Simpel',b.td-b.te,1],['Financiering',x.dFin],['Laadpaal',x.dLad],['Tol buitenland',x.dTol],['Laden onderweg',x.dOw],['Uitgebreid',diff,2]];
- let run=0;const pts=items.map(it=>{if(it[2]){run=it[1];return[0,it[1]]}const a=run;run+=it[1];return[a,run]});
- const all=pts.flat().concat(0),lo=Math.min(...all),hi=Math.max(...all)*1.12,sp=(hi-lo)||1,q=n=>(n-lo)/sp*100;
- const wf=items.map((it,i)=>{const[a,c]=pts[i],t=!!it[2],off=!t&&Math.abs(it[1])<0.5,top=Math.max(a,c),bot=Math.min(a,c),col=it[2]===1?'#9AA3AD':it[2]===2?'#1E7A4E':it[1]>=0?'#3E9A6A':'#D0A030';
-  return`<div class="wc ${off?'off':''}"><div class="wbar" style="bottom:${q(bot)}%;height:${off?0:Math.max(.8,q(top)-q(bot))}%;background:${col}"></div>${i<items.length-1?`<i class="wcn" style="bottom:${q(pts[i][1])}%"></i>`:''}<span class="wval" style="bottom:calc(${q(top)}% + 6px)">${t?eur(it[1]):off?'uit':sg(it[1])}</span></div>`}).join('');
- $('wfX').innerHTML=`<div class="wfp" role="img" aria-label="Besparing per jaar van Simpel naar Uitgebreid">${wf}</div><div class="wl">${items.map(it=>`<span>${it[0]}</span>`).join('')}</div>`;
- $('pbX').innerHTML=payHTML(x);
- $('snX').innerHTML=sensHTML(o=>{const q=calcX(o);return q.td-q.te});
- $('unitX').innerHTML=units(L,unitX,'ux');
- $('tblX').innerHTML=bdTable(CATX,x.D,x.E,km,L,unitX,false);
- $('factsX').innerHTML=facts([
+ const x=view==='x'?calcX():null,r=x||calc(),b=x?x.b:r,L=r.L;
+ // De zin en de vensters
+ const gi=Math.round(v('gr')),az=AZ[gi]||AZ[1],zd=SZD[gi]||SZD[1],mc=miaCalc(v('pE'));
+ $('t-km').textContent=nf(v('km'))+' km';$('t-kmH').textContent=nf(kmH)+' km';$('t-jr').textContent=v('jr')+' jaar';$('t-rw').textContent=v('rw')+'%';
+ $('t-gr').textContent=GR[gi];$('t-sub').textContent=ck('aSub')?'AanZET':ck('aMia')?'MIA':'Geen';
+ $('t-amt').textContent=ck('aSub')?`${eur(b.sub)} subsidie`:ck('aMia')?`${eur(b.sub)} belastingvoordeel`:'';
+ document.querySelectorAll('#grs [data-gr]').forEach(q=>q.setAttribute('aria-pressed',+q.dataset.gr===gi));
+ setH($('azd'),`<div><small>Werknemers</small><b>${zd[1]}</b></div><i>${zd[3]}</i><div><small>Jaaromzet</small><b>${zd[2]}</b></div>${zd[0].startsWith('Klein')?'<p>Ook non-profitinstellingen vallen in deze categorie.</p>':''}`);
+ $('azh').textContent=ck('aSub')?`AanZET: ${nf(az[1]*100,1)}% van de aanschaf, maximaal ${eur(az[2])}. Niet samen met de MIA.`:ck('aMia')?'MIA: 36% extra aftrek over 90% van de aanschafprijs. Netto belastingvoordeel, indicatief bij een BV.':'Geen subsidie of fiscaal voordeel.';
+ $('miab').hidden=!ck('aMia');document.querySelectorAll('[data-mia]').forEach(q=>q.setAttribute('aria-pressed',(q.dataset.mia==='1')===miaHi));
+ $('pamtL').textContent=ck('aMia')?'Belastingvoordeel':'Subsidie';$('pamtV').textContent=eur(ck('aSub')?Math.min(v('pE')*az[1],az[2]):ck('aMia')?mc.voordeel:0);
+ $('afsN').textContent=b.sub>0?`Na ${ck('aMia')?'MIA-voordeel':'subsidie'} netto ${eur(b.netE)}.`:'';
+ // Uitgebreid
+ TOL.forEach(c=>{if(v('k_'+c[0])>0)tolSel.add(c[0]);const on=tolSel.has(c[0]);$('tc_'+c[0]).hidden=!on;document.querySelector(`[data-tol="${c[0]}"]`).setAttribute('aria-pressed',on)});
+ $('tolBody').hidden=!tolSel.size;
+ const used=TOL.reduce((a,c)=>a+v('k_'+c[0]),0);$('xth').textContent=`${nf(used)} van ${nf(kmH)} km`;$('xtb').style.width=(kmH?Math.min(100,used/kmH*100):0)+'%';
+ ['xFin','xLad','xOw'].forEach(id=>{$(id).closest('.ed').querySelector('.xg').hidden=!ck(id)});
+ {const big=gi===0,pc=big?20:40,sv0=Math.min(v('xl0')*pc/100,big?44000:88000),spr=sv0>=2500?sv0:0;setH($('xsh'),ck('xSp')?`${big?'Grote onderneming':AZ[gi][0]}: ${pc}% staatssteun, maximaal ${eur(big?44000:88000)}, minimaal € 2.500. <b>${spr?'Subsidie '+eur(spr):'Subsidie '+eur(sv0)+', te laag voor SPRILA'}.</b>`:'SPRILA staat uit.')}
+ $('xrows').hidden=!x;$('xAn').hidden=!x;$('bUp').hidden=!!x;$('asX').hidden=!x;
+ // Uitkomst
+ board(r);rowsPaint(r,x);
+ if(x){
+  setH($('pbX'),payHTML(x));
+  const items=[['Simpel',b.td-b.te,1],['Financiering',x.dFin],['Laadpaal',x.dLad],['Tol buitenland',x.dTol],['Laden onderweg',x.dOw],['Uitgebreid',x.td-x.te,2]];
+  let run=0;const pts=items.map(it=>{if(it[2]){run=it[1];return[0,it[1]]}const a=run;run+=it[1];return[a,run]});
+  const all=pts.flat().concat(0),lo=Math.min(...all),hi=Math.max(...all)*1.12,sp=(hi-lo)||1,q=n=>(n-lo)/sp*100;
+  const wf=items.map((it,i)=>{const[a,c]=pts[i],t=!!it[2],off=!t&&Math.abs(it[1])<0.5,top=Math.max(a,c),bot=Math.min(a,c),col=it[2]===1?'#A3AAA2':it[2]===2?'#0A8F5B':it[1]>=0?'#3FA877':'#E39A2F';
+   return`<div class="wc ${off?'off':''}"><div class="wbar" style="bottom:${q(bot)}%;height:${off?0:Math.max(.8,q(top)-q(bot))}%;background:${col}"></div>${i<items.length-1?`<i class="wcn" style="bottom:${q(pts[i][1])}%"></i>`:''}<span class="wval" style="bottom:calc(${q(top)}% + 6px)">${t?eur(it[1]):off?'uit':sg(it[1])}</span></div>`}).join('');
+  setH($('wfX'),`<p class="hint" style="margin:0 0 24px">De besparing per jaar uit Simpel, en wat elk aanvullend onderdeel daaraan verandert.</p><div class="wfp" role="img" aria-label="Besparing per jaar van Simpel naar Uitgebreid">${wf}</div><div class="wl">${items.map(it=>`<span>${it[0]}</span>`).join('')}</div>`);
+  setH($('snX'),sensHTML(o=>{const q=calcX(o);return q.td-q.te}));
+ }
+ $('factsS').textContent=x?'Financiering, laadpaal, tol en heffing':'Subsidie, stroom, ERE, heffing en CO₂';
+ setH($('facts'),x?facts([
   ck('xFin')&&['Financiering',`${nf(v('xfs'))}% geleend tegen ${nf(v('xri'),1)}%, eigen deel ${nf(v('xre'),1)}% rendementseis`],
   ck('xLad')&&['Laadpaal per jaar',`${eur(x.E.lad)}${x.spr>0?` · na SPRILA ${eur(x.spr)}`:''}`],
   ck('xOw')&&['Laden onderweg',`${nf(x.kwhOw)} kWh per jaar tegen ${eur(v('xop'),2)} per kWh, zonder ERE`],
   ['Tol buitenland per jaar',`diesel ${eur(x.D.tol)} · elektrisch ${eur(x.E.tol)}`],
   ['Kilometerheffing Nederland per jaar',`diesel ${eur(x.D.hef)} · elektrisch ${eur(x.E.hef)}`],
-  ['Totaal over '+L+' jaar',`diesel ${eur(x.td*L)} · elektrisch ${eur(x.te*L)}`]]);
- lastX=x;live();save();
+  ['Totaal over '+L+' jaar',`diesel ${eur(x.td*L)} · elektrisch ${eur(x.te*L)}`]]):facts([
+  [ck('aMia')?'MIA-voordeel':'Subsidie',eur(b.sub)],
+  ['Netto aanschaf elektrisch',eur(b.netE)],
+  ['Stroom per jaar',`${eur(b.stroom)} · ${nf(b.kwh)} kWh`],
+  ['ERE-opbrengst per jaar',eur(b.ereV)],
+  ['Kilometerheffing elektrisch',`${eur(Math.abs(b.hefDiff))} ${b.hefDiff>=0?'minder':'meer'} per jaar`],
+  ['CO₂-reductie',`± ${nf(b.co2d-b.co2e)} ton per jaar`]]));
+ syncSl();fillRanges();mini();save();
+}
+function payHTML(x){
+ const b=x.b,L=x.L,g=v,inv=ck('xLad')?g('xl0'):0,aans=ck('xLad')?g('xla'):0;
+ const upD=g('pD'),upE=g('pE')-b.sub+(ck('xLad')?inv-x.spr+aans:0);
+ const opD=x.D.ond+x.D.ver+x.D.en+x.D.hef+x.D.tol+x.D.tij+x.D.fin,opE=x.E.ond+x.E.ver+x.E.en+x.E.hef+x.E.tol+x.E.tij+x.E.fin+(ck('xLad')?g('xlo')+g('xln'):0);
+ const sv=opD-opE,gap=upE-upD,be=gap<=0?0:sv>0?gap/sv:null;
+ const T=Math.max(L,be!==null?Math.min(Math.ceil(be)+1,15):L),W=Math.round(Math.max(480,Math.min(900,$('xAn').clientWidth||640))),H=280,mL=58,mR=8,mT=14,mB=26,cD=t=>upD+opD*t,cE=t=>upE+opE*t;
+ const hi0=Math.max(cD(T),cE(T),cD(0),cE(0)),lo0=Math.min(cD(0),cE(0),cD(T),cE(T)),raw=(hi0-lo0)/4||1,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mg).find(m=>m>=raw),lo=Math.max(0,Math.floor(lo0/stp)*stp),hi=Math.ceil(hi0/stp)*stp,nT=Math.round((hi-lo)/stp);
+ const X=t=>mL+t/T*(W-mL-mR),Y=c=>mT+(1-(c-lo)/((hi-lo)||1))*(H-mT-mB);
+ const ln=f=>`M${X(0).toFixed(1)},${Y(f(0)).toFixed(1)}L${X(T).toFixed(1)},${Y(f(T)).toFixed(1)}`;
+ let area='',mk='';
+ if(be!==null&&be<T){const bx=X(be),by=Y(cD(be));area=`<path d="M${bx},${by}L${X(T)},${Y(cD(T))}L${X(T)},${Y(cE(T))}Z" fill="#0A8F5B" opacity=".14"/>`;
+  mk=`<line x1="${bx}" x2="${bx}" y1="${mT}" y2="${H-mB}" stroke="#15171A" stroke-opacity=".3" stroke-dasharray="3 4"/><circle cx="${bx}" cy="${by}" r="7" fill="#fff" stroke="#0A8F5B" stroke-width="3.5"/>`;}
+ const ticks=[];for(let t=0;t<=T;t++)ticks.push(`<text x="${X(t)}" y="${H-6}" text-anchor="${t===0?'start':t===T?'end':'middle'}">${t===0?'Start':t}</text>`);
+ const grid=Array.from({length:nT+1},(_,i)=>i/nT).map(f=>{const y=mT+f*(H-mT-mB),c=lo+(1-f)*(hi-lo);return`<line x1="${mL}" x2="${W-mR}" y1="${y}" y2="${y}" stroke="#15171A" stroke-opacity=".08"/><text x="${mL-8}" y="${y+4}" text-anchor="end">€ ${nf(Math.round(c/1000))}k</text>`}).join('');
+ const M=be===null?0:Math.round(be*12),yr=Math.floor(M/12),mo=M%12;
+ const txt=be===null?'Niet terugverdiend':be===0?'Direct':[yr?`${yr} <small>jaar</small>`:'',mo?`${mo} <small>${mo===1?'maand':'maanden'}</small>`:''].filter(Boolean).join(' ')||'0 <small>maanden</small>';
+ const note=be===null?'Elektrisch is per jaar niet goedkoper dan diesel.':be===0?'Elektrisch is vanaf de start goedkoper.':be>L?`Pas na de afschrijftermijn van ${L} jaar.`:`Dat is ${nf(be/L*100)}% van de afschrijftermijn van ${L} jaar.`;
+ const pct=be===null?0:be===0?100:Math.min(100,be/T*100);
+ const lab=be!==null&&be>0&&be<T?`<g transform="translate(${Math.min(Math.max(X(be),52),W-52)},${Y(cD(be))-28})"><rect x="-46" y="-15" width="92" height="28" rx="14" fill="#0A8F5B"/><text y="3" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`:'';
+ return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div></div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b></div><div><span>Lagere gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b></div></div></div><div class="pbbar"><i style="width:${pct}%"></i></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Opgebouwde kosten per jaar, diesel en elektrisch">${grid}${area}<path d="${ln(cD)}" stroke="#B8700E" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="${ln(cE)}" stroke="#0A8F5B" stroke-width="3.5" fill="none" stroke-linecap="round"/>${mk}${lab}${ticks.join('')}</svg><div class="pbk"><span><i style="background:#B8700E"></i>Diesel</span><span><i style="background:#0A8F5B"></i>Elektrisch</span><span>Opgebouwde kosten per jaar, inclusief financiering. Restwaarde telt pas mee bij verkoop.</span></div></div>`;
 }
 function sensHTML(sv){
  const dp0=v('dp'),sp0=v('sp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,sE=sv({sp:sp0+1})-s0;
@@ -873,55 +770,61 @@ function sensHTML(sv){
  const U=a=>[...new Set(a.map(x=>Math.round(Math.max(0,x)*1000)/1000))];
  const ds=U([-.5,-.25,0,.25,.5].map(d=>dp0+d)),es=U([-.1,-.05,0,.1,.2,.3].map(d=>sp0+d));
  const grid=es.map(e=>ds.map(d=>sv({dp:d,sp:e})));const mx=Math.max(1,...grid.flat().map(Math.abs));
- const rows=es.map((e,i)=>`<tr><th scope="row">${nf(e,2)}</th>${ds.map((d,j)=>{const z=grid[i][j],bg=z>=0?`rgba(46,139,102,${.1+.42*z/mx})`:`rgba(208,160,48,${.18+.45*-z/mx})`;return`<td class="${d===dp0&&e===sp0?'cur':''}" style="background:${bg}">${z<0?'−':''}${nf(Math.abs(z)/1000)}k</td>`}).join('')}</tr>`).join('');
- return`<div class="bec">${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's. Omkaderd is je huidige situatie; een min betekent meerkosten.</small><div class="tw"><table class="hm"><tr><th>€/kWh ↓ · €/L →</th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
+ const rows=es.map((e,i)=>`<tr><th scope="row">${nf(e,2)}</th>${ds.map((d,j)=>{const z=grid[i][j],bg=z>=0?`rgba(10,143,91,${.1+.42*z/mx})`:`rgba(242,163,58,${.2+.45*-z/mx})`;return`<td class="${d===dp0&&e===sp0?'cur':''}" style="background:${bg}">${z<0?'−':''}${nf(Math.abs(z)/1000)}k</td>`}).join('')}</tr>`).join('');
+ return`<p class="hint" style="margin:0 0 18px">Vanaf welke prijzen elektrisch niet meer goedkoper is, en wat de besparing per jaar doet bij andere diesel- en stroomprijzen.</p><div class="bec">${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's. Omkaderd is je huidige situatie; een min betekent meerkosten.</small><div class="tw"><table class="hm"><tr><th>€/kWh ↓ · €/L →</th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
 }
-$('unitX').addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(b){unitX=b.dataset.ux;renderX()}});
 
-/* ===== Pagina's en weergave ===== */
-const LEDE={b:'Vergelijk een nieuwe diesel- en een nieuwe elektrische N3-trekker op kosten per kilometer, per jaar en over de hele afschrijftermijn. Met je eigen cijfers.',x:'Bovenop Simpel: financiering, een eigen laadpaal, laden onderweg en tol in het buitenland. Je invoer uit Simpel wordt overgenomen.'};
+/* ===== Interactie ===== */
+document.addEventListener('click',e=>{
+ const rh=e.target.closest('.rh');
+ if(rh){const ed=$(rh.getAttribute('aria-controls')),open=ed.hidden;document.querySelectorAll('.rh[aria-expanded=true]').forEach(o=>{o.setAttribute('aria-expanded','false');$(o.getAttribute('aria-controls')).hidden=true});if(open){ed.hidden=false;rh.setAttribute('aria-expanded','true');fillRanges()}return}
+ const u=e.target.closest('[data-u]');if(u){unit=u.dataset.u;render();return}
+ const tol=e.target.closest('[data-tol]');if(tol){const k=tol.dataset.tol;touched=true;if(tolSel.has(k)){tolSel.delete(k);$('k_'+k).value=0}else tolSel.add(k);render();return}
+ const g=e.target.closest('[data-gr]');if(g){$('gr').value=g.dataset.gr;touched=true;render();return}
+ const m=e.target.closest('[data-mia]');if(m){miaHi=m.dataset.mia==='1';touched=true;render();return}
+ const j=e.target.closest('[data-jump]');if(j){$(j.dataset.jump).scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
+});
+/* Woorden in de zin openen een klein venster */
+let curTok=null;
+function placePop(t,p){if(innerWidth<=640)return;const s=$('story').getBoundingClientRect(),r=t.getBoundingClientRect();p.style.left=Math.max(0,Math.min(r.left-s.left,s.width-p.offsetWidth))+'px';p.style.top=(r.bottom-s.top+10)+'px'}
+function closePops(ret){document.querySelectorAll('.pop').forEach(p=>p.hidden=true);document.querySelectorAll('.tok').forEach(t=>t.setAttribute('aria-expanded','false'));if(ret&&curTok)curTok.focus();curTok=null}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('.tok');
+ if(t){const p=$('pop-'+t.dataset.pop),open=p.hidden;closePops();if(open){p.hidden=false;t.setAttribute('aria-expanded','true');curTok=t;fillRanges();placePop(t,p);const f=p.querySelector('input[type=range],[aria-pressed=true],input:checked');if(f&&matchMedia('(hover:hover)').matches)f.focus({preventScroll:true})}return}
+ if(e.target.closest('.popok')){closePops(true);return}
+ if(curTok&&!e.target.closest('.pop'))closePops();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(curTok)closePops(true);menu(false)}});
+addEventListener('resize',()=>{if(curTok)placePop(curTok,$('pop-'+curTok.dataset.pop))});
+
+/* Klein scorebord zodra het grote uit beeld is */
+function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&b.bottom<64;$('mini').classList.toggle('show',show)}
+addEventListener('scroll',mini,{passive:true});
+
+/* ===== Pagina's ===== */
+const LEDE={b:'Vergelijk de totale kosten van een nieuwe diesel- en elektrische N3-trekker, per kilometer en per jaar. De uitkomst rekent direct mee met je eigen cijfers.',x:'Ook financiering, een eigen laadpaal, laden onderweg en buitenlandse tol. Je invoer uit Simpel wordt overgenomen.'};
 function setView(w){
- view=w;$('vB').hidden=w!=='b';$('vX').hidden=w!=='x';$('ledeP').textContent=LEDE[w];
+ view=w;$('ledeP').textContent=LEDE[w];
  document.querySelectorAll('#modes [data-mode]').forEach(a=>a.dataset.mode===w?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
- if(w==='x')renderX();
+ render();
 }
 const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over'};
 const TITLES={calc:'TCO TruckTool · Diesel of elektrisch',x:'Uitgebreid · TCO TruckTool',faq:'Veelgestelde vragen · TCO TruckTool',nieuws:'Nieuws · TCO TruckTool',over:'Over ons · TCO TruckTool'};
-let page=null;
 function route(first){
  let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
- const p=PAGES[h]||'calc',w=h==='uitgebreid'?'x':'b',prevP=page,prevV=view;
- page=p;
+ const p=PAGES[h]||'calc',w=h==='uitgebreid'?'x':'b',prevP=page;
+ page=p;closePops();
  document.querySelectorAll('.page').forEach(s=>s.hidden=s.dataset.page!==p);
  document.querySelectorAll('[data-nav]').forEach(a=>a.dataset.nav===p?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
  if(p==='calc')setView(w);
  document.title=TITLES[p==='calc'&&w==='x'?'x':p];
- menu(false);hideTip();
- if(!first){
-  if(p!==prevP){scrollTo(0,0);const h1=document.querySelector(`.page[data-page="${p}"] h1`);if(h1)h1.focus({preventScroll:true})}
-  else if(w!==prevV){const m=$('modes'),t=m.getBoundingClientRect().top;if(t<60)scrollTo(0,scrollY+t-76)}
- }
- live();
+ menu(false);
+ if(!first&&p!==prevP){scrollTo(0,0);const h1=document.querySelector(`.page[data-page="${p}"] h1`);if(h1)h1.focus({preventScroll:true})}
+ mini();
 }
 addEventListener('hashchange',()=>route(false));
 function menu(open){$('nav').classList.toggle('open',open);$('mnu').setAttribute('aria-expanded',open)}
 $('mnu').onclick=()=>menu(!$('nav').classList.contains('open'));
-document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
-
-/* Live uitkomst onderin, zolang de uitkomst zelf nog niet in beeld is */
-let liveRaf=0;
-function live(){cancelAnimationFrame(liveRaf);liveRaf=requestAnimationFrame(paintLive)}
-function paintLive(){
- const bar=$('live'),m=view==='x'?lastX:lastR,out=$(view==='x'?'outX':'outB');
- const show=page==='calc'&&!!m&&out.getBoundingClientRect().top>innerHeight-24;
- bar.classList.toggle('show',show);bar.setAttribute('aria-hidden',!show);$('lvB').tabIndex=show?0:-1;
- if(!m)return;
- const d=m.td-m.te;
- $('lvD').textContent=eur(m.td/m.km,2);$('lvE').textContent=eur(m.te/m.km,2);
- $('lvS').innerHTML=`${d>=0?'Besparing':'Meerkosten'} <b>${eur(Math.abs(d))}</b>/jaar`;
-}
-addEventListener('scroll',live,{passive:true});addEventListener('resize',live);
-$('lvB').onclick=()=>{const o=$(view==='x'?'outX':'outB');o.scrollIntoView({behavior:reduced()?'auto':'smooth'})};
 
 /* Samenvatting kopiëren en afdrukken */
 function summB(){const r=calc(),d=r.td-r.te;return`TCO-vergelijking diesel en elektrisch (simpel)\n${nf(r.km)} km per jaar, ${r.L} jaar\n\nDiesel: ${eur(r.td/r.km,2)} per km, ${eur(r.td)} per jaar, ${eur(r.td*r.L)} totaal\nElektrisch: ${eur(r.te/r.km,2)} per km, ${eur(r.te)} per jaar, ${eur(r.te*r.L)} totaal\n${ck('aMia')?'MIA-voordeel':'Subsidie'}: ${eur(r.sub)}\n\n${d>=0?'Elektrisch':'Diesel'} is ${eur(Math.abs(d)*r.L)} goedkoper over ${r.L} jaar.\n\nBerekend met TCO TruckTool. Rekenvoorbeeld, geen financieel of fiscaal advies.`}
@@ -932,17 +835,19 @@ async function copyText(t){
 }
 document.addEventListener('click',async e=>{
  const c=e.target.closest('[data-copy]');
- if(c){const ok=await copyText(view==='x'?summX():summB()),s=c.querySelector('span');s.textContent=ok?'Gekopieerd':'Kopiëren lukte niet';setTimeout(()=>s.textContent='Kopieer samenvatting',2000);return}
+ if(c){const ok=await copyText(view==='x'?summX():summB()),s=c.querySelector('span');s.textContent=ok?'Gekopieerd':'Lukte niet';c.setAttribute('aria-label',ok?'Samenvatting gekopieerd':'Kopiëren lukte niet');return}
  if(e.target.closest('[data-print]'))print();
 });
 let reopen=[];
-addEventListener('beforeprint',()=>{reopen=[...document.querySelectorAll('.page:not([hidden]) details:not([open])')];reopen.forEach(d=>d.open=true);document.querySelectorAll('#outX .tpan').forEach(p=>{p.dataset.h=p.hidden;p.hidden=false})});
-addEventListener('afterprint',()=>{reopen.forEach(d=>d.open=false);reopen=[];document.querySelectorAll('#outX .tpan').forEach(p=>p.hidden=p.dataset.h==='true')});
+addEventListener('beforeprint',()=>{reopen=[...document.querySelectorAll('.page:not([hidden]) details:not([open])')];reopen.forEach(d=>d.open=true)});
+addEventListener('afterprint',()=>{reopen.forEach(d=>d.open=false);reopen=[]});
 
-/* Invoer onthouden in deze browser */
-const KEY='tco-trucktool-v1';
-function save(){try{const s={miaHi};document.querySelectorAll('#app input[id]').forEach(e=>{if(e.classList.contains('slin'))return;s[e.id]=e.type==='checkbox'||e.type==='radio'?e.checked:e.value});localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;['km'].concat(Object.keys(s)).forEach(id=>{const e=$(id);if(!e||!(id in s))return;if(e.type==='checkbox'||e.type==='radio'){if(s[id])e.checked=true;else if(e.type==='checkbox')e.checked=false}else{e.value=s[id];if(e.dataset.d!==undefined)e.classList.toggle('pre',e.value===e.dataset.d)}});miaHi=!!s.miaHi}catch(e){}}
+/* Invoer onthouden in deze browser, en terugzetten */
+const KEY='tco-trucktool-v2';
+function save(){try{const s={miaHi,touched};document.querySelectorAll('#calc input[id]').forEach(e=>{if(e.classList.contains('slin'))return;s[e.id]=e.type==='checkbox'||e.type==='radio'?e.checked:e.value});localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;['km'].concat(Object.keys(s)).forEach(id=>{const e=$(id);if(!e||!(id in s))return;if(e.type==='checkbox'||e.type==='radio'){if(s[id])e.checked=true;else if(e.type==='checkbox')e.checked=false}else{e.value=s[id];if(e.dataset.d!==undefined)e.classList.toggle('pre',e.value===e.dataset.d)}});miaHi=!!s.miaHi;touched=!!s.touched}catch(e){}}
+function reset(){document.querySelectorAll('#calc input[type=range]').forEach(r=>r.max=r.dataset.mx);document.querySelectorAll('#calc input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox'||e.type==='radio')e.checked=e.defaultChecked;else{e.value=e.defaultValue;if(e.dataset.d!==undefined)e.classList.add('pre')}});miaHi=false;touched=false;tolSel.clear();closePops();render()}
+$('rs').onclick=reset;
 
 const TW={};
 function tween(key,els,vals,fmts){
@@ -956,15 +861,7 @@ function tween(key,els,vals,fmts){
  step(t0);t.raf=requestAnimationFrame(step);
 }
 function fillRanges(){document.querySelectorAll('input[type=range]').forEach(r=>{const a=+r.min,b=+r.max;r.style.setProperty('--f',b>a?(r.value-a)/(b-a):0)})}
-{const r0=render,x0=renderX;render=()=>{r0();fillRanges()};renderX=()=>{x0();fillRanges()}}
-$('rsx').onclick=()=>{tolSel.clear();buildX();renderX()};
-$('px3').addEventListener('click',e=>{const b=e.target.closest('[data-tol]');if(!b)return;const k=b.dataset.tol,r=$('k_'+k);if(tolSel.has(k)){tolSel.delete(k);r.value=0;r.dispatchEvent(new Event('input',{bubbles:true}))}else{tolSel.add(k);renderX()}});
-/* Tabbladen bij Uitgebreid: één verdieping tegelijk */
-function selTab(k,focus){document.querySelectorAll('#outX [role=tab]').forEach(b=>{const on=b.id==='tb-'+k;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;if(on&&focus)b.focus()});document.querySelectorAll('#outX .tpan').forEach(p=>p.hidden=p.id!=='tp-'+k)}
-const TABS=['pb','wf','sn','bd'];
-document.querySelector('#outX .tabs').addEventListener('click',e=>{const b=e.target.closest('[role=tab]');if(b)selTab(b.id.slice(3))});
-document.querySelector('#outX .tabs').addEventListener('keydown',e=>{const d={ArrowRight:1,ArrowLeft:-1}[e.key];if(!d)return;e.preventDefault();const i=TABS.indexOf(document.activeElement.id.slice(3));selTab(TABS[(i+d+TABS.length)%TABS.length],true)});
-build();buildX();load();render();route(true);
+build();load();route(true);
 </script>
 </body>
 </html>
