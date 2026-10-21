@@ -18,6 +18,7 @@ Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main
 |---|---|
 | `index.html` | Calculator, Simpel |
 | `index.html#uitgebreid` | Calculator, Uitgebreid |
+| `index.html#modellen` | Elektrische modellen |
 | `index.html#faq` | Veelgestelde vragen |
 | `index.html#nieuws` | Nieuws |
 | `index.html#over-ons` | Over ons |
@@ -38,6 +39,18 @@ De invoer wordt alleen in de eigen browser bewaard (`localStorage`). *Herstel vo
 
 Advertentieplekken hebben de class `.ad`: een brede band onder de calculator, een kolom bij Veelgestelde vragen en een band onder Nieuws en Over ons.
 
+## Elektrische modellen
+
+Onder **Modellen** staat per voertuig (trekker, bakwagen, bestelbus, bus) wat er elektrisch te koop is en wat eraan komt, zoals de Tesla Semi voor Europa. De pagina opent op het voertuig dat in de calculator gekozen is.
+
+- Per model staan de accu (bruikbaar, of bruto als dat het enige opgegeven getal is), de opgegeven actieradius met een balk en het hoogste laadvermogen (CCS of MCS). Een streep in de balk toont je gemiddelde dagrit uit de calculator; een model dat die niet haalt, krijgt een oranje balk.
+- Filter op voertuig, zet aangekondigde modellen aan of uit, en sorteer op actieradius, accu, snelladen of merk.
+- Een klik op een model klapt de details open: toelichting, specificaties, hoe de actieradius zich verhoudt tot je dagrit, en de bron.
+- Met het vinkje links zet je tot drie modellen naast elkaar in een vergelijking.
+- **Reken met dit model** kiest het juiste voertuig in de calculator en neemt de bruikbare accu over. Is alleen de bruto capaciteit bekend, dan rekenen we met 90% daarvan; bij de Tesla Semi is de accu afgeleid uit actieradius maal verbruik. Prijs en verbruik vul je daarna zelf in.
+
+De gegevens staan in `MODELS` in het script: per model het voertuig (`c`), merk en model, bruto en bruikbare accu (`g`, `u`, of afgeleid `ue`), actieradius (`r`), laadvermogen CCS en MCS (`dc`, `mcs`), status (`nu` of `komt` met jaar `y`), een korte toelichting en de bron. Het zijn opgaven van fabrikanten; houd ze bij als er nieuwe modellen of uitvoeringen komen.
+
 ## Rekenmethode
 
 De afschrijving per jaar is de aanschafprijs, bij elektrisch verminderd met de subsidie of het MIA-voordeel, min de restwaarde, gedeeld door de afschrijftermijn. Energie is kilometers maal verbruik maal prijs, bij elektrisch min de ERE-opbrengst. Onderhoud is kilometers maal tarief, verzekering een vast bedrag per jaar, kilometerheffing (alleen vrachtwagens) het aantal kilometers met heffing maal het tarief. In Uitgebreid worden kilometers in het buitenland uit de Nederlandse heffing gehaald en tegen het tarief van het betreffende land gerekend.
@@ -46,7 +59,7 @@ De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (ex
 
 ## Aanpassen
 
-Bovenaan het script in `index.html` staan alle velden met bereik en standaardwaarde (`FIELDS`), de voertuigen met hun voorbeeldcijfers (`VT`), de AanZET-tabellen voor N2 en N3 (`AZT`), tolling per land (`TOL`) en de stappen van het invulvenster (`STEPS`). De berekening staat in `calc()` en `calcX()`. Kleuren en lettertypes staan als variabelen bovenaan de stylesheet (`:root`). De naam van de site staat in `BRAND` en in de kop en voet van de HTML.
+Bovenaan het script in `index.html` staan alle velden met bereik en standaardwaarde (`FIELDS`), de voertuigen met hun voorbeeldcijfers (`VT`), de AanZET-tabellen voor N2 en N3 (`AZT`), tolling per land (`TOL`) de stappen van het invulvenster (`STEPS`) en de elektrische modellen (`MODELS`). De berekening staat in `calc()` en `calcX()`. Kleuren en lettertypes staan als variabelen bovenaan de stylesheet (`:root`). De naam van de site staat in `BRAND` en in de kop en voet van de HTML.
 
 ## Disclaimer
 
