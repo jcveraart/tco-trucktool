@@ -473,22 +473,11 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .cg.x .xpanel .wst{border-bottom:1px solid var(--line)}
 .xphb{display:flex;align-items:center;gap:18px}
 .resh{margin:56px 0 18px;font:700 clamp(26px,3vw,36px)/1.15 var(--text);letter-spacing:-.01em;outline:0;scroll-margin-top:84px}
-/* Gevoeligheidsanalyse */
+/* Gevoeligheid voor energieprijzen */
 .tnh{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 20px;flex-wrap:wrap;margin-top:56px}
 .tnh p{flex-basis:100%;margin:0;color:var(--ink-2);font-size:16px;max-width:760px}
-.tnc{margin-top:18px;padding:clamp(18px,3vw,30px);border-radius:20px;background:var(--card)}
-.tns{margin:0 0 14px;font-size:16px;color:var(--ink-2)}.tns b{color:var(--ink)}
-.tnr{display:grid;grid-template-columns:minmax(150px,230px) minmax(0,1fr);gap:6px 20px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
-.tnl b{display:block;font:600 16px/1.25 var(--text)}.tnl small{display:block;margin-top:2px;font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.tnb{position:relative;height:22px}
-.tnb i{position:absolute;top:0;bottom:0;border-radius:4px}
-.tnb .tdn{background:var(--amber)}.tnb .tup{background:var(--volt-2)}
-.tnb u{position:absolute;top:-7px;bottom:-7px;width:2px;margin-left:-1px;background:var(--ink)}
-.tnb s{position:absolute;top:-7px;bottom:-7px;margin-left:-1px;border-left:2px dashed var(--line-2)}
-.tna{display:grid;grid-template-columns:minmax(150px,230px) minmax(0,1fr);gap:0 20px;font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.tna div{position:relative;height:20px}.tna span{position:absolute;transform:translateX(-50%);white-space:nowrap}.tna div span:first-child{transform:none}.tna div span:last-child{transform:translateX(-100%)}
-.tnk{display:flex;gap:8px 20px;flex-wrap:wrap;margin-top:16px;font-size:14px;color:var(--ink-2)}.tnk i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:7px;vertical-align:0}
-@media(max-width:640px){.tnr,.tna{grid-template-columns:minmax(0,1fr)}.tna>i{display:none}}
+.snw{margin-top:18px}
+.snw .hm{width:100%}
 
 /* Kleinere details */
 .intro{align-items:center;padding:30px 0 22px}
@@ -702,11 +691,10 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
    <section class="an" id="xAn" hidden aria-labelledby="hAn">
     <h2 id="hAn">Wanneer verdien je het terug?</h2>
     <div id="pbX"></div>
-    <div class="tnh"><h2 id="hTn">Hoe gevoelig is de uitkomst?</h2><div class="seg sm" id="tnP" role="group" aria-label="Afwijking"></div><p>Wat gebeurt er met de besparing per jaar als één van je cijfers lager of hoger uitvalt? Hoe langer de balk, hoe meer dat cijfer de uitkomst bepaalt.</p></div>
-    <div class="tnc" id="tnX"></div>
+    <div class="tnh"><h2 id="hSn">Gevoeligheid voor energieprijzen</h2><p>Vanaf welke prijzen elektrisch niet meer goedkoper is, en wat de besparing per jaar doet bij andere diesel- en stroomprijzen.</p></div>
+    <div class="snw" id="snX"></div>
     <div class="more">
      <details><summary><b>Wat doen de extra posten?</b></summary><div id="wfX" style="padding-top:24px"></div></details>
-     <details><summary><b>Wat als energie duurder wordt?</b></summary><div id="snX"></div></details>
     </div>
    </section>
 
@@ -1122,8 +1110,6 @@ function render(){
    return`<div class="wc ${off?'off':''}"><div class="wbar" style="bottom:${qq(bot)}%;height:${off?0:Math.max(.8,qq(top)-qq(bot))}%;background:${col}"></div>${i<items.length-1?`<i class="wcn" style="bottom:${qq(pts[i][1])}%"></i>`:''}<span class="wval" style="bottom:calc(${qq(top)}% + 6px)">${t?eur(it[1]):off?'uit':sg(it[1])}</span></div>`}).join('');
   setH($('wfX'),`<div class="wfp" role="img" aria-label="Besparing per jaar van Simpel naar Uitgebreid">${wf}</div><div class="wl">${items.map(it=>`<span>${it[0]}</span>`).join('')}</div>`);
   setH($('snX'),sensHTML(o=>{const qq=calcX(o);return qq.td-qq.te}));
-  setH($('tnP'),[.1,.2,.3].map(p=>`<button type="button" data-tnp="${p}" aria-pressed="${p===tnP}">± ${p*100}%</button>`).join(''));
-  setH($('tnX'),tornHTML(x));
  }
  setH($('facts'),x?facts([
   ck('xFin')&&['Financiering',`${nf(v('xfs'))}% geleend tegen ${nf(v('xri'),1)}%, eigen deel ${nf(v('xre'),1)}% rendementseis`],
@@ -1162,21 +1148,6 @@ function payHTML(x){
  const lab=be!==null&&be>0&&be<T2?`<g transform="translate(${Math.min(Math.max(X(be),52),W-52)},${Y(cD(be))-28})"><rect x="-46" y="-15" width="92" height="28" rx="14" fill="#0A8F5B"/><text y="3" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`:'';
  return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div></div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b></div><div><span>Lagere gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b></div></div></div><div class="pbbar"><i style="width:${pct}%"></i></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Opgebouwde kosten per jaar, diesel en elektrisch">${grid}${area}<path d="${ln(cD)}" stroke="#B8700E" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="${ln(cE)}" stroke="#0A8F5B" stroke-width="3.5" fill="none" stroke-linecap="round"/>${mk}${lab}${ticks.join('')}</svg><div class="pbk"><span><i style="background:#B8700E"></i>Diesel</span><span><i style="background:#0A8F5B"></i>Elektrisch</span><span>Opgebouwde kosten, inclusief financiering. Restwaarde telt pas mee bij verkoop.</span></div></div>`;
 }
-/* Gevoeligheid: besparing per jaar als één cijfer tnP lager of hoger uitvalt, de rest gelijk */
-let tnP=.2;
-function tornHTML(x){
- const sv=o=>{const q=calcX(o);return q.td-q.te},s0=x.td-x.te,truck=T().truck;
- const F=[['km','Kilometers per jaar'],['dp','Dieselprijs'],['sp','Stroomprijs eigen terrein'],['ld','Verbruik diesel'],['le','Verbruik elektrisch'],['pE','Aanschaf elektrisch'],['pD','Aanschaf diesel'],['rw','Restwaarde'],['oD','Onderhoud diesel'],['oE','Onderhoud elektrisch'],['vE','Verzekering elektrisch'],ck('aERE')&&['ere','ERE-opbrengst'],truck&&['tD','Kilometerheffing diesel'],ck('xFin')&&['xri','Rente lening'],ck('xOw')&&['xop','Prijs openbaar laden']].filter(Boolean);
- const ov=(k,f)=>k==='km'?{km:v('km')*f,kmH:v('kmH')*f}:{[k]:v(k)*f};
- const R=F.filter(f=>v(f[0])>0).map(f=>({k:f[0],n:f[1],lo:sv(ov(f[0],1-tnP)),hi:sv(ov(f[0],1+tnP))})).sort((a,b)=>Math.abs(b.hi-b.lo)-Math.abs(a.hi-a.lo)).slice(0,9);
- const all=R.flatMap(r=>[r.lo,r.hi]).concat(s0),mn0=Math.min(...all),mx0=Math.max(...all),pad=(mx0-mn0)*.04||1,mn=mn0-pad,mx=mx0+pad,P=n=>(n-mn)/(mx-mn)*100;
- const zero=mn<0&&mx>0?`<s style="left:${P(0)}%"></s>`:'',pc=nf(tnP*100);
- const rows=R.map(r=>{const seg=(a,c)=>{const l=Math.min(a,s0),w=Math.abs(a-s0);return w<.5?'':`<i class="${a<s0?'tdn':'tup'}" style="left:${P(l)}%;width:${P(l+w)-P(l)}%"></i>`};
-  return`<div class="tnr"><div class="tnl"><b>${r.n}</b><small>−${pc}%: ${eur(r.lo)} · +${pc}%: ${eur(r.hi)}</small></div><div class="tnb" role="img" aria-label="${r.n}: besparing ${eur(r.lo)} bij ${pc}% lager, ${eur(r.hi)} bij ${pc}% hoger">${zero}${seg(r.lo)}${seg(r.hi)}<u style="left:${P(s0)}%"></u></div></div>`}).join('');
- const top=R[0],flip=R.filter(r=>Math.min(r.lo,r.hi)<0&&s0>=0||Math.max(r.lo,r.hi)>=0&&s0<0);
- const sum=top?`De uitkomst is het gevoeligst voor <b>${top.n.toLowerCase()}</b>: de besparing ligt dan tussen ${eur(Math.min(top.lo,top.hi))} en ${eur(Math.max(top.lo,top.hi))} per jaar. ${flip.length?`Bij ${flip.map(r=>r.n.toLowerCase()).join(', ')} kan de uitkomst omslaan.`:`Bij ± ${pc}% blijft ${s0>=0?'elektrisch':'diesel'} op elk cijfer voordeliger.`}`:'';
- return`<p class="tns">${sum}</p><div class="tna" aria-hidden="true"><i></i><div><span style="left:0">${eur(mn0)}</span><span style="left:${P(s0)}%">nu ${eur(s0)}</span><span style="left:100%">${eur(mx0)}</span></div></div>${rows}<div class="tnk"><span><i style="background:var(--volt-2)"></i>Besparing hoger</span><span><i style="background:var(--amber)"></i>Besparing lager</span><span><i style="background:var(--ink);width:3px"></i>Huidige besparing per jaar</span>${zero?'<span>Stippellijn: break-even</span>':''}</div>`;
-}
 function sensHTML(sv){
  const dp0=v('dp'),sp0=v('sp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,sE=sv({sp:sp0+1})-s0;
  const dpB=sD>0?dp0-s0/sD:null,spB=sE<0?sp0-s0/sE:null;
@@ -1185,13 +1156,13 @@ function sensHTML(sv){
   const zone=good==='hi'?`left:${be>0?b:0}%;right:0`:`left:0;width:${be>0?b:0}%`;
   return`<div class="trk"><i style="${zone}"></i>${tk.join('')}${be>0?`<u style="left:${b}%"><em>break-even</em></u>`:''}<span class="now" style="left:${pos(cur,m)}%"><em class="${low?'lo':''}">nu</em></span></div>`};
  const card=(t,val,txt,tr)=>`<div class="bc2"><small>${t}</small><b>${val}</b>${tr}<p>${txt}</p></div>`;
- const c1=card('Break-even dieselprijs',dpB===null?'—':`${eur(Math.max(0,dpB),2)} <small>/ L</small>`,dpB===null?'Geen berekening mogelijk.':dpB<=0?'Elektrisch is goedkoper, ook als diesel gratis zou zijn.':'Elektrisch is goedkoper vanaf deze dieselprijs.',dpB===null?'':trk(dpB,dp0,'hi',.25));
- const c2=card('Break-even stroomprijs',spB===null?'—':spB<=0?'Geen':`${eur(spB,2)} <small>/ kWh</small>`,spB===null?'Geen berekening mogelijk.':spB<=0?'Elektrisch is niet goedkoper, zelfs niet bij gratis eigen stroom.':'Elektrisch is goedkoper tot deze stroomprijs.',spB===null||spB<=0?'':trk(spB,sp0,'lo',.1));
+ const c1=card('Break-even dieselprijs',dpB===null?'—':`${eur(Math.max(0,dpB),2)} <small>/ L</small>`,dpB===null?'Geen berekening mogelijk.':dpB<=0?`Elektrisch is goedkoper, ook als diesel gratis zou zijn. Nu rekent de calculator met ${eur(dp0,2)}.`:`Elektrisch is goedkoper vanaf deze dieselprijs. Nu rekent de calculator met ${eur(dp0,2)}.`,dpB===null?'':trk(dpB,dp0,'hi',.25));
+ const c2=card('Break-even stroomprijs',spB===null?'—':spB<=0?'Geen':`${eur(spB,2)} <small>/ kWh</small>`,spB===null?'Geen berekening mogelijk.':spB<=0?`Elektrisch is niet goedkoper, zelfs niet bij gratis eigen stroom. Nu ${eur(sp0,2)}.`:`Elektrisch is goedkoper tot deze stroomprijs. Nu rekent de calculator met ${eur(sp0,2)}.`,spB===null||spB<=0?'':trk(spB,sp0,'lo',.1));
  const U=a=>[...new Set(a.map(x=>Math.round(Math.max(0,x)*1000)/1000))];
  const ds=U([-.5,-.25,0,.25,.5].map(d=>dp0+d)),es=U([-.1,-.05,0,.1,.2,.3].map(d=>sp0+d));
  const grid=es.map(e=>ds.map(d=>sv({dp:d,sp:e})));const mx=Math.max(1,...grid.flat().map(Math.abs));
  const rows=es.map((e,i)=>`<tr><th scope="row">${nf(e,2)}</th>${ds.map((d,j)=>{const z=grid[i][j],bg=z>=0?`rgba(10,143,91,${.1+.42*z/mx})`:`rgba(242,163,58,${.2+.45*-z/mx})`;return`<td class="${d===dp0&&e===sp0?'cur':''}" style="background:${bg}">${z<0?'−':''}${nf(Math.abs(z)/1000)}k</td>`}).join('')}</tr>`).join('');
- return`<div class="bec">${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's. Omkaderd is je huidige situatie.</small><div class="tw"><table class="hm"><tr><th>€/kWh ↓ · €/L →</th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
+ return`<div class="bec">${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's, omkaderd is je huidige situatie</small><div class="tw"><table class="hm"><tr><th>€/kWh ↓ · €/L →</th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
 }
 
 /* ===== Simpel: invulvenster. Uitgebreid: alle stappen onder elkaar in de kolom links ===== */
@@ -1234,7 +1205,6 @@ document.addEventListener('click',e=>{
  const g0=e.target.closest('[data-go]');if(g0){go(g0.dataset.go);return}
  const vt=e.target.closest('[data-vt]');if(vt){if(vt.dataset.vt!==vtype){applyType(vt.dataset.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false;render()}return}
  const u=e.target.closest('[data-u]');if(u){unit=u.dataset.u;render();return}
- const tp=e.target.closest('[data-tnp]');if(tp){tnP=+tp.dataset.tnp;render();return}
  const kq=e.target.closest('[data-km]');if(kq){$('km').value=kq.dataset.km;$('km').dispatchEvent(new Event('input',{bubbles:true}));return}
  const kh=e.target.closest('[data-kmh]');if(kh){$('kmH').max=v('km');$('kmH').value=Math.round(+kh.dataset.kmh*v('km')/1000)*1000;$('kmH').dispatchEvent(new Event('input',{bubbles:true}));return}
  const cl=e.target.closest('[data-cls]');if(cl){$('cls').value=cl.dataset.cls;touched=true;render();return}
