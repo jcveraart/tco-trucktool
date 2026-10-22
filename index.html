@@ -691,15 +691,87 @@ body{font-size:16px}
 .foot{border-top:3px solid var(--volt)}
 .hint+.sl{margin-top:18px}
 
+/* ===== Startpagina: globaal en rustig, met één duidelijke uitnodiging om zelf te rekenen ===== */
+.hh{padding:clamp(40px,7vw,96px) 0 clamp(48px,7vw,88px);border-bottom:1px solid var(--line)}
+.hhin{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(36px,6vw,88px);align-items:center}
+.hkick{margin:0 0 18px;color:var(--volt-ink);font:600 14px var(--text);letter-spacing:.04em;text-transform:uppercase}
+.hh h1{font:600 clamp(36px,5.2vw,62px)/1.06 var(--text);letter-spacing:-.025em;outline:0}
+.hlead{margin:22px 0 0;max-width:560px;color:var(--ink-2);font-size:clamp(17px,1.6vw,20px);line-height:1.55}
+.hacts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:34px}
+.hcta{display:inline-flex;align-items:center;gap:12px;border:0;border-radius:4px;padding:17px 28px;background:var(--volt);color:#fff;font:600 18px var(--text);text-decoration:none;cursor:pointer}
+.hcta:hover{background:var(--volt-ink);color:#fff}
+.hcta svg{width:20px;height:20px;transition:transform .15s}
+.hcta:hover svg{transform:translateX(3px)}
+.hsec{color:var(--ink);font-weight:600}
+.hok{display:flex;flex-wrap:wrap;gap:6px 22px;margin:22px 0 0;padding:0;list-style:none;color:var(--ink-3);font-size:14px}
+.hok li{display:inline-flex;align-items:center;gap:7px}
+.hok li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--volt-2)}
+.hex{background:var(--card);border-radius:6px;box-shadow:0 0 0 1px var(--line);padding:26px clamp(20px,2.6vw,30px) 24px}
+.hexh{display:flex;justify-content:space-between;align-items:baseline;gap:6px 16px;flex-wrap:wrap}
+.hexh b{font:600 15px var(--text)}
+.hexh span{color:var(--ink-3);font-size:14px}
+.hseg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;margin:16px 0 22px;padding:3px;border-radius:4px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.hseg button{border:0;border-radius:3px;padding:8px 4px;background:none;color:var(--ink-2);font:500 14px var(--text);cursor:pointer}
+.hseg button:hover{color:var(--ink)}
+.hseg button[aria-checked=true]{background:var(--ink);color:#fff}
+.hxr{display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:4px 12px;padding:10px 0}
+.hxr>span{display:inline-flex;align-items:center;gap:8px;color:var(--ink-2);font-size:15px}
+.hxr>span::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--amber)}
+.hxr.e>span::before{background:var(--volt)}
+.hxr b{justify-self:end;font:700 30px/1 var(--display);font-variant-numeric:tabular-nums}
+.hxr b small{margin-left:6px;color:var(--ink-3);font:500 14px var(--text)}
+.hxr>i{grid-column:1/-1;height:6px;border-radius:2px;background:var(--soft)}
+.hxr>i em{display:block;height:100%;border-radius:2px;background:var(--amber);transition:width .4s}
+.hxr.e>i em{background:var(--volt)}
+.hxs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.hxs span{display:block;color:var(--ink-3);font-size:13px}
+.hxs b{display:block;margin-top:2px;font:700 26px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.hxs .g{color:var(--volt-ink)}
+.hxn{margin:16px 0 0;color:var(--ink-3);font-size:13px;line-height:1.5}
+.hsect{padding:clamp(56px,8vw,104px) 0 0}
+.hsh{max-width:640px}
+.hsh h2{font:600 clamp(28px,3.4vw,40px)/1.15 var(--text);letter-spacing:-.02em}
+.hsh p{margin:14px 0 0;color:var(--ink-2);font-size:18px}
+.hwhy{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(24px,3vw,40px);margin:44px 0 0;padding:0;list-style:none}
+.hwhy li{padding-top:22px;border-top:2px solid var(--ink)}
+.hwhy svg{width:28px;height:28px;color:var(--volt)}
+.hwhy h3{margin-top:14px;font:600 19px/1.3 var(--text)}
+.hwhy p{margin:8px 0 0;color:var(--ink-2);font-size:15.5px;line-height:1.6}
+.hdep{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,6vw,88px);align-items:start}
+.hdep dl{display:grid;margin:0}
+.hdep dl>div{display:grid;grid-template-columns:44px 1fr;gap:4px 0;padding:20px 0;border-top:1px solid var(--line)}
+.hdep dl>div:last-child{border-bottom:1px solid var(--line)}
+.hdep dt{grid-column:2;font:600 17px var(--text)}
+.hdep dd{grid-column:2;margin:0;color:var(--ink-2);font-size:15.5px}
+.hdep dt::before{content:attr(data-n);position:absolute;margin-left:-44px;color:var(--volt-ink);font:700 20px/1.2 var(--display)}
+.hgo{margin-top:clamp(56px,8vw,104px);padding:clamp(36px,5vw,56px) clamp(20px,4vw,56px);border-radius:6px;background:var(--asph);color:var(--on-asph)}
+.hgo h2{font:600 clamp(28px,3.4vw,40px)/1.15 var(--text);letter-spacing:-.02em;color:#fff}
+.hgo>p{margin:12px 0 0;max-width:620px;color:var(--on-asph-2);font-size:17px}
+.hgo .vts{margin-top:30px}
+.hgo .vt{text-decoration:none;background:var(--asph-2);box-shadow:inset 0 0 0 1px var(--asph-3);color:#fff;padding:18px 18px 16px}
+.hgo .vt svg{color:var(--volt-2)}
+.hgo .vt svg circle{fill:var(--asph-2)}
+.hgo .vt small{color:var(--on-asph-2)}
+.hgo .vt:hover{box-shadow:inset 0 0 0 1px var(--volt-2)}
+.hgo .vt .go{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:var(--volt-2);font:600 14px var(--text)}
+.hgo .vt .go svg{width:15px;height:15px;margin:0;color:inherit}
+.hsteps{display:flex;flex-wrap:wrap;gap:8px 28px;margin:26px 0 0;padding:0;list-style:none;counter-reset:s;color:var(--on-asph-2);font-size:14px}
+.hsteps li{counter-increment:s}
+.hsteps li::before{content:counter(s);display:inline-grid;place-items:center;width:20px;height:20px;margin-right:8px;border-radius:2px;background:var(--asph-3);color:#fff;font:700 12px var(--text)}
+@media(max-width:1000px){.hwhy{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:860px){.hhin,.hdep{grid-template-columns:1fr}}
+@media(max-width:640px){.hcta{width:100%;justify-content:center}.hwhy{grid-template-columns:1fr}.hgo .vts{grid-template-columns:repeat(2,minmax(0,1fr))}.hxs b{font-size:22px}}
+@media print{.page[data-page=home]{display:none!important}}
+
 </style>
 </head>
 <body>
 <header class="top">
  <div class="wrap topin">
-  <a class="brand" href="#" aria-label="Stekker of diesel, naar de calculator"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a>
+  <a class="brand" href="#" aria-label="Stekker of diesel, naar de startpagina"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a>
   <button class="mnu" id="mnu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav id="nav" aria-label="Hoofdmenu">
-   <a href="#" data-nav="calc">Calculator</a>
+   <a href="#calculator" data-nav="calc">Calculator</a>
    <a href="#modellen" data-nav="modellen">Modellen</a>
    <a href="#faq" data-nav="faq">Veelgestelde vragen</a>
    <a href="#nieuws" data-nav="nieuws">Nieuws</a>
@@ -709,6 +781,48 @@ body{font-size:16px}
 </header>
 
 <main id="app">
+<!-- ===== Start ===== -->
+<section class="page" data-page="home" hidden>
+ <div class="hh">
+  <div class="wrap hhin">
+   <div>
+    <p class="hkick">Onafhankelijk · voor bestelbus, bakwagen, trekker en bus</p>
+    <h1 tabindex="-1">Is elektrisch voordeliger voor jouw bedrijf?</h1>
+    <p class="hlead">Een elektrisch bedrijfsvoertuig is duurder in aanschaf, maar vaak flink goedkoper per kilometer. Of het voor jou uitpakt, hangt af van je eigen kilometers, ritten en tarieven.</p>
+    <div class="hacts"><a class="hcta" href="#calculator" data-start>Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a><a class="hsec" href="#modellen">Bekijk <span id="hMc">alle</span> elektrische modellen</a></div>
+    <ul class="hok"><li>Gratis, zonder account</li><li>Klaar in ± 2 minuten</li><li>Geen merkvoorkeur</li></ul>
+   </div>
+   <aside class="hex" aria-labelledby="hxT">
+    <div class="hexh"><b id="hxT">Rekenvoorbeeld</b><span id="hxS"></span></div>
+    <div class="hseg" role="radiogroup" aria-label="Voertuig in het voorbeeld" id="hxV"></div>
+    <div class="hxr d"><span>Diesel</span><b><span id="hxD"></span><small>per km</small></b><i><em id="hxDb"></em></i></div>
+    <div class="hxr e"><span>Elektrisch</span><b><span id="hxE"></span><small>per km</small></b><i><em id="hxEb"></em></i></div>
+    <div class="hxs"><div><span id="hxYl">Goedkoper per jaar</span><b class="g" id="hxY"></b></div><div><span>Terugverdiend in</span><b id="hxP"></b></div></div>
+    <p class="hxn" id="hxN"></p>
+   </aside>
+  </div>
+ </div>
+
+ <div class="wrap">
+  <section class="hsect" aria-labelledby="hWhy">
+   <div class="hsh"><h2 id="hWhy">Waarom elektrisch het overwegen waard is</h2><p>De aanschaf is hoger, maar daarna werkt bijna alles in je voordeel.</p></div>
+   <ul class="hwhy"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg><h3>Goedkoper per kilometer</h3><p>Stroom kost per kilometer vaak minder dan de helft van diesel, zeker als je op eigen terrein laadt. Een elektromotor heeft ook minder onderhoud nodig: geen olie, filters of koppeling.</p></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21 10 3M19 21 14 3"/><path d="M12 7v2M12 12v2M12 17v2"/></svg><h3>Lagere kilometerheffing</h3><p>Sinds 1 juli 2026 betalen vrachtwagens boven 3.500 kg per gereden kilometer. Elektrisch valt in het laagste tarief: voor een trekker zo’n € 0,04 in plaats van € 0,20 per km.</p></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg><h3>Subsidie en belastingvoordeel</h3><p>Met AanZET krijg je een deel van de aanschafprijs van een elektrische vrachtwagen terug, of je gebruikt de MIA voor extra aftrek. Voor een eigen laadpaal is er SPRILA.</p></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V10l5-3v14M10 21V4l9 4v13"/><path d="M14 11h2M14 15h2"/></svg><h3>Toegang tot de stad</h3><p>Steeds meer gemeenten hebben een zero-emissiezone voor bestel- en vrachtauto’s. Elektrisch kom je er altijd in, en klanten en aanbestedingen vragen steeds vaker om schoon vervoer.</p></li></ul>
+  </section>
+
+  <section class="hsect hdep" aria-labelledby="hDep">
+   <div class="hsh"><h2 id="hDep">Of het loont, hangt af van jouw situatie</h2><p>Elektrisch is niet voor iedereen automatisch goedkoper. Daarom rekenen we niet met een gemiddelde, maar met jouw cijfers. Dit maakt het grootste verschil.</p></div>
+   <dl><div><dt data-n="1">Hoeveel kilometers je rijdt</dt><dd>Hoe meer je rijdt, hoe sneller de lage kosten per kilometer de hogere aanschafprijs goedmaken.</dd></div><div><dt data-n="2">Waar je laadt</dt><dd>Laden op eigen terrein is veel goedkoper dan onderweg aan een snellader.</dd></div><div><dt data-n="3">Hoe lang je ritten zijn</dt><dd>Past je dagrit binnen de actieradius, of moet je onderweg bijladen?</dd></div><div><dt data-n="4">Subsidie en restwaarde</dt><dd>AanZET of de MIA verlagen de aanschaf, de restwaarde bepaalt wat je er later voor terugkrijgt.</dd></div></dl>
+  </section>
+
+  <section class="hgo" id="hGo" aria-labelledby="hGoT">
+   <h2 id="hGoT">Reken je eigen voordeel na</h2>
+   <p>Kies je voertuig. Vul daarna in een paar korte stappen je eigen cijfers in. Weet je iets niet? Laat het voorbeeld staan.</p>
+   <div class="vts"></div>
+   <ol class="hsteps"><li>Kies je voertuig</li><li>Vul je eigen cijfers in</li><li>Zie je kosten per km, besparing en terugverdientijd</li></ol>
+  </section>
+ </div>
+</section>
+
 <!-- ===== Calculator ===== -->
 <section class="page" data-page="calc" id="calc">
  <div class="wrap">
@@ -845,8 +959,8 @@ body{font-size:16px}
  <div class="wrap">
   <div class="phead"><h1 tabindex="-1">Nieuws</h1><p>Wat er verandert aan heffingen, subsidies en tarieven, en wat dat doet met je berekening.</p></div>
   <div class="tl">
-   <article class="tli"><time datetime="2026-07-01">1 juli 2026</time><span class="kick2">Kilometerheffing</span><h2>Vrachtwagenheffing is gestart</h2><p>Sinds 1 juli 2026 geldt een kilometerheffing voor vrachtwagens zwaarder dan 3.500 kg. Het tarief per gereden kilometer hangt af van het gewicht en de emissieklasse.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#">Reken het na</a></div></article>
-   <article class="tli"><time datetime="2026-09-01">1 september 2026</time><span class="kick2">Tarieven</span><h2>Tijdelijk 22,3% lagere tarieven</h2><p>Van 1 september tot en met 31 december 2026 liggen de tarieven 22,3% lager dan in de wet. De calculator rekent met de tarieven vanaf 1 januari 2027. Klik in de calculator op Kilometerheffing om de tijdelijke korting mee te nemen.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#">Naar de calculator</a></div></article>
+   <article class="tli"><time datetime="2026-07-01">1 juli 2026</time><span class="kick2">Kilometerheffing</span><h2>Vrachtwagenheffing is gestart</h2><p>Sinds 1 juli 2026 geldt een kilometerheffing voor vrachtwagens zwaarder dan 3.500 kg. Het tarief per gereden kilometer hangt af van het gewicht en de emissieklasse.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#calculator">Reken het na</a></div></article>
+   <article class="tli"><time datetime="2026-09-01">1 september 2026</time><span class="kick2">Tarieven</span><h2>Tijdelijk 22,3% lagere tarieven</h2><p>Van 1 september tot en met 31 december 2026 liggen de tarieven 22,3% lager dan in de wet. De calculator rekent met de tarieven vanaf 1 januari 2027. Klik in de calculator op Kilometerheffing om de tijdelijke korting mee te nemen.</p><div class="src"><a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf" target="_blank" rel="noopener">Bron: Staatscourant</a><a href="#calculator">Naar de calculator</a></div></article>
    <article class="tli soon"><time datetime="2027-01-01">1 januari 2027</time><span class="kick2">Vooruitblik</span><h2>Wettelijke tarieven</h2><p>De tijdelijke korting stopt en de tarieven uit de wet gaan gelden. Dit zijn de tarieven waarmee de calculator standaard rekent.</p></article>
   </div>
   <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
@@ -860,7 +974,7 @@ body{font-size:16px}
   <div class="prose">
    <p>Stekker of diesel is begonnen met één vraag: wat kost een nieuw zakelijk voertuig echt, per kilometer, per jaar en over de hele looptijd? Niet volgens een folder, maar met jouw kilometers, jouw dieselprijs en jouw stroomprijs. Daarna kwamen de vragen die elke ondernemer stelt. Telt de subsidie mee? Wat doet de kilometerheffing? En wat als de dieselprijs weer schiet?</p>
    <p>We zijn onafhankelijk, hebben geen merkvoorkeur en verkopen geen trucks. Alle uitgangspunten staan in beeld en je past ze zelf aan. Je begint met een paar vaste stappen en zet daarna zelf aan wat voor jou geldt, zoals een laadpaal, financiering of buitenlandse tol. En als de uitkomst anders is dan je buikgevoel, dan is dat precies waarom de tool bestaat.</p>
-   <p>Liever zelf rekenen met je eigen cijfers? <a href="#">Pas een schuifje aan</a> en kijk wat er gebeurt.</p>
+   <p>Liever zelf rekenen met je eigen cijfers? <a href="#calculator">Pas een schuifje aan</a> en kijk wat er gebeurt.</p>
    <h2>Zo rekenen we</h2>
    <p>De afschrijving per jaar is de aanschafprijs, bij elektrisch verminderd met de subsidie of het MIA-voordeel, min de restwaarde, gedeeld door de afschrijftermijn. Energie is kilometers maal verbruik maal prijs, bij elektrisch min de ERE-opbrengst. Onderhoud is kilometers maal tarief, verzekering een vast bedrag per jaar, kilometerheffing het aantal kilometers met heffing maal het tarief.</p>
    <p>Neem je tol buitenland mee, dan worden kilometers in het buitenland uit de Nederlandse heffing gehaald en tegen het tarief van het betreffende land gerekend. De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen.</p>
@@ -876,7 +990,7 @@ body{font-size:16px}
  <div class="wrap">
   <div class="fin">
    <div><a class="brand" href="#"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische bedrijfsvoertuigen.</p></div>
-   <nav aria-label="Voettekst"><a href="#">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#over-ons">Over ons</a></nav>
+   <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#over-ons">Over ons</a></nav>
   </div>
   <div class="fdis">© Stekker of diesel · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst.</div>
  </div>
@@ -1147,6 +1261,7 @@ function render(){
  const kmH=truck?Math.min(v('kmH'),v('km')):0;
  for(let i=0;i<2;i++)TOL.forEach(c=>{const k=$('k_'+c[0]);k.max=Math.max(0,kmH-TOL.filter(d=>d[0]!==c[0]).reduce((a,d)=>a+v('k_'+d[0]),0))});
  const x=calcX(),r=x,b=x.b,L=r.L;
+ if(page==='home')home();
  // Voertuig
  document.querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
  $('clsW').hidden=vtype!=='bakwagen';
@@ -1276,6 +1391,7 @@ $('wzB').addEventListener('scroll',tipPlace,{passive:true});
 
 /* ===== Interactie ===== */
 document.addEventListener('click',e=>{
+ const st=e.target.closest('[data-start]');if(st){e.preventDefault();const k=st.dataset.start;if(k&&k!==vtype){applyType(k);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false}if(location.hash!=='#calculator')history.pushState(null,'','#calculator');route(false);openWz('use');return}
  const s=e.target.closest('[data-step]');if(s){openWz(s.dataset.step);return}
  const g0=e.target.closest('[data-go]');if(g0){go(g0.dataset.go);return}
  const vt=e.target.closest('[data-vt]');if(vt){if(vt.dataset.vt!==vtype){applyType(vt.dataset.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false;render()}return}
@@ -1323,19 +1439,38 @@ function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&b
  const c=document.querySelector('.bcta'),r=c&&c.getBoundingClientRect();$('fcta').hidden=!(c&&page==='calc'&&!$('wz').open&&(r.bottom<64||r.top>innerHeight))}
 addEventListener('scroll',mini,{passive:true});
 
+
+/* ===== Startpagina: rekenvoorbeeld voor het gekozen voertuig ===== */
+function home(){
+ if(!$('hxV').childElementCount)$('hxV').innerHTML=Object.entries(VT).map(([k,q])=>`<button type="button" role="radio" data-vt="${k}" aria-checked="${k===vtype}">${q.n}</button>`).join('');
+ if(!$('hGo').querySelector('.vt'))$('hGo').querySelector('.vts').innerHTML=Object.entries(VT).map(([k,q])=>`<a class="vt" href="#calculator" data-start="${k}">${VICON[k]}<b>${q.n}</b><small>${q.sub}</small><span class="go">Start ${ARROW}</span></a>`).join('');
+ document.querySelectorAll('#hxV [data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
+ $('hMc').textContent=MODELS.length||'alle';
+ const r=calcX(),q=T(),dk=r.td/r.km,ek=r.te/r.km,mx=Math.max(dk,ek),d=r.td-r.te,pb=payback(r);
+ $('hxT').textContent=touched?'Jouw laatste berekening':'Rekenvoorbeeld';
+ $('hxS').textContent=`${q.n} · ${nf(r.km)} km per jaar`;
+ $('hxD').textContent=eur(dk,2);$('hxE').textContent=eur(ek,2);
+ $('hxDb').style.width=dk/mx*100+'%';$('hxEb').style.width=ek/mx*100+'%';
+ $('hxYl').textContent=d>=0?'Elektrisch goedkoper per jaar':'Diesel goedkoper per jaar';
+ $('hxY').textContent=eur(Math.abs(d));$('hxY').classList.toggle('g',d>=0);
+ $('hxP').textContent=d>=0?ym(pb.be):'Niet';
+ $('hxN').textContent=`Inclusief aanschaf${r.b.sub>0?', subsidie':''}, energie, onderhoud en verzekering${q.truck?' en kilometerheffing':''}, met een afschrijving over ${r.L} jaar. Indicatief: met jouw cijfers valt het anders uit.`;
+}
+const ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+
 /* ===== Pagina's ===== */
 function setView(){render()}
-const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',modellen:'modellen'};
-const TITLES={calc:BRAND+' · Diesel of elektrisch vergelijken',faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,modellen:'Elektrische modellen · '+BRAND};
+const PAGES={'':'home',home:'home',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',modellen:'modellen'};
+const TITLES={home:BRAND+' · Is elektrisch voordeliger voor jouw bedrijf?',calc:'Calculator · '+BRAND,faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,modellen:'Elektrische modellen · '+BRAND};
 function route(first){
  let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
- const p=PAGES[h]||'calc',prevP=page;
+ const p=PAGES[h]||'home',prevP=page;
  page=p;
  if(p!=='calc'&&$('wz').open)$('wz').close();
  if(p!=='modellen'&&$('mDlg').open)$('mDlg').close();
  document.querySelectorAll('.page').forEach(s=>s.hidden=s.dataset.page!==p);
  document.querySelectorAll('[data-nav]').forEach(a=>a.dataset.nav===p?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
- if(p==='calc')setView();
+ if(p==='calc')setView();else if(p==='home')home();
  document.title=TITLES[p];
  if(h==='uitgebreid')history.replaceState(null,'',location.pathname+location.search);
  menu(false);
@@ -1686,7 +1821,7 @@ async function syncSupabase() {
 
 
 build();applyType('trekker');
-if(!fromURL())load();route(true);
+if(fromURL()){if(!PAGES[location.hash.slice(1)]||PAGES[location.hash.slice(1)]==='home')history.replaceState(null,'','#calculator')}else load();route(true);
 syncSupabase();
 </script>
 </body>
