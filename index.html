@@ -891,6 +891,43 @@ a.cta.big,a.fcta{text-decoration:none}
 .faq section:is(:hover,:focus-within,.open,:has(details[open]))>h2::after{transform:rotate(225deg);margin-top:-2px}
 .faq section>details:first-of-type{border-top:1px solid var(--line)}
 .faq section>details:last-of-type{border-bottom:0}
+/* Uitgebreid: terugverdientijd en gevoeligheid in de huisstijl. Witte vlakken met haarlijnen,
+   labels in Plex Mono, cijfers in Plex Condensed, oranje voor diesel en groen voor elektrisch. */
+[data-page=uitgebreid] .pbc{padding:0;overflow:hidden}
+[data-page=uitgebreid] .pbt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+[data-page=uitgebreid] .pbq{display:contents}
+[data-page=uitgebreid] .pbt>div:first-child,[data-page=uitgebreid] .pbq>div{display:flex;flex-direction:column;gap:2px;min-width:0;padding:14px 16px 15px;background:var(--card)}
+[data-page=uitgebreid] .pbt>div:first-child::before{content:"Terugverdientijd";font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+[data-page=uitgebreid] .pbn{font:600 26px/1.15 var(--display)!important;letter-spacing:0}
+[data-page=uitgebreid] .pbn small{font:500 14px var(--text);color:var(--ink-3)}
+[data-page=uitgebreid] .pbs,[data-page=uitgebreid] .pbr{margin:0;font-size:13px;color:var(--ink-3)}
+[data-page=uitgebreid] .pbq b{font:600 26px/1.15 var(--display);letter-spacing:0}
+[data-page=uitgebreid] .pbq b small{font:500 13px var(--text)}
+[data-page=uitgebreid] .pbbar{height:4px;margin:18px 20px 0;border-radius:2px;box-shadow:none;background:var(--soft)}
+[data-page=uitgebreid] .pbc svg{width:calc(100% - 40px);margin:10px 20px 0}
+[data-page=uitgebreid] .pbc text{font:500 11px var(--mono)}
+[data-page=uitgebreid] .pbc g text{font-family:var(--text)}
+[data-page=uitgebreid] .pbk{margin:8px 20px 16px;font:500 12px var(--mono);letter-spacing:.04em;text-transform:uppercase}
+[data-page=uitgebreid] .snw .bec{gap:1px;background:var(--line);box-shadow:0 0 0 1px var(--line);border-radius:6px;overflow:hidden}
+[data-page=uitgebreid] .snw .bc2{border-radius:0!important;padding:14px 16px 16px}
+[data-page=uitgebreid] .bc2>small{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+[data-page=uitgebreid] .bc2>b{font:600 26px/1.15 var(--display);letter-spacing:0}
+[data-page=uitgebreid] .bc2>b small{font:500 14px var(--text)}
+[data-page=uitgebreid] .bc2 p{font-size:13px;color:var(--ink-3)}
+[data-page=uitgebreid] .trk{height:6px;margin:32px 0 34px;border-radius:3px}
+[data-page=uitgebreid] .trk i{border-radius:3px}
+[data-page=uitgebreid] .trk u{top:-4px;width:2px;height:14px;margin-left:-1px}
+[data-page=uitgebreid] .trk .now{top:-4px;width:14px;height:14px;margin-left:-7px;border-width:3px}
+[data-page=uitgebreid] .trk em{top:-22px;font:500 11px var(--mono);letter-spacing:.04em;color:var(--ink-3)}
+[data-page=uitgebreid] .trk em.lo{top:22px}
+[data-page=uitgebreid] .trk .tk s{font:500 10px var(--mono)}
+[data-page=uitgebreid] .hmw{margin-top:12px;padding:14px 16px;box-shadow:0 0 0 1px var(--line)}
+[data-page=uitgebreid] .hmw>small{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+[data-page=uitgebreid] .hm{width:100%;max-width:none;font:500 13px var(--mono);border-spacing:3px}
+[data-page=uitgebreid] .hm th{font:500 12px var(--mono);color:var(--ink-3)}
+[data-page=uitgebreid] .hm td{border-radius:2px;padding:8px 4px}
+[data-page=uitgebreid] .hm td.cur{outline-width:2px;outline-offset:-2px;font-weight:600}
+@media(max-width:700px){[data-page=uitgebreid] .pbt{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -1694,7 +1731,7 @@ function sensHTML(sv){
   const zone=good==='hi'?`left:${be>0?b:0}%;right:0`:`left:0;width:${be>0?b:0}%`;
   return`<div class="trk"><i style="${zone}"></i>${tk.join('')}${be>0?`<u style="left:${b}%"><em>break-even</em></u>`:''}<span class="now" style="left:${pos(cur,m)}%"><em class="${low?'lo':''}">nu</em></span></div>`};
  const card=(t,val,txt,tr)=>`<div class="bc2"><small>${t}</small><b>${val}</b>${tr}<p>${txt}</p></div>`;
- const c1=card('Break-even dieselprijs',dpB===null?'—':`${eur(Math.max(0,dpB),2)} <small>/ L</small>`,dpB===null?'Geen berekening mogelijk.':dpB<=0?`Elektrisch is goedkoper, ook als diesel gratis zou zijn. Nu rekent de calculator met ${eur(dp0,2)}.`:`Elektrisch is goedkoper vanaf deze dieselprijs. Nu rekent de calculator met ${eur(dp0,2)}.`,dpB===null?'':trk(dpB,dp0,'hi',.25));
+ const c1=card('Break-even dieselprijs',dpB===null?'—':`${eur(Math.max(0,dpB),2)} <small>/ L</small>`,dpB===null?'Geen berekening mogelijk.':dpB<=0?`Elektrisch is goedkoper, ook als diesel gratis zou zijn. Nu rekent de calculator met ${eur(dp0,2)}.`:`Elektrisch is goedkoper vanaf deze dieselprijs. Nu rekent de calculator met ${eur(dp0,2)}.`,dpB===null?'':trk(dpB,dp0,'hi',.5));
  const c2=card('Break-even stroomprijs',spB===null?'—':spB<=0?'Geen':`${eur(spB,2)} <small>/ kWh</small>`,spB===null?'Geen berekening mogelijk.':spB<=0?`Elektrisch is niet goedkoper, zelfs niet bij gratis eigen stroom. Nu ${eur(sp0,2)}.`:`Elektrisch is goedkoper tot deze stroomprijs. Nu rekent de calculator met ${eur(sp0,2)}.`,spB===null||spB<=0?'':trk(spB,sp0,'lo',.1));
  const U=a=>[...new Set(a.map(x=>Math.round(Math.max(0,x)*1000)/1000))];
  const ds=U([-.5,-.25,0,.25,.5].map(d=>dp0+d)),es=U([-.1,-.05,0,.1,.2,.3].map(d=>sp0+d));
