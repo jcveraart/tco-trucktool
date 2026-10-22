@@ -6,6 +6,8 @@
 <title>Stekker of diesel · Diesel of elektrisch vergelijken</title>
 <meta name="description" content="Stekker of diesel? Vergelijk een nieuwe diesel- en elektrische trekker, bakwagen, bestelbus of bus op kosten per kilometer, per jaar en over de afschrijftermijn. Met AanZET, MIA, kilometerheffing, laadpaal, financiering en buitenlandse tol.">
 <meta name="theme-color" content="#191B1E">
+<meta name="google-adsense-account" content="ca-pub-5802360734201634">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5802360734201634" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -286,6 +288,8 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(
 /* Advertentie */
 .ad{display:grid;place-items:center;min-height:250px;border-radius:14px;background:repeating-linear-gradient(135deg,transparent 0 12px,rgba(21,23,26,.035) 12px 13px),var(--soft);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-3);font:600 11px var(--text);letter-spacing:.18em;text-transform:uppercase}
 .ad.band{min-height:110px;margin:64px 0 0}
+#privacy{scroll-margin-top:96px}
+.ad.on{display:block;background:none;box-shadow:none}.ad.on:has(ins[data-ad-status=unfilled]){display:none}
 
 /* Content-pagina's */
 .phead{padding:36px 0 30px;max-width:820px}
@@ -935,6 +939,9 @@ body{font-size:16px}
    <h2>Zo rekenen we</h2>
    <p>De afschrijving per jaar is de aanschafprijs, bij elektrisch verminderd met de subsidie of het MIA-voordeel, min de restwaarde, gedeeld door de afschrijftermijn. Energie is kilometers maal verbruik maal prijs, bij elektrisch min de ERE-opbrengst. Onderhoud is kilometers maal tarief, verzekering een vast bedrag per jaar, kilometerheffing het aantal kilometers met heffing maal het tarief.</p>
    <p>Neem je tol buitenland mee, dan worden kilometers in het buitenland uit de Nederlandse heffing gehaald en tegen het tarief van het betreffende land gerekend. De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (extra investering plus jaarkosten, inclusief financiering) onder die van diesel komen.</p>
+   <h2 id="privacy">Privacy en cookies</h2>
+   <p>We vragen geen naam, e-mailadres of andere persoonsgegevens. Wat je in de calculator invult blijft in je eigen browser; een deellink bevat alleen je rekeninstellingen.</p>
+   <p>Om de site gratis te houden tonen we advertenties via Google AdSense. Google en zijn partners kunnen daarvoor cookies gebruiken, ook om advertenties af te stemmen op eerdere bezoeken aan deze en andere sites. Bij je eerste bezoek vragen we daar toestemming voor, en je kunt die keuze altijd aanpassen. Lees hoe Google <a href="https://policies.google.com/technologies/partner-sites?hl=nl" rel="noopener" target="_blank">gegevens gebruikt van sites die zijn diensten gebruiken</a>, of zet gepersonaliseerde advertenties uit via <a href="https://adssettings.google.com" rel="noopener" target="_blank">Advertentie-instellingen</a>.</p>
    <p class="disc">Dit is een rekenvoorbeeld en geen financieel of fiscaal advies. Subsidiebedragen (AanZET, MIA, SPRILA), tarieven en voorbeeldcijfers zijn indicatief. Controleer ze altijd bij RVO en de Belastingdienst.</p>
   </div>
   <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
@@ -947,7 +954,7 @@ body{font-size:16px}
  <div class="wrap">
   <div class="fin">
    <div><a class="brand" href="#"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische bedrijfsvoertuigen.</p></div>
-   <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#over-ons">Over ons</a></nav>
+   <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#over-ons">Over ons</a><a href="#privacy">Privacy</a></nav>
   </div>
   <div class="fdis">© Stekker of diesel · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst.</div>
  </div>
@@ -1412,7 +1419,7 @@ const ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 
 /* ===== Pagina's ===== */
 function setView(){render()}
-const PAGES={'':'home',home:'home',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',modellen:'modellen'};
+const PAGES={'':'home',home:'home',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',privacy:'over',modellen:'modellen'};
 const TITLES={home:BRAND+' · Wat levert elektrisch rijden jouw bedrijf op?',calc:'Calculator · '+BRAND,faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,modellen:'Elektrische modellen · '+BRAND};
 function route(first){
  let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
@@ -1428,7 +1435,17 @@ function route(first){
  menu(false);
  if(p==='modellen')mPaint();else $('mBar').hidden=true;
  if(!first&&p!==prevP){scrollTo(0,0);const h1=document.querySelector(`.page[data-page="${p}"] h1`);if(h1)h1.focus({preventScroll:true})}
- mini();
+ if(h==='privacy')$('privacy').scrollIntoView();
+ mini();ads();
+}
+/* AdSense: zolang AD_SLOT leeg is blijven de vakken placeholder. Vul pas als de pagina zichtbaar is, anders heeft het blok geen breedte. */
+const AD_CLIENT='ca-pub-5802360734201634',AD_SLOT='';
+function ads(){
+ if(!AD_SLOT)return;
+ document.querySelectorAll(`.page[data-page="${page}"] .ad:not(.on)`).forEach(a=>{
+  a.classList.add('on');a.innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${AD_CLIENT}" data-ad-slot="${AD_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
+  try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
+ })
 }
 addEventListener('hashchange',()=>route(false));
 function menu(open){$('nav').classList.toggle('open',open);$('mnu').setAttribute('aria-expanded',open)}
