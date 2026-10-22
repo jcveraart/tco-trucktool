@@ -552,8 +552,12 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mvar .seg button[aria-checked=true]{background:var(--ink);color:#fff}
 .mvar .seg>*{flex:none}
 .mvar .seg small{font-size:12px;opacity:.7}
-.mdesc{margin:0 0 12px;max-width:640px;color:var(--ink-2);line-height:1.6}
-.mmeta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0 0 20px;font-size:14px;color:var(--ink-3)}
+.mpts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,max-content));gap:10px 28px;margin:0 0 20px;padding:0;list-style:none}
+.mpts li{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:var(--ink)}
+.mpts svg{flex:none;width:28px;height:28px;padding:5px;border-radius:8px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-2)}
+.mpts .ok svg{background:var(--volt-soft);box-shadow:none;color:var(--volt-ink)}
+.mpts .tight svg{background:#FBEBD3;box-shadow:none;color:#8A5308}
+.mpts .no svg{background:#FCE3D6;box-shadow:none;color:#B23A0B}
 .mkv{margin:12px 0 0;max-width:560px}
 .mkv div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
 .mkv dt{font-size:14px;color:var(--ink-3)}
@@ -571,11 +575,8 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mchev{width:18px;height:18px;color:var(--ink-3);transition:transform .2s}
 .mr.open .mchev{transform:rotate(180deg)}
 .mrb{grid-column:2;padding:0 22px 24px 0}
-.mfit{display:inline-flex;align-items:center;gap:8px;color:var(--ink-2)}
-.mfit i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--volt)}
-.mfit.tight i{background:var(--amber)}
-.mfit.no i{background:#C2410C}
-.mhow{margin-top:16px;font-size:14px;color:var(--ink-3)}
+.mhow{font-size:14px;color:var(--ink-3)}
+.mhow[open]{flex-basis:100%}
 .mhow summary{cursor:pointer;width:max-content;max-width:100%}
 .mhow summary:hover{color:var(--ink)}
 .mhow p{margin:12px 0 0;max-width:640px;line-height:1.6}
@@ -1583,13 +1584,19 @@ function mAccLine(m){
  if((m.u||m.ue)&&m.g)q.push(`${m.gt||mFmt(m.g)} bruto`);
  return`${v} kWh <small>${q.join(' · ')}</small>`;
 }
+/* Kaart in één oogopslag: vier korte punten en de knop; omschrijving en specificaties onder Meer over dit model */
+const MIC={fit:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',cal:'<rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',eur:'<path d="M17.5 6.5A7 7 0 1 0 17.5 17.5M4 10.5h9M4 13.5h9"/>',bolt:'<path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/>'};
+const mPt=(ic,t,cl='')=>`<li class="${cl}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${MIC[ic]}</svg><span>${t}</span></li>`;
 function mBody(m,pre=''){
  const dg=m.c===vtype?mDag():0,a=mAcc(m),x=dg?m.r/dg:0,ok=x>=1.25,tight=x&&!ok&&x>=1;
  const when=m.checked?new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z')):'';
- return`<div class="mrb" id="mb-${pre?mFamId(m):m.id}">${pre}<p class="mdesc">${m.n}</p>
-  <p class="mmeta">${dg?`<span class="mfit ${ok?'ok':tight?'tight':'no'}"><i aria-hidden="true"></i>${ok?`Ruim genoeg voor je dagrit van ${nf(dg)} km`:tight?`Haalt je dagrit van ${nf(dg)} km, maar krap in de winter`:`Haalt je dagrit van ${nf(dg)} km niet zonder bijladen`}</span>`:''}<span>${m.price?`Vanaf ${eur(m.price)} excl. btw${m.pt&&m.pt!=='list'?' (indicatief)':''}`:'Prijs niet gepubliceerd'}</span></p>
-  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met ${pre?'deze uitvoering':'dit model'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>
-  <details class="mhow"><summary>Meer details</summary><dl class="mkv"><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div><div><dt>Bron</dt><dd><a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?` <small>gecontroleerd ${when}</small>`:''}</dd></div></dl><p>De calculator start met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Je aanschafprijs vul je zelf in. Reken in de winter met ongeveer 20% minder actieradius.</p></details></div>`;
+ const pts=[dg?mPt('fit',ok?`Past je dagrit van ${nf(dg)} km`:tight?`Krap voor ${nf(dg)} km in de winter`:`Te kort voor ${nf(dg)} km per dag`,ok?'ok':tight?'tight':'no'):'',
+  mPt('cal',m.st==='nu'?'Nu leverbaar':'Verwacht in '+m.y),
+  mPt('eur',m.price?`${eur(m.price)} excl. btw`:'Prijs niet bekend'),
+  mPt('bolt',[m.dc?`CCS ${nf(m.dc)} kW`:'',m.mcs?`MCS ${nf(m.mcs)} kW`:''].filter(Boolean).join(' · ')||'Laden niet opgegeven')].join('');
+ return`<div class="mrb" id="mb-${pre?mFamId(m):m.id}">${pre}<ul class="mpts">${pts}</ul>
+  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met ${pre?'deze uitvoering':'dit model'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+  <details class="mhow"><summary>Meer over dit model</summary><p>${m.n}</p><dl class="mkv"><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Bron</dt><dd><a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?` <small>gecontroleerd ${when}</small>`:''}</dd></div></dl><p>De calculator start met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Reken in de winter met ongeveer 20% minder actieradius.</p></details></div></div>`;
 }
 /* Familierij: bandbreedte over de uitvoeringen; openklappen toont een keuze per uitvoering met de details van de gekozen uitvoering. */
 function mFamRow(k,vs,top,mx,d){
