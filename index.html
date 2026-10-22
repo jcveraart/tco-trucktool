@@ -478,21 +478,29 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 /* Vraagteken en uitlegvenster */
 .slb{display:inline-flex;align-items:center;gap:7px;min-width:0}
 .qi{flex:none;display:inline-grid;place-items:center;width:19px;height:19px;padding:0;border:0;border-radius:50%;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-3);font:700 11px/1 var(--text);cursor:pointer;vertical-align:1px}
-.qs{flex:none;display:inline-grid;place-items:center;width:19px;height:19px;padding:0;border:0;border-radius:50%;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-3);font:700 12px/1 var(--text);cursor:pointer;vertical-align:1px}
-.qs:hover,.qs[aria-pressed=true]{background:var(--ink);color:#fff;box-shadow:none}
+.qs{flex:none;display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;padding:0;border:0;border-radius:10px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-3);font:700 12px/1 var(--text);cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums}
+.qs:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.qs[aria-pressed=true]{padding:0 8px;background:var(--ink);color:#fff;box-shadow:none;font:600 11px/1 var(--mono)}
 /* Bandbreedte op de schuif: twee extra bolletjes rond je waarde */
 .srg{position:relative}
-.sl:not(.rng) .rx,.sl:not(.rng) .rxl,.sl:not(.rng) .rxp{display:none!important}
-.rxp{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}
-.rxp>span{font:500 12px var(--mono);color:var(--ink-3);margin-right:2px}
-.rxp button,.rxc{height:28px;padding:0 10px;border:0;border-radius:6px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);font:500 13px var(--text);color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
-.rxp button:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
-.rxp button[aria-pressed=true]{background:var(--ink);color:#fff;box-shadow:none}
-.rxc{display:inline-flex;align-items:center;gap:2px;cursor:text}
-.rxc:focus-within,.rxc.on{box-shadow:inset 0 0 0 2px var(--ink)}
-.rxc input{width:4.2ch;border:0;background:none;outline:0;padding:0;text-align:right;font:inherit;color:var(--ink)}
+.sl:not(.rng) .rx,.sl:not(.rng) .rxl{display:none!important}
+.slb{flex-wrap:wrap}
+.rxp{display:inline-flex;align-items:center;height:22px;padding:2px;gap:1px;border-radius:11px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2)}
+.rxp:not(.open){display:none}
+.qs{position:relative}
+.qs::after{content:attr(data-tt);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);padding:6px 9px;border-radius:6px;background:var(--ink);color:#fff;font:500 12px/1.3 var(--text);letter-spacing:0;text-transform:none;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s;z-index:5}
+.qs:hover::after,.qs:focus-visible::after{opacity:1;transition-delay:.15s}
+@media(hover:none){.qs::after{display:none}}
+.slb:has(.rxp.open) .qs{display:none}
+.rxp button,.rxc{height:18px;padding:0 7px;border:0;border-radius:9px;background:none;font:500 11px/18px var(--mono);color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
+.rxp button:hover{color:var(--ink);background:var(--card)}
+.rxp button[aria-pressed=true]{background:var(--ink);color:#fff}
+.rxc{display:inline-flex;align-items:center;cursor:text}
+.rxc.on{background:var(--ink);color:#fff}.rxc.on input,.rxc.on b{color:#fff}
+.rxc input{width:5ch;field-sizing:content;min-width:2ch;border:0;background:none;outline:0;padding:0;text-align:right;font:inherit;color:var(--ink)}
 .rxc input::placeholder{color:var(--ink-3)}
 .rxc b{font-weight:500;color:var(--ink-3)}
+.rxp .rxo{color:var(--ink-3);border-left:1px solid var(--line-2);border-radius:0 9px 9px 0;margin-left:2px}
 .rng .srg{padding-bottom:18px}
 .rng .rx{display:block;position:absolute;left:0;right:0;top:0;pointer-events:none;background:none}
 .rng .rx::-webkit-slider-runnable-track{background:none}
@@ -1306,7 +1314,7 @@ const band=()=>BX&&mm(BX.map(q=>q.r.td-q.r.te));
 const spanTxt=(a,f,z)=>{const[l,h]=mm(a);return h-l>z?`${f(l)} tot ${f(h)}`:''};
 const bandTxt=bd=>`${sg(Math.round(bd[0]/100)*100)} tot ${sg(Math.round(bd[1]/100)*100)}`;
 function srPaint(){
- Object.keys(SENS).forEach(id=>{const e=$(id);if(!e)return;const sl=e.closest('.sl'),on=id in SR;sl.classList.toggle('rng',on);sl.querySelector('.qs').setAttribute('aria-pressed',on);if(!on)return;
+ Object.keys(SENS).forEach(id=>{const e=$(id);if(!e)return;const sl=e.closest('.sl'),on=id in SR;sl.classList.toggle('rng',on);const qs=sl.querySelector('.qs');qs.setAttribute('aria-pressed',on);qs.dataset.tt=on?'Bandbreedte aanpassen':'Niet zeker? Kies een bandbreedte';qs.textContent=on?(SR[id][2]?`± ${nf(SR[id][2],SR[id][2]%1?1:0)}%`:'± eigen'):'±';sl.querySelector('.rxp').classList.toggle('open',srOpen===id);if(!on)return;
   const[a,b]=srLim(id),mn=+e.min,mx=+e.max,f=n=>mx>mn?(n-mn)/(mx-mn):0,w=sl.querySelector('.srg').clientWidth;
   sl.style.setProperty('--a',f(a));sl.style.setProperty('--b',f(b));
   sl.querySelectorAll('.rx').forEach(r=>{r.min=mn;r.max=mx;r.step=e.step;r.value=r.dataset.x==='lo'?a:b});
@@ -1318,7 +1326,7 @@ function srPaint(){
 
 /* ===== Bouwstenen voor invoer ===== */
 const decs=s=>(String(s).split('.')[1]||'').length;
-const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}${SENS[id]?`<button type="button" class="qs" data-sens="${id}" aria-pressed="false" aria-label="Bandbreedte kiezen voor ${SENS[id][0].toLowerCase()}">±</button>`:''}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div>${SENS[id]?'<div class="srg">':''}<input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}">${SENS[id]?['lo','hi'].map(x=>`<input class="rx" type="range" data-for="${id}" data-x="${x}" aria-label="${x==='lo'?'Ondergrens':'Bovengrens'} ${SENS[id][0].toLowerCase()}"><span class="rxl" data-x="${x}"></span>`).join('')+`</div><div class="rxp" role="group" aria-label="Bandbreedte ${SENS[id][0].toLowerCase()}"><span>±</span>${[2.5,5,10,20].map(p=>`<button type="button" data-rp="${p}" data-for="${id}" aria-pressed="false">${nf(p,p%1?1:0)}%</button>`).join('')}<label class="rxc"><input type="text" inputmode="decimal" autocomplete="off" data-rpc data-for="${id}" placeholder="eigen" aria-label="Eigen percentage"><b>%</b></label></div>`:''}</div>`};
+const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}${SENS[id]?`<button type="button" class="qs" data-sens="${id}" aria-pressed="false" data-tt="Niet zeker? Kies een bandbreedte" aria-label="Niet zeker van ${SENS[id][0].toLowerCase()}? Kies een bandbreedte">±</button><div class="rxp" role="group" aria-label="Bandbreedte ${SENS[id][0].toLowerCase()}">${[2.5,5,10,20].map(p=>`<button type="button" data-rp="${p}" data-for="${id}" aria-pressed="false">${nf(p,p%1?1:0)}%</button>`).join('')}<label class="rxc"><input type="text" inputmode="decimal" autocomplete="off" data-rpc data-for="${id}" placeholder="eigen" aria-label="Eigen percentage"><b>%</b></label><button type="button" class="rxo" data-rp="0" data-for="${id}" aria-label="Bandbreedte uit">uit</button></div>`:''}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div>${SENS[id]?'<div class="srg">':''}<input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}">${SENS[id]?['lo','hi'].map(x=>`<input class="rx" type="range" data-for="${id}" data-x="${x}" aria-label="${x==='lo'?'Ondergrens':'Bovengrens'} ${SENS[id][0].toLowerCase()}"><span class="rxl" data-x="${x}"></span>`).join('')+`</div>`:''}</div>`};
 const sw=(id,t,on)=>`<label class="sw2 ln"><input id="${id}" type="checkbox"${on?' checked':''}><span>${t}</span></label>`;
 const vcards=()=>`<div class="vts" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" class="vt" role="radio" data-vt="${k}" aria-checked="false">${VICON[k]}<b>${q.n}</b><small>${q.sub}</small></button>`).join('')}</div>`;
 const dex=(a,b)=>`<div class="dex"><div class="dexc"><p class="dexh"><i class="d"></i>Diesel</p>${a}</div><div class="dexc"><p class="dexh"><i class="e"></i>Elektrisch</p>${b}</div></div>`;
@@ -1691,10 +1699,16 @@ document.addEventListener('click',e=>{
  if(e.target.closest('.qtx')){tipClose(true);return}
  if(qtBtn&&!e.target.closest('#qt'))tipClose(false);
 },true);
-document.addEventListener('click',e=>{const b=e.target.closest('.qs');if(!b)return;e.preventDefault();const id=b.dataset.sens,q=SENS[id];if(id in SR)delete SR[id];else{const dx=q[1]==='p'?v(id)*q[2]:q[2];SR[id]=q[1]==='p'?[dx,dx,q[2]*100]:[dx,dx]}render()});
-const srPct=(id,p)=>{const d=v(id)*p/100;SR[id]=[d,d,p];touched=true;render()};
-document.addEventListener('click',e=>{const b=e.target.closest('[data-rp]');if(b)srPct(b.dataset.for,+b.dataset.rp)});
+/* ± zet een bandbreedte van 10% aan en opent de keuze ernaast; een keuze klapt hem weer in tot een label */
+let srOpen=null;
+const srPct=(id,p)=>{if(p){const d=v(id)*p/100;SR[id]=[d,d,p]}else delete SR[id];touched=true;render()};
+document.addEventListener('click',e=>{
+ const b=e.target.closest('.qs');if(b){e.preventDefault();const id=b.dataset.sens;if(!(id in SR))SR[id]=[v(id)*.1,v(id)*.1,10];srOpen=id;touched=true;render();return}
+ const r=e.target.closest('[data-rp]');if(r){srOpen=null;srPct(r.dataset.for,+r.dataset.rp);return}
+ if(srOpen&&!e.target.closest('.rxp')){srOpen=null;render()}
+});
 document.addEventListener('input',e=>{const i=e.target;if(!i.matches||!i.matches('[data-rpc]'))return;const p=parseFloat(i.value.replace(',','.'));if(p>0&&p<=100)srPct(i.dataset.for,p)});
+document.addEventListener('keydown',e=>{if(e.target.matches&&e.target.matches('[data-rpc]')&&e.key==='Enter'){e.preventDefault();srOpen=null;render()}else if(e.key==='Escape'&&srOpen){srOpen=null;render()}});
 document.addEventListener('input',e=>{const r=e.target;if(!r.classList||!r.classList.contains('rx'))return;e.stopPropagation();const id=r.dataset.for,x=+r.value;SR[id].length=2;SR[id][r.dataset.x==='lo'?0:1]=Math.max(0,r.dataset.x==='lo'?v(id)-x:x-v(id));touched=true;render()},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&qtBtn){e.preventDefault();e.stopPropagation();tipClose(true)}},true);
 addEventListener('scroll',tipPlace,{passive:true});
