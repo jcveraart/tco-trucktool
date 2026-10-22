@@ -753,12 +753,6 @@ body{font-size:16px}
 .in .slb{color:var(--ink-3)}
 .bfoot p{font-size:20px}
 .mcount{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0}
-.kmq{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:-8px 0 22px}
-.kmq span{margin-right:8px;color:var(--ink-3);font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
-.kmq button{border:0;border-radius:4px;padding:7px 12px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-2);font:500 14px var(--text);font-variant-numeric:tabular-nums;cursor:pointer}
-.kmq button:hover{box-shadow:inset 0 0 0 1px var(--ink);color:var(--ink)}
-.kmq button[aria-pressed=true]{background:var(--ink);box-shadow:none;color:#fff}
-@media(max-width:640px){.kmq{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:-10px}.kmq span{grid-column:1/-1;margin:0 0 2px}.kmq button{padding:8px 0}}
 /* Vlootanalyse */
 .fln{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;margin-top:56px;padding:20px 24px;border-radius:6px;background:var(--asph);color:var(--on-asph);text-decoration:none}
 .fln:hover{color:var(--on-asph)}
@@ -856,7 +850,6 @@ body{font-size:16px}
    <h1 tabindex="-1">Diesel of elektrisch?</h1>
   </div>
   <div class="pick" aria-label="Voertuig" data-vts></div>
-  <div class="kmq" id="kmq" role="group" aria-label="Kilometers per jaar"></div>
  </div>
 
  <div class="wrap cg" id="cg">
@@ -1436,9 +1429,9 @@ function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km,m=modelActive();
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span></div>`;
  const n=coreSteps().length;
- const inv=`<div class="bcta"><div class="bct"><b>${touched?'Jouw berekening':`Voorbeeldcijfers voor een ${T().w}`}</b><span>${touched?'':'± 2 minuten · geen account'}</span></div><button type="button" class="cta big" data-step="use">Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
+ const inv=touched?'':`<div class="bcta"><div class="bct"><b>Voorbeeldcijfers voor een ${T().w}</b></div><button type="button" class="cta big" data-step="use">Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
  setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
-  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p><div class="acts"><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div></div>`+inv);
+  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div>`:''}</div>`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
  tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
  $('mD').textContent=eur(r.td/km,2);$('mE').textContent=eur(r.te/km,2);$('mM').textContent=even?'≈':(cheap?'−':'+')+nf(pc)+'%';
@@ -1479,7 +1472,6 @@ const regLabel=()=>({az:'AanZET',mia1:'MIA',mia2:'MIA',eigen:'Eigen bedrag',geen
 function render(){
  const q=T(),truck=q.truck;
  modelPaint();
- $('kmq').innerHTML='<span>Km per jaar</span>'+q.q.map(k=>`<button type="button" data-kmq="${k}" aria-pressed="${v('km')===k}">${nf(k/1000)}k</button>`).join('');
  $('kmH').max=v('km');
  const kmH=truck?Math.min(v('kmH'),v('km')):0;
  for(let i=0;i<2;i++)TOL.forEach(c=>{const k=$('k_'+c[0]);k.max=Math.max(0,kmH-TOL.filter(d=>d[0]!==c[0]).reduce((a,d)=>a+v('k_'+d[0]),0))});
@@ -1628,7 +1620,6 @@ document.addEventListener('click',e=>{
  const g0=e.target.closest('[data-go]');if(g0){go(g0.dataset.go);return}
  const vt=e.target.closest('[data-vt]');if(vt){if(vt.dataset.vt!==vtype){applyType(vt.dataset.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false;render()}return}
  const u=e.target.closest('[data-u]');if(u){unit=u.dataset.u;render();return}
- const kz=e.target.closest('[data-kmq]');if(kz){const k=+kz.dataset.kmq,old=Math.max(1,v('km')),h=v('kmH')/old;$('km').value=k;$('kmH').max=k;$('kmH').value=Math.round(h*k/1000)*1000;touched=true;render();return}
  const kq=e.target.closest('[data-km]');if(kq){$('km').value=kq.dataset.km;$('km').dispatchEvent(new Event('input',{bubbles:true}));return}
  const kh=e.target.closest('[data-kmh]');if(kh){$('kmH').max=v('km');$('kmH').value=Math.round(+kh.dataset.kmh*v('km')/1000)*1000;$('kmH').dispatchEvent(new Event('input',{bubbles:true}));return}
  const cl=e.target.closest('[data-cls]');if(cl){$('cls').value=cl.dataset.cls;touched=true;render();return}
@@ -2146,7 +2137,6 @@ syncSupabase();
   const t=e.target;if(!t.closest)return;let x;
   if(x=t.closest('[data-step],[data-add]'))return track('cta_click',{cta:ctaName(x),step:x.dataset.step||x.dataset.add,text:(x.textContent||'').trim().slice(0,60)});
   if(x=t.closest('[data-vt]')){if(x.dataset.vt!==vtype)track('vehicle_select',{vt:x.dataset.vt,from:vtype});return}
-  if(x=t.closest('[data-kmq]'))return track('km_quick',{km:+x.dataset.kmq});
   if(x=t.closest('[data-u]'))return track('unit',{u:x.dataset.u});
   if(t.closest('[data-share]'))return track('share',{vt:vtype});
   if(t.closest('[data-print]'))return track('print',{vt:vtype});
