@@ -863,7 +863,12 @@ body{font-size:16px}
 .xsum i{display:inline-block;width:9px;height:9px;margin-right:8px;border-radius:2px;vertical-align:1px}
 .xsum i.d{background:var(--amber)}.xsum i.e{background:var(--volt)}
 .xsum .good b{color:var(--volt-ink)}.xsum .bad b{color:var(--amber-ink)}
-[data-page=uitgebreid] .vs{margin-top:40px}</style>
+[data-page=uitgebreid] .vs{margin-top:40px}/* Uitgebreid: gevoeligheid met drie omslagpunten */
+.snp{margin:8px 0 0;color:var(--ink-3);font-size:16px}
+.snw .bec{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){.snw .bec{grid-template-columns:minmax(0,1fr)}}
+a.cta.big,a.fcta{text-decoration:none}
+</style>
 </head>
 <body>
 <header class="top">
@@ -900,13 +905,11 @@ body{font-size:16px}
    </section>
    <div class="board" id="board" aria-live="polite"></div>
 
-   <div class="ins" id="ins"></div>
 
-   <a class="add xgo" id="xGo" href="#uitgebreid"><div class="addt"><h2>Uitgebreide berekening</h2><p>Kosten per onderdeel, terugverdientijd, financiering, laadpaal, tol en energieprijzen.</p></div><span class="cta">Bekijk uitgebreid <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a>
 
   </div>
  </div>
- <button class="fcta" id="fcta" type="button" data-step="use" hidden>Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+ <a class="fcta" id="fcta" href="#uitgebreid" data-xgo hidden>Reken uitgebreid met je eigen cijfers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
 
 </section>
 
@@ -936,6 +939,12 @@ body{font-size:16px}
     <div id="pbX"></div>
    </section>
 
+   <section class="an" aria-labelledby="hSn">
+    <h2 id="hSn">Gevoeligheid</h2>
+    <p class="snp">Vanaf hoeveel kilometers en bij welke energieprijzen elektrisch goedkoper is.</p>
+    <div class="snw" id="snX"></div>
+   </section>
+
    <section class="add" aria-labelledby="hAdd"><div class="addt"><h2 id="hAdd">Extra kosten</h2></div><div class="addl" id="addL"></div></section>
 
    <a class="fln" href="#vlootanalyse" data-fleet="calc"><div><span>Vlootanalyse</span><b>Een plan voor je hele vloot</b></div><i>Neem contact op<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></i></a>
@@ -943,7 +952,6 @@ body{font-size:16px}
    <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
 
    <div class="more">
-    <details><summary><b>Wat als energieprijzen veranderen?</b></summary><div class="snw" id="snX"></div></details>
     <details id="wfD" hidden><summary><b>Wat doen de extra kosten met de besparing?</b></summary><div id="wfX" style="padding-top:24px"></div></details>
     <details><summary><b>Goed om te weten</b></summary><dl class="facts" id="facts"></dl></details>
     <details><summary><b>Toelichting op de cijfers</b></summary><p>De voorbeeldcijfers per voertuig zijn indicatief: aanschaf, verbruik, accu, onderhoud, verzekering en restwaarde verschillen per merk, uitvoering en inzet. Vervang ze door je eigen offertes en cijfers.</p><p>Kilometerheffing geldt alleen voor vrachtwagens (N2 en N3) boven 3.500 kg, met tarieven vanaf 1 januari 2027 (voor een trekker € 0,201 diesel en € 0,038 elektrisch). AanZET is een percentage van de aanschafprijs met een maximum, afhankelijk van N2 of N3 en de bedrijfsgrootte. De MIA is indicatief berekend als netto belastingvoordeel: 36% extra aftrek over 90% van de aanschafprijs, bij 19% of 25,8% vennootschapsbelasting. AanZET en MIA kunnen niet samen.</p><p>De actieradius is de bruikbare accucapaciteit gedeeld door het verbruik. In de winter en met zware lading ligt hij lager. De dagrit is het aantal kilometers per jaar gedeeld door het aantal rijdagen.</p><p>CO₂-factoren: 3,2 kg per liter diesel en 0,45 kg per kWh grijze stroom. Exclusief chauffeur, overhead en btw.</p><p>Bij Extra kosten zijn alle voorbeeldbedragen aannames en aan te passen: rente, rendementseis, netaansluiting, onderhoud en netkosten van de laadpaal, tolbedragen per kilometer en prijs en tijdverlies bij laden onderweg. Controleer tarieven per land bij de tolbeheerder.</p></details>
@@ -1510,7 +1518,7 @@ function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km,m=modelActive(),bd=band();
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span>${BX?`<span class="brr">${spanTxt(BX.map(q=>(c==='d'?q.r.td:q.r.te)/q.r.km),n=>eur(n,2),.005)||eur(t/km,2)} per km</span>`:''}</div>`;
  const n=coreSteps().length;
- const inv=touched?'':`<div class="bcta"><div class="bct"><b>Voorbeeldcijfers voor een ${T().w}</b></div><button type="button" class="cta big" data-step="use">Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
+ const inv=`<div class="bcta"><div class="bct"><b>${touched?'Gebaseerd op jouw cijfers':'Voorbeeldcijfers voor een '+T().w}</b></div><a class="cta big" href="#uitgebreid" data-xgo>Reken uitgebreid met je eigen cijfers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>`;
  setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
   `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}${bd?`<span class="brg">Bandbreedte <b>${bandTxt(bd)}</b> per jaar</span>`:''}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div>`:''}</div>`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
@@ -1594,7 +1602,7 @@ function render(){
  setH($('sum'),[['buy','Model',mActive?mName(mActive):'Marktgemiddelde'],['use','Kilometers per jaar',`${nf(v('km'))} km`],['use','Afschrijving',`${L} jaar · ${v('rw')}% restwaarde`],['sub','Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],
   ['buy',dm('d')+'Aanschaf diesel',eur(v('pD'))],['buy',dm('e')+'Aanschaf elektrisch',eur(v('pE'))],['en',dm('d')+'Dieselprijs',`${eur(v('dp'),2)} per liter`],['en',dm('e')+'Stroomprijs',`${eur(v('sp'),2)} per kWh`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
  // Uitkomst
- board(r);insights(r);rowsPaint(r,x);
+ board(r);rowsPaint(r,x);
  {
   setH($('pbX'),payHTML(x));
   const anyOpt=optSteps().some(s=>optOn(s[0]));$('wfD').hidden=!anyOpt;
@@ -1613,6 +1621,7 @@ function render(){
   ['Stroom per jaar',`${eur(b.stroom)} · ${nf(b.kwh)} kWh`],
   ['ERE-opbrengst per jaar',eur(b.ereV)],
   ['CO₂-besparing per jaar',`${nf(b.co2d-b.co2e)} ton`],
+  ['Actieradius',`± ${nf(Math.round(v('acc')/(v('le')/100)/5)*5)} km · dagrit ± ${nf(Math.round(v('km')/Math.max(1,v('wd'))/5)*5)} km`],
   ck('xFin')&&['Financiering',`${nf(v('xfs'))}% geleend tegen ${nf(v('xri'),1)}%, eigen deel ${nf(v('xre'),1)}% rendementseis`],
   ck('xLad')&&['Laadpaal per jaar',`${eur(x.E.lad)}${x.spr>0?` · na SPRILA ${eur(x.spr)}`:''}`],
   ck('xOw')&&['Laden onderweg',`${nf(x.kwhOw)} kWh per jaar tegen ${eur(v('xop'),2)} per kWh, zonder ERE`],
@@ -1660,7 +1669,9 @@ function sensHTML(sv){
  const ds=U([-.5,-.25,0,.25,.5].map(d=>dp0+d)),es=U([-.1,-.05,0,.1,.2,.3].map(d=>sp0+d));
  const grid=es.map(e=>ds.map(d=>sv({dp:d,sp:e})));const mx=Math.max(1,...grid.flat().map(Math.abs));
  const rows=es.map((e,i)=>`<tr><th scope="row">${nf(e,2)}</th>${ds.map((d,j)=>{const z=grid[i][j],bg=z>=0?`rgba(10,143,91,${.1+.42*z/mx})`:`rgba(242,163,58,${.2+.45*-z/mx})`;return`<td class="${d===dp0&&e===sp0?'cur':''}" style="background:${bg}">${z<0?'−':''}${nf(Math.abs(z)/1000)}k</td>`}).join('')}</tr>`).join('');
- return`<div class="bec">${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's, omkaderd is je huidige situatie</small><div class="tw"><table class="hm"><tr><th>€/kWh ↓ · €/L →</th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
+ const kb=kmBreak(),km0=v('km');
+ const c0=card('Break-even kilometers',kb===0?'Elke afstand':kb===null?'—':`${nf(Math.ceil(kb/1000)*1000)} <small>km per jaar</small>`,kb===0?`Elektrisch is bij elke afstand goedkoper. Nu rekent de calculator met ${nf(km0)} km.`:kb===null?'Ook bij 400.000 km per jaar is elektrisch niet goedkoper.':`Elektrisch is goedkoper vanaf dit aantal kilometers. Nu rekent de calculator met ${nf(km0)} km.`,kb>0?trk(kb/1000,km0/1000,'hi',50).replace(/>(\d+),00</g,'>$1k<'):'');
+ return`<div class="bec">${c0}${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's, omkaderd is je huidige situatie</small><div class="tw"><table class="hm"><tr><th>€/kWh ↓ · €/L →</th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
 }
 
 /* ===== Invulvenster ===== */
@@ -1706,6 +1717,7 @@ document.addEventListener('click',e=>{
  const tol=e.target.closest('[data-tol]');if(tol){const k=tol.dataset.tol;touched=true;if(tolSel.has(k)){tolSel.delete(k);$('k_'+k).value=0}else tolSel.add(k);render();return}
  const g=e.target.closest('[data-gr]');if(g){$('gr').value=g.dataset.gr;touched=true;render();return}
  const ad=e.target.closest('[data-add]');if(ad){const k=ad.dataset.add;if(OPTSW[k]&&!ck(OPTSW[k]))$(OPTSW[k]).checked=true;touched=true;render();openWz(k);return}
+ const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();history.pushState(null,'','#uitgebreid');route(false);if(!touched)openWz('use');return}
  if(e.target.closest('[data-reset]')){reset();return}
  const j=e.target.closest('[data-jump]');if(j){$(j.dataset.jump).scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
 });
