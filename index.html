@@ -868,6 +868,16 @@ body{font-size:16px}
 .snw .bec{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:900px){.snw .bec{grid-template-columns:minmax(0,1fr)}}
 a.cta.big,a.fcta{text-decoration:none}
+/* Simpel: mini-gevoeligheid stroomprijs */
+.msl{display:grid;gap:5px;margin:8px 0 6px}
+.msr{display:grid;grid-template-columns:92px minmax(0,1fr) 52px;align-items:center;gap:10px;font:500 13px var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.msr>i{display:block;height:8px;border-radius:2px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.msr>i>i{display:block;height:100%;border-radius:2px;background:var(--volt-2)}
+.msr>i>i.neg{background:var(--amber)}
+.in .msr b{text-align:right;font:500 13px var(--mono)!important;color:var(--ink-2);white-space:nowrap}
+.msr span{white-space:nowrap}
+.msr.now{color:var(--ink)}.in .msr.now b{font-weight:600!important;color:var(--ink)}.msr.now>i>i{background:var(--volt)}
+.msr.now span::after{content:" nu";color:var(--volt-ink)}
 </style>
 </head>
 <body>
@@ -904,6 +914,7 @@ a.cta.big,a.fcta{text-decoration:none}
     <div class="sum" id="sum"></div>
    </section>
    <div class="board" id="board" aria-live="polite"></div>
+   <div class="ins" id="ins"></div>
 
 
 
@@ -1526,6 +1537,15 @@ function board(r){
  setH($('xSum'),`<p><span><i class="d"></i>Diesel <b>${eur(r.td/km,2)}</b> per km</span><span><i class="e"></i>Elektrisch <b>${eur(r.te/km,2)}</b> per km</span><span class="${cheap||even?'good':'bad'}">${even?'Ongeveer gelijk':`Elektrisch ${nf(pc)}% ${cheap?'goedkoper':'duurder'}: <b>${eur(Math.abs(d))}</b> per jaar`}</span></p><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button>`);
  $('mD').textContent=eur(r.td/km,2);$('mE').textContent=eur(r.te/km,2);$('mM').textContent=even?'≈':(cheap?'−':'+')+nf(pc)+'%';
 }
+/* Simpel: twee kleine blokjes. Vanaf hoeveel kilometer elektrisch goedkoper is, en wat de stroomprijs met de besparing doet. */
+function simpleTiles(){
+ const sv=o=>{const q=calcX(o);return q.td-q.te},km0=v('km'),kb=kmBreak(),sp0=v('sp'),s0=sv({}),sE=sv({sp:sp0+1})-s0,spB=sE<0?sp0-s0/sE:null;
+ const ps=[...new Set([-.1,0,.1,.2,.3].map(d=>Math.round(Math.max(0,sp0+d)*100)/100))],sav=ps.map(p=>sv({sp:p})),mx=Math.max(1,...sav.map(Math.abs));
+ const rows=ps.map((p,i)=>{const z=sav[i],now=Math.abs(p-sp0)<.005;return`<div class="msr${now?' now':''}"><span>${eur(p,2)}</span><i><i class="${z<0?'neg':''}" style="width:${Math.abs(z)/mx*100}%"></i></i><b>${z<0?'−':''}€ ${nf(Math.abs(z)/1000)}k</b></div>`}).join('');
+ setH($('ins'),
+  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b><small>${kb===0?'':'per jaar · '}jij rijdt ${nf(km0)} km</small></div>`+
+  `<div class="in"><span class="slb">Besparing per jaar bij stroomprijs</span><div class="msl">${rows}</div><small>${spB===null?'':spB<=0?'Elektrisch is ook bij gratis stroom niet goedkoper.':`Elektrisch blijft goedkoper tot ${eur(spB,2)} per kWh.`}</small></div>`);
+}
 function insights(r){
  const rr=f=>BX?`<small class="inr">${f}</small>`:'',kmT=k=>k===0?'elke afstand':k===null?'niet':nf(Math.ceil(k/1000)*1000)+' km';
  let kbR='',raR='';
@@ -1602,7 +1622,7 @@ function render(){
  setH($('sum'),[['buy','Model',mActive?mName(mActive):'Marktgemiddelde'],['use','Kilometers per jaar',`${nf(v('km'))} km`],['use','Afschrijving',`${L} jaar · ${v('rw')}% restwaarde`],['sub','Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],
   ['buy',dm('d')+'Aanschaf diesel',eur(v('pD'))],['buy',dm('e')+'Aanschaf elektrisch',eur(v('pE'))],['en',dm('d')+'Dieselprijs',`${eur(v('dp'),2)} per liter`],['en',dm('e')+'Stroomprijs',`${eur(v('sp'),2)} per kWh`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
  // Uitkomst
- board(r);rowsPaint(r,x);
+ board(r);simpleTiles();rowsPaint(r,x);
  {
   setH($('pbX'),payHTML(x));
   const anyOpt=optSteps().some(s=>optOn(s[0]));$('wfD').hidden=!anyOpt;
