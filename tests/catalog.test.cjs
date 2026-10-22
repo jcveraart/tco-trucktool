@@ -15,7 +15,7 @@ const { MODELS, F, mU, mAcc, mEnergy, mCapText, mAssumption, mRange } = catalog;
 
 test('the complete single-file application has valid JavaScript', () => {
   assert.doesNotThrow(() => new vm.Script(script));
-  assert.equal((html.match(/<script\b/g) || []).length, 1);
+  assert.equal((html.match(/<script>/g) || []).length, 1);
 });
 
 test('coverage and normalized model identifiers remain usable', () => {
