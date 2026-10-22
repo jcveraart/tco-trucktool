@@ -552,11 +552,10 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mvar .seg button[aria-checked=true]{background:var(--ink);color:#fff}
 .mvar .seg>*{flex:none}
 .mvar .seg small{font-size:12px;opacity:.7}
-.mgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px 44px;margin:0 0 20px}
-.mdesc{margin:0;max-width:620px;color:var(--ink-2);line-height:1.6}
-.mkv{margin:0}
+.mdesc{margin:0 0 12px;max-width:640px;color:var(--ink-2);line-height:1.6}
+.mmeta{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0 0 20px;font-size:14px;color:var(--ink-3)}
+.mkv{margin:12px 0 0;max-width:560px}
 .mkv div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
-.mkv div:first-child{padding-top:0}
 .mkv dt{font-size:14px;color:var(--ink-3)}
 .mkv dd{margin:0;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
 .mkv small,.mmute{font-size:13px;font-weight:400;color:var(--ink-3)}
@@ -572,14 +571,14 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mchev{width:18px;height:18px;color:var(--ink-3);transition:transform .2s}
 .mr.open .mchev{transform:rotate(180deg)}
 .mrb{grid-column:2;padding:0 22px 24px 0}
-.mfit{display:flex;align-items:center;gap:8px;margin:14px 0 0;font-size:14px;color:var(--ink-2)}
+.mfit{display:inline-flex;align-items:center;gap:8px;color:var(--ink-2)}
 .mfit i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--volt)}
 .mfit.tight i{background:var(--amber)}
 .mfit.no i{background:#C2410C}
-.mhow{margin-top:14px;font-size:14px;color:var(--ink-3)}
+.mhow{margin-top:16px;font-size:14px;color:var(--ink-3)}
 .mhow summary{cursor:pointer;width:max-content;max-width:100%}
 .mhow summary:hover{color:var(--ink)}
-.mhow p{margin:8px 0 0;max-width:720px;line-height:1.6}
+.mhow p{margin:12px 0 0;max-width:640px;line-height:1.6}
 .macts{display:flex;align-items:center;gap:12px 22px;flex-wrap:wrap}
 .macts .hint{margin:0}
 .msrc{font-size:14px;color:var(--ink-3)}
@@ -621,7 +620,6 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
  .mf b{font-size:19px}
  .mrh .mf::before{content:attr(data-l);font-size:12px;color:var(--ink-3)}
  .mrb{padding:0 14px 20px 0}
- .mgrid{grid-template-columns:minmax(0,1fr);gap:18px}
  .mcmp,.toast{left:12px;right:12px;transform:none;width:auto}
  .mcmp{justify-content:space-between;gap:12px}
  .toast{flex-wrap:wrap}
@@ -1642,19 +1640,18 @@ function mAccLine(m){
 }
 function mBody(m,pre=''){
  const dg=m.c===vtype?mDag():0,a=mAcc(m),x=dg?m.r/dg:0,ok=x>=1.25,tight=x&&!ok&&x>=1;
- const when=m.checked?new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z')):'';
- return`<div class="mrb" id="mb-${pre?mFamId(m):m.id}">${pre}
-  <div class="mgrid"><div><p class="mdesc">${m.n}</p>${dg?`<p class="mfit ${ok?'ok':tight?'tight':'no'}"><i aria-hidden="true"></i>${ok?`Ruim genoeg voor je dagrit van ${nf(dg)} km`:tight?`Haalt je dagrit van ${nf(dg)} km, maar krap in de winter`:`Haalt je dagrit van ${nf(dg)} km niet zonder bijladen`}</p>`:''}</div>
-  <dl class="mkv"><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div><div><dt>Prijs</dt><dd>${m.price?`${eur(m.price)} <small>excl. btw${m.pt&&m.pt!=='list'?', indicatief':''}</small>`:'<span class="mmute">Niet gepubliceerd</span>'}</dd></div></dl></div>
-  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met ${pre?'deze uitvoering':'dit model'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><span class="msrc">Bron: <a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?' · gecontroleerd '+when:''}</span></div>
-  <details class="mhow"><summary>Waarmee rekent de calculator?</summary><p>Met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Je aanschafprijs vul je zelf in. Reken in de winter met ongeveer 20% minder actieradius.</p></details></div>`;
+ const when=m.checked?new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z')):'';
+ return`<div class="mrb" id="mb-${pre?mFamId(m):m.id}">${pre}<p class="mdesc">${m.n}</p>
+  <p class="mmeta">${dg?`<span class="mfit ${ok?'ok':tight?'tight':'no'}"><i aria-hidden="true"></i>${ok?`Ruim genoeg voor je dagrit van ${nf(dg)} km`:tight?`Haalt je dagrit van ${nf(dg)} km, maar krap in de winter`:`Haalt je dagrit van ${nf(dg)} km niet zonder bijladen`}</span>`:''}<span>${m.price?`Vanaf ${eur(m.price)} excl. btw${m.pt&&m.pt!=='list'?' (indicatief)':''}`:'Prijs niet gepubliceerd'}</span></p>
+  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met ${pre?'deze uitvoering':'dit model'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>
+  <details class="mhow"><summary>Meer details</summary><dl class="mkv"><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div><div><dt>Bron</dt><dd><a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?` <small>gecontroleerd ${when}</small>`:''}</dd></div></dl><p>De calculator start met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Je aanschafprijs vul je zelf in. Reken in de winter met ongeveer 20% minder actieradius.</p></details></div>`;
 }
 /* Familierij: bandbreedte over de uitvoeringen; openklappen toont een keuze per uitvoering met de details van de gekozen uitvoering. */
 function mFamRow(k,vs,top,mx,d){
  const m=vs.find(x=>x.id===mVar[k])||top,o=mOpen.has(k),sel=mSel.includes(m.id),rs=vs.map(x=>x.r),r0=Math.min(...rs),r1=Math.max(...rs),allSoon=vs.every(x=>x.st==='komt');
  const uq=[...new Set(vs.map(mUq))],caps=vs.map(uq.length===1?mCap:x=>x.g||x.a||x.u||x.ue),kw=Math.max(...vs.map(mK));
  const pick=`<div class="mvar"><span id="mvl-${k}">Uitvoering</span><div class="seg sm" role="radiogroup" aria-labelledby="mvl-${k}">${vs.map(x=>`<button type="button" role="radio" data-mvar="${k}" data-mvid="${x.id}" aria-checked="${x.id===m.id}" tabindex="${x.id===m.id?0:-1}">${x.vl||mCapText(x)+' kWh'}${x.st==='komt'?' <small>'+x.y+'</small>':''}</button>`).join('')}</div></div>`;
- return`<article class="mr mfam${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${k}" aria-expanded="${o}" aria-controls="mb-${k}"><span class="mn"><small>${m.b}</small><b>${m.fam}<span class="mtag ok">${vs.length} uitvoeringen</span>${allSoon?`<span class="mtag">Verwacht ${top.y}</span>`:''}</b></span><span class="mf" data-l="Accu"><span><b>${mSpan(Math.min(...caps),Math.max(...caps))}</b> kWh</span><small>${uq.length===1?uq[0]:'opgegeven'}</small></span><span class="mf mrg" data-l="Actieradius"><span><b>${mSpan(r0,r1,nf)}</b> km</span><span class="mbar${d&&r1<d?' short':''}" aria-hidden="true"><i class="mx" style="width:${Math.min(100,r1/mx*100)}%"></i><i style="width:${Math.min(100,r0/mx*100)}%"></i>${d?`<em style="left:${Math.min(100,d/mx*100)}%"></em>`:''}</span></span><span class="mf" data-l="Snelladen">${kw?`<span><b>${nf(kw)}</b> kW</span><small>tot, ${vs.some(x=>x.mcs)?'MCS':'CCS'}</small>`:'<span>–</span>'}</span>${chev}</button>${o?mBody(m,pick):''}</article>`;
+ return`<article class="mr mfam${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${k}" aria-expanded="${o}" aria-controls="mb-${k}"><span class="mn"><small>${m.b}</small><b>${m.fam}<span class="mtag ok">${vs.length} uitvoeringen</span>${allSoon?`<span class="mtag">Verwacht ${top.y}</span>`:''}</b></span>${o?`<span class="mf" data-l="Accu"><span><b>${mCapText(m)}</b> kWh</span><small>${mUq(m)}</small></span><span class="mf mrg" data-l="Actieradius"><span><b>${m.rt||nf(m.r)}</b> km</span>${mBar(m,mx,d)}</span><span class="mf" data-l="Snelladen">${mK(m)?`<span><b>${nf(mK(m))}</b> kW</span><small>${m.mcs?'MCS':'CCS'}</small>`:'<span>–</span>'}</span>`:`<span class="mf" data-l="Accu"><span><b>${mSpan(Math.min(...caps),Math.max(...caps))}</b> kWh</span><small>${uq.length===1?uq[0]:'opgegeven'}</small></span><span class="mf mrg" data-l="Actieradius"><span><b>${mSpan(r0,r1,nf)}</b> km</span><span class="mbar${d&&r1<d?' short':''}" aria-hidden="true"><i class="mx" style="width:${Math.min(100,r1/mx*100)}%"></i><i style="width:${Math.min(100,r0/mx*100)}%"></i>${d?`<em style="left:${Math.min(100,d/mx*100)}%"></em>`:''}</span></span><span class="mf" data-l="Snelladen">${kw?`<span><b>${nf(kw)}</b> kW</span><small>tot, ${vs.some(x=>x.mcs)?'MCS':'CCS'}</small>`:'<span>–</span>'}</span>`}${chev}</button>${o?mBody(m,pick):''}</article>`;
 }
 function mPaint(){
  if(!mCat)mCat=vtype;
