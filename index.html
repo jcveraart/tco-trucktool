@@ -868,16 +868,11 @@ body{font-size:16px}
 .snw .bec{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:900px){.snw .bec{grid-template-columns:minmax(0,1fr)}}
 a.cta.big,a.fcta{text-decoration:none}
-/* Simpel: twee kleine blokjes, met een balkje voor de dieselprijs */
+/* Simpel: twee kleine blokjes */
 #ins{margin-top:12px}
 #ins .in{padding:10px 14px 11px}
 #ins .in b{font-size:20px}
 #ins .in b small{font:500 13px var(--text);color:var(--ink-3)}
-.mtk{position:relative;display:block;height:6px;margin:10px 0 4px;border-radius:3px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
-.mtk i{position:absolute;top:0;bottom:0;right:0;border-radius:0 3px 3px 0;background:#A6D8BD}
-.mtk u{position:absolute;top:-4px;width:2px;height:14px;margin-left:-1px;background:var(--ink)}
-.mtk em{position:absolute;top:-4px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--volt);border:3px solid #fff;box-shadow:0 0 0 1px var(--volt)}
-.mtl{display:flex;justify-content:space-between;font:500 11px var(--mono);color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -1539,12 +1534,10 @@ function board(r){
 }
 /* Simpel: twee kleine blokjes. Vanaf hoeveel kilometer elektrisch goedkoper is, en wat de stroomprijs met de besparing doet. */
 function simpleTiles(){
- const sv=o=>{const q=calcX(o);return q.td-q.te},km0=v('km'),kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
- const m=Math.max(dp0,dpB||0,.01)*1.25,P=x=>Math.min(100,Math.max(0,x/m*100));
- const bar=dpB===null?'':`<span class="mtk" aria-hidden="true"><i style="left:${P(dpB)}%"></i><u style="left:${P(dpB)}%"></u><em style="left:${P(dp0)}%"></em></span><span class="mtl"><span>break-even ${eur(dpB,2)}</span><span>nu ${eur(dp0,2)}</span></span>`;
+ const sv=o=>{const q=calcX(o);return q.td-q.te},kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
  setH($('ins'),
-  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b><small>${kb===0?'':'per jaar · '}jij rijdt ${nf(km0)} km</small></div>`+
-  `<div class="in"><span class="slb">Goedkoper vanaf dieselprijs</span><b>${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b>${bar}</div>`);
+  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b></div>`+
+  `<div class="in"><span class="slb">Goedkoper vanaf dieselprijs</span><b>${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b></div>`);
 }
 function insights(r){
  const rr=f=>BX?`<small class="inr">${f}</small>`:'',kmT=k=>k===0?'elke afstand':k===null?'niet':nf(Math.ceil(k/1000)*1000)+' km';
