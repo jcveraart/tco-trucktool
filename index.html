@@ -460,6 +460,27 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 /* Vraagteken en uitlegvenster */
 .slb{display:inline-flex;align-items:center;gap:7px;min-width:0}
 .qi{flex:none;display:inline-grid;place-items:center;width:19px;height:19px;padding:0;border:0;border-radius:50%;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-3);font:700 11px/1 var(--text);cursor:pointer;vertical-align:1px}
+.qs{flex:none;display:inline-grid;place-items:center;width:19px;height:19px;padding:0;border:0;border-radius:50%;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-3);font:700 12px/1 var(--text);cursor:pointer;vertical-align:1px}
+.qs:hover,.qs[aria-expanded=true]{background:var(--ink);color:#fff;box-shadow:none}
+.sns{margin-top:6px;padding:10px 12px;border-radius:6px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.sns>small{display:block;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.snr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:6px}
+.snr div{display:flex;flex-direction:column;gap:1px;min-width:0}
+.snr div:nth-child(2){text-align:center}.snr div:last-child{text-align:right}
+.snr span{font-size:13px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.snr .cur span{color:var(--ink)}
+.snr b{font:600 16px var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.snr b.good{color:var(--volt-ink)}.snr b.bad{color:var(--amber-ink)}
+.tn{display:grid;gap:12px}
+.tnr{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) minmax(0,190px);gap:16px;align-items:center}
+.tnl{font-size:15px}.tnl s,.tnv s{text-decoration:none;white-space:nowrap;color:var(--ink-3);font-size:13px}
+.tnt{position:relative;height:22px}
+.tnt i{position:absolute;top:0;bottom:0}
+.tn0{width:0;border-left:1px dashed var(--ink-3)}
+.tnb{top:4px!important;bottom:4px!important;border-radius:3px}
+.tnn{width:2px;margin-left:-1px;background:var(--ink)}
+.tnv{font:600 15px var(--display);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+@media(max-width:700px){.tnr{grid-template-columns:minmax(0,1fr) auto;gap:4px 12px}.tnt{grid-column:1/-1;grid-row:2}}
 .qi:hover,.qi[aria-expanded=true]{background:var(--ink);color:#fff;box-shadow:none}
 .qt{position:fixed;z-index:60;width:min(340px,calc(100vw - 24px));padding:16px 44px 6px 18px;border-radius:12px;background:var(--ink);color:#E4E2DC;box-shadow:0 24px 50px -18px rgba(0,0,0,.55);font-size:14px;line-height:1.5;outline:0}
 .qt p{margin:0 0 10px}
@@ -856,6 +877,7 @@ body{font-size:16px}
    <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
 
    <div class="more">
+    <details><summary><b>Welke cijfers wegen het zwaarst</b></summary><div id="tnX" style="padding-top:20px"></div></details>
     <details><summary><b>Wat als energieprijzen veranderen?</b></summary><div class="snw" id="snX"></div></details>
     <details id="wfD" hidden><summary><b>Wat doen de extra kosten met de besparing?</b></summary><div id="wfX" style="padding-top:24px"></div></details>
     <details><summary><b>Goed om te weten</b></summary><dl class="facts" id="facts"></dl></details>
@@ -1117,9 +1139,17 @@ const TIPS={
  'i-co2':{t:'CO₂-besparing',b:['Het verschil in uitstoot per jaar: 3,2 kg CO₂ per liter diesel tegenover 0,45 kg per kWh grijze stroom.','Met groene stroom of eigen zonnepanelen is de besparing groter.']}};
 const tipBtn=k=>TIPS[k]?`<button type="button" class="qi" data-tip="${k}" aria-expanded="false" aria-label="Uitleg: ${TIPS[k].t}">?</button>`:'';
 
+/* Gevoeligheid: de belangrijkste aannames iets lager en hoger, de rest gelijk. [naam, 'p' relatief of 'a' absoluut, stap] */
+const SENS={km:['Kilometers per jaar','p',.2],dp:['Dieselprijs','p',.2],sp:['Stroomprijs','p',.2],pD:['Aanschafprijs diesel','p',.1],pE:['Aanschafprijs elektrisch','p',.1],ld:['Verbruik diesel','p',.15],le:['Verbruik elektrisch','p',.15],rw:['Restwaarde','a',10],jr:['Afschrijftermijn','a',2]};
+const sensRange=id=>{const f=F[id],q=SENS[id],x=v(id),dx=q[1]==='p'?x*q[2]:q[2],r=n=>Math.min(f[3],Math.max(f[2],Math.round(n/f[4])*f[4]));return[r(x-dx),x,r(x+dx)]};
+const sensO=(id,x)=>{if(id!=='km')return{[id]:x};const km=v('km');return{km:x,kmH:km?v('kmH')*x/km:0}};
+const sensSave=(id,x)=>{const r=calcX(sensO(id,x));return r.td-r.te};
+const sensTag=id=>{const q=SENS[id];return q[1]==='p'?`± ${nf(q[2]*100)}%`:id==='rw'?`± ${q[2]} %-punt`:`± ${q[2]} jaar`};
+const fmtV=(id,x)=>{const f=F[id],d=decs(f[4]),u=f[5];return u[0]==='€'?'€ '+nf(x,d)+u.slice(1):nf(x,d)+' '+u};
+
 /* ===== Bouwstenen voor invoer ===== */
 const decs=s=>(String(s).split('.')[1]||'').length;
-const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div><input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}"></div>`};
+const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}${SENS[id]?`<button type="button" class="qs" data-sens="${id}" aria-expanded="false" aria-controls="sn_${id}" aria-label="Gevoeligheid: ${SENS[id][0]}">±</button>`:''}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div><input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}">${SENS[id]?`<div class="sns" id="sn_${id}" hidden></div>`:''}</div>`};
 const sw=(id,t,on)=>`<label class="sw2 ln"><input id="${id}" type="checkbox"${on?' checked':''}><span>${t}</span></label>`;
 const vcards=()=>`<div class="vts" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" class="vt" role="radio" data-vt="${k}" aria-checked="false">${VICON[k]}<b>${q.n}</b><small>${q.sub}</small></button>`).join('')}</div>`;
 const dex=(a,b)=>`<div class="dex"><div class="dexc"><p class="dexh"><i class="d"></i>Diesel</p>${a}</div><div class="dexc"><p class="dexh"><i class="e"></i>Elektrisch</p>${b}</div></div>`;
@@ -1352,6 +1382,7 @@ function render(){
    return`<div class="wc ${off?'off':''}"><div class="wbar" style="bottom:${qq(bot)}%;height:${off?0:Math.max(.8,qq(top)-qq(bot))}%;background:${col}"></div>${i<items.length-1?`<i class="wcn" style="bottom:${qq(pts[i][1])}%"></i>`:''}<span class="wval" style="bottom:calc(${qq(top)}% + 6px)">${t?eur(it[1]):off?'uit':sg(it[1])}</span></div>`}).join('');
   setH($('wfX'),`<div class="wfp" role="img" aria-label="Besparing per jaar, van de basis tot het totaal met extra kosten">${wf}</div><div class="wl">${items.map(it=>`<span>${it[0]}</span>`).join('')}</div>`);
   setH($('snX'),sensHTML(o=>{const qq=calcX(o);return qq.td-qq.te}));
+  setH($('tnX'),tornado());
  }
  setH($('facts'),facts([
   [reg().startsWith('mia')?'MIA-voordeel':'Subsidie',eur(b.sub)],
@@ -1368,7 +1399,7 @@ function render(){
  const d=r.td-r.te;
  setH($('wzL'),`Diesel <b>${eur(r.td/r.km,2)}</b> · elektrisch <b>${eur(r.te/r.km,2)}</b> per km · <b class="${d>=0?'good':'bad'}">${eur(Math.abs(d))}</b> ${d>=0?'besparing':'meerkosten'} per jaar`);
  if($('wz').open)wzNav();
- syncSl();fillRanges();mini();save();
+ syncSl();fillRanges();sensSl();mini();save();
 }
 function payHTML(x){
  const L=x.L,{upD,upE,opD,opE,sv,gap,be}=payback(x);
@@ -1387,6 +1418,19 @@ function payHTML(x){
  const pct=be===null?0:be===0?100:Math.min(100,be/T2*100);
  const lab=be!==null&&be>0&&be<T2?`<g transform="translate(${Math.min(Math.max(X(be),52),W-52)},${Y(cD(be))-28})"><rect x="-46" y="-15" width="92" height="28" rx="4" fill="#0A8F5B"/><text y="3" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`:'';
  return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div></div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b></div><div><span>Lagere gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b></div></div></div><div class="pbbar"><i style="width:${pct}%"></i></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Opgebouwde kosten per jaar, diesel en elektrisch">${grid}${area}<path d="${ln(cD)}" stroke="#B8700E" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="${ln(cE)}" stroke="#0A8F5B" stroke-width="3.5" fill="none" stroke-linecap="round"/>${mk}${lab}${ticks.join('')}</svg><div class="pbk"><span><i style="background:#B8700E"></i>Diesel</span><span><i style="background:#0A8F5B"></i>Elektrisch</span></div></div>`;
+}
+/* Per schuif: voordeel elektrisch per jaar bij een lagere en hogere waarde */
+function sensSl(){
+ document.querySelectorAll('.sns:not([hidden])').forEach(el=>{const id=el.id.slice(3),[a,x,b]=sensRange(id);
+  setH(el,`<small>Voordeel elektrisch per jaar</small><div class="snr">${[a,x,b].map((n,i)=>{const z=i===1?sensSave(id,x):sensSave(id,n);return`<div${i===1?' class="cur"':''}><span>${i===1?'Nu':fmtV(id,n)}</span><b class="${z>=0?'good':'bad'}">${sg(z)}</b></div>`}).join('')}</div>`)});
+}
+/* Welke aanname weegt het zwaarst: bandbreedte van de besparing per aanname */
+function tornado(){
+ const s0=sensSave('km',v('km')),ids=Object.keys(SENS);
+ const rows=ids.map(id=>{const[a,,b]=sensRange(id),lo=sensSave(id,a),hi=sensSave(id,b);return{id,lo,hi,w:Math.abs(hi-lo)}}).sort((p,q)=>q.w-p.w);
+ const all=rows.flatMap(r=>[r.lo,r.hi]).concat(s0),mn=Math.min(...all),mx=Math.max(...all),sp=(mx-mn)||1,X=n=>(n-mn)/sp*100,z0=X(0);
+ return`<div class="tn">${rows.map(r=>{const a=Math.min(r.lo,r.hi),b=Math.max(r.lo,r.hi),l=X(a),w=Math.max(.6,X(b)-l),zp=Math.min(100,Math.max(0,(z0-l)/w*100));
+  return`<div class="tnr"><span class="tnl">${SENS[r.id][0]} <s>${sensTag(r.id)}</s></span><span class="tnt">${z0>0&&z0<100?`<i class="tn0" style="left:${z0}%"></i>`:''}<i class="tnb" style="left:${l}%;width:${w}%;background:linear-gradient(90deg,var(--amber) ${zp}%,var(--volt-2) ${zp}%)"></i><i class="tnn" style="left:${X(s0)}%"></i></span><span class="tnv">${sg(Math.round(a/100)*100)} <s>tot</s> ${sg(Math.round(b/100)*100)}</span></div>`}).join('')}</div>`;
 }
 function sensHTML(sv){
  const dp0=v('dp'),sp0=v('sp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,sE=sv({sp:sp0+1})-s0;
@@ -1477,6 +1521,7 @@ document.addEventListener('click',e=>{
  if(e.target.closest('.qtx')){tipClose(true);return}
  if(qtBtn&&!e.target.closest('#qt'))tipClose(false);
 },true);
+document.addEventListener('click',e=>{const b=e.target.closest('.qs');if(!b)return;e.preventDefault();const el=$('sn_'+b.dataset.sens),o=el.hidden;el.hidden=!o;b.setAttribute('aria-expanded',o);sensSl()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&qtBtn){e.preventDefault();e.stopPropagation();tipClose(true)}},true);
 addEventListener('scroll',tipPlace,{passive:true});
 addEventListener('resize',()=>tipClose(false));
