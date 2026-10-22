@@ -708,46 +708,13 @@ body{font-size:16px}
 .foot{border-top:3px solid var(--volt)}
 .hint+.sl{margin-top:18px}
 
-/* ===== Startpagina: één vraag, één verhaal met echte cijfers, één knop ===== */
-.hh{padding:clamp(56px,10vw,128px) 0 clamp(56px,9vw,112px)}
-.hh h1{font:600 clamp(52px,9.5vw,128px)/.98 var(--text);letter-spacing:-.045em;outline:0}
-.hh h1 .s{color:var(--volt)}
-.hh h1 .o{color:var(--ink-3);font-weight:400}
-.hlead{max-width:540px;margin:28px 0 0;color:var(--ink-2);font-size:clamp(18px,1.9vw,22px);line-height:1.5}
-.hcta{display:inline-flex;align-items:center;gap:12px;border:0;border-radius:4px;padding:18px 30px;background:var(--volt);color:#fff;font:600 18px var(--text);text-decoration:none;cursor:pointer}
-.hcta:hover{background:var(--volt-ink);color:#fff}
-.hcta svg{width:20px;height:20px;transition:transform .15s}
-.hcta:hover svg{transform:translateX(3px)}
-.hh .hcta{margin-top:40px}
-.hok{margin:18px 0 0;color:var(--ink-3);font-size:15px}
-.hst{padding:clamp(56px,9vw,112px) 0;border-top:1px solid var(--line)}
-.hvt{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 18px;margin:0 0 28px;color:var(--ink-3);font-size:15px}
-.hvt button{border:0;padding:2px 0;background:none;color:var(--ink-3);font:500 15px var(--text);cursor:pointer;border-bottom:2px solid transparent}
-.hvt button:hover{color:var(--ink)}
-.hvt button[aria-checked=true]{color:var(--ink);border-bottom-color:var(--volt)}
-.hst p.hbig{max-width:900px;margin:0;font:500 clamp(26px,3.6vw,44px)/1.25 var(--text);letter-spacing:-.02em;color:var(--ink)}
-.hst p.hbig+p.hbig{margin-top:.6em;color:var(--ink-2)}
-.hst .hn{white-space:nowrap;font-weight:600}
-.hst .nd{color:var(--amber-ink)}.hst .ne{color:var(--volt-ink)}
-.hst .hnext{display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px;margin-top:44px}
-.hst .hnext span{font-size:18px;color:var(--ink-2)}
-.hgo{padding:clamp(40px,6vw,72px) clamp(20px,4vw,56px);border-radius:6px;background:var(--asph)}
-.hgo h2{font:600 clamp(30px,4vw,46px)/1.1 var(--text);letter-spacing:-.025em;color:#fff}
-.hgo .vts{margin-top:28px}
-.hgo .vt{text-decoration:none;background:var(--asph-2);box-shadow:inset 0 0 0 1px var(--asph-3);color:#fff;padding:20px 18px 18px}
-.hgo .vt svg{color:var(--volt-2)}
-.hgo .vt svg circle{fill:var(--asph-2)}
-.hgo .vt small{color:var(--on-asph-2)}
-.hgo .vt:hover{box-shadow:inset 0 0 0 1px var(--volt-2)}
-@media(max-width:640px){.hcta{width:100%;justify-content:center}.hgo .vts{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media print{.page[data-page=home]{display:none!important}}
 
 </style>
 </head>
 <body>
 <header class="top">
  <div class="wrap topin">
-  <a class="brand" href="#" aria-label="Stekker of diesel, naar de startpagina"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a>
+  <a class="brand" href="#" aria-label="Stekker of diesel, naar de calculator"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a>
   <button class="mnu" id="mnu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav id="nav" aria-label="Hoofdmenu">
    <a href="#calculator" data-nav="calc">Calculator</a>
@@ -760,33 +727,12 @@ body{font-size:16px}
 </header>
 
 <main id="app">
-<!-- ===== Start ===== -->
-<section class="page" data-page="home" hidden>
- <div class="wrap">
-  <div class="hh">
-   <h1 tabindex="-1"><span class="s">Stekker</span> <span class="o">of</span> diesel?</h1>
-   <p class="hlead">Reken in twee minuten uit wat elektrisch rijden jouw bedrijf oplevert. Met je eigen kilometers, niet die uit de folder.</p>
-   <a class="hcta" href="#calculator" data-start>Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
-   <p class="hok">Onafhankelijk. We verkopen geen trucks.</p>
-  </div>
-  <section class="hst" aria-label="Rekenvoorbeeld">
-   <div class="hvt"><span>Een voorbeeld:</span><span role="radiogroup" aria-label="Voertuig in het voorbeeld" id="hxV" style="display:contents"></span></div>
-   <p class="hbig" id="hx1"></p>
-   <p class="hbig" id="hx2"></p>
-   <div class="hnext"><span>Maar jij rijdt natuurlijk geen voorbeeld.</span><a class="hcta" href="#calculator" data-start>Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>
-  </section>
-  <section class="hgo" id="hGo" aria-labelledby="hGoT">
-   <h2 id="hGoT">Wat rijd jij?</h2>
-   <div class="vts"></div>
-  </section>
- </div>
-</section>
-
 <!-- ===== Calculator ===== -->
 <section class="page" data-page="calc" id="calc">
  <div class="wrap">
   <div class="intro">
    <h1 tabindex="-1">Diesel of elektrisch?</h1>
+   <p>Duurder in aanschaf, goedkoper per kilometer. Wat levert het jou op?</p>
   </div>
   <div class="pick" aria-label="Voertuig" data-vts></div>
  </div>
@@ -828,7 +774,7 @@ body{font-size:16px}
    </div>
   </div>
  </div>
- <button class="fcta" id="fcta" type="button" data-step="use" hidden>Bereken met eigen waardes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+ <button class="fcta" id="fcta" type="button" data-step="use" hidden>Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
  <div class="mini" id="mini" aria-hidden="true"><span class="md">Diesel <b id="mD"></b></span><span class="mm" id="mM"></span><span class="me"><b id="mE"></b> Elektrisch</span></div>
 
  <!-- Invulvenster: de vaste stappen, daarna de optionele kosten -->
@@ -1191,7 +1137,7 @@ function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km,m=modelActive();
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span></div>`;
  const n=coreSteps().length;
- const inv=`<div class="bcta"><div class="bct"><b>${touched?'Jouw berekening':`Voorbeeldcijfers voor een ${T().w}`}</b><span>${touched?'Pas kilometers, tarieven of subsidie aan':`${n} korte stappen · ± 2 minuten`}</span></div><button type="button" class="cta big" data-step="use">Bereken met eigen waardes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
+ const inv=`<div class="bcta"><div class="bct"><b>${touched?'Jouw berekening':`Voorbeeldcijfers voor een ${T().w}`}</b><span>${touched?'Pas kilometers, tarieven of subsidie aan':`${n} korte stappen · ± 2 minuten`}</span></div><button type="button" class="cta big" data-step="use">Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
  setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+inv+
   `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p><div class="acts"><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div></div>`);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
@@ -1238,7 +1184,6 @@ function render(){
  const kmH=truck?Math.min(v('kmH'),v('km')):0;
  for(let i=0;i<2;i++)TOL.forEach(c=>{const k=$('k_'+c[0]);k.max=Math.max(0,kmH-TOL.filter(d=>d[0]!==c[0]).reduce((a,d)=>a+v('k_'+d[0]),0))});
  const x=calcX(),r=x,b=x.b,L=r.L;
- if(page==='home')home();
  // Voertuig
  document.querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
  $('clsW').hidden=vtype!=='bakwagen';
@@ -1368,7 +1313,6 @@ $('wzB').addEventListener('scroll',tipPlace,{passive:true});
 
 /* ===== Interactie ===== */
 document.addEventListener('click',e=>{
- const st=e.target.closest('[data-start]');if(st){e.preventDefault();const k=st.dataset.start;if(k&&k!==vtype){applyType(k);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false}if(location.hash!=='#calculator')history.pushState(null,'','#calculator');route(false);openWz('use');return}
  const s=e.target.closest('[data-step]');if(s){openWz(s.dataset.step);return}
  const g0=e.target.closest('[data-go]');if(g0){go(g0.dataset.go);return}
  const vt=e.target.closest('[data-vt]');if(vt){if(vt.dataset.vt!==vtype){applyType(vt.dataset.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false;render()}return}
@@ -1417,32 +1361,19 @@ function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&b
 addEventListener('scroll',mini,{passive:true});
 
 
-/* ===== Startpagina: rekenvoorbeeld voor het gekozen voertuig ===== */
-function home(){
- if(!$('hxV').childElementCount)$('hxV').innerHTML=Object.entries(VT).map(([k,q])=>`<button type="button" role="radio" data-vt="${k}" aria-checked="${k===vtype}">${q.n}</button>`).join('');
- if(!$('hGo').querySelector('.vt'))$('hGo').querySelector('.vts').innerHTML=Object.entries(VT).map(([k,q])=>`<a class="vt" href="#calculator" data-start="${k}">${VICON[k]}<b>${q.n}</b><small>${q.sub}</small></a>`).join('');
- document.querySelectorAll('#hxV [data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
- const r=calcX(),pb=payback(r),q=T(),rd=x=>eur(Math.round(x/100)*100),n=(x,c)=>`<span class="hn ${c}">${x}</span>`;
- const M=pb.be?Math.max(1,Math.round(pb.be*12)):0,y=Math.floor(M/12),m=M%12,tijd=[y?y+' jaar':'',m?m+(m>1?' maanden':' maand'):''].filter(Boolean).join(' en ');
- $('hx1').innerHTML=`Een ${q.w} die ${nf(r.km)} km per jaar rijdt, verstookt ${n(rd(r.D.en),'nd')} aan diesel. Dezelfde kilometers op stroom: ${n(rd(r.E.en),'ne')}.`;
- $('hx2').innerHTML=pb.gap<=0?`En de elektrische ${q.w} is in aanschaf niet eens duurder.`
-  :`De elektrische ${q.w} kost wel ${n(rd(pb.gap))} meer${r.b.sub>0?', ook na subsidie':''}. `+(pb.be===null?'Die meerprijs verdien je in dit voorbeeld niet terug.':`Die heb je hier na ${n(tijd)} terugverdiend.`);
-}
-const ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
-
 /* ===== Pagina's ===== */
 function setView(){render()}
-const PAGES={'':'home',home:'home',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',privacy:'privacy',modellen:'modellen'};
-const TITLES={home:BRAND+' · Wat levert elektrisch rijden jouw bedrijf op?',calc:'Calculator · '+BRAND,faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,privacy:'Privacybeleid · '+BRAND,modellen:'Elektrische modellen · '+BRAND};
+const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',privacy:'privacy',modellen:'modellen'};
+const TITLES={calc:BRAND+' · Diesel of elektrisch vergelijken',faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,privacy:'Privacybeleid · '+BRAND,modellen:'Elektrische modellen · '+BRAND};
 function route(first){
  let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
- const p=PAGES[h]||'home',prevP=page;
+ const p=PAGES[h]||'calc',prevP=page;
  page=p;
  if(p!=='calc'&&$('wz').open)$('wz').close();
  if(p!=='modellen'&&$('mDlg').open)$('mDlg').close();
  document.querySelectorAll('.page').forEach(s=>s.hidden=s.dataset.page!==p);
  document.querySelectorAll('[data-nav]').forEach(a=>a.dataset.nav===p?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
- if(p==='calc')setView();else if(p==='home')home();
+ if(p==='calc')setView();
  document.title=TITLES[p];
  if(h==='uitgebreid')history.replaceState(null,'',location.pathname+location.search);
  menu(false);
@@ -1832,7 +1763,7 @@ async function syncSupabase() {
 
 
 build();applyType('trekker');
-if(fromURL()){if(!PAGES[location.hash.slice(1)]||PAGES[location.hash.slice(1)]==='home')history.replaceState(null,'','#calculator')}else load();route(true);
+if(!fromURL())load();route(true);
 syncSupabase();
 </script>
 </body>
