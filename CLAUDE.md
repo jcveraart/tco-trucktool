@@ -33,6 +33,8 @@ Do not introduce ad-hoc field names, divergent keys, or arbitrary data models.
 - `brand` (text): Manufacturer name (e.g. `'Mercedes-Benz'`, `'Volvo'`, `'Tesla'`)
 - `model` (text): Commercial model name
 - `status` (text): `'nu'` (available/in production) or `'komt'` (announced/upcoming)
+- `model_family` (text, nullable): Shared model name for variants of one model, e.g. `'E-Tech T'`. Rows with the same `category_id`, `brand` and `model_family` are shown as one model with selectable variants. Each variant stays its own row with its own battery, range and price.
+- `variant_label` (text, nullable): Short label of the variant within the family, e.g. `'540 kWh · 4×2'`
 - `release_year` (int, nullable): Expected year if status is `'komt'`
 - Battery specifications (in kWh):
   - `usable_battery_kwh` (numeric, net usable capacity)

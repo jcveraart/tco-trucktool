@@ -543,6 +543,15 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mn b{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:700 17px/1.3 var(--text)}
 .mtag{padding:2px 7px;border-radius:4px;background:#FBEBD3;color:#8A5308;font:600 12px var(--text)}
 .mtag.ok{background:var(--volt-soft);color:var(--volt-ink)}
+.mvl{margin-top:2px;font-style:normal;font-size:13px;color:var(--ink-3)}
+.mbar i.mx{opacity:.35}
+.mvar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.mvo{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:150px;padding:9px 14px;border:0;border-radius:10px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.mvo:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.mvo[aria-checked=true]{background:var(--volt-soft);box-shadow:inset 0 0 0 2px var(--volt-ink)}
+.mvo b{font:700 15px/1.3 var(--text)}
+.mvo small{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.mvo i{font-style:normal;font-size:12px;font-weight:600;color:var(--volt-ink)}
 .mf{display:flex;flex-direction:column;min-width:0;font-variant-numeric:tabular-nums}
 .mf span{font-size:15px;color:var(--ink-2)}
 .mf b{font:700 22px/1.1 var(--display);color:var(--ink)}
@@ -602,6 +611,7 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
  .mf b{font-size:19px}
  .mrh .mf::before{content:attr(data-l);font-size:12px;color:var(--ink-3)}
  .mrb{padding:0 14px 20px 0}
+ .mvo{flex:1 1 140px;min-width:0}
  .mspec{grid-template-columns:repeat(2,minmax(0,1fr))}
  .mcmp,.toast{left:12px;right:12px;transform:none;width:auto}
  .mcmp{justify-content:space-between;gap:12px}
@@ -1520,16 +1530,16 @@ function tween(key,els,vals,fmts){
  step(t0);t.raf=requestAnimationFrame(step);
 }
 function fillRanges(){document.querySelectorAll('input[type=range]').forEach(r=>{const a=+r.min,b=+r.max;r.style.setProperty('--f',b>a?(r.value-a)/(b-a):0)})}
-/* ===== Modellen: g bruto, u bruikbaar, ue afgeleid, a capaciteit waarvan bruto/netto onbekend; r bereik, rc meetcyclus; dc/mcs laadvermogen (kW); checked broncontrole. ===== */
+/* ===== Modellen: g bruto, u bruikbaar, ue afgeleid, a capaciteit waarvan bruto/netto onbekend; r bereik, rc meetcyclus; dc/mcs laadvermogen (kW); checked broncontrole; fam modelfamilie en vl naam van de uitvoering binnen die familie. ===== */
 const MCAT=[['all','Alle'],['trekker','Trekker'],['bakwagen','Bakwagen'],['bestel','Bestelbus'],['bus','Bus']];
 const MODELS=[
  {"c":"trekker","b":"Mercedes-Benz","m":"eActros 600","g":621,"r":500,"dc":400,"mcs":1000,"st":"nu","n":"Drie LFP-accupakketten: 621 kWh geïnstalleerd en 600 kWh bruikbaar. Fabrieksbereik tot 500 km, afhankelijk van gewicht en omstandigheden. CCS tot 400 kW en voorbereid op megawattladen.","s":["Mercedes-Benz Trucks","https://www.mercedes-benz-trucks.com/content/dam/brandhub/markets/gb/files/product-sheets/eActros-600-product-sheet.pdf.coredownload.pdf"],"u":600,"rt":"tot 500","checked":"2026-10-21","consumption":103},
  {"c":"trekker","b":"Tesla","m":"Semi (Europa)","ue":550,"r":550,"mcs":800,"st":"komt","y":2027,"n":"Aangekondigd voor Europa, leveringen vanaf 2027. Tesla noemt 550 km bij 40 ton en een verbruik van ongeveer 1 kWh per km. De accugrootte is nog niet bekendgemaakt. Laadt tot 800 kW.","s":["Tesla","https://www.tesla.com/en_GB/semi"],"consumption":100,"checked":"2026-10-21"},
  {"c":"trekker","b":"Volvo","m":"FH Aero Electric","g":780,"u":725,"r":700,"mcs":700,"st":"nu","n":"780 kWh geïnstalleerd, waarvan 725 kWh bruikbaar. In productie sinds september 2026.","s":["electrive","https://www.electrive.com/2026/04/14/volvo-trucks-increases-range-of-flagship-e-truck-to-700-km/"],"pD":115000,"pDm":"Volvo FH 420 diesel","pDs":["autozeitung.de","https://www.autozeitung.de/volvo-fh-2024-preis-motoren-207714.html"]},
  {"c":"trekker","b":"DAF","m":"XF Electric","g":525,"gt":"210–525","u":462,"ut":"185–462","r":500,"rt":"tot 500","dc":325,"st":"nu","n":"De accu kies je in stappen, zodat je niet meer gewicht en geld meeneemt dan je inzet vraagt. In serieproductie sinds september 2025.","s":["electrive","https://www.electrive.com/2025/09/22/daf-begins-series-production-of-xd-and-xf-electric-electric-trucks"]},
- {"c":"trekker","b":"MAN","m":"eTGX (nieuwe generatie 2027)","r":660,"st":"komt","n":"Aangekondigde 4×2-generatie met zes accupakketten van samen maximaal 552 kWh. De 660 km is een interne richtwaarde bij 20 °C, 60% belading en snelweginzet. Verkoopstart gepland voor april 2027, productie vanaf zomer 2027. MAN specificeert hier geen exacte bruikbare capaciteit.","s":["MAN Truck & Bus","https://www.man.eu/global/en/truck/all-models/the-man-tgx/the-man-etgx/the-new-man-etgx.html"],"a":552,"rt":"tot 660","y":2027,"checked":"2026-10-21"},
+ {"c":"trekker","b":"MAN","m":"eTGX (nieuwe generatie 2027)","fam":"eTGX","vl":"Nieuwe generatie","r":660,"st":"komt","n":"Aangekondigde 4×2-generatie met zes accupakketten van samen maximaal 552 kWh. De 660 km is een interne richtwaarde bij 20 °C, 60% belading en snelweginzet. Verkoopstart gepland voor april 2027, productie vanaf zomer 2027. MAN specificeert hier geen exacte bruikbare capaciteit.","s":["MAN Truck & Bus","https://www.man.eu/global/en/truck/all-models/the-man-tgx/the-man-etgx/the-new-man-etgx.html"],"a":552,"rt":"tot 660","y":2027,"checked":"2026-10-21"},
  {"c":"trekker","b":"Scania","m":"R-serie elektrisch","u":560,"r":515,"mcs":750,"st":"nu","n":"Configuratie met 560 kWh bruikbaar: Scania noemt maximaal 515 km bij 42 ton treingewicht, 560 km bij 29 ton en 360 km bij 64 ton. De later aangekondigde 720 km gebruikt extra accu’s achter de cabine en wordt daarom niet met deze accu gecombineerd.","s":["Scania","https://www.scania.com/group/en/home/products-and-services/trucks/battery-electric-truck.html"],"rt":"tot 515","dc":375,"checked":"2026-10-21"},
- {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 780","g":780,"r":660,"rt":"tot 660","mcs":700,"st":"nu","n":"6×2-trekker met 780 kWh en maximaal 660 km volgens Renault Trucks. De fabrikant noemt een gebruiksvenster tot 95%; de hier afgeleide 741 kWh is dus een indicatieve maximale bruikbare energie, geen afzonderlijk gepubliceerde netto capaciteit. CCS tot 350 kW en MCS tot 700 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"ue":741,"derived":"afgeleid uit 95% van 780 kWh; maximaal gebruiksvenster","dc":350,"checked":"2026-10-21"},
+ {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 780","fam":"E-Tech T","vl":"780 kWh · 6×2","g":780,"r":660,"rt":"tot 660","mcs":700,"st":"nu","n":"6×2-trekker met 780 kWh en maximaal 660 km volgens Renault Trucks. De fabrikant noemt een gebruiksvenster tot 95%; de hier afgeleide 741 kWh is dus een indicatieve maximale bruikbare energie, geen afzonderlijk gepubliceerde netto capaciteit. CCS tot 350 kW en MCS tot 700 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"ue":741,"derived":"afgeleid uit 95% van 780 kWh; maximaal gebruiksvenster","dc":350,"checked":"2026-10-21"},
  {"c":"trekker","b":"Iveco","m":"S-eWay","g":603,"r":600,"dc":350,"st":"nu","n":"De LFP-uitvoering heeft 603 kWh geïnstalleerde capaciteit, waarvan volgens IVECO 97% bruikbaar is (afgerond 585 kWh). Fabrieksbereik tot 600 km. DC-snelladen tot 350 kW; belading en rijprofiel bepalen het praktijkbereik.","s":["IVECO","https://www.iveco.com/estonia/-/media/IVECOdotcom/Content/Products/S-eWay_2026/Brochure/IVECO-S-eWay_EN.pdf?rev=-1"],"ue":585,"derived":"afgeleid uit 97% van 603 kWh, afgerond","rt":"tot 600","checked":"2026-10-21"},
  {"c":"bakwagen","b":"Mercedes-Benz","m":"eActros 300/400","g":448,"gt":"336–448","u":388,"ut":"291–388","r":400,"rt":"330–400","dc":160,"st":"nu","n":"Drie (300) of vier (400) accupakketten van 112 kWh, waarvan elk 97 kWh bruikbaar. De 400 km is gemeten in distributie zonder aanhanger bij 20 °C.","s":["Mercedes-Benz Trucks","https://www.mercedes-benz-trucks.com/en_GB/emobility/world/your-benefits/usability.html"],"price":300000,"ps":["boerse-online.de","https://www.boerse-online.de/dpa-afx/roundup-mercedes-startet-serienproduktion-von-e-lkw-128851.html"],"pt":"reported"},
  {"c":"bakwagen","b":"DAF","m":"XD Electric","g":525,"gt":"210–525","u":462,"ut":"185–462","r":500,"rt":"tot 500","dc":325,"st":"nu","n":"Dezelfde accu-opbouw als de XF Electric, voor regionale distributie.","s":["DAF","https://dealers.daf.com/-/media/files/document-library/infosheets/electric/daf-xd-electric-infosheet-xde-en-556205.pdf"]},
@@ -1587,12 +1597,12 @@ const MODELS=[
  {"c":"bus","b":"MAN","m":"Lion’s City 18 E","g":623,"u":560,"r":350,"rt":"tot 350","dc":150,"st":"nu","n":"Gelede stadsbus van circa 18,1 meter met zeven pakketten. Tot 560 kWh bruikbaar volgens de Maximum Range-accustrategie. Het technische fabrieksblad noemt 350 km onder gunstige omstandigheden, afhankelijk van accustrategie, belading en klimaatregeling.","s":["MAN technische gegevens","https://media.man.eu/is/content/MAN/man_lions_city_datenblatt_18-E_ENpdf"],"checked":"2026-10-21"},
  {"c":"bus","b":"BYD","m":"eBus B12.b","a":500,"r":600,"rt":"tot 600","st":"nu","n":"Stadsbus van 12 meter met Blade Battery in het chassis en plaats voor maximaal 105 reizigers. BYD noemt maximaal 500 kWh en tot 600 km op één lading. De bron specificeert de testcyclus, bruto/netto-capaciteit en het laadvermogen niet.","s":["BYD Europe","https://bydeurope.com/byd-ebus-b12"],"checked":"2026-10-21","price":457000,"ps":["truckandbusbuilder.com","https://truckandbusbuilder.com/article/2024/02/25/belgian-transport-operator-orders-92-byd-electric-buses"],"pt":"order"},
  {"c":"bus","b":"Karsan","m":"e-ATA 12","a":528,"r":500,"rt":"tot 500","st":"nu","n":"Lagevloer-stadsbus van 12 meter met een LFP-accu tot 528 kWh. Karsan noemt 500 km onder realistische omstandigheden, afhankelijk van accugrootte en rijprofiel; er staat geen gestandaardiseerde testcyclus bij. Laden via DC-stekker en optioneel pantograaf; bruto/netto en laadpiek niet gespecificeerd.","s":["Karsan","https://www.karsan.com/en/electric-bus/e-ata-12"],"checked":"2026-10-21"},
- {"c":"trekker","b":"MAN","m":"eTGX (huidige generatie)","a":480,"r":570,"rt":"tot 570","dc":375,"mcs":750,"st":"nu","n":"4×2-trekker met zes accupakketten, samen 480 kWh volgens de technische modeltabel. De 570 km is een interne richtwaarde onder gunstige omstandigheden, geen WLTP-cijfer. De apart vermelde nieuwe generatie met 660 km volgt in 2027.","s":["MAN Truck & Bus","https://www.man.eu/uk/en/truck/all-models/the-man-tgx/the-man-etgx/overview.html"],"checked":"2026-10-21"},
- {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 540","a":540,"r":450,"rt":"tot 450","dc":350,"st":"nu","n":"Elektrische 4×2-trekker voor regionaal vervoer, met maximaal 540 kWh en tot 450 km volgens Renault Trucks. Bereik is afhankelijk van treingewicht en inzet. DC-snelladen via CCS tot 350 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"checked":"2026-10-21"},
- {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 585","a":585,"r":500,"rt":"tot 500","dc":350,"st":"nu","n":"6×2-trekker met e-as, afgestemd op laadvermogen. Renault Trucks noemt 585 kWh en maximaal 500 km. Andere belading, opbouw en omstandigheden geven een ander bereik; CCS-laden tot 350 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"checked":"2026-10-21"}];
+ {"c":"trekker","b":"MAN","m":"eTGX (huidige generatie)","fam":"eTGX","vl":"Huidige generatie","a":480,"r":570,"rt":"tot 570","dc":375,"mcs":750,"st":"nu","n":"4×2-trekker met zes accupakketten, samen 480 kWh volgens de technische modeltabel. De 570 km is een interne richtwaarde onder gunstige omstandigheden, geen WLTP-cijfer. De apart vermelde nieuwe generatie met 660 km volgt in 2027.","s":["MAN Truck & Bus","https://www.man.eu/uk/en/truck/all-models/the-man-tgx/the-man-etgx/overview.html"],"checked":"2026-10-21"},
+ {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 540","fam":"E-Tech T","vl":"540 kWh · 4×2","a":540,"r":450,"rt":"tot 450","dc":350,"st":"nu","n":"Elektrische 4×2-trekker voor regionaal vervoer, met maximaal 540 kWh en tot 450 km volgens Renault Trucks. Bereik is afhankelijk van treingewicht en inzet. DC-snelladen via CCS tot 350 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"checked":"2026-10-21"},
+ {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 585","fam":"E-Tech T","vl":"585 kWh · 6×2 e-as","a":585,"r":500,"rt":"tot 500","dc":350,"st":"nu","n":"6×2-trekker met e-as, afgestemd op laadvermogen. Renault Trucks noemt 585 kWh en maximaal 500 km. Andere belading, opbouw en omstandigheden geven een ander bereik; CCS-laden tot 350 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"checked":"2026-10-21"}];
 MODELS.forEach(m=>m.id=(m.b+' '+m.m).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
 const MI={};MODELS.forEach(m=>MI[m.id]=m);
-let mCat=null,mOpen=new Set(),mSel=[];
+let mCat=null,mOpen=new Set(),mSel=[],mVar={};
 /* 90% is een expliciete aanname, ook als de fabrikant bruto/netto niet vermeldt. */
 const mU=m=>m.u||m.ue||Math.round((m.g||m.a)*.9);
 const mCap=m=>m.u||m.ue||m.g||m.a;
@@ -1656,27 +1666,40 @@ function mRows(){
  return MODELS.filter(m=>(mCat==='all'||m.c===mCat)&&(soon||m.st==='nu')&&mMatches(m)).sort((a,b)=>(sort==='b'?mName(a).localeCompare(mName(b),'nl'):sort==='u'?mU(b)-mU(a):sort==='k'?mK(b)-mK(a)||b.r-a.r:b.r-a.r)||mName(a).localeCompare(mName(b),'nl'));
 }
 const mNorm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
-const mMatches=m=>mNorm($('mSearch').value).split(/\s+/).filter(Boolean).every(q=>mNorm(mName(m)).includes(q));
+const mMatches=m=>mNorm($('mSearch').value).split(/\s+/).filter(Boolean).every(q=>mNorm(`${mName(m)} ${m.fam||''} ${m.vl||''}`).includes(q));
+/* Uitvoeringen van dezelfde familie worden één rij; de volgorde volgt de best scorende uitvoering in de huidige sortering. */
+const mFamId=m=>m.fam?'fam-'+mNorm(`${m.c} ${m.b} ${m.fam}`).replace(/ /g,'-'):m.id;
+function mGroups(list){const G=new Map();list.forEach(m=>{const k=mFamId(m);G.has(k)?G.get(k).push(m):G.set(k,[m])});return[...G].map(([k,vs])=>({k,vs:vs.slice().sort((a,b)=>mCap(a)-mCap(b)||a.r-b.r),top:vs[0]}))}
+const mSpan=(a,b,f=mFmt)=>a===b?f(a):`${f(a)}–${f(b)}`;
 const mBar=(m,mx,dg)=>`<span class="mbar${dg&&m.r<dg?' short':''}" aria-hidden="true"><i style="width:${Math.min(100,m.r/mx*100)}%"></i>${dg?`<em style="left:${Math.min(100,dg/mx*100)}%"></em>`:''}</span>`;
 const mBatt=m=>m.u||m.ue?`${m.ut||mFmt(m.u||m.ue)} kWh ${m.u?'bruikbaar':'(afgeleid)'}`:'Niet opgegeven';
 const mCharge=m=>[m.dc?`CCS tot ${nf(m.dc)} kW`:'',m.mcs?`MCS tot ${nf(m.mcs)} kW`:''].filter(Boolean).join(' · ')||'Niet opgegeven';
-function mBody(m){
+function mBody(m,pre=''){
  const dg=m.c===vtype?mDag():0,a=mAcc(m);
- return`<div class="mrb" id="mb-${m.id}"><p>${m.n}</p>
+ return`<div class="mrb" id="mb-${pre?mFamId(m):m.id}">${pre}<p>${m.n}</p>
   <dl class="mspec"><div><dt>${m.a?'Accu (type niet vermeld)':'Accu bruto'}</dt><dd>${m.g?(m.gt||mFmt(m.g))+' kWh':m.a?(m.at||mFmt(m.a))+' kWh':'Niet opgegeven'}</dd></div><div><dt>Accu bruikbaar</dt><dd>${mBatt(m)}</dd></div><div><dt>Actieradius</dt><dd>${mRange(m)}</dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div><div><dt>Prijs excl. btw</dt><dd>${m.price?eur(m.price)+(m.pt&&m.pt!=='list'?' (indicatief)':''):'Niet gepubliceerd'}</dd></div></dl>
   ${dg?`<p class="mfit">Opgegeven actieradius is <b>${nf(m.r/dg,1)}×</b> je dagrit van ${nf(dg)} km. Reken in de winter met ongeveer 20% minder.</p>`:''}
-  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met dit model <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><p class="hint">Start met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Vul je eigen aanschafprijs in.</p><a class="msrc" href="${m.s[1]}" target="_blank" rel="noopener">Bron: ${m.s[0]} <span aria-hidden="true">↗</span></a>${m.checked?'<span class="hint">Gecontroleerd '+new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z'))+'</span>':''}</div></div>`;
+  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met ${pre?'deze uitvoering':'dit model'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><p class="hint">Start met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Vul je eigen aanschafprijs in.</p><a class="msrc" href="${m.s[1]}" target="_blank" rel="noopener">Bron: ${m.s[0]} <span aria-hidden="true">↗</span></a>${m.checked?'<span class="hint">Gecontroleerd '+new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z'))+'</span>':''}</div></div>`;
+}
+/* Familierij: bandbreedte over de uitvoeringen; openklappen toont een keuze per uitvoering met de details van de gekozen uitvoering. */
+function mFamRow(k,vs,top,mx,d){
+ const m=vs.find(x=>x.id===mVar[k])||top,o=mOpen.has(k),sel=mSel.includes(m.id),rs=vs.map(x=>x.r),r0=Math.min(...rs),r1=Math.max(...rs),allSoon=vs.every(x=>x.st==='komt');
+ const uq=[...new Set(vs.map(mUq))],caps=vs.map(uq.length===1?mCap:x=>x.g||x.a||x.u||x.ue),kw=Math.max(...vs.map(mK));
+ const pick=`<div class="mvar" role="radiogroup" aria-label="Uitvoering van de ${m.b} ${m.fam}">${vs.map(x=>`<button type="button" role="radio" class="mvo" data-mvar="${k}" data-mvid="${x.id}" aria-checked="${x.id===m.id}" tabindex="${x.id===m.id?0:-1}"><b>${x.vl||mCapText(x)+' kWh'}</b><small>${/kWh/.test(x.vl||'')?'':mCapText(x)+' kWh · '}${x.rt||nf(x.r)} km${x.st==='komt'?' · verwacht '+x.y:''}</small>${mSel.includes(x.id)?'<i>In vergelijking</i>':''}</button>`).join('')}</div>`;
+ return`<article class="mr mfam${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${k}" aria-expanded="${o}" aria-controls="mb-${k}"><span class="mn"><small>${m.b}</small><b>${m.fam}<span class="mtag ok">${vs.length} uitvoeringen</span>${allSoon?`<span class="mtag">Verwacht ${top.y}</span>`:''}</b><em class="mvl">${vs.map(x=>x.vl||mCapText(x)+' kWh').join(' · ')}</em></span><span class="mf" data-l="Accu"><span><b>${mSpan(Math.min(...caps),Math.max(...caps))}</b> kWh</span><small>${uq.length===1?uq[0]:'opgegeven'}</small></span><span class="mf mrg" data-l="Actieradius"><span><b>${mSpan(r0,r1,nf)}</b> km</span><span class="mbar${d&&r1<d?' short':''}" aria-hidden="true"><i class="mx" style="width:${Math.min(100,r1/mx*100)}%"></i><i style="width:${Math.min(100,r0/mx*100)}%"></i>${d?`<em style="left:${Math.min(100,d/mx*100)}%"></em>`:''}</span></span><span class="mf" data-l="Snelladen">${kw?`<span><b>${nf(kw)}</b> kW</span><small>tot, ${vs.some(x=>x.mcs)?'MCS':'CCS'}</small>`:'<span>–</span>'}</span>${chev}</button>${o?mBody(m,pick):''}</article>`;
 }
 function mPaint(){
  if(!mCat)mCat=vtype;
- const list=mRows(),mx=Math.max(1,...list.map(m=>m.r)),dg=mDag(),soon=ck('mSoon');
- setH($('mCat'),MCAT.map(c=>`<button type="button" data-mcat="${c[0]}" aria-pressed="${c[0]===mCat}">${c[1]}<small>${MODELS.filter(m=>(c[0]==='all'||m.c===c[0])&&(soon||m.st==='nu')&&mMatches(m)).length}</small></button>`).join(''));
- $('mCount').textContent=`${list.length} ${list.length===1?'model':'modellen'} gevonden · ${MODELS.length} in de catalogus`;
+ const list=mRows(),groups=mGroups(list),mx=Math.max(1,...list.map(m=>m.r)),dg=mDag(),soon=ck('mSoon');
+ setH($('mCat'),MCAT.map(c=>`<button type="button" data-mcat="${c[0]}" aria-pressed="${c[0]===mCat}">${c[1]}<small>${mGroups(MODELS.filter(m=>(c[0]==='all'||m.c===c[0])&&(soon||m.st==='nu')&&mMatches(m))).length}</small></button>`).join(''));
+ $('mCount').textContent=`${groups.length} ${groups.length===1?'model':'modellen'} gevonden${groups.length<list.length?` (${list.length} uitvoeringen)`:''} · ${mGroups(MODELS).length} in de catalogus`;
  const showDag=list.some(m=>m.c===vtype);
  $('mDay').hidden=!showDag;
  setH($('mDay'),`<i aria-hidden="true"></i>Jouw dagrit in de calculator: ${nf(dg)} km (${T().n.toLowerCase()})`);
- setH($('mList'),list.length?`<div class="mcols" aria-hidden="true"><span>Model</span><span>Accu</span><span>Actieradius</span><span>Snelladen</span><span></span></div>`+list.map(m=>{
-  const o=mOpen.has(m.id),sel=mSel.includes(m.id),d=m.c===vtype?dg:0;
+ setH($('mList'),list.length?`<div class="mcols" aria-hidden="true"><span>Model</span><span>Accu</span><span>Actieradius</span><span>Snelladen</span><span></span></div>`+groups.map(({k,vs,top})=>{
+  const d=top.c===vtype?dg:0;
+  if(vs.length>1)return mFamRow(k,vs,top,mx,d);
+  const m=top,o=mOpen.has(m.id),sel=mSel.includes(m.id);
   return`<article class="mr${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${m.id}" aria-expanded="${o}" aria-controls="mb-${m.id}"><span class="mn"><small>${m.b}</small><b>${m.m}${m.st==='komt'?`<span class="mtag">Verwacht ${m.y}</span>`:''}</b></span><span class="mf" data-l="Accu"><span><b>${mCapText(m)}</b> kWh</span><small>${mUq(m)}</small></span><span class="mf mrg" data-l="Actieradius"><span><b>${m.rt||nf(m.r)}</b> km</span>${mBar(m,mx,d)}</span><span class="mf" data-l="Snelladen">${mK(m)?`<span><b>${nf(mK(m))}</b> kW</span><small>${m.mcs?'MCS':'CCS'}</small>`:'<span>–</span>'}</span>${chev}</button>${o?mBody(m):''}</article>`}).join(''):`<p class="mnone">Geen modellen met deze keuze. Probeer een andere zoekterm of kies Alle.</p>`);
  $('mBar').hidden=!mSel.length||page!=='modellen'||$('mDlg').open;
  $('mBarT').textContent=mSel.length===1?'1 model gekozen · kies er nog een':`${mSel.length} modellen gekozen`;
@@ -1706,6 +1729,7 @@ function mUse(id){
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-toastx]'))$('toast').hidden=true;
  const c=e.target.closest('[data-mcat]');if(c){mCat=c.dataset.mcat;mPaint();return}
+ const vo=e.target.closest('[data-mvar]');if(vo){mVar[vo.dataset.mvar]=vo.dataset.mvid;mPaint();const n=document.querySelector(`[data-mvid="${vo.dataset.mvid}"]`);if(n)n.focus({preventScroll:true});return}
  const r=e.target.closest('[data-mrow]');if(r){const id=r.dataset.mrow;mOpen.has(id)?mOpen.delete(id):mOpen.add(id);mPaint();document.querySelector(`[data-mrow="${id}"]`).focus({preventScroll:true});return}
  const u=e.target.closest('[data-muse]');if(u){mUse(u.dataset.muse);return}
  if(e.target.closest('[data-mclear]')){mSel=[];mPaint();return}
@@ -1717,6 +1741,10 @@ document.addEventListener('change',e=>{
  if(e.target.id==='mSort'||e.target.id==='mSoon')mPaint();
 });
 document.addEventListener('input',e=>{if(e.target.id==='mSearch')mPaint()});
+document.addEventListener('keydown',e=>{
+ const vo=e.target.closest&&e.target.closest('[data-mvar]');if(!vo||!/^Arrow(Left|Right|Up|Down)$/.test(e.key))return;
+ e.preventDefault();const os=[...vo.parentNode.children],n=os[(os.indexOf(vo)+(/Right|Down/.test(e.key)?1:os.length-1))%os.length];n.click();
+});
 $('mGo').onclick=mCompare;
 $('mDlg').addEventListener('close',mPaint);
 
@@ -1795,6 +1823,10 @@ async function syncSupabase() {
      if (r.description) m.n = r.description;
      if (r.source_name) m.s = [r.source_name, r.source_url || ''];
      if (r.last_verified_at) m.checked = r.last_verified_at;
+     if (r.model_family) m.fam = r.model_family;
+     if (r.variant_label) m.vl = r.variant_label;
+     /* Zolang model_family nog niet in de database staat, blijft de ingebouwde indeling gelden */
+     if (!('model_family' in r) && MI[m.id] && MI[m.id].fam) { m.fam = MI[m.id].fam; m.vl = MI[m.id].vl; }
      return m;
     });
 

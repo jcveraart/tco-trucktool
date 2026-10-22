@@ -9,6 +9,7 @@ Uitbreiding en broncontrole: 21 oktober 2026. De catalogus telt 67 modellen: 31 
 - `g` betekent bruto/geïnstalleerd, `u` expliciet bruikbaar en `a` door de fabrikant opgegeven zonder duidelijk bruto/netto-onderscheid. `ue` is afgeleid; `derived` beschrijft die afleiding. Maak onbekende capaciteit niet stilzwijgend bruto of netto.
 - `gt`, `ut` en `at` bewaren een gepubliceerde bandbreedte of ondergrens voor het bijbehorende accutype. `r` blijft de numerieke referentiewaarde voor sortering, `rt` de zichtbare kwalificatie en `rc` de testcyclus. Een SORT-cijfer voor een stadsbus is geen WLTP-cijfer voor een bestelwagen.
 - `st:komt` met `y` is een verwachting, ook als een kalenderjaar bijna voorbij is. Zet beschikbaarheid pas om na een broncontrole. Een model in het huidige aanbod garandeert geen individuele levertijd.
+- `fam` (`model_family`) en `vl` (`variant_label`) groeperen uitvoeringen van hetzelfde model, zoals accuopties of generaties. Elke uitvoering blijft een eigen record met eigen accu, bereik en prijs; de modellenpagina toont ze als één rij met een keuze per uitvoering.
 - `checked` geeft aan welke records bij deze uitbreiding zijn gecontroleerd. Ongewijzigde oudere records zijn daardoor niet automatisch opnieuw geverifieerd.
 
 ## Gebruik in de rekentool
