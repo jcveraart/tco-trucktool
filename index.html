@@ -560,63 +560,53 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mpk .hint{margin-top:8px;line-height:1.6}
 .mpk .hint b{color:var(--ink-2);font-weight:600}
 .mpnone{margin:0;padding:12px 10px;font-size:14px;color:var(--ink-3)}
-.mday{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:14px;color:var(--ink-3)}
-.mday i{width:3px;height:15px;border-radius:1px;background:var(--ink)}
-.mlist{border-radius:16px;background:var(--card);box-shadow:0 0 0 1px var(--line);overflow:hidden}
-.mcols,.mrh{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1fr) minmax(0,1.7fr) minmax(0,.9fr) 18px;gap:20px;align-items:center}
-.mcols{padding:12px 22px 11px 0;margin-left:54px;border-bottom:1px solid var(--line);font:600 13px var(--text);color:var(--ink-3)}
-.mr{display:grid;grid-template-columns:54px minmax(0,1fr)}
-.mr+.mr{border-top:1px solid var(--line)}
-.mr.open{background:var(--soft)}
-.mck{display:grid;place-items:center;cursor:pointer}
-.mck input{width:18px;height:18px;margin:0;accent-color:var(--ink);cursor:pointer}
-.mck input:disabled{cursor:not-allowed;opacity:.35}
-.mrh{min-width:0;border:0;background:none;padding:15px 22px 15px 0;text-align:left;font:inherit;color:inherit;cursor:pointer}
-.mrh:hover .mn b{color:var(--volt-ink)}
-.mn{display:flex;flex-direction:column;min-width:0}
-.mn small{font-size:13px;color:var(--ink-3)}
-.mn b{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:700 17px/1.3 var(--text)}
-.mtag{padding:2px 7px;border-radius:4px;background:#FBEBD3;color:#8A5308;font:600 12px var(--text)}
-.mtag.ok{background:var(--volt-soft);color:var(--volt-ink)}
-.mbar i.mx{opacity:.35}
-.mvar{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;margin:2px 0 20px;font-size:14px;color:var(--ink-3)}
-.mvar .seg button[aria-checked=true]{background:var(--ink);color:#fff}
+.mfil{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin:0 0 22px;padding:12px 14px;border-radius:14px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.mfil>span{font:600 14px var(--text);color:var(--ink-3)}
+.mfil .seg.sm{background:var(--soft)}
+.mfil .selw select{padding:7px 36px 7px 12px;font-size:14px;background:var(--soft)}
+.mfil .sw2{margin-left:auto}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.mc{display:flex;flex-direction:column;gap:14px;padding:20px 20px 18px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1px var(--line);transition:box-shadow .15s}
+.mc:hover{box-shadow:0 0 0 1px var(--line-2),0 10px 26px -18px rgba(0,0,0,.35)}
+.mc.sel{box-shadow:0 0 0 2px var(--volt)}
+.mch{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:var(--ink-3)}
+.mst{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--volt-ink)}
+.mst i{width:7px;height:7px;border-radius:50%;background:var(--volt)}
+.mst.soon{color:#8A5308}.mst.soon i{background:var(--amber)}
+.mcn{margin:-8px 0 0;font:700 21px/1.2 var(--text);color:var(--ink)}
+.mvar .seg{display:flex;flex-wrap:wrap;gap:6px;padding:0;background:none;box-shadow:none}
 .mvar .seg>*{flex:none}
-.mvar .seg small{font-size:12px;opacity:.7}
-.mpts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,max-content));gap:10px 28px;margin:0 0 20px;padding:0;list-style:none}
-.mpts li{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:var(--ink)}
-.mpts svg{flex:none;width:28px;height:28px;padding:5px;border-radius:8px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-2)}
-.mpts .ok svg{background:var(--volt-soft);box-shadow:none;color:var(--volt-ink)}
-.mpts .tight svg{background:#FBEBD3;box-shadow:none;color:#8A5308}
-.mpts .no svg{background:#FCE3D6;box-shadow:none;color:#B23A0B}
-.mkv{margin:12px 0 0;max-width:560px}
-.mkv div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.mvar .seg button{padding:5px 11px;font-size:13px;box-shadow:inset 0 0 0 1px var(--line-2)}
+.mvar .seg button[aria-checked=true]{background:var(--ink);color:#fff;box-shadow:none}
+.mvar .seg small{font-size:11px;opacity:.7}
+.mcr{display:flex;flex-direction:column;gap:8px}
+.mcr p{display:flex;align-items:baseline;gap:7px;margin:0;color:var(--ink-3);font-size:14px}
+.mcr b{font:600 40px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.mcr small{font-size:15px;color:var(--ink-2)}
+.mbar{position:relative;display:block;height:6px;border-radius:3px;background:var(--line)}
+.mbar i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--volt)}
+.mcs{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0;padding:0;list-style:none}
+.mcs li{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:15px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.mcs b{color:var(--ink);font-weight:600}
+.mcs svg{width:18px;height:18px;color:var(--ink-3)}
+.mcs .na{color:var(--ink-3)}
+.mca{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+.mca .cta{padding:9px 14px;font-size:14px}
+.mca .cta svg{width:16px;height:16px}
+.mcv{display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--ink-2);cursor:pointer}
+.mcv input{width:17px;height:17px;margin:0;accent-color:var(--ink);cursor:pointer}
+.mcv input:disabled{cursor:not-allowed;opacity:.35}
+.mci{margin-left:auto;border:0;background:none;padding:4px 0;font:600 14px var(--text);color:var(--ink-3);cursor:pointer}
+.mci:hover{color:var(--ink)}
+.mkv{margin:0}
+.mkv div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
 .mkv dt{font-size:14px;color:var(--ink-3)}
 .mkv dd{margin:0;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
-.mkv small,.mmute{font-size:13px;font-weight:400;color:var(--ink-3)}
-.mf{display:flex;flex-direction:column;min-width:0;font-variant-numeric:tabular-nums}
-.mf span{font-size:15px;color:var(--ink-2)}
-.mf b{font:700 22px/1.1 var(--display);color:var(--ink)}
-.mf small{font-size:12px;color:var(--ink-3)}
-.mrg{display:flex;flex-direction:column;gap:6px;min-width:0}
-.mbar{position:relative;height:6px;border-radius:3px;background:var(--line)}
-.mbar i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--volt)}
-.mbar.short i{background:var(--amber)}
-.mbar em{position:absolute;top:-4px;width:3px;height:14px;margin-left:-1px;border-radius:1px;background:var(--ink)}
-.mchev{width:18px;height:18px;color:var(--ink-3);transition:transform .2s}
-.mr.open .mchev{transform:rotate(180deg)}
-.mrb{grid-column:2;padding:0 22px 24px 0}
-.mhow{font-size:14px;color:var(--ink-3)}
-.mhow[open]{flex-basis:100%}
-.mhow summary{cursor:pointer;width:max-content;max-width:100%}
-.mhow summary:hover{color:var(--ink)}
-.mhow p{margin:12px 0 0;max-width:640px;line-height:1.6}
-.macts{display:flex;align-items:center;gap:12px 22px;flex-wrap:wrap}
-.macts .hint{margin:0}
-.msrc{font-size:14px;color:var(--ink-3)}
-.msrc a{font-weight:600}
+.mkv small{font-size:13px;font-weight:400;color:var(--ink-3)}
+.minfo>p{margin:0 0 16px;max-width:640px;color:var(--ink-2);line-height:1.6}
+.minfo .cta{margin-top:20px}
 .mnone{padding:40px 22px;text-align:center;color:var(--ink-3)}
-.mdisc{margin:16px 0 0;max-width:760px;font-size:14px;color:var(--ink-3)}
+.mdisc{margin:18px 0 0;font-size:14px;color:var(--ink-3)}
 .mcmp{position:fixed;z-index:24;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:18px;padding:8px 8px 8px 20px;border-radius:12px;background:var(--ink);color:#fff;font:600 15px var(--text);box-shadow:0 16px 34px -12px rgba(0,0,0,.5);white-space:nowrap}
 .mcmp .lnk{color:#fff}
 .mcmp .lnk:hover{color:var(--volt-soft)}
@@ -643,15 +633,13 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
 .toast .wzx{flex:none;width:32px;height:32px;color:#fff}
 .toast .wzx svg{width:18px;height:18px}
 @media(max-width:760px){
- .mcols{display:none}
- .mr{grid-template-columns:44px minmax(0,1fr)}
- .mck{align-items:start;padding-top:19px}
- .mrh{grid-template-columns:repeat(3,minmax(0,1fr)) 18px;gap:12px 10px;padding:14px 14px 16px 0}
- .mrh .mn{grid-column:1/4}
- .mrh .mchev{grid-column:4;grid-row:1}
- .mf b{font-size:19px}
- .mrh .mf::before{content:attr(data-l);font-size:12px;color:var(--ink-3)}
- .mrb{padding:0 14px 20px 0}
+ .mfil .sw2{margin-left:0}
+ #mRgL{display:none}
+ .mcat,.mfil #mRg{flex-wrap:nowrap;max-width:100%;overflow-x:auto;scrollbar-width:none}
+ .mcat>*,.mfil #mRg>*{flex:none}
+ .mfil{gap:10px}
+ .mtools .msearch{flex-basis:100%}
+ .mgrid{grid-template-columns:minmax(0,1fr)}
  .mcmp,.toast{left:12px;right:12px;transform:none;width:auto}
  .mcmp{justify-content:space-between;gap:12px}
  .toast{flex-wrap:wrap}
@@ -715,7 +703,7 @@ body{font-size:16px}
 .intro h1,.phead h1{font-weight:600;letter-spacing:-.015em}
 .vsh h2,.an h2{font-weight:600;letter-spacing:-.01em}
 /* Kleine hoeken, lijnen in plaats van schaduwen */
-.board,.vsl,.ins,.sum,.add,.pbc,.vt,.mlist,.ad,.bec>*,.hmw,dialog.wz,dialog.mdlg,.mpp,.toast,.mcmp,.qt,.prin div{border-radius:6px!important}
+.board,.vsl,.ins,.sum,.add,.pbc,.vt,.mc,.mfil,.ad,.bec>*,.hmw,dialog.wz,dialog.mdlg,.mpp,.toast,.mcmp,.qt,.prin div{border-radius:6px!important}
 .board{box-shadow:0 0 0 1px var(--line)!important}
 .board.flash{animation:none!important}
 .pbc{box-shadow:0 0 0 1px var(--line)}
@@ -908,15 +896,17 @@ body{font-size:16px}
   <div class="phead"><h1 tabindex="-1">Elektrische modellen</h1></div>
   <div class="mtools">
    <div class="seg sm mcat" id="mCat" role="group" aria-label="Voertuig"></div>
-   <div class="mopt">
-    <label class="sw2"><input id="mSoon" type="checkbox" checked><span>Ook aangekondigd</span></label>
-    <label class="msrt" for="mSort">Sorteer op <span class="selw"><select id="mSort"><option value="r">Actieradius</option><option value="u">Accu</option><option value="k">Snelladen</option><option value="b">Merk</option></select></span></label>
-   </div>
+   <label class="msearch" for="mSearch"><input id="mSearch" type="search" placeholder="Zoek merk of model" aria-label="Zoek merk of model" autocomplete="off" aria-controls="mList"></label>
   </div>
-  <div class="mfind"><label class="msearch" for="mSearch">Zoek merk of model<input id="mSearch" type="search" placeholder="Bijvoorbeeld Kangoo, Ford of eCitaro" autocomplete="off" aria-controls="mList"></label><p class="mcount" id="mCount" role="status" aria-live="polite"></p></div>
-  <p class="mday" id="mDay" hidden></p>
-  <div class="mlist" id="mList"></div>
-  <p class="mdisc">De cijfers zijn opgaven van de fabrikant, vaak onder gunstige omstandigheden. Bestelbussen tonen de gecombineerde WLTP-actieradius; bij vrachtwagens en bussen verschillen de meetomstandigheden. Bruto, bruikbare en niet nader gespecificeerde accucapaciteit staan apart vermeld. In de winter en met zware lading ligt de actieradius lager. Uitvoeringen, prijzen en levertijden verschillen per land; vraag een offerte bij de dealer.</p>
+  <div class="mfil">
+   <span id="mRgL">Actieradius</span><div class="seg sm" id="mRg" role="group" aria-labelledby="mRgL"></div>
+   <span class="selw"><select id="mBrand" aria-label="Merk"></select></span>
+   <span class="selw"><select id="mSort" aria-label="Sorteer"><option value="r">Grootste actieradius</option><option value="u">Grootste accu</option><option value="k">Snelst laden</option><option value="p">Laagste prijs</option><option value="b">Merk A–Z</option></select></span>
+   <label class="sw2"><input id="mSoon" type="checkbox" checked><span>Ook aangekondigd</span></label>
+  </div>
+  <p class="mcount" id="mCount" role="status" aria-live="polite"></p>
+  <div class="mgrid" id="mList"></div>
+  <p class="mdisc">Opgaven van de fabrikant. In de winter en met zware lading ligt de actieradius lager.</p>
   <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
  </div>
  <div class="mcmp" id="mBar" hidden><span id="mBarT"></span><button class="lnk" type="button" data-mclear>Wis</button><button class="cta" type="button" id="mGo">Vergelijk</button></div>
@@ -1803,7 +1793,7 @@ const MODELS=[
  {"c":"trekker","b":"Renault Trucks","m":"E-Tech T 585","fam":"E-Tech T","vl":"585 kWh · 6×2 e-as","a":585,"r":500,"rt":"tot 500","dc":350,"st":"nu","n":"6×2-trekker met e-as, afgestemd op laadvermogen. Renault Trucks noemt 585 kWh en maximaal 500 km. Andere belading, opbouw en omstandigheden geven een ander bereik; CCS-laden tot 350 kW.","s":["Renault Trucks","https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"],"checked":"2026-10-21"}];
 MODELS.forEach(m=>m.id=(m.b+' '+m.m).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
 const MI={};MODELS.forEach(m=>MI[m.id]=m);
-let mCat=null,mOpen=new Set(),mSel=[],mVar={};
+let mCat=null,mOpen=new Set(),mSel=[],mVar={},mMin=0;
 /* 90% is een expliciete aanname, ook als de fabrikant bruto/netto niet vermeldt. */
 const mU=m=>m.u||m.ue||Math.round((m.g||m.a)*.9);
 const mCap=m=>m.u||m.ue||m.g||m.a;
@@ -1817,7 +1807,6 @@ const mRange=m=>`${m.rt||nf(m.r)} km${m.rc?' ('+m.rc+')':m.c==='bestel'?' (WLTP 
 const mK=m=>Math.max(m.dc||0,m.mcs||0);
 const mName=m=>`${m.b} ${m.m}`;
 const mStat=m=>m.st==='nu'?'Leverbaar':'Verwacht '+m.y;
-const mDag=()=>Math.round(v('km')/Math.max(1,v('wd')));
 function modelOptions(){$('calcModel').value='';$('mpQ').value='';mpList()}
 const modelActive=()=>{const m=MI[$('calcModel').value];return m&&m.c===vtype?m:null};
 function mpList(){
@@ -1862,9 +1851,10 @@ function modelApply(id,keepOwnPrice=false){
  if(m.c==='bakwagen'){$('cls').value=(m.vc||'n3').toUpperCase();if(m.gvw&&m.gvw<10000)$('reg').value='geen'}
  touched=true;render();return true;
 }
+const mBase=(c=mCat)=>MODELS.filter(m=>(c==='all'||m.c===c)&&(ck('mSoon')||m.st==='nu')&&mMatches(m));
 function mRows(){
- const sort=$('mSort').value,soon=ck('mSoon');
- return MODELS.filter(m=>(mCat==='all'||m.c===mCat)&&(soon||m.st==='nu')&&mMatches(m)).sort((a,b)=>(sort==='b'?mName(a).localeCompare(mName(b),'nl'):sort==='u'?mU(b)-mU(a):sort==='k'?mK(b)-mK(a)||b.r-a.r:b.r-a.r)||mName(a).localeCompare(mName(b),'nl'));
+ const sort=$('mSort').value,br=$('mBrand').value;
+ return mBase().filter(m=>m.r>=mMin&&(!br||m.b===br)).sort((a,b)=>(sort==='b'?mName(a).localeCompare(mName(b),'nl'):sort==='u'?mU(b)-mU(a):sort==='k'?mK(b)-mK(a)||b.r-a.r:sort==='p'?(a.price||1e9)-(b.price||1e9):b.r-a.r)||mName(a).localeCompare(mName(b),'nl'));
 }
 const mNorm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 const mMatches=m=>mNorm($('mSearch').value).split(/\s+/).filter(Boolean).every(q=>mNorm(`${mName(m)} ${m.fam||''} ${m.vl||''}`).includes(q));
@@ -1872,50 +1862,46 @@ const mMatches=m=>mNorm($('mSearch').value).split(/\s+/).filter(Boolean).every(q
 const mFamId=m=>m.fam?'fam-'+mNorm(`${m.c} ${m.b} ${m.fam}`).replace(/ /g,'-'):m.id;
 function mGroups(list){const G=new Map();list.forEach(m=>{const k=mFamId(m);G.has(k)?G.get(k).push(m):G.set(k,[m])});return[...G].map(([k,vs])=>({k,vs:vs.slice().sort((a,b)=>mCap(a)-mCap(b)||a.r-b.r),top:vs[0]}))}
 const mSpan=(a,b,f=mFmt)=>a===b?f(a):`${f(a)}–${f(b)}`;
-const mBar=(m,mx,dg)=>`<span class="mbar${dg&&m.r<dg?' short':''}" aria-hidden="true"><i style="width:${Math.min(100,m.r/mx*100)}%"></i>${dg?`<em style="left:${Math.min(100,dg/mx*100)}%"></em>`:''}</span>`;
+const mBar=(m,mx)=>`<span class="mbar" aria-hidden="true"><i style="width:${Math.min(100,m.r/mx*100)}%"></i></span>`;
 const mBatt=m=>m.u||m.ue?`${m.ut||mFmt(m.u||m.ue)} kWh ${m.u?'bruikbaar':'(afgeleid)'}`:'Niet opgegeven';
 const mCharge=m=>[m.dc?`CCS tot ${nf(m.dc)} kW`:'',m.mcs?`MCS tot ${nf(m.mcs)} kW`:''].filter(Boolean).join(' · ')||'Niet opgegeven';
-/* Accu als één regel: de waarde waarmee je rekent voorop, de rest klein erachter */
 function mAccLine(m){
  const v=m.u||m.ue?(m.ut||mFmt(m.u||m.ue)):m.g?(m.gt||mFmt(m.g)):(m.at||mFmt(m.a));
  const q=m.u?['bruikbaar']:m.ue?['bruikbaar, afgeleid']:m.g?['bruto']:['bruto of netto niet vermeld'];
  if((m.u||m.ue)&&m.g)q.push(`${m.gt||mFmt(m.g)} bruto`);
  return`${v} kWh <small>${q.join(' · ')}</small>`;
 }
-/* Kaart in één oogopslag: vier korte punten en de knop; omschrijving en specificaties onder Meer over dit model */
-const MIC={fit:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',cal:'<rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',eur:'<path d="M17.5 6.5A7 7 0 1 0 17.5 17.5M4 10.5h9M4 13.5h9"/>',bolt:'<path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/>'};
-const mPt=(ic,t,cl='')=>`<li class="${cl}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${MIC[ic]}</svg><span>${t}</span></li>`;
-function mBody(m,pre=''){
- const dg=m.c===vtype?mDag():0,a=mAcc(m),x=dg?m.r/dg:0,ok=x>=1.25,tight=x&&!ok&&x>=1;
+const MIC={bat:'<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3M7 10.5v3"/>',bolt:'<path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/>',eur:'<path d="M17.5 6.5A7 7 0 1 0 17.5 17.5M4 10.5h9M4 13.5h9"/>'};
+const mIc=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${MIC[k]}</svg>`;
+const arrow='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+/* Eén kaart per model. Actieradius is het hoofdgetal; accu, laden en prijs staan eronder. Uitvoeringen wissel je in de kaart. */
+function mCard(k,vs,top,mx){
+ const m=vs.find(x=>x.id===mVar[k])||top,sel=mSel.includes(m.id),now=m.st==='nu',rt=m.rt||'',upto=/^tot\s/.test(rt);
+ const pick=vs.length>1?`<div class="mvar"><div class="seg sm" role="radiogroup" aria-label="Uitvoering">${vs.map(x=>`<button type="button" role="radio" data-mvar="${k}" data-mvid="${x.id}" aria-checked="${x.id===m.id}" tabindex="${x.id===m.id?0:-1}">${x.vl||mCapText(x)+' kWh'}</button>`).join('')}</div></div>`:'';
+ return`<article class="mc${sel?' sel':''}"><div class="mch"><span>${m.b}</span><span class="mst${now?'':' soon'}"><i aria-hidden="true"></i>${now?'Leverbaar':'Verwacht '+m.y}</span></div>
+  <h3 class="mcn">${m.fam||m.m}</h3>${pick}
+  <div class="mcr"><p>${upto?'tot ':''}<b>${upto?rt.slice(4):rt||nf(m.r)}</b><small>km</small></p>${mBar(m,mx)}</div>
+  <ul class="mcs"><li>${mIc('bat')}<b>${mCapText(m)}</b> kWh</li>${mK(m)?`<li>${mIc('bolt')}<b>${nf(mK(m))}</b> kW</li>`:''}<li${m.price?'':' class="na"'}>${mIc('eur')}${m.price?`<b>${eur(m.price)}</b>`:'Op aanvraag'}</li></ul>
+  <div class="mca"><button class="cta" type="button" data-muse="${m.id}">Reken hiermee ${arrow}</button><label class="mcv"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''}>Vergelijk</label><button type="button" class="mci" data-mrow="${m.id}" aria-haspopup="dialog">Info</button></div></article>`;
+}
+function mInfo(id){
+ const m=MI[id];if(!m)return;
  const when=m.checked?new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z')):'';
- const pts=[dg?mPt('fit',ok?`Past je dagrit van ${nf(dg)} km`:tight?`Krap voor ${nf(dg)} km in de winter`:`Te kort voor ${nf(dg)} km per dag`,ok?'ok':tight?'tight':'no'):'',
-  mPt('cal',m.st==='nu'?'Nu leverbaar':'Verwacht in '+m.y),
-  mPt('eur',m.price?`${eur(m.price)} excl. btw`:'Prijs niet bekend'),
-  mK(m)?mPt('bolt',[m.dc?`CCS ${nf(m.dc)} kW`:'',m.mcs?`MCS ${nf(m.mcs)} kW`:''].filter(Boolean).join(' · ')):''].join('');
- return`<div class="mrb" id="mb-${pre?mFamId(m):m.id}">${pre}<ul class="mpts">${pts}</ul>
-  <div class="macts"><button class="cta" type="button" data-muse="${m.id}">Reken met ${pre?'deze uitvoering':'dit model'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
-  <details class="mhow"><summary>Meer over dit model</summary><p>${m.n}</p><dl class="mkv"><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Bron</dt><dd><a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?` <small>gecontroleerd ${when}</small>`:''}</dd></div></dl><p>De calculator start met ${mFmt(a)} kWh (${mAssumption(m)}) en ${nf(mEnergy(m),1)} kWh/100 km ${m.consumption?'volgens de fabrikant':'indicatief uit accu en opgegeven bereik'}. Reken in de winter met ongeveer 20% minder actieradius.</p></details></div></div>`;
+ $('mDlgT').textContent=mName(m);
+ $('mDlgB').innerHTML=`<div class="minfo"><p>${m.n}</p><dl class="mkv"><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div><div><dt>Prijs</dt><dd>${m.price?`${eur(m.price)} <small>excl. btw${m.pt&&m.pt!=='list'?', indicatief':''}</small>`:'Op aanvraag'}</dd></div><div><dt>Bron</dt><dd><a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?` <small>${when}</small>`:''}</dd></div></dl><button class="cta" type="button" data-muse="${m.id}">Reken hiermee ${arrow}</button></div>`;
+ const d=$('mDlg');if(!d.open)d.showModal();
 }
-/* Familierij: bandbreedte over de uitvoeringen; openklappen toont een keuze per uitvoering met de details van de gekozen uitvoering. */
-function mFamRow(k,vs,top,mx,d){
- const m=vs.find(x=>x.id===mVar[k])||top,o=mOpen.has(k),sel=mSel.includes(m.id),rs=vs.map(x=>x.r),r0=Math.min(...rs),r1=Math.max(...rs),allSoon=vs.every(x=>x.st==='komt');
- const uq=[...new Set(vs.map(mUq))],caps=vs.map(uq.length===1?mCap:x=>x.g||x.a||x.u||x.ue),kw=Math.max(...vs.map(mK));
- const pick=`<div class="mvar"><div class="seg sm" role="radiogroup" aria-label="Uitvoering">${vs.map(x=>`<button type="button" role="radio" data-mvar="${k}" data-mvid="${x.id}" aria-checked="${x.id===m.id}" tabindex="${x.id===m.id?0:-1}">${x.vl||mCapText(x)+' kWh'}${x.st==='komt'?' <small>'+x.y+'</small>':''}</button>`).join('')}</div></div>`;
- return`<article class="mr mfam${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${k}" aria-expanded="${o}" aria-controls="mb-${k}"><span class="mn"><small>${m.b}</small><b>${m.fam}<span class="mtag ok">${vs.length} uitvoeringen</span>${allSoon?`<span class="mtag">Verwacht ${top.y}</span>`:''}</b></span>${o?`<span class="mf" data-l="Accu"><span><b>${mCapText(m)}</b> kWh</span></span><span class="mf mrg" data-l="Actieradius"><span><b>${m.rt||nf(m.r)}</b> km</span>${mBar(m,mx,d)}</span><span class="mf" data-l="Snelladen">${mK(m)?`<span><b>${nf(mK(m))}</b> kW</span>`:'<span>–</span>'}</span>`:`<span class="mf" data-l="Accu"><span><b>${mSpan(Math.min(...caps),Math.max(...caps))}</b> kWh</span></span><span class="mf mrg" data-l="Actieradius"><span><b>${mSpan(r0,r1,nf)}</b> km</span><span class="mbar${d&&r1<d?' short':''}" aria-hidden="true"><i class="mx" style="width:${Math.min(100,r1/mx*100)}%"></i><i style="width:${Math.min(100,r0/mx*100)}%"></i>${d?`<em style="left:${Math.min(100,d/mx*100)}%"></em>`:''}</span></span><span class="mf" data-l="Snelladen">${kw?`<span><b>${nf(kw)}</b> kW</span>`:'<span>–</span>'}</span>`}${chev}</button>${o?mBody(m,pick):''}</article>`;
-}
+const MRG=[0,200,300,400,500];
 function mPaint(){
  if(!mCat)mCat=vtype;
- const list=mRows(),groups=mGroups(list),mx=Math.max(1,...list.map(m=>m.r)),dg=mDag(),soon=ck('mSoon');
- setH($('mCat'),MCAT.map(c=>`<button type="button" data-mcat="${c[0]}" aria-pressed="${c[0]===mCat}">${c[1]}<small>${mGroups(MODELS.filter(m=>(c[0]==='all'||m.c===c[0])&&(soon||m.st==='nu')&&mMatches(m))).length}</small></button>`).join(''));
- $('mCount').textContent=`${groups.length} ${groups.length===1?'model':'modellen'} gevonden${groups.length<list.length?` (${list.length} uitvoeringen)`:''} · ${mGroups(MODELS).length} in de catalogus`;
- const showDag=list.some(m=>m.c===vtype);
- $('mDay').hidden=true;
- setH($('mDay'),`<i aria-hidden="true"></i>Jouw dagrit in de calculator: ${nf(dg)} km (${T().n.toLowerCase()})`);
- setH($('mList'),list.length?`<div class="mcols" aria-hidden="true"><span>Model</span><span>Accu</span><span>Actieradius</span><span>Snelladen</span><span></span></div>`+groups.map(({k,vs,top})=>{
-  const d=top.c===vtype?dg:0;
-  if(vs.length>1)return mFamRow(k,vs,top,mx,d);
-  const m=top,o=mOpen.has(m.id),sel=mSel.includes(m.id);
-  return`<article class="mr${o?' open':''}"><label class="mck" title="Vergelijken"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''} aria-label="${mName(m)} vergelijken"></label><button type="button" class="mrh" data-mrow="${m.id}" aria-expanded="${o}" aria-controls="mb-${m.id}"><span class="mn"><small>${m.b}</small><b>${m.m}${m.st==='komt'?`<span class="mtag">Verwacht ${m.y}</span>`:''}</b></span><span class="mf" data-l="Accu"><span><b>${mCapText(m)}</b> kWh</span></span><span class="mf mrg" data-l="Actieradius"><span><b>${m.rt||nf(m.r)}</b> km</span>${mBar(m,mx,d)}</span><span class="mf" data-l="Snelladen">${mK(m)?`<span><b>${nf(mK(m))}</b> kW</span>`:'<span>–</span>'}</span>${chev}</button>${o?mBody(m):''}</article>`}).join(''):`<p class="mnone">Geen modellen met deze keuze. Probeer een andere zoekterm of kies Alle.</p>`);
+ const soon=ck('mSoon'),brs=[...new Set(mBase().map(m=>m.b))].sort((a,b)=>a.localeCompare(b,'nl')),bs=$('mBrand');
+ if(bs.value&&!brs.includes(bs.value))bs.value='';
+ const bv=bs.value;bs.innerHTML='<option value="">Alle merken</option>'+brs.map(b=>`<option${b===bv?' selected':''}>${b}</option>`).join('');
+ setH($('mRg'),MRG.map(n=>`<button type="button" data-mrg="${n}" aria-pressed="${n===mMin}">${n?n+'+ km':'Alle'}</button>`).join(''));
+ const list=mRows(),groups=mGroups(list),mx=Math.max(1,...list.map(m=>m.r));
+ setH($('mCat'),MCAT.map(c=>`<button type="button" data-mcat="${c[0]}" aria-pressed="${c[0]===mCat}">${c[1]}</button>`).join(''));
+ $('mCount').textContent=`${groups.length} ${groups.length===1?'model':'modellen'}`;
+ setH($('mList'),groups.length?groups.map(({k,vs,top})=>mCard(k,vs,top,mx)).join(''):`<p class="mnone">Geen modellen met deze filters.</p>`);
  $('mBar').hidden=!mSel.length||page!=='modellen'||$('mDlg').open;
  $('mBarT').textContent=mSel.length===1?'1 model gekozen · kies er nog een':`${mSel.length} modellen gekozen`;
  $('mGo').disabled=mSel.length<2;
@@ -1923,10 +1909,11 @@ function mPaint(){
 function mCompare(){
  const ms=mSel.map(id=>MI[id]),mx=Math.max(...ms.map(m=>m.r)),best=f=>Math.max(...ms.map(f));
  const row=(lab,f,num)=>`<tr><th scope="row">${lab}</th>${ms.map(m=>`<td${num&&ms.length>1&&num(m)===best(num)&&num(m)>0?' class="best"':''}>${f(m)}</td>`).join('')}</tr>`;
+ $('mDlgT').textContent='Vergelijken';
  $('mDlgB').innerHTML=`<table class="mct"><thead><tr><th></th>${ms.map(m=>`<th scope="col"><small>${m.b}</small><b>${m.m}</b></th>`).join('')}</tr></thead><tbody>
   ${row('Soort',m=>VT[m.c].n)}${row('Status',mStat)}
   ${row('Accu bruto',m=>m.g?(m.gt||mFmt(m.g))+' kWh':'–')}${row('Accu type niet vermeld',m=>m.a?(m.at||mFmt(m.a))+' kWh':'–')}${row('Accu bruikbaar',m=>m.u||m.ue?`${m.ut||mFmt(m.u||m.ue)} kWh${m.u?'':' (afgeleid)'}`:`≈ ${nf(mU(m))} kWh (90% geschat)`,mU)}
-  ${row('Actieradius',m=>`${mRange(m)}${mBar(m,mx,0)}`,m=>m.r)}
+  ${row('Actieradius',m=>`${mRange(m)}${mBar(m,mx)}`,m=>m.r)}
   ${row('Snelladen',m=>mCharge(m),mK)}${row('Prijs excl. btw',m=>m.price?eur(m.price):'–')}
   ${row('',m=>`<button class="wbtn" type="button" data-muse="${m.id}">Reken hiermee</button>`)}</tbody></table>`;
  const d=$('mDlg');if(!d.open)d.showModal();mPaint();
@@ -1945,7 +1932,8 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-toastx]'))$('toast').hidden=true;
  const c=e.target.closest('[data-mcat]');if(c){mCat=c.dataset.mcat;mPaint();return}
  const vo=e.target.closest('[data-mvar]');if(vo){mVar[vo.dataset.mvar]=vo.dataset.mvid;mPaint();const n=document.querySelector(`[data-mvid="${vo.dataset.mvid}"]`);if(n)n.focus({preventScroll:true});return}
- const r=e.target.closest('[data-mrow]');if(r){const id=r.dataset.mrow;mOpen.has(id)?mOpen.delete(id):mOpen.add(id);mPaint();document.querySelector(`[data-mrow="${id}"]`).focus({preventScroll:true});return}
+ const r=e.target.closest('[data-mrow]');if(r){mInfo(r.dataset.mrow);return}
+ const g=e.target.closest('[data-mrg]');if(g){mMin=+g.dataset.mrg;mPaint();return}
  const u=e.target.closest('[data-muse]');if(u){mUse(u.dataset.muse);return}
  if(e.target.closest('[data-mclear]')){mSel=[];mPaint();return}
  if(e.target.closest('[data-mclose]')){$('mDlg').close();return}
@@ -1953,7 +1941,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('change',e=>{
  const s=e.target.closest('[data-msel]');if(s){const id=s.dataset.msel;mSel=s.checked?[...mSel.filter(x=>x!==id),id].slice(0,3):mSel.filter(x=>x!==id);mPaint();const n=document.querySelector(`[data-msel="${id}"]`);if(n)n.focus({preventScroll:true});return}
- if(e.target.id==='mSort'||e.target.id==='mSoon')mPaint();
+ if(e.target.id==='mSort'||e.target.id==='mSoon'||e.target.id==='mBrand')mPaint();
 });
 document.addEventListener('input',e=>{if(e.target.id==='mSearch')mPaint()});
 document.addEventListener('keydown',e=>{
@@ -2147,7 +2135,7 @@ syncSupabase();
  },true);
  document.addEventListener('toggle',e=>{const d=e.target;if(d.tagName==='DETAILS'&&d.open){const s=d.querySelector('summary');track('details_open',{q:(s?s.textContent:'').trim().slice(0,100),p:page})}},true);
  document.addEventListener('change',e=>{const t=e.target;if(t.id==='mSort'||t.id==='mSoon')track('model_filter',{sort:$('mSort').value,soon:$('mSoon').checked})});
- let qT=0;document.addEventListener('input',e=>{if(e.target.id!=='mSearch')return;clearTimeout(qT);qT=setTimeout(()=>{const q=e.target.value.trim();if(q.length>1)track('model_search',{q:q.slice(0,60),n:document.querySelectorAll('#mList .mr').length})},1200)});
+ let qT=0;document.addEventListener('input',e=>{if(e.target.id!=='mSearch')return;clearTimeout(qT);qT=setTimeout(()=>{const q=e.target.value.trim();if(q.length>1)track('model_search',{q:q.slice(0,60),n:document.querySelectorAll('#mList .mc').length})},1200)});
 
  /* Fouten in de pagina, maximaal vijf per bezoek */
  let errs=0;addEventListener('error',e=>{if(errs++<5)track('js_error',{m:String(e.message).slice(0,200),src:String(e.filename||'').split('/').pop().slice(0,60),line:e.lineno})});
