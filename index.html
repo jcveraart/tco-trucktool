@@ -728,6 +728,73 @@ body{font-size:16px}
 .kmq button:hover{box-shadow:inset 0 0 0 1px var(--ink);color:var(--ink)}
 .kmq button[aria-pressed=true]{background:var(--ink);box-shadow:none;color:#fff}
 @media(max-width:640px){.kmq{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:-10px}.kmq span{grid-column:1/-1;margin:0 0 2px}.kmq button{padding:8px 0}}
+/* Vlootanalyse */
+.fln{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;margin-top:56px;padding:20px 24px;border-radius:6px;background:var(--asph);color:var(--on-asph);text-decoration:none}
+.fln:hover{color:var(--on-asph)}
+.fln span{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--on-asph-2)}
+.fln b{display:block;margin-top:4px;font:600 19px/1.3 var(--text);letter-spacing:-.005em}
+.fln i{display:inline-flex;align-items:center;gap:10px;font:600 15px var(--text);font-style:normal;color:#fff;padding:10px 16px;border-radius:4px;background:var(--volt)}
+.fln:hover i{background:var(--volt-ink)}
+.fln svg{width:18px;height:18px}
+.fa{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:48px 64px;align-items:start}
+.fph{padding:22px 24px 18px;border-radius:6px;background:var(--asph);color:var(--on-asph)}
+.fphh{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.fphh span,.fphr>span,.fphk,.fio h2,.fst li::before,.fpr dt,.ffl,.ff>span,.ffs legend{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.fphh span:last-child{color:var(--on-asph-2)}
+.fphr{display:grid;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:12px;margin:0 0 8px}
+.fphr>span{color:var(--on-asph-2)}
+.fphr>div{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:3px}
+.fphr i{height:18px;border-radius:2px;background:var(--asph-3)}
+.fphr i.e{background:var(--volt-2)}
+.fphk{display:flex;gap:20px;margin-top:16px;color:var(--on-asph-2)}
+.fphk span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:2px;background:var(--asph-3);vertical-align:-1px}
+.fphk .ke::before{background:var(--volt-2)}
+.fio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;margin-top:44px}
+.fio h2{margin:0 0 10px;color:var(--ink-3)}
+.fio ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.fio li{padding:11px 0;border-bottom:1px solid var(--line);font-weight:500}
+.fst{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:44px 0 0;padding:0;list-style:none;counter-reset:fs}
+.fst li{counter-increment:fs;padding-top:12px;border-top:2px solid var(--ink)}
+.fst li::before{content:counter(fs,decimal-leading-zero);display:block;margin-bottom:4px;color:var(--ink-3)}
+.fst b{font-weight:600;line-height:1.3}
+.fpr{display:flex;gap:8px 24px;flex-wrap:wrap;align-items:baseline;margin:40px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fpr dt{color:var(--ink-3)}
+.fpr dd{margin:0;font-weight:600}
+.ffm{padding:28px;border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.ffm h2{margin:0 0 20px;font:600 24px/1.2 var(--text);letter-spacing:-.01em}
+.ffr{margin-bottom:14px}
+.ffr.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ff{display:flex;flex-direction:column;gap:6px}
+.ff>span,.ffl,.ffs legend{color:var(--ink-3)}
+.ff input,.ff textarea{width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:4px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:400 16px var(--text)}
+.ff textarea{resize:vertical;line-height:1.45}
+.ff input:focus-visible,.ff textarea:focus-visible{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.ff input[aria-invalid=true]{box-shadow:inset 0 0 0 2px #C2410C}
+.ffs{margin:0 0 16px;padding:0;border:0;min-width:0}
+.ffs legend,.ffl{display:block;margin-bottom:6px;padding:0}
+.ffs .seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.ffs .seg label span{padding:9px 4px;font-size:14px}
+.fdrop{position:relative;display:flex;align-items:baseline;justify-content:space-between;gap:4px 12px;flex-wrap:wrap;padding:16px;border-radius:4px;border:1.5px dashed var(--line-2);background:var(--soft);cursor:pointer}
+.fdrop:hover,.fdrop.over{border-color:var(--ink)}
+.fdrop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.fdrop:has(input:focus-visible){outline:3px solid var(--ink);outline-offset:2px}
+.fdrop b{font-weight:600}
+.fdrop span{color:var(--ink-3);font-size:14px}
+.ffiles{margin:8px 0 0;padding:0;list-style:none;font-size:14px}
+.ffiles li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line)}
+.ffiles li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ffiles button{border:0;background:none;padding:0;color:var(--ink-3);font:600 14px var(--text);cursor:pointer}
+.ffiles button:hover{color:var(--ink)}
+.fhp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.ferr{margin:0 0 14px;color:#C2410C;font-weight:600;font-size:15px}
+.fsub{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:20px}
+.fsub a{color:var(--ink-3);font-size:14px}
+.fsub .cta{border:0;cursor:pointer}
+.fsub .cta[disabled]{opacity:.6;cursor:progress}
+.fok p{margin:0;color:var(--ink-2)}
+@media(max-width:900px){.fa{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px){.fio{grid-template-columns:minmax(0,1fr);gap:28px}.fst{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}.ffr.two{grid-template-columns:minmax(0,1fr)}.ffm{padding:22px 18px}.fphr>div{gap:2px}.fphr i{height:14px}.fln{padding:18px}}
+@media print{.fln{display:none!important}}
 </style>
 </head>
 <body>
@@ -740,6 +807,7 @@ body{font-size:16px}
    <a href="#modellen" data-nav="modellen">Modellen</a>
    <a href="#faq" data-nav="faq">Veelgestelde vragen</a>
    <a href="#nieuws" data-nav="nieuws">Nieuws</a>
+   <a href="#vlootanalyse" data-nav="vloot" data-fleet="nav">Vlootanalyse</a>
    <a href="#over-ons" data-nav="over">Over ons</a>
   </nav>
  </div>
@@ -782,6 +850,8 @@ body{font-size:16px}
     <h2 id="hAn">Terugverdientijd</h2>
     <div id="pbX"></div>
    </section>
+
+   <a class="fln" href="#vlootanalyse" data-fleet="calc"><div><span>Vlootanalyse</span><b>Je hele vloot doorgerekend op je eigen ritten</b></div><i>Bekijk<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></i></a>
 
    <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
 
@@ -907,13 +977,51 @@ body{font-size:16px}
   <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
  </div>
 </section>
+<!-- ===== Vlootanalyse ===== -->
+<section class="page" data-page="vloot" hidden>
+ <div class="wrap">
+  <div class="phead"><h1 tabindex="-1">Vlootanalyse</h1><p>Jouw ritten, jouw locaties, één plan voor de hele vloot.</p></div>
+  <div class="fa">
+   <div class="fam">
+    <div class="fph" aria-label="Voorbeeld van een vervangingsplan">
+     <div class="fphh"><span>Vervangingsplan</span><span>Voorbeeld · 24 voertuigen</span></div>
+     <div id="fPh"></div>
+     <div class="fphk" aria-hidden="true"><span class="kd">Diesel</span><span class="ke">Elektrisch</span></div>
+    </div>
+    <div class="fio">
+     <div><h2>Je levert</h2><ul><li>Rittenregistratie</li><li>Vlootlijst</li><li>Locaties en netaansluiting</li></ul></div>
+     <div><h2>Je krijgt</h2><ul><li>Per rit: elektrisch haalbaar of niet</li><li>Ideale vlootsamenstelling en modellen</li><li>Laadplan per locatie</li><li>Vervangingsplan per jaar</li><li>Kosten, subsidies en CO₂ voor de hele vloot</li></ul></div>
+    </div>
+    <ol class="fst"><li><b>Aanvraag</b></li><li><b>Kennismaking</b></li><li><b>Analyse</b></li><li><b>Rapport en bespreking</b></li></ol>
+    <dl class="fpr"><dt>Prijs</dt><dd>Op aanvraag, vooraf vast afgesproken</dd></dl>
+   </div>
+
+   <form class="ffm" id="fForm" novalidate>
+    <h2>Aanvraag</h2>
+    <div class="ffr"><label class="ff"><span>Bedrijf</span><input name="company" required maxlength="200" autocomplete="organization"></label></div>
+    <div class="ffr two"><label class="ff"><span>Naam</span><input name="contact_name" required maxlength="200" autocomplete="name"></label><label class="ff"><span>Telefoon</span><input name="phone" type="tel" maxlength="50" autocomplete="tel"></label></div>
+    <div class="ffr"><label class="ff"><span>E-mail</span><input name="email" type="email" required maxlength="200" autocomplete="email"></label></div>
+    <fieldset class="ffs"><legend>Aantal voertuigen</legend><div class="seg"><label><input type="radio" name="fleet_size" value="1-5"><span>1–5</span></label><label><input type="radio" name="fleet_size" value="6-20" checked><span>6–20</span></label><label><input type="radio" name="fleet_size" value="21-50"><span>21–50</span></label><label><input type="radio" name="fleet_size" value="50+"><span>50+</span></label></div></fieldset>
+    <fieldset class="ffs"><legend>Soort voertuigen</legend><div class="seg"><label><input type="checkbox" name="vehicle_types" value="trekker"><span>Trekker</span></label><label><input type="checkbox" name="vehicle_types" value="bakwagen"><span>Bakwagen</span></label><label><input type="checkbox" name="vehicle_types" value="bestel"><span>Bestelbus</span></label><label><input type="checkbox" name="vehicle_types" value="bus"><span>Bus</span></label></div></fieldset>
+    <div class="ffs"><span class="ffl" id="fFl">Rittenregistratie</span><label class="fdrop" id="fDrop"><input type="file" id="fFile" multiple accept=".csv,.xlsx,.xls,.zip,.pdf,.txt,.json,.xml" aria-labelledby="fFl"><b>Bestanden kiezen</b><span>CSV, Excel, PDF of ZIP</span></label><ul class="ffiles" id="fFiles"></ul></div>
+    <div class="ffr"><label class="ff"><span>Toelichting</span><textarea name="message" rows="4" maxlength="4000"></textarea></label></div>
+    <input class="fhp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="ferr" id="fErr" role="alert" hidden></p>
+    <div class="fsub"><button class="cta" type="submit" id="fSend"><span>Aanvraag versturen</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><a href="#privacy">Privacy</a></div>
+   </form>
+   <div class="ffm fok" id="fOk" hidden tabindex="-1"><h2>Aanvraag ontvangen</h2><p>We nemen contact met je op.</p></div>
+  </div>
+ </div>
+</section>
 <section class="page" data-page="privacy" hidden>
  <div class="wrap">
   <div class="phead"><h1 tabindex="-1">Privacybeleid</h1></div>
   <div class="prose">
    <p>Stekker of diesel (stekkerofdiesel.nl) is een gratis rekentool. Hieronder lees je welke gegevens daarbij worden verwerkt en waarom. Laatst bijgewerkt op 22 oktober 2026.</p>
    <h2>Wat we niet vragen</h2>
-   <p>Je hoeft geen account aan te maken en we vragen geen naam, e-mailadres of andere persoonsgegevens. We gebruiken geen eigen analysetools.</p>
+   <p>Voor de calculator hoef je geen account aan te maken en vragen we geen naam, e-mailadres of andere persoonsgegevens. We gebruiken geen eigen analysetools.</p>
+   <h2>Vlootanalyse aanvragen</h2>
+   <p>Vraag je een vlootanalyse aan, dan bewaren we je bedrijfsnaam, naam, e-mailadres, telefoonnummer, je toelichting en de bestanden die je meestuurt, zoals een rittenregistratie. We gebruiken die alleen om je aanvraag te behandelen en de analyse te maken, en delen ze niet met anderen. De gegevens staan in een afgeschermde omgeving bij onze databaseleverancier Supabase. Bestanden verwijderen we uiterlijk twaalf maanden na afronding; wil je dat eerder, laat het ons weten.</p>
    <h2>Wat in je eigen browser blijft</h2>
    <p>Je laatste instellingen in de calculator bewaren we in de lokale opslag van je browser, zodat je verder kunt waar je was. Die gegevens verlaten je apparaat niet. Een deellink bevat alleen je rekeninstellingen, geen persoonsgegevens. Je wist de opslag via de instellingen van je browser.</p>
    <h2>Advertenties en cookies</h2>
@@ -932,7 +1040,7 @@ body{font-size:16px}
  <div class="wrap">
   <div class="fin">
    <div><a class="brand" href="#"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische bedrijfsvoertuigen.</p></div>
-   <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#over-ons">Over ons</a></nav>
+   <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#vlootanalyse" data-fleet="footer">Vlootanalyse</a><a href="#over-ons">Over ons</a></nav>
   </div>
   <div class="fdis">© Stekker of diesel · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst. · <a href="#privacy">Privacy</a></div>
  </div>
@@ -1381,8 +1489,8 @@ addEventListener('scroll',mini,{passive:true});
 
 /* ===== Pagina's ===== */
 function setView(){render()}
-const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',privacy:'privacy',modellen:'modellen'};
-const TITLES={calc:BRAND+' · Diesel of elektrisch vergelijken',faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,privacy:'Privacybeleid · '+BRAND,modellen:'Elektrische modellen · '+BRAND};
+const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',privacy:'privacy',modellen:'modellen',vlootanalyse:'vloot',vloot:'vloot'};
+const TITLES={calc:BRAND+' · Diesel of elektrisch vergelijken',faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,privacy:'Privacybeleid · '+BRAND,modellen:'Elektrische modellen · '+BRAND,vloot:'Vlootanalyse · '+BRAND};
 function route(first){
  let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
  const p=PAGES[h]||'calc',prevP=page;
@@ -1685,6 +1793,52 @@ $('mDlg').addEventListener('close',mPaint);
 /* ===== Supabase Live Data Integration ===== */
 const SB_URL = 'https://zarvyblveyomngypwvhw.supabase.co';
 const SB_KEY = 'sb_publishable_srfj19l9xWDSkdirFz6RtQ_RperxnNH';
+
+/* ===== Vlootanalyse: aanvraag met bestanden naar Supabase (tabel fleet_requests, bucket fleet-uploads) ===== */
+const CONTACT_MAIL='';
+function track(ev,p){p=p||{};try{document.dispatchEvent(new CustomEvent('sod:track',{detail:{event:ev,...p}}));if(typeof window.gtag==='function')window.gtag('event',ev,p)}catch(e){}}
+const fEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('fPh').innerHTML=[[2026,2],[2027,6],[2028,12],[2029,18],[2030,24]].map(([y,n])=>`<div class="fphr"><span>${y}</span><div>${Array.from({length:24},(_,i)=>`<i${i<n?' class="e"':''}></i>`).join('')}</div></div>`).join('');
+let fFiles=[],fCalc='';
+const FMAX=50*1024*1024,FEXT=/\.(csv|xlsx|xls|zip|pdf|txt|json|xml)$/i;
+function fErr(t){const e=$('fErr');e.innerHTML=t;e.hidden=!t}
+function fList(){$('fFiles').innerHTML=fFiles.map((f,i)=>`<li><span>${fEsc(f.name)}</span><button type="button" data-frm="${i}" aria-label="Verwijder ${fEsc(f.name)}">Verwijder</button></li>`).join('')}
+$('fFile').addEventListener('change',e=>{
+ const add=[...e.target.files],skip=add.filter(f=>!FEXT.test(f.name)||f.size>FMAX);
+ fFiles=[...fFiles,...add.filter(f=>!skip.includes(f))].slice(0,10);e.target.value='';fList();
+ fErr(skip.length?`Niet toegevoegd: ${skip.map(f=>fEsc(f.name)).join(', ')}. Gebruik CSV, Excel, PDF of ZIP tot 50 MB.`:'');
+});
+['dragenter','dragover'].forEach(t=>$('fDrop').addEventListener(t,()=>$('fDrop').classList.add('over')));
+['dragleave','drop'].forEach(t=>$('fDrop').addEventListener(t,()=>$('fDrop').classList.remove('over')));
+document.addEventListener('click',e=>{
+ const r=e.target.closest('[data-frm]');if(r){fFiles.splice(+r.dataset.frm,1);fList();return}
+ const c=e.target.closest('[data-fleet]');if(!c)return;
+ const from=c.dataset.fleet;track('fleet_cta_click',{from});
+ if(from==='calc'){try{fCalc=shareURL()}catch(x){}const t=document.querySelector(`#fForm [name=vehicle_types][value="${vtype}"]`);if(t)t.checked=true}
+});
+$('fForm').addEventListener('submit',async e=>{
+ e.preventDefault();const f=e.target,fd=new FormData(f),val=n=>String(fd.get(n)||'').trim();
+ if(val('website'))return;
+ let bad=null;['company','contact_name','email'].forEach(n=>{const el=f.elements[n],ok=!!el.value.trim()&&el.checkValidity();el.setAttribute('aria-invalid',String(!ok));if(!ok&&!bad)bad=el});
+ if(bad){fErr('Vul bedrijf, naam en een geldig e-mailadres in.');bad.focus();return}
+ fErr('');const btn=$('fSend');btn.disabled=true;
+ const id=crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+ const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
+ try{
+  const paths=[];
+  for(const file of fFiles){
+   const p=`${id}/${paths.length+1}-${file.name.replace(/[^\w.\-]+/g,'_').slice(-120)}`;
+   const r=await fetch(`${SB_URL}/storage/v1/object/fleet-uploads/${p}`,{method:'POST',headers:{...H,'Content-Type':file.type||'application/octet-stream','x-upsert':'false'},body:file});
+   if(!r.ok)throw new Error('upload');paths.push(p);
+  }
+  const row={id,company:val('company'),contact_name:val('contact_name'),email:val('email'),phone:val('phone')||null,fleet_size:val('fleet_size')||null,vehicle_types:fd.getAll('vehicle_types'),message:val('message')||null,file_paths:paths,calc_link:fCalc||null};
+  const r=await fetch(SB_URL+'/rest/v1/fleet_requests',{method:'POST',headers:{...H,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(row)});
+  if(!r.ok)throw new Error('insert');
+  track('fleet_request_sent',{fleet_size:row.fleet_size,files:paths.length});
+  f.hidden=true;$('fOk').hidden=false;$('fOk').focus();
+ }catch(x){fErr(CONTACT_MAIL?`Versturen lukte niet. Mail je aanvraag naar <a href="mailto:${CONTACT_MAIL}">${CONTACT_MAIL}</a>.`:'Versturen lukte niet. Probeer het later opnieuw.')}
+ finally{btn.disabled=false}
+});
 
 async function syncSupabase() {
  let catsLoaded = false;
