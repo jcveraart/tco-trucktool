@@ -879,6 +879,18 @@ a.cta.big,a.fcta{text-decoration:none}
 .cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{animation:pulse2 2.2s ease-in-out infinite}
 @keyframes pulse2{0%,100%{opacity:.15}50%{opacity:.65}}
 @media (prefers-reduced-motion:reduce){.cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{animation:none;opacity:.4}}
+/* Veelgestelde vragen: per categorie alleen de kop; de vragen klappen open als je erop staat met de muis (of tikt) */
+.faq section{border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line);padding:0 20px;transition:box-shadow .15s}
+.faq section+section{margin-top:12px}
+.faq section>h2{position:relative;display:flex;align-items:baseline;gap:12px;margin:0;padding:18px 32px 18px 0;cursor:pointer;outline-offset:4px}
+.faq section>h2 small{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.faq section>h2::after{content:"";position:absolute;right:4px;top:50%;width:8px;height:8px;margin-top:-6px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg);transition:transform .2s}
+.faq section>details{display:none}
+.faq section:is(:hover,:focus-within,.open,:has(details[open]))>details{display:block}
+.faq section:is(:hover,:focus-within,.open,:has(details[open])){box-shadow:0 0 0 1px var(--ink)}
+.faq section:is(:hover,:focus-within,.open,:has(details[open]))>h2::after{transform:rotate(225deg);margin-top:-2px}
+.faq section>details:first-of-type{border-top:1px solid var(--line)}
+.faq section>details:last-of-type{border-bottom:0}
 </style>
 </head>
 <body>
@@ -1738,7 +1750,8 @@ document.addEventListener('click',e=>{
  const ad=e.target.closest('[data-add]');if(ad){const k=ad.dataset.add;if(OPTSW[k]&&!ck(OPTSW[k]))$(OPTSW[k]).checked=true;touched=true;render();openWz(k);return}
  const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();history.pushState(null,'','#uitgebreid');route(false);if(!touched)openWz('use');return}
  if(e.target.closest('[data-reset]')){reset();return}
- const j=e.target.closest('[data-jump]');if(j){$(j.dataset.jump).scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
+ const j=e.target.closest('[data-jump]');if(j){const t=$(j.dataset.jump);if(t.closest('.faq'))t.classList.add('open');t.scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
+ const fh=e.target.closest('.faq section>h2');if(fh){fh.parentNode.classList.toggle('open');fh.setAttribute('aria-expanded',fh.parentNode.classList.contains('open'));return}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
 
@@ -2219,6 +2232,8 @@ async function syncSupabase() {
 }
 
 
+document.querySelectorAll('.faq section>h2').forEach(h=>{const n=h.parentNode.querySelectorAll('details').length;h.insertAdjacentHTML('beforeend',` <small>${n} ${n===1?'vraag':'vragen'}</small>`);h.tabIndex=0;h.setAttribute('role','button');h.setAttribute('aria-expanded','false')});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.faq section>h2')){e.preventDefault();e.target.click()}});
 build();applyType('trekker');
 if(!fromURL())load();route(true);
 syncSupabase();
