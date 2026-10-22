@@ -1590,6 +1590,7 @@ const SB_URL = 'https://zarvyblveyomngypwvhw.supabase.co';
 const SB_KEY = 'sb_publishable_srfj19l9xWDSkdirFz6RtQ_RperxnNH';
 
 async function syncSupabase() {
+ let catsLoaded = false;
  try {
   const [resModels, resCats] = await Promise.all([
    fetch(SB_URL + '/rest/v1/vehicle_models?select=*', {
@@ -1603,29 +1604,22 @@ async function syncSupabase() {
   if (resCats.ok) {
    const cats = await resCats.json();
    if (Array.isArray(cats)) {
+    /* Kolommen uit vehicle_categories naar de voorbeeldcijfers van het voertuig (VT[id].p) */
+    const COLS = {km:'default_annual_km', kmH:'default_toll_km', wd:'default_work_days', jr:'default_depreciation_years', rw:'default_residual_value_pct',
+     dp:'default_diesel_price_per_l', sp:'default_electricity_price_per_kwh', ere:'default_ere_yield_per_kwh',
+     ld:'default_diesel_consumption', le:'default_electric_consumption', acc:'default_battery_kwh',
+     vD:'default_insurance_diesel_annual', vE:'default_insurance_electric_annual', oD:'default_maintenance_diesel_per_km', oE:'default_maintenance_electric_per_km',
+     tD:'default_toll_diesel_per_km', tE:'default_toll_electric_per_km'};
     cats.forEach(c => {
-     if (VT[c.id]) {
-      const v = VT[c.id];
-      if (c.default_annual_km != null) v.km = c.default_annual_km;
-      if (c.default_toll_km != null) v.kmH = c.default_toll_km;
-      if (c.default_work_days != null) v.d = c.default_work_days;
-      if (c.default_depreciation_years != null) v.L = c.default_depreciation_years;
-      if (c.default_residual_value_pct != null) v.rw = parseFloat(c.default_residual_value_pct);
-      if (c.default_diesel_price_per_l != null) v.dp = parseFloat(c.default_diesel_price_per_l);
-      if (c.default_electricity_price_per_kwh != null) v.sp = parseFloat(c.default_electricity_price_per_kwh);
-      if (c.default_ere_yield_per_kwh != null) v.ere = parseFloat(c.default_ere_yield_per_kwh);
-      if (c.default_diesel_consumption != null) v.ld = parseFloat(c.default_diesel_consumption);
-      if (c.default_electric_consumption != null) v.le = parseFloat(c.default_electric_consumption);
-      if (c.default_battery_kwh != null) v.acc = parseFloat(c.default_battery_kwh);
-      if (c.default_insurance_diesel_annual != null) v.vD = parseFloat(c.default_insurance_diesel_annual);
-      if (c.default_insurance_electric_annual != null) v.vE = parseFloat(c.default_insurance_electric_annual);
-      if (c.default_maintenance_diesel_per_km != null) v.oD = parseFloat(c.default_maintenance_diesel_per_km);
-      if (c.default_maintenance_electric_per_km != null) v.oE = parseFloat(c.default_maintenance_electric_per_km);
-      if (c.default_toll_diesel_per_km != null) v.tD = parseFloat(c.default_toll_diesel_per_km);
-      if (c.default_toll_electric_per_km != null) v.tE = parseFloat(c.default_toll_electric_per_km);
-      if (Array.isArray(c.quick_select_km)) v.q = c.quick_select_km;
-     }
+     const v = VT[c.id]; if (!v) return;
+     Object.entries(COLS).forEach(([k, col]) => { if (c[col] != null && isFinite(parseFloat(c[col]))) v.p[k] = parseFloat(c[col]); });
+     if (Array.isArray(c.quick_select_km) && c.quick_select_km.length) v.q = c.quick_select_km.map(Number);
+     if (c.name) v.n = c.name;
+     if (c.sub_title) v.sub = c.sub_title;
+     if (c.is_truck != null) v.truck = c.is_truck ? 1 : 0;
+     if (c.regulatory_scheme) v.reg = c.regulatory_scheme;
     });
+    catsLoaded = true;
    }
   }
 
@@ -1679,8 +1673,14 @@ async function syncSupabase() {
     if (typeof render === 'function') render();
    }
   }
+  if (catsLoaded) {
+   document.querySelectorAll('[data-vts]').forEach(e => e.innerHTML = vcards());
+   if (!touched && !modelActive()) applyType(vtype);
+   else Object.entries(VT[vtype].p).forEach(([id, val]) => { const e = $(id); if (e) e.defaultValue = val });
+   mpList(); render();
+  }
  } catch (err) {
-  /* Offline / fallback */
+  /* Offline: de ingebouwde cijfers blijven staan */
  }
 }
 
