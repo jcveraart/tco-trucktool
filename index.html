@@ -1591,15 +1591,12 @@ function render(){
 function payHTML(x){
  const L=x.L,{upD,upE,opD,opE,sv,gap,be}=payback(x),PB=BX&&BX.map(q=>payback(q.r,q.o));
  const T2=Math.max(L,be!==null?Math.min(Math.ceil(be)+1,15):L),W=Math.round(Math.max(480,Math.min(900,$('xAn').clientWidth||640))),H=280,mL=58,mR=8,mT=14,mB=26,cD=t=>upD+opD*t,cE=t=>upE+opE*t;
- const ends=PB?PB.flatMap(p=>[p.upD,p.upE,p.upD+p.opD*T2,p.upE+p.opE*T2]):[];
- const hi0=Math.max(cD(T2),cE(T2),cD(0),cE(0),...ends),lo0=Math.min(cD(0),cE(0),cD(T2),cE(T2),...ends),raw=(hi0-lo0)/4||1,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mg).find(m=>m>=raw),lo=Math.max(0,Math.floor(lo0/stp)*stp),hi=Math.ceil(hi0/stp)*stp,nT=Math.round((hi-lo)/stp);
+ const hi0=Math.max(cD(T2),cE(T2),cD(0),cE(0)),lo0=Math.min(cD(0),cE(0),cD(T2),cE(T2)),raw=(hi0-lo0)/4||1,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mg).find(m=>m>=raw),lo=Math.max(0,Math.floor(lo0/stp)*stp),hi=Math.ceil(hi0/stp)*stp,nT=Math.round((hi-lo)/stp);
  const X=t=>mL+t/T2*(W-mL-mR),Y=c=>mT+(1-(c-lo)/((hi-lo)||1))*(H-mT-mB);
  const ln=f=>`M${X(0).toFixed(1)},${Y(f(0)).toFixed(1)}L${X(T2).toFixed(1)},${Y(f(T2)).toFixed(1)}`;
  let area='',mk='',env='';
- if(PB){const ts=Array.from({length:41},(_,i)=>i/40*T2),poly=(u,op,col)=>{const hi=ts.map(t=>Math.max(...PB.map(p=>p[u]+p[op]*t))),lo=ts.map(t=>Math.min(...PB.map(p=>p[u]+p[op]*t)));
-   return`<path d="M${ts.map((t,i)=>X(t).toFixed(1)+','+Y(hi[i]).toFixed(1)).join('L')}L${ts.map((t,i)=>X(t).toFixed(1)+','+Y(lo[i]).toFixed(1)).reverse().join('L')}Z" fill="${col}" opacity=".16"/>`};
-  env=poly('upD','opD','#B8700E')+poly('upE','opE','#0A8F5B');
-  const bes=PB.map(p=>p.be).filter(z=>z!==null&&z<T2);if(bes.length){const a=Math.min(...bes),b2=PB.some(p=>p.be===null||p.be>=T2)?T2:Math.max(...bes);if(X(b2)-X(a)>1)env+=`<rect x="${X(a)}" y="${H-mB-5}" width="${X(b2)-X(a)}" height="5" rx="2" fill="#0A8F5B" opacity=".55"/>`}}
+ /* Bandbreedte: alleen het moment van terugverdienen als rustige zone achter het snijpunt */
+ if(PB){const bes=PB.map(p=>p.be).filter(z=>z!==null&&z<T2);if(bes.length){const a=Math.min(...bes),b2=PB.some(p=>p.be===null||p.be>=T2)?T2:Math.max(...bes);if(X(b2)-X(a)>1)env=`<rect x="${X(a).toFixed(1)}" y="${mT}" width="${(X(b2)-X(a)).toFixed(1)}" height="${H-mT-mB}" fill="#15171A" opacity=".05"/>`}}
  if(be!==null&&be<T2){const bx=X(be),by=Y(cD(be));area=`<path d="M${bx},${by}L${X(T2)},${Y(cD(T2))}L${X(T2)},${Y(cE(T2))}Z" fill="#0A8F5B" opacity=".14"/>`;
   mk=`<line x1="${bx}" x2="${bx}" y1="${mT}" y2="${H-mB}" stroke="#15171A" stroke-opacity=".3" stroke-dasharray="3 4"/><circle cx="${bx}" cy="${by}" r="7" fill="#fff" stroke="#0A8F5B" stroke-width="3.5"/>`;}
  const ticks=[];for(let t=0;t<=T2;t++)ticks.push(`<text x="${X(t)}" y="${H-6}" text-anchor="${t===0?'start':t===T2?'end':'middle'}">${t===0?'Start':t}</text>`);
