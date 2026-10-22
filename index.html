@@ -873,6 +873,12 @@ a.cta.big,a.fcta{text-decoration:none}
 #ins .in{padding:10px 14px 11px}
 #ins .in b{font-size:20px}
 #ins .in b small{font:500 13px var(--text);color:var(--ink-3)}
+/* Laadeffect op Reken uitgebreid: een zachte lichtrand die rustig pulseert bij hover, subtieler dan eerst */
+.cta.big::before,.fcta::before{display:block!important;inset:-3px;border-width:1.5px;box-shadow:0 0 8px 0 rgba(180,247,212,.5);border-radius:7px}
+.fcta::before{box-shadow:0 0 8px 0 rgba(63,168,119,.4)}
+.cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{animation:pulse2 2.2s ease-in-out infinite}
+@keyframes pulse2{0%,100%{opacity:.15}50%{opacity:.65}}
+@media (prefers-reduced-motion:reduce){.cta.big:is(:hover,:focus-visible)::before,.fcta:is(:hover,:focus-visible)::before{animation:none;opacity:.4}}
 </style>
 </head>
 <body>
