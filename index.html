@@ -1538,7 +1538,7 @@ function render(){
   ['Totaal over '+L+' jaar',`diesel ${eur(x.td*L)} · elektrisch ${eur(x.te*L)}`]]));
  // Invulvenster
  const d=r.td-r.te;
- setH($('wzL'),`Diesel <b>${eur(r.td/r.km,2)}</b> · elektrisch <b>${eur(r.te/r.km,2)}</b> per km · <b class="${d>=0?'good':'bad'}">${eur(Math.abs(d))}</b> ${d>=0?'besparing':'meerkosten'} per jaar${(bd=>bd?` · <b>${bandTxt(bd)}</b>`:'')(band())}`);
+ setH($('wzL'),`Diesel <b>${eur(r.td/r.km,2)}</b> · elektrisch <b>${eur(r.te/r.km,2)}</b> per km · <b class="${d>=0?'good':'bad'}">${eur(Math.abs(d))}</b> ${d>=0?'besparing':'meerkosten'} per jaar`);
  if($('wz').open)wzNav();
  syncSl();fillRanges();srPaint();mini();save();
 }
