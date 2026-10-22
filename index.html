@@ -852,6 +852,13 @@ body{font-size:16px}
 .st span i{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:2px;vertical-align:1px}
 .st span i.d{background:var(--amber)}.st span i.e{background:var(--volt)}
 @media(max-width:900px){.sum{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-flow:row}}
+/* Simpel en Uitgebreid */
+.intro .mode{margin-left:auto}
+.xgo{margin-top:28px;color:var(--ink);text-decoration:none}
+.xgo:hover{color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.xgo .cta{flex:none}
+#xMore{scroll-margin-top:84px}
+#xMore>.vs{margin-top:48px}
 </style>
 </head>
 <body>
@@ -876,6 +883,7 @@ body{font-size:16px}
  <div class="wrap">
   <div class="intro">
    <h1 tabindex="-1">Diesel of elektrisch?</h1>
+   <nav class="mode" id="modes" aria-label="Rekenwijze"><a href="#calculator" data-mode="b">Simpel</a><a href="#uitgebreid" data-mode="x">Uitgebreid</a></nav>
   </div>
   <div class="pick" aria-label="Voertuig" data-vts></div>
  </div>
@@ -890,6 +898,9 @@ body{font-size:16px}
 
    <div class="ins" id="ins"></div>
 
+   <a class="add xgo" id="xGo" href="#uitgebreid"><div class="addt"><h2>Uitgebreide berekening</h2><p>Kosten per onderdeel, terugverdientijd, financiering, laadpaal, tol en energieprijzen.</p></div><span class="cta">Bekijk uitgebreid <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a>
+
+   <div id="xMore" hidden>
    <section class="vs" aria-labelledby="hVs">
     <div class="vsh"><h2 id="hVs">Kosten per onderdeel</h2><div class="seg sm" id="unit" role="group" aria-label="Eenheid"></div></div>
     <div class="vsl">
@@ -916,6 +927,7 @@ body{font-size:16px}
     <details id="wfD" hidden><summary><b>Wat doen de extra kosten met de besparing?</b></summary><div id="wfX" style="padding-top:24px"></div></details>
     <details><summary><b>Goed om te weten</b></summary><dl class="facts" id="facts"></dl></details>
     <details><summary><b>Toelichting op de cijfers</b></summary><p>De voorbeeldcijfers per voertuig zijn indicatief: aanschaf, verbruik, accu, onderhoud, verzekering en restwaarde verschillen per merk, uitvoering en inzet. Vervang ze door je eigen offertes en cijfers.</p><p>Kilometerheffing geldt alleen voor vrachtwagens (N2 en N3) boven 3.500 kg, met tarieven vanaf 1 januari 2027 (voor een trekker € 0,201 diesel en € 0,038 elektrisch). AanZET is een percentage van de aanschafprijs met een maximum, afhankelijk van N2 of N3 en de bedrijfsgrootte. De MIA is indicatief berekend als netto belastingvoordeel: 36% extra aftrek over 90% van de aanschafprijs, bij 19% of 25,8% vennootschapsbelasting. AanZET en MIA kunnen niet samen.</p><p>De actieradius is de bruikbare accucapaciteit gedeeld door het verbruik. In de winter en met zware lading ligt hij lager. De dagrit is het aantal kilometers per jaar gedeeld door het aantal rijdagen.</p><p>CO₂-factoren: 3,2 kg per liter diesel en 0,45 kg per kWh grijze stroom. Exclusief chauffeur, overhead en btw.</p><p>Bij Extra kosten zijn alle voorbeeldbedragen aannames en aan te passen: rente, rendementseis, netaansluiting, onderhoud en netkosten van de laadpaal, tolbedragen per kilometer en prijs en tijdverlies bij laden onderweg. Controleer tarieven per land bij de tolbeheerder.</p></details>
+   </div>
    </div>
   </div>
  </div>
@@ -1726,7 +1738,12 @@ addEventListener('scroll',mini,{passive:true});
 
 
 /* ===== Pagina's ===== */
-function setView(){render()}
+function setView(w){
+ const prev=view;view=w;
+ $('xMore').hidden=w!=='x';$('xGo').hidden=w==='x';
+ document.querySelectorAll('#modes [data-mode]').forEach(a=>a.dataset.mode===w?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ render();return prev!==w;
+}
 const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'calc',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',privacy:'privacy',modellen:'modellen',vlootanalyse:'vloot',vloot:'vloot'};
 const TITLES={calc:BRAND+' · Diesel of elektrisch vergelijken',faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,privacy:'Privacybeleid · '+BRAND,modellen:'Elektrische modellen · '+BRAND,vloot:'Vlootanalyse · '+BRAND};
 function route(first){
@@ -1737,11 +1754,11 @@ function route(first){
  if(p!=='modellen'&&$('mDlg').open)$('mDlg').close();
  document.querySelectorAll('.page').forEach(s=>s.hidden=s.dataset.page!==p);
  document.querySelectorAll('[data-nav]').forEach(a=>a.dataset.nav===p?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
- if(p==='calc')setView();
- document.title=TITLES[p];
- if(h==='uitgebreid')history.replaceState(null,'',location.pathname+location.search);
+ let vchg=false;if(p==='calc')vchg=setView(h==='uitgebreid'?'x':'b');
+ document.title=p==='calc'&&view==='x'?'Uitgebreide berekening · '+BRAND:TITLES[p];
  menu(false);
  if(p==='modellen')mPaint();else $('mBar').hidden=true;
+ if(!first&&p===prevP&&vchg){if(view==='x')$('xMore').scrollIntoView({behavior:reduced()?'auto':'smooth'});else scrollTo(0,0)}
  if(!first&&p!==prevP){scrollTo(0,0);const h1=document.querySelector(`.page[data-page="${p}"] h1`);if(h1)h1.focus({preventScroll:true})}
  mini();ads();
 }
