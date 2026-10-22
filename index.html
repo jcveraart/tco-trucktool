@@ -11,6 +11,16 @@
 <meta name="description" content="Stekker of diesel? Vergelijk een nieuwe diesel- en elektrische trekker, bakwagen, bestelbus of bus op kosten per kilometer, per jaar en over de afschrijftermijn. Met AanZET, MIA, kilometerheffing, laadpaal, financiering en buitenlandse tol.">
 <meta name="theme-color" content="#191B1E">
 <meta name="google-adsense-account" content="ca-pub-5802360734201634">
+<script id="consent-default">
+/* Toestemming (Google Consent Mode v2): alles staat uit tot de bezoeker kiest. Een eerdere keuze geldt 12 maanden. */
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+(function(){var c=null,g=function(b){return b?'granted':'denied'};try{c=JSON.parse(localStorage.getItem('sod-consent')||'null')}catch(e){}
+ if(c&&(c.v!==1||!(Date.now()-c.t<3.15e10)))c=null;window.SOD_CONSENT=c;
+ gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});
+ gtag('set','ads_data_redaction',true);
+ if(c)gtag('consent','update',{ad_storage:g(c.ads),ad_user_data:g(c.ads),ad_personalization:g(c.ads),analytics_storage:g(c.stat)});
+ var a=window.adsbygoogle=window.adsbygoogle||[];a.pauseAdRequests=c?0:1;a.requestNonPersonalizedAds=c&&c.ads?0:1})();
+</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5802360734201634" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -816,6 +826,21 @@ body{font-size:16px}
 @media(max-width:900px){.fa{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:560px){.fio{grid-template-columns:minmax(0,1fr);gap:28px}.fst{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}.ffr.two{grid-template-columns:minmax(0,1fr)}.ffm{padding:22px 18px}.fphr>div{gap:2px}.fphr i{height:14px}.fln{padding:18px}}
 @media print{.fln{display:none!important}}
+/* Cookiemelding */
+.ck{position:fixed;z-index:40;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(420px,calc(100vw - 32px));padding:18px 20px 20px;border-radius:6px;background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 24px 48px -20px rgba(0,0,0,.45);font-size:15px;line-height:1.5}
+.ck p{margin:0}
+.ck a{color:inherit}
+.ckk{margin:0 0 6px!important;color:var(--ink-3);font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.cko{display:grid;gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.cko .sw2 input:disabled{opacity:.45;cursor:default}
+.ckb{display:flex;gap:8px;margin-top:16px}
+.ckb button{flex:1;border:0;border-radius:4px;padding:10px 8px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink);font:600 15px var(--text);cursor:pointer;white-space:nowrap}
+.ckb button:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.ckb .ok{background:var(--ink);box-shadow:none;color:#fff}
+.ckb .ok:hover{background:#000;box-shadow:none}
+.fck{border:0;background:none;padding:0;color:inherit;font:inherit;cursor:pointer}.fck:hover{text-decoration:underline}
+@media(max-width:640px){.ck{left:0;bottom:0;width:100%;border-radius:12px 12px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}}
+@media print{.ck{display:none!important}}
 </style>
 </head>
 <body>
@@ -962,7 +987,7 @@ body{font-size:16px}
      <details><summary>Hoe zit het met de laadpaal?</summary><p>De laadpaal zet je aan onder Ook meenemen. Er is gerekend met één laadpaal van 50 kW inclusief installatie. De investering na SPRILA-subsidie (mkb 40% met een maximum van € 88.000, grote ondernemingen 20% met een maximum van € 44.000, minimaal € 2.500 subsidie) is verdeeld over de afschrijftermijn, plus kosten voor netaansluiting, onderhoud en vaste netkosten.</p></details>
     </section>
     <section id="fq4"><h2>Je gegevens</h2>
-     <details><summary>Worden mijn gegevens opgeslagen?</summary><p>Je invoer wordt alleen in je eigen browser bewaard, zodat je de volgende keer verder kunt waar je was. Er gaat niets naar een server. Met Herstel voorbeeldcijfers zet je alles terug.</p></details>
+     <details><summary>Worden mijn gegevens opgeslagen?</summary><p>Je invoer wordt in je eigen browser bewaard, zodat je de volgende keer verder kunt waar je was. Met Herstel voorbeeldcijfers zet je alles terug. Geef je toestemming voor statistieken, dan meten we hoe je de calculator gebruikt, zonder naam of contactgegevens. Je keuze pas je aan via Cookies onderaan de pagina. Meer in het <a href="#privacy">privacybeleid</a>.</p></details>
      <details><summary>Kan ik de uitkomst delen of bewaren?</summary><p>Ja. Met Deel kopieer je een korte samenvatting met een link naar precies deze berekening, bijvoorbeeld voor je boekhouder of een collega. Wie de link opent, ziet dezelfde cijfers. Met Print bewaar je de berekening als PDF.</p></details>
     </section>
    </div>
@@ -1041,17 +1066,24 @@ body{font-size:16px}
   <div class="prose">
    <p>Stekker of diesel (stekkerofdiesel.nl) is een gratis rekentool. Hieronder lees je welke gegevens daarbij worden verwerkt en waarom. Laatst bijgewerkt op 22 oktober 2026.</p>
    <h2>Wat we niet vragen</h2>
-   <p>Voor de calculator hoef je geen account aan te maken en vragen we geen naam, e-mailadres of andere persoonsgegevens. We gebruiken geen eigen analysetools.</p>
+   <p>Voor de calculator hoef je geen account aan te maken en vragen we geen naam, e-mailadres of andere persoonsgegevens.</p>
    <h2>Vlootanalyse aanvragen</h2>
    <p>Vraag je een vlootanalyse aan, dan bewaren we je bedrijfsnaam, naam, e-mailadres, telefoonnummer, je toelichting en de bestanden die je meestuurt, zoals een rittenregistratie. We gebruiken die alleen om je aanvraag te behandelen en de analyse te maken, en delen ze niet met anderen. De gegevens staan in een afgeschermde omgeving bij onze databaseleverancier Supabase. Bestanden verwijderen we uiterlijk twaalf maanden na afronding; wil je dat eerder, laat het ons weten.</p>
+   <h2>Je keuze over cookies</h2>
+   <p>Bij je eerste bezoek vragen we of we cookies en vergelijkbare technieken mogen gebruiken voor statistieken en voor advertenties op maat. Je kunt beide los aan- of uitzetten. Je keuze bewaren we twaalf maanden in je browser. Via Cookies onderaan elke pagina pas je hem aan of trek je hem in.</p>
+   <h2>Statistieken, alleen met je toestemming</h2>
+   <p>Om de calculator te verbeteren meten we hoe de site wordt gebruikt: welke pagina's je bekijkt, op welke knoppen je klikt, welke stappen je invult, welke modellen je bekijkt en welke uitkomst de berekening geeft, inclusief de rekeninstellingen. Daarnaast het soort apparaat, de schermbreedte, de taal van je browser, de site waar je vandaan kwam en eventuele campagnecodes in de link.</p>
+   <p>Om bezoeken van elkaar te onderscheiden plaatsen we een willekeurig bezoekersnummer in de lokale opslag van je browser. Dat nummer zegt niets over wie je bent en we koppelen het niet aan andere gegevens. We slaan geen IP-adres op. De gegevens staan in onze eigen database bij Supabase en worden na 25 maanden verwijderd. We gebruiken ze ook om varianten van de site met elkaar te vergelijken (A/B-tests): dan zie je bijvoorbeeld een andere tekst op een knop dan een andere bezoeker.</p>
+   <p>Mogelijk gebruiken we daarnaast Google Analytics, eveneens alleen met je toestemming voor statistieken. Google plaatst dan cookies die met _ga beginnen.</p>
+   <p>Geef je geen toestemming, dan tellen we alleen dat een pagina is bekeken, met de site waar je vandaan kwam en of het een mobiel apparaat is. Zonder bezoekersnummer en zonder iets op je apparaat op te slaan. Trek je je toestemming in, dan verwijderen we het bezoekersnummer uit je browser.</p>
+   <h2>Advertenties</h2>
+   <p>Om de site gratis te houden tonen we advertenties via Google AdSense. Met je toestemming voor advertenties op maat mogen Google en zijn partners cookies gebruiken om advertenties af te stemmen op eerdere bezoeken aan deze en andere sites. Zonder die toestemming toont Google alleen advertenties die niet op jou zijn afgestemd. We geven je keuze door via Google Consent Mode. Meer over hoe Google gegevens gebruikt lees je op <a href="https://policies.google.com/technologies/partner-sites?hl=nl" target="_blank" rel="noopener">policies.google.com</a>.</p>
    <h2>Wat in je eigen browser blijft</h2>
-   <p>Je laatste instellingen in de calculator bewaren we in de lokale opslag van je browser, zodat je verder kunt waar je was. Die gegevens verlaten je apparaat niet. Een deellink bevat alleen je rekeninstellingen, geen persoonsgegevens. Je wist de opslag via de instellingen van je browser.</p>
-   <h2>Advertenties en cookies</h2>
-   <p>Om de site gratis te houden tonen we advertenties via Google AdSense. Google en zijn partners kunnen cookies of vergelijkbare technieken gebruiken om advertenties te tonen en te meten, en met jouw toestemming ook om advertenties af te stemmen op eerdere bezoeken aan deze en andere sites. Bij je eerste bezoek vragen we via een melding van Google om die toestemming. Je kunt je keuze later aanpassen via de link in die melding of via <a href="https://adssettings.google.com" rel="noopener" target="_blank">Advertentie-instellingen van Google</a>. Meer over hoe Google gegevens gebruikt lees je op <a href="https://policies.google.com/technologies/partner-sites?hl=nl" rel="noopener" target="_blank">policies.google.com</a>.</p>
+   <p>Je laatste instellingen in de calculator bewaren we in de lokale opslag van je browser, zodat je verder kunt waar je was. Dat is nodig voor de werking van de calculator. Een deellink bevat alleen je rekeninstellingen, geen persoonsgegevens.</p>
    <h2>Diensten van derden</h2>
    <p>Bij het laden van de site haalt je browser lettertypen op bij Google Fonts en actuele voertuiggegevens bij onze databaseleverancier Supabase. Daarbij ontvangen die partijen technische gegevens zoals je IP-adres, zoals bij elk bezoek aan een website. De site zelf wordt gehost via GitHub Pages, dat voor beveiliging en beheer serverlogs bijhoudt.</p>
    <h2>Je rechten</h2>
-   <p>Op grond van de AVG heb je het recht om gegevens in te zien, te laten corrigeren of verwijderen en bezwaar te maken. Omdat wij zelf geen persoonsgegevens opslaan, loopt dat voor advertenties via Google. Een klacht kun je indienen bij de Autoriteit Persoonsgegevens.</p>
+   <p>Op grond van de AVG heb je het recht om gegevens in te zien, te laten corrigeren of verwijderen en bezwaar te maken. Omdat de statistieken alleen aan een willekeurig nummer hangen, kunnen we ze niet aan jou als persoon koppelen; met het intrekken van je toestemming verdwijnt dat nummer. Voor advertenties loopt dit via Google. Een klacht kun je indienen bij de Autoriteit Persoonsgegevens.</p>
   </div>
  </div>
 </section>
@@ -1064,10 +1096,135 @@ body{font-size:16px}
    <div><a class="brand" href="#"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische bedrijfsvoertuigen.</p></div>
    <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#vlootanalyse" data-fleet="footer">Vlootanalyse</a><a href="#over-ons">Over ons</a></nav>
   </div>
-  <div class="fdis">© Stekker of diesel · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst. · <a href="#privacy">Privacy</a></div>
+  <div class="fdis">© Stekker of diesel · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst. · <a href="#privacy">Privacy</a> · <button class="fck" type="button" data-cookies>Cookies</button></div>
  </div>
 </footer>
+<div class="ck" id="ck" role="region" aria-labelledby="ckK" hidden>
+ <p class="ckk" id="ckK">Cookies</p>
+ <p>Mogen we cookies gebruiken om bezoek te meten en advertenties te tonen? <a href="#privacy">Privacy</a></p>
+ <div class="cko" id="ckO" hidden>
+  <label class="sw2"><input type="checkbox" checked disabled><span>Noodzakelijk</span></label>
+  <label class="sw2"><input id="ckS" type="checkbox"><span>Statistieken</span></label>
+  <label class="sw2"><input id="ckA" type="checkbox"><span>Advertenties op maat</span></label>
+ </div>
+ <div class="ckb"><button type="button" data-ck="no">Weigeren</button><button type="button" data-ck="set" id="ckSet">Instellen</button><button type="button" class="ok" data-ck="yes">Akkoord</button></div>
+</div>
 
+<script id="meten">
+/* ===== Toestemming, metingen en A/B-tests =====
+   Events gaan naar de eigen tabel web_events in Supabase (zie docs/analytics.md).
+   Zonder toestemming: geen ID's en geen opslag, alleen een anonieme paginaweergave en de gemaakte keuze. */
+const GA_ID='';/* GA4-meet-ID (G-...). Leeg = geen Google Analytics */
+/* A/B-tests: id: {v: varianten, on: actief}. Variant 'a' is het origineel; zonder toestemming zie je altijd 'a'.
+   Gebruik ab('id') in de code of [data-ab-id="b"] in CSS. Resultaten: view analytics.ab_resultaten. */
+const EXPERIMENTS={
+ /* 'cta-tekst':{v:['a','b'],on:false}, */
+};
+const CK_VER=1,CK_KEY='sod-consent';
+let consent=window.SOD_CONSENT||null,vid=null,sid=null,pend=[],evq=[],evT=0,expo=new Set(),gaOn=false;
+const store=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}return null};
+const uuid=()=>crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+const statOK=()=>!!(consent&&consent.stat);
+const LAND=(()=>{const q=new URLSearchParams(location.search),o={};['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{const x=q.get(k);if(x)o[k]=x.slice(0,80)});
+ let r='';try{const u=new URL(document.referrer);if(u.host!==location.host)r=u.host}catch(e){}o.ref=r;o.land=location.hash.slice(1,40)||'calc';
+ o.mobile=matchMedia('(pointer:coarse)').matches;o.vw=innerWidth;o.lang=(navigator.language||'').slice(0,10);return o})();
+const fnv=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
+function ab(id){
+ const x=EXPERIMENTS[id];if(!x||!x.on||!statOK()||!vid)return'a';
+ const v=x.v[fnv(vid+':'+id)%x.v.length];
+ if(!expo.has(id)){expo.add(id);track('ab_exposure',{exp:id,var:v})}
+ return v;
+}
+function abAll(){const o={};if(statOK()&&vid)Object.keys(EXPERIMENTS).forEach(id=>{const x=EXPERIMENTS[id];if(x.on)o[id]=x.v[fnv(vid+':'+id)%x.v.length]});return o}
+function abMark(){const o=abAll();Object.keys(EXPERIMENTS).forEach(id=>{if(o[id])document.documentElement.setAttribute('data-ab-'+id,o[id]);else document.documentElement.removeAttribute('data-ab-'+id)})}
+/* Een sessie loopt door zolang er binnen 30 minuten iets gebeurt, ook over tabbladen heen */
+function session(){
+ const now=Date.now();let s=null;try{s=JSON.parse(store('sod-sid')||'null')}catch(e){}
+ const fresh=!s||!(now-s.t<18e5);if(fresh)s={id:uuid(),n:0};s.t=now;if(fresh)s.n=(+store('sod-n')||0)+1;
+ store('sod-sid',JSON.stringify(s));if(fresh)store('sod-n',String(s.n));sid=s.id;return fresh?s.n:0;
+}
+function track(ev,props={},pg){
+ const e={client_ts:new Date().toISOString(),event:ev,page:pg||(typeof page==='string'?page:null),props};
+ if(!consent){pend.push(e);return}
+ send(e);
+}
+function send(e,anon){
+ if(!anon&&statOK()){
+  if(!vid)vid=store('sod-vid');if(!vid){vid=uuid();store('sod-vid',vid)}
+  const n=session();
+  if(n)evq.push({client_ts:e.client_ts,event:'session_start',page:e.page,consent:'stat',visitor_id:vid,session_id:sid,props:Object.assign({n},LAND),experiments:abAll()});
+  evq.push(Object.assign(e,{consent:'stat',visitor_id:vid,session_id:sid,experiments:abAll()}));
+  if(gaOn){const g={};Object.entries(e.props).forEach(([k,x])=>{if(x!=null&&typeof x!=='object')g[k]=x});if(e.event==='page_view'){g.page_title=document.title;g.page_location=location.href}gtag('event',e.event,g)}
+ }else{
+  if(e.event!=='page_view'&&e.event!=='consent')return;
+  const p=e.event==='page_view'?{ref:LAND.ref,mobile:LAND.mobile,utm_source:LAND.utm_source}:e.props;
+  evq.push(Object.assign(e,{props:p,consent:'anon',visitor_id:null,session_id:null,experiments:{}}));
+ }
+ clearTimeout(evT);if(evq.length>=20)flush();else evT=setTimeout(flush,3000);
+}
+function flush(){
+ clearTimeout(evT);if(!evq.length||typeof SB_URL==='undefined')return;
+ const rows=evq.splice(0,40);
+ try{fetch(SB_URL+'/rest/v1/web_events?columns=client_ts,event,page,consent,visitor_id,session_id,props,experiments',{method:'POST',keepalive:true,
+  headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(rows)}).catch(()=>{})}catch(e){}
+ if(evq.length)flush();
+}
+function loadGA(){
+ if(!GA_ID||gaOn)return;gaOn=true;
+ const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(s);
+ gtag('js',new Date());gtag('config',GA_ID,{send_page_view:false});
+}
+function dropIds(){
+ ['sod-vid','sod-sid','sod-n'].forEach(k=>store(k,null));vid=sid=null;
+ document.cookie.split(';').map(c=>c.split('=')[0].trim()).filter(n=>/^_ga/.test(n)).forEach(n=>{[location.hostname,'.'+location.hostname.replace(/^www\./,'')].forEach(d=>{document.cookie=`${n}=; Max-Age=0; path=/; domain=${d}`})});
+}
+/* via: 'banner', 'settings' of 'tcf' (de toestemmingsmelding van Google, als die in AdSense aan staat) */
+function setConsent(c,via){
+ const changed=!consent||consent.stat!==!!c.stat||consent.ads!==!!c.ads;
+ consent={v:CK_VER,stat:!!c.stat,ads:!!c.ads,t:Date.now()};
+ if(via!=='tcf'&&via!=='load'){
+  store(CK_KEY,JSON.stringify(consent));
+  const g=b=>b?'granted':'denied';
+  gtag('consent','update',{ad_storage:g(consent.ads),ad_user_data:g(consent.ads),ad_personalization:g(consent.ads),analytics_storage:g(consent.stat)});
+ }
+ const a=window.adsbygoogle=window.adsbygoogle||[];a.requestNonPersonalizedAds=consent.ads?0:1;a.pauseAdRequests=0;
+ if(consent.stat){vid=store('sod-vid')||vid;loadGA()}else dropIds();
+ abMark();
+ if(changed&&via!=='load')track('consent',{stat:consent.stat,ads:consent.ads,via});
+ pend.splice(0).forEach(send);
+ if(changed&&typeof render==='function'&&typeof page==='string')render();
+}
+/* Melding */
+const ckEl=document.getElementById('ck');
+function ckShow(settings){
+ if(window.__sodTcf&&window.googlefc&&googlefc.showRevocationMessage){googlefc.showRevocationMessage();return}
+ document.getElementById('ckS').checked=statOK();document.getElementById('ckA').checked=!!(consent&&consent.ads);
+ document.getElementById('ckO').hidden=!settings;document.getElementById('ckSet').textContent=settings?'Bewaar keuze':'Instellen';
+ ckEl.hidden=false;if(settings)document.getElementById('ckS').focus();
+}
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-cookies]')){ckShow(true);return}
+ const b=e.target.closest('[data-ck]');if(!b)return;const k=b.dataset.ck,o=document.getElementById('ckO');
+ if(k==='set'&&o.hidden){ckShow(true);return}
+ if(k==='set')setConsent({stat:document.getElementById('ckS').checked,ads:document.getElementById('ckA').checked},'settings');
+ else setConsent({stat:k==='yes',ads:k==='yes'},'banner');
+ ckEl.hidden=true;
+});
+/* Staat de melding van Google (TCF) aan, dan volgt de site die keuze en blijft de eigen melding weg */
+function tcfWatch(){
+ if(typeof window.__tcfapi!=='function')return false;window.__sodTcf=true;ckEl.hidden=true;
+ __tcfapi('addEventListener',2,(d,ok)=>{
+  if(!ok||!d||(d.eventStatus!=='tcloaded'&&d.eventStatus!=='useractioncomplete'))return;
+  if(d.gdprApplies===false){setConsent({stat:true,ads:true},'tcf');return}
+  const p=(d.purpose&&d.purpose.consents)||{};setConsent({stat:!!(p[1]&&p[8]),ads:!!(p[1]&&p[3]&&p[4])},'tcf');
+ });
+ return true;
+}
+if(consent)setConsent(consent,'load');
+addEventListener('load',()=>setTimeout(()=>{if(!tcfWatch()&&!consent)ckShow(false)},700));
+/* Wie de pagina verlaat zonder te kiezen, telt alleen mee als anonieme paginaweergave */
+function leaveFlush(){if(!consent)pend.splice(0).forEach(e=>send(e,true));flush()}
+</script>
 <script>
 const BRAND='Stekker of diesel';
 /* Alle invoer als schuif met typbare waarde: [id, label, min, max, stap, eenheid, standaard] */
@@ -1841,7 +1998,7 @@ const SB_KEY = 'sb_publishable_srfj19l9xWDSkdirFz6RtQ_RperxnNH';
 
 /* ===== Vlootanalyse: aanvraag met bestanden naar Supabase (tabel fleet_requests, bucket fleet-uploads) ===== */
 const CONTACT_MAIL='';
-function track(ev,p){p=p||{};try{document.dispatchEvent(new CustomEvent('sod:track',{detail:{event:ev,...p}}));if(typeof window.gtag==='function')window.gtag('event',ev,p)}catch(e){}}
+/* track() staat in <script id="meten"> en houdt rekening met de cookiekeuze */
 const fEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 $('fPh').innerHTML=[[2026,2],[2027,6],[2028,12],[2029,18],[2030,24]].map(([y,n])=>`<div class="fphr"><span>${y}</span><div>${Array.from({length:24},(_,i)=>`<i${i<n?' class="e"':''}></i>`).join('')}</div></div>`).join('');
 let fFiles=[],fCalc='';
@@ -1988,6 +2145,63 @@ async function syncSupabase() {
 build();applyType('trekker');
 if(!fromURL())load();route(true);
 syncSupabase();
+</script>
+<script id="meten-koppelen">
+/* ===== Metingen koppelen aan de calculator, modellen en pagina's ===== */
+(()=>{
+ const wrap=(name,before,after)=>{const o=window[name];if(typeof o!=='function')return;window[name]=function(...a){if(before)before(...a);const r=o.apply(this,a);if(after)after(...a);return r}};
+ /* Paginaweergaven, tijd op de pagina (zichtbaar) en hoe ver er is gescrold */
+ let cur=null,vis=0,since=performance.now(),depth=0;
+ const engaged=()=>Math.round((vis+(document.hidden?0:performance.now()-since))/1000);
+ const scrolled=()=>{const h=document.documentElement.scrollHeight-innerHeight;depth=Math.max(depth,h>0?Math.min(100,Math.round(scrollY/h*100)):100)};
+ function leave(){if(cur)track('page_leave',{p:cur,sec:engaged(),depth},cur)}
+ function view(){if(page===cur)return;leave();cur=page;vis=0;since=performance.now();depth=0;scrolled();track('page_view',{p:page,hash:location.hash.slice(1,40)})}
+ wrap('route',null,view);view();
+ addEventListener('scroll',()=>{if(!scrolled.t)scrolled.t=setTimeout(()=>{scrolled.t=0;scrolled()},400)},{passive:true});
+ document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){vis+=performance.now()-since;leave();vis=0;depth=0;leaveFlush()}else since=performance.now();
+ });
+ addEventListener('pagehide',leaveFlush);
+
+ /* Invulvenster: stappen, afronden en afhaken */
+ wrap('openWz',k=>track('wizard_open',{step:k||'use'}));
+ wrap('go',null,k=>track('wizard_step',{step:wzStep,n:steps().findIndex(s=>s[0]===wzStep)+1}));
+ wrap('closeWz',show=>{
+  if(!show){track('wizard_close',{step:wzStep,seen:seen.size});return}
+  const r=calcX(),d=r.td-r.te,m=modelActive();
+  track('wizard_complete',{vt:vtype,km:r.km,jr:r.L,diff_year:Math.round(d),pct:Math.round(d/r.td*1000)/10,cheaper:d>=0?'e':'d',
+   model:m?m.id:null,reg:reg(),opts:optSteps().filter(s=>optOn(s[0])).map(s=>s[0]).join(','),seen:seen.size,inputs:stateObj()});
+ });
+ wrap('modelApply',id=>track('model_apply',{id,from:page}));
+ wrap('reset',()=>track('reset',{vt:vtype}));
+
+ /* Kliks */
+ const ctaName=el=>el.closest('.bcta')?'board':el.id==='fcta'?'float':el.id==='wzOpen'?'sum_edit':el.closest('#sum')?'sum_row':el.closest('.rh')?'cost_row':el.closest('.toast')?'toast':el.closest('[data-add]')?'add':el.id||el.className.split(' ')[0]||'other';
+ document.addEventListener('click',e=>{
+  const t=e.target;if(!t.closest)return;let x;
+  if(x=t.closest('[data-step],[data-add]'))return track('cta_click',{cta:ctaName(x),step:x.dataset.step||x.dataset.add,text:(x.textContent||'').trim().slice(0,60)});
+  if(x=t.closest('[data-vt]')){if(x.dataset.vt!==vtype)track('vehicle_select',{vt:x.dataset.vt,from:vtype});return}
+  if(x=t.closest('[data-kmq]'))return track('km_quick',{km:+x.dataset.kmq});
+  if(x=t.closest('[data-u]'))return track('unit',{u:x.dataset.u});
+  if(t.closest('[data-share]'))return track('share',{vt:vtype});
+  if(t.closest('[data-print]'))return track('print',{vt:vtype});
+  if(x=t.closest('.qi'))return track('tip_open',{tip:x.dataset.tip});
+  if(x=t.closest('[data-mrow]')){if(!mOpen.has(x.dataset.mrow))track('model_open',{id:x.dataset.mrow});return}
+  if(x=t.closest('[data-mvar]'))return track('model_variant',{id:x.dataset.mvid});
+  if(x=t.closest('[data-mcat]'))return track('model_filter',{cat:x.dataset.mcat});
+  if(t.closest('#mpB'))return track('model_picker',{});
+  if(t.closest('#mGo')){track('model_compare',{ids:mSel.join(',')});mSel.forEach(id=>track('model_compare_item',{id}));return}
+  if(x=t.closest('[data-jump]'))return track('faq_jump',{to:x.dataset.jump});
+  if(x=t.closest('[data-nav],.foot nav a'))return track('nav',{to:x.getAttribute('href'),where:x.closest('.foot')?'foot':'top'});
+  if((x=t.closest('a[href^="http"]'))&&x.host!==location.host)return track('outbound',{host:x.host,url:x.href.slice(0,200),p:page});
+ },true);
+ document.addEventListener('toggle',e=>{const d=e.target;if(d.tagName==='DETAILS'&&d.open){const s=d.querySelector('summary');track('details_open',{q:(s?s.textContent:'').trim().slice(0,100),p:page})}},true);
+ document.addEventListener('change',e=>{const t=e.target;if(t.id==='mSort'||t.id==='mSoon')track('model_filter',{sort:$('mSort').value,soon:$('mSoon').checked})});
+ let qT=0;document.addEventListener('input',e=>{if(e.target.id!=='mSearch')return;clearTimeout(qT);qT=setTimeout(()=>{const q=e.target.value.trim();if(q.length>1)track('model_search',{q:q.slice(0,60),n:document.querySelectorAll('#mList .mr').length})},1200)});
+
+ /* Fouten in de pagina, maximaal vijf per bezoek */
+ let errs=0;addEventListener('error',e=>{if(errs++<5)track('js_error',{m:String(e.message).slice(0,200),src:String(e.filename||'').split('/').pop().slice(0,60),line:e.lineno})});
+})();
 </script>
 </body>
 </html>
