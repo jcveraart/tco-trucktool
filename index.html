@@ -846,6 +846,12 @@ body{font-size:16px}
 @media(max-width:640px){.ck{left:0;bottom:0;width:100%;border-radius:12px 12px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}}
 @media print{.ck{display:none!important}}
 @media(max-width:700px){.colh>span{white-space:nowrap;padding-left:10px;padding-right:10px}.rl i{display:none}}
+/* Uitgangspunten: acht blokjes, diesel boven elektrisch */
+.sum{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,auto);grid-auto-flow:column}
+.sum .st:last-child{grid-column:auto!important}
+.st span i{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:2px;vertical-align:1px}
+.st span i.d{background:var(--amber)}.st span i.e{background:var(--volt)}
+@media(max-width:900px){.sum{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-flow:row}}
 </style>
 </head>
 <body>
@@ -1553,7 +1559,10 @@ function render(){
  // Samenvatting van jouw cijfers
  
  const mActive=modelActive();
- setH($('sum'),[['buy','Model',mActive?mName(mActive):'Marktgemiddelde'],['use','Kilometers per jaar',`${nf(v('km'))} km`],['use','Afschrijving',`${L} jaar · ${v('rw')}%`],['buy','Aanschaf diesel · elektrisch',`${eur(v('pD'))} · ${eur(v('pE'))}`],['sub','Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],['en','Diesel · stroom',`${eur(v('dp'),2)} /L · ${eur(v('sp'),2)} /kWh`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
+ /* Acht blokjes. Op een breed scherm vullen ze per kolom, zodat diesel steeds boven elektrisch staat. */
+ const dm=c=>`<i class="${c}" aria-hidden="true"></i>`;
+ setH($('sum'),[['buy','Model',mActive?mName(mActive):'Marktgemiddelde'],['use','Kilometers per jaar',`${nf(v('km'))} km`],['use','Afschrijving',`${L} jaar · ${v('rw')}% restwaarde`],['sub','Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],
+  ['buy',dm('d')+'Aanschaf diesel',eur(v('pD'))],['buy',dm('e')+'Aanschaf elektrisch',eur(v('pE'))],['en',dm('d')+'Dieselprijs',`${eur(v('dp'),2)} per liter`],['en',dm('e')+'Stroomprijs',`${eur(v('sp'),2)} per kWh`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
  // Uitkomst
  board(r);insights(r);rowsPaint(r,x);
  {
