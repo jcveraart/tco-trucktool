@@ -751,7 +751,6 @@ body{font-size:16px}
  <div class="wrap">
   <div class="intro">
    <h1 tabindex="-1">Diesel of elektrisch?</h1>
-   <p>Duurder in aanschaf, goedkoper per kilometer. Wat levert het jou op?</p>
   </div>
   <div class="pick" aria-label="Voertuig" data-vts></div>
   <div class="kmq" id="kmq" role="group" aria-label="Kilometers per jaar"></div>
@@ -800,7 +799,7 @@ body{font-size:16px}
  <!-- Invulvenster: de vaste stappen, daarna de optionele kosten -->
  <dialog class="wz" id="wz" aria-labelledby="wzT">
   <div class="wzi">
-   <div class="wzh"><div><p class="wzk" id="wzK"></p><h2 id="wzT">Jouw cijfers</h2><p class="wzs">Weet je iets niet? Laat het voorbeeld staan.</p></div><button class="wzx" id="wzX" type="button" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+   <div class="wzh"><div><p class="wzk" id="wzK"></p><h2 id="wzT">Jouw cijfers</h2></div><button class="wzx" id="wzX" type="button" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
    <div class="wzpg" aria-hidden="true"><i id="wzPg"></i></div>
    <nav class="wzn" id="wzN" aria-label="Stappen"></nav>
    <div class="wzb" id="wzB"></div>
@@ -1034,15 +1033,15 @@ const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentCo
 const mpick=()=>`<div class="mpk" id="mpk"><input type="hidden" id="calcModel" value=""><button type="button" class="mpb" id="mpB" aria-haspopup="listbox" aria-expanded="false" aria-controls="mpP"><i aria-hidden="true"></i><span><small>Elektrisch model</small><b id="mpN">Geen specifiek model</b></span>${chev}</button><div class="mpp" id="mpP" hidden><input type="search" id="mpQ" placeholder="Zoek merk of model" aria-label="Zoek een model" autocomplete="off"><div class="mpl" id="mpL" role="listbox" aria-label="Elektrisch model"></div></div><p class="hint" id="mpH" hidden></p></div>`;
 const STEPBODY={
  use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div>`,
- buy:()=>`${mpick()}${dex(slider('pD'),slider('pE')+'<p class="hint" id="afsN"></p>')}<div class="wsec" style="margin-top:24px">${slider('jr')}</div><div class="wsec">${slider('rw')}<p class="hint" id="rwN"></p></div>`,
+ buy:()=>`${mpick()}${dex(slider('pD'),slider('pE'))}<div class="wsec" style="margin-top:24px">${slider('jr')}</div><div class="wsec">${slider('rw')}</div>`,
  sub:()=>`<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div><div class="wsec"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
- en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+'<p class="hint" id="accN"></p><p class="hint"><a href="#modellen">Accu en actieradius per model</a></p>'+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+'</div>'),
+ en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+'</div>'),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
- hef:()=>dex(slider('tD'),slider('tE'))+'<p class="hint">Tarieven vanaf 1 januari 2027.</p>',
- fin:()=>`<p class="wsti">Rente over het geleende deel en een rendementseis over je eigen geld.</p>`+sw('xFin','Meenemen in de berekening',0)+`<div class="xg">${slider('xfs')}${slider('xri')}${slider('xre')}</div>`,
- lad:()=>`<p class="wsti">Een eigen laadpaal op je terrein, met netaansluiting en vaste kosten per jaar.</p>`+sw('xLad','Meenemen in de berekening',0)+`<div class="xg"><div class="ws-row">${sw('xSp','SPRILA-subsidie meenemen',0)}${tipBtn('xSp')}</div>${slider('xl0')}${slider('xla')}${slider('xlo')}${slider('xln')}<p class="hint" id="xsh"></p></div>`,
- ow:()=>`<p class="wsti">Een deel van de stroom laad je onderweg: duurder per kWh en met wat tijdverlies.</p>`+sw('xOw','Meenemen in de berekening',0)+`<div class="xg">${slider('xos')}${slider('xop')}${slider('xot')}${slider('xoh')}</div>`,
- tol:()=>`<p class="wsti">Kies de landen waar je rijdt. Die kilometers gaan van je Nederlandse heffing af.</p><div class="chips">${TOL.map(c=>`<button type="button" class="chip" data-tol="${c[0]}" aria-pressed="false"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</button>`).join('')}</div><div id="tolBody" hidden><div class="tolcap"><span>Binnen je kilometers met heffing</span><b id="xth"></b></div><div class="capbar"><i id="xtb"></i></div><div class="tolg">${TOL.map(c=>`<div class="tc" id="tc_${c[0]}" hidden><div class="tch"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</div><p class="tcr">${tolTxt(c)}</p>${slider('k_'+c[0],`Kilometers per jaar<span class="sr"> in ${c[1]}</span>`)}</div>`).join('')}</div></div>`};
+ hef:()=>dex(slider('tD'),slider('tE'))+'',
+ fin:()=>``+sw('xFin','Meenemen in de berekening',0)+`<div class="xg">${slider('xfs')}${slider('xri')}${slider('xre')}</div>`,
+ lad:()=>``+sw('xLad','Meenemen in de berekening',0)+`<div class="xg"><div class="ws-row">${sw('xSp','SPRILA-subsidie meenemen',0)}${tipBtn('xSp')}</div>${slider('xl0')}${slider('xla')}${slider('xlo')}${slider('xln')}<p class="hint" id="xsh"></p></div>`,
+ ow:()=>``+sw('xOw','Meenemen in de berekening',0)+`<div class="xg">${slider('xos')}${slider('xop')}${slider('xot')}${slider('xoh')}</div>`,
+ tol:()=>`<div class="chips">${TOL.map(c=>`<button type="button" class="chip" data-tol="${c[0]}" aria-pressed="false"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</button>`).join('')}</div><div id="tolBody" hidden><div class="tolcap"><span>Binnen je kilometers met heffing</span><b id="xth"></b></div><div class="capbar"><i id="xtb"></i></div><div class="tolg">${TOL.map(c=>`<div class="tc" id="tc_${c[0]}" hidden><div class="tch"><span class="oval">${TOLC[c[0]]}</span>${c[1]}</div><p class="tcr">${tolTxt(c)}</p>${slider('k_'+c[0],`Kilometers per jaar<span class="sr"> in ${c[1]}</span>`)}</div>`).join('')}</div></div>`};
 
 /* ===== Kostenposten ===== */
 const ROWS=[['afs','Aanschaf','buy'],['en','Energie','en'],['ond','Onderhoud','up'],['ver','Verzekering','up'],['hef','Kilometerheffing','hef']];
@@ -1157,7 +1156,7 @@ function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km,m=modelActive();
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span></div>`;
  const n=coreSteps().length;
- const inv=`<div class="bcta"><div class="bct"><b>${touched?'Jouw berekening':`Voorbeeldcijfers voor een ${T().w}`}</b><span>${touched?'Pas kilometers, tarieven of subsidie aan':`${n} korte stappen · ± 2 minuten · geen account`}</span></div><button type="button" class="cta big" data-step="use">Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
+ const inv=`<div class="bcta"><div class="bct"><b>${touched?'Jouw berekening':`Voorbeeldcijfers voor een ${T().w}`}</b><span>${touched?'':'± 2 minuten · geen account'}</span></div><button type="button" class="cta big" data-step="use">Reken je eigen voordeel na <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>`;
  setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
   `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}</p><div class="acts"><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div></div>`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
@@ -1213,15 +1212,12 @@ function render(){
  setH($('qk-km'),q.q.map(n=>`<button type="button" data-km="${n}" aria-pressed="${n===v('km')}">${nf(n)}</button>`).join(''));
  $('kmHW').hidden=!truck;
  document.querySelectorAll('[data-kmh]').forEach(e=>e.setAttribute('aria-pressed',Math.abs(+e.dataset.kmh*v('km')-v('kmH'))<500));
- $('rwN').textContent=`Diesel ${eur(v('pD')*v('rw')/100)} · elektrisch ${eur(v('pE')*v('rw')/100)}`;
  // Aanschaf en subsidie
  const gi=Math.round(v('gr')),az=AZT[clsOf()][gi]||AZT.N3[1],zd=SZD[gi]||SZD[1],rg=reg();
  $('grW').hidden=!(truck&&rg==='az');$('subXW').hidden=rg!=='eigen';
  document.querySelectorAll('#grs [data-gr]').forEach(e=>e.setAttribute('aria-pressed',+e.dataset.gr===gi));
  setH($('azd'),`<div><small>Werknemers</small><b>${zd[1]}</b></div><i>${zd[3]}</i><div><small>Jaaromzet</small><b>${zd[2]}</b></div>${zd[0].startsWith('Klein')?'<p>Ook non-profitinstellingen vallen in deze categorie.</p>':''}`);
- setH($('subR'),rg==='az'?`${eur(b.sub)} AanZET-subsidie<span>${nf(az[1]*100,1)}% van de aanschafprijs, maximaal ${eur(az[2])} (${clsOf()}${clsOf()==='N2'?', vanaf 10.000 kg':''}), over de chassisprijs. Werkt met aanvraagrondes; controleer bij RVO of er budget is.</span>`:rg.startsWith('mia')?`${eur(b.sub)} netto belastingvoordeel<span>Indicatief bij een BV. Niet samen met AanZET.</span>`:rg==='eigen'?`${eur(b.sub)} subsidie`:`Geen subsidie${truck?'':'<span>AanZET geldt alleen voor vrachtwagens; de SEBA voor bestelauto\'s is gestopt.</span>'}`);
- $('afsN').textContent=b.sub>0?`Netto ${eur(b.netE)}`:'';
- {const range=v('acc')/(v('le')/100);$('accN').textContent=`Actieradius ± ${nf(Math.round(range/5)*5)} km, in de winter ± ${nf(Math.round(range*.8/5)*5)} km`}
+ setH($('subR'),rg==='az'?`${eur(b.sub)} AanZET-subsidie<span>${nf(az[1]*100,1)}%, maximaal ${eur(az[2])}</span>`:rg.startsWith('mia')?`${eur(b.sub)} netto belastingvoordeel`:rg==='eigen'?`${eur(b.sub)} subsidie`:'Geen subsidie');
  // Optionele kosten
  TOL.forEach(c=>{if(v('k_'+c[0])>0)tolSel.add(c[0]);const on=tolSel.has(c[0]);$('tc_'+c[0]).hidden=!on;document.querySelector(`[data-tol="${c[0]}"]`).setAttribute('aria-pressed',on)});
  $('tolBody').hidden=!tolSel.size;
@@ -1546,7 +1542,7 @@ const modelActive=()=>{const m=MI[$('calcModel').value];return m&&m.c===vtype?m:
 function mpList(){
  const cur=$('calcModel').value,q=mNorm($('mpQ').value).split(/\s+/).filter(Boolean);
  const list=MODELS.filter(m=>m.c===vtype&&q.every(w=>mNorm(mName(m)).includes(w))).sort((a,b)=>mName(a).localeCompare(mName(b),'nl'));
- setH($('mpL'),(q.length?'':`<button type="button" class="mpo" role="option" data-mp="" aria-selected="${!cur}"><span><b>Geen specifiek model</b><small>Eigen cijfers of voorbeeldcijfers</small></span></button>`)+list.map(m=>`<button type="button" class="mpo" role="option" data-mp="${m.id}" aria-selected="${m.id===cur}"><span><small>${m.b}</small><b>${m.m}</b></span><em>${m.st==='komt'?'verwacht '+m.y:`${mFmt(mAcc(m))} kWh · ${nf(m.r)} km`}</em></button>`).join('')+(list.length?'':'<p class="mpnone">Geen model gevonden.</p>'));
+ setH($('mpL'),(q.length?'':`<button type="button" class="mpo" role="option" data-mp="" aria-selected="${!cur}"><span><b>Geen specifiek model</b></span></button>`)+list.map(m=>`<button type="button" class="mpo" role="option" data-mp="${m.id}" aria-selected="${m.id===cur}"><span><small>${m.b}</small><b>${m.m}</b></span><em>${m.st==='komt'?'verwacht '+m.y:`${mFmt(mAcc(m))} kWh · ${nf(m.r)} km`}</em></button>`).join('')+(list.length?'':'<p class="mpnone">Geen model gevonden.</p>'));
 }
 function modelPaint(){
  const m=modelActive();
