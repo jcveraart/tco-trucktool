@@ -928,6 +928,19 @@ a.cta.big,a.fcta{text-decoration:none}
 [data-page=uitgebreid] .hm td{border-radius:2px;padding:8px 4px}
 [data-page=uitgebreid] .hm td.cur{outline-width:2px;outline-offset:-2px;font-weight:600}
 @media(max-width:700px){[data-page=uitgebreid] .pbt{grid-template-columns:minmax(0,1fr)}}
+/* Break-even dieselprijs in de dieselstijl van het scorebord: asfalt met oranje */
+[data-page=uitgebreid] .bc2.dz{background:var(--asph);color:var(--on-asph)}
+[data-page=uitgebreid] .bc2.dz>small{color:var(--on-asph-2)}
+[data-page=uitgebreid] .bc2.dz>small::before{content:"";display:inline-block;width:9px;height:9px;margin-right:8px;border-radius:2px;background:var(--amber);vertical-align:0}
+[data-page=uitgebreid] .bc2.dz>b{color:#fff}
+[data-page=uitgebreid] .bc2.dz>b small,[data-page=uitgebreid] .bc2.dz p{color:var(--on-asph-2)}
+[data-page=uitgebreid] .bc2.dz .trk{background:var(--asph-3);box-shadow:none}
+[data-page=uitgebreid] .bc2.dz .trk i{background:var(--amber);opacity:.55}
+[data-page=uitgebreid] .bc2.dz .trk u{background:var(--on-asph)}
+[data-page=uitgebreid] .bc2.dz .trk .now{background:var(--amber);border-color:var(--asph);box-shadow:0 0 0 1px var(--amber)}
+[data-page=uitgebreid] .bc2.dz .trk em{color:var(--on-asph-2)}
+[data-page=uitgebreid] .bc2.dz .trk .tk{background:var(--asph-3)}
+[data-page=uitgebreid] .bc2.dz .trk .tk s{color:var(--on-asph-2)}
 </style>
 </head>
 <body>
@@ -1731,7 +1744,7 @@ function sensHTML(sv){
   const zone=good==='hi'?`left:${be>0?b:0}%;right:0`:`left:0;width:${be>0?b:0}%`;
   return`<div class="trk"><i style="${zone}"></i>${tk.join('')}${be>0?`<u style="left:${b}%"><em>break-even</em></u>`:''}<span class="now" style="left:${pos(cur,m)}%"><em class="${low?'lo':''}">nu</em></span></div>`};
  const card=(t,val,txt,tr)=>`<div class="bc2"><small>${t}</small><b>${val}</b>${tr}<p>${txt}</p></div>`;
- const c1=card('Break-even dieselprijs',dpB===null?'—':`${eur(Math.max(0,dpB),2)} <small>/ L</small>`,dpB===null?'Geen berekening mogelijk.':dpB<=0?`Elektrisch is goedkoper, ook als diesel gratis zou zijn. Nu rekent de calculator met ${eur(dp0,2)}.`:`Elektrisch is goedkoper vanaf deze dieselprijs. Nu rekent de calculator met ${eur(dp0,2)}.`,dpB===null?'':trk(dpB,dp0,'hi',.5));
+ const c1=card('Break-even dieselprijs',dpB===null?'—':`${eur(Math.max(0,dpB),2)} <small>/ L</small>`,dpB===null?'Geen berekening mogelijk.':dpB<=0?`Elektrisch is goedkoper, ook als diesel gratis zou zijn. Nu rekent de calculator met ${eur(dp0,2)}.`:`Elektrisch is goedkoper vanaf deze dieselprijs. Nu rekent de calculator met ${eur(dp0,2)}.`,dpB===null?'':trk(dpB,dp0,'hi',.5)).replace('class="bc2"','class="bc2 dz"');
  const c2=card('Break-even stroomprijs',spB===null?'—':spB<=0?'Geen':`${eur(spB,2)} <small>/ kWh</small>`,spB===null?'Geen berekening mogelijk.':spB<=0?`Elektrisch is niet goedkoper, zelfs niet bij gratis eigen stroom. Nu ${eur(sp0,2)}.`:`Elektrisch is goedkoper tot deze stroomprijs. Nu rekent de calculator met ${eur(sp0,2)}.`,spB===null||spB<=0?'':trk(spB,sp0,'lo',.1));
  const U=a=>[...new Set(a.map(x=>Math.round(Math.max(0,x)*1000)/1000))];
  const ds=U([-.5,-.25,0,.25,.5].map(d=>dp0+d)),es=U([-.1,-.05,0,.1,.2,.3].map(d=>sp0+d));
