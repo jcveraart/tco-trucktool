@@ -947,6 +947,7 @@ a.cta.big,a.fcta{text-decoration:none}
 .dzl dt{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .dzl dd{margin:0;font:600 17px/1.3 var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
 .dzl dd a{color:inherit;text-decoration-color:var(--line-2)}
+.dzl dt{display:flex;align-items:center;gap:6px}.dzl dt .qi{margin:-4px 0}
 .dzl .wzx{flex:none;width:32px;height:32px}
 .dzl .wzx svg{width:16px;height:16px}
 .dze{flex:1;margin:0;color:var(--amber-ink);font-weight:600;font-size:15px}
@@ -1664,8 +1665,8 @@ const EMBED=new URLSearchParams(location.search).has('embed');if(EMBED)document.
 /* Alle invoer als schuif met typbare waarde: [id, label, min, max, stap, eenheid, standaard] */
 const FIELDS=[
  ['km','Kilometers per jaar',5000,250000,1000,'km',100000],['kmH','Waarvan met kilometerheffing',0,250000,1000,'km',75000],['wd','Rijdagen per jaar',100,365,5,'dagen',250],
- ['jr','Afschrijftermijn',3,12,1,'jaar',6],['rw','Restwaarde',0,40,1,'%',10],['rwE','Restwaarde',0,60,1,'%',10],['eag','Leeftijd',1,12,1,'jaar',3],
- ['pD','Aanschafprijs',10000,400000,100,'€',130000],['pE','Aanschafprijs',20000,1000000,100,'€',285000],['subX','Subsidiebedrag',0,200000,500,'€',0],
+ ['jr','Afschrijftermijn',3,12,1,'jaar',6],['rw','Restwaarde',0,70,1,'%',10],['rwE','Restwaarde',0,60,1,'%',10],['eag','Leeftijd',1,12,1,'jaar',3],['dag','Leeftijd',1,20,1,'jaar',6],
+ ['pD','Aanschafprijs',1000,400000,100,'€',130000],['pE','Aanschafprijs',20000,1000000,100,'€',285000],['subX','Subsidiebedrag',0,200000,500,'€',0],
  ['ld','Verbruik',5,60,0.1,'l/100 km',30],['dp','Dieselprijs excl. btw',1,3,0.01,'€/L',2],
  ['le','Verbruik',5,200,0.1,'kWh/100 km',115],['sp','Stroomprijs eigen terrein',0.05,0.8,0.01,'€/kWh',0.25],['acc','Bruikbare accu',30,900,0.1,'kWh',540],['ere','ERE-opbrengst',0,0.3,0.01,'€/kWh',0.12],
  ['oD','Onderhoud',0,0.5,0.01,'€/km',0.12],['oE','Onderhoud',0,0.5,0.01,'€/km',0.08],['vD','Verzekering',0,25000,100,'€/jaar',7000],['vE','Verzekering',0,25000,100,'€/jaar',9500],
@@ -1703,8 +1704,10 @@ const ZON_KWH=900,ZON_PRIJS=.06;
 let kmShare=null,kmScale=false;/* aandeel kilometers met heffing blijft gelijk als je de kilometers per jaar verandert */
 document.addEventListener('input',e=>{if(e.target.id!=='km'||kmShare===null)return;const k=$('kmH');k.max=v('km');k.value=Math.round(kmShare*v('km')/1000)*1000;kmScale=true},true);
 document.addEventListener('input',e=>{const id=e.target.id;if(!id)return;
- if(id==='rw'&&$('nw').value!=='g'){const w=$('rwE');if(+w.value===+e.target.dataset.prev)setNum(w,+e.target.value)}
- if((id==='eag'||id==='jr')&&$('nw').value==='g')usedAuto(false)},true);
+ if(id==='rw'&&$('nw').value!=='g'&&$('dw').value!=='h'){const w=$('rwE');if(+w.value===+e.target.dataset.prev)setNum(w,+e.target.value)}
+ if((id==='eag'||id==='jr')&&$('nw').value==='g')usedAuto(false);
+ if((id==='dag'||id==='jr')&&$('dw').value==='h')dieselAuto(false)},true);
+let autoPD=null,autoOD=null;/* automatisch ingevulde waarden voor de huidige diesel */
 let unit='km',touched=false,view='b',page=null,vtype='trekker',wzStep='use';
 const $=id=>document.getElementById(id),nf=(n,d=0)=>new Intl.NumberFormat('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n),eur=(n,d=0)=>(n<0?'-':'')+'€ '+nf(Math.abs(n),d);
 const reduced=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -1738,6 +1741,8 @@ const TIPS={
  dp:{t:'Dieselprijs',b:['De prijs per liter zonder btw. Het voorbeeld volgt de gemiddelde pompprijs van diesel volgens het CBS, zonder btw.','Tank je met een tankpas of op een eigen tank, dan betaal je vaak minder. Vul dan je eigen prijs in.'],l:[['Pompprijzen motorbrandstoffen (CBS)','https://opendata.cbs.nl/#/CBS/nl/dataset/80416ned/table']]},
  aSlim:{t:'Slim laden',b:['Met een dynamisch energiecontract laad je op de uren dat stroom het goedkoopst is, meestal \'s nachts. Je stroomprijs daalt dan met het verschil tussen die uren en het daggemiddelde.','We rekenen met het gemiddelde verschil op de stroombeurs over de afgelopen dertig dagen.']},
  xZon:{t:'Zonnepanelen',b:['Een kWp aan panelen levert in Nederland gemiddeld zo\'n 900 kWh per jaar. Het deel dat in je voertuigen gaat, kost je ongeveer € 0,06 per kWh in plaats van je stroomprijs.','Zon en laden vallen niet altijd samen. Laad je vooral \'s nachts, dan gaat er zonder buurtbatterij minder direct in je voertuig.'],l:[['Opbrengst per locatie (PVGIS)','https://re.jrc.ec.europa.eu/pvg_tools/nl/']]},
+ plSw:{t:'Overstappen',b:['Het eerste jaar waarin een nieuwe elektrische, met al jouw cijfers inclusief afschrijving, per jaar minder kost dan je huidige diesel blijven gebruiken. Bij de diesel tellen brandstof, verzekering, heffing, onderhoud dat elk jaar ongeveer 5% stijgt en het waardeverlies.','Een oudere diesel die weinig meer waard is, is vaak goedkoop om aan te houden: de afschrijving op een nieuwe elektrische weegt dan zwaarder dan de besparing op brandstof. Rijd je in een zero-emissiezone, dan bepaalt die zone het uiterlijke moment.']},
+ dag:{t:'Leeftijd van je diesel',b:['Met je huidige diesel rekenen we vanaf de waarde nu, niet vanaf de nieuwprijs. De restwaarde is wat er aan het eind van de afschrijftermijn van die waarde over is, en het onderhoud stijgt met de leeftijd.','Vul je het kenteken in, dan nemen we de leeftijd en de waarde daarvan over.']},
  rwE:{t:'Restwaarde elektrisch',b:['De tweedehandsmarkt voor elektrische bedrijfsvoertuigen is nog jong. De conditie van de accu bepaalt een groot deel van de waarde.','Onder de schuif zie je hoeveel capaciteit de accu aan het eind van je afschrijftermijn ongeveer nog heeft.']},
  'i-pb':{t:'Terugverdientijd',b:['Hoe lang het duurt voordat de extra investering in elektrisch is terugverdiend met lagere gebruikskosten: energie, onderhoud, verzekering en heffing.','De restwaarde telt hier niet mee, want die ontvang je pas bij verkoop.']},
  'i-km':{t:'Goedkoper vanaf',b:['Het aantal kilometers per jaar waarbij elektrisch per jaar goedkoper wordt dan diesel, met al je andere cijfers gelijk.','Hoe meer je rijdt, hoe zwaarder de lagere kosten per kilometer tegen de hogere aanschaf opwegen.']},
@@ -1799,7 +1804,7 @@ const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentCo
 const mpick=()=>`<div class="mpk" id="mpk"><input type="hidden" id="calcModel" value=""><button type="button" class="mpb" id="mpB" aria-haspopup="listbox" aria-expanded="false" aria-controls="mpP"><i aria-hidden="true"></i><span><small>Elektrisch model</small><b id="mpN">Geen specifiek model</b></span>${chev}</button><div class="mpp" id="mpP" hidden><input type="search" id="mpQ" placeholder="Zoek merk of model" aria-label="Zoek een model" autocomplete="off"><div class="mpl" id="mpL" role="listbox" aria-label="Elektrisch model"></div></div><p class="hint" id="mpH" hidden></p></div>`;
 const STEPBODY={
  use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div>`,
- buy:()=>`${mpick()}${dex(slider('pD'),`<div class="seg sm nwg" role="group" aria-label="Elektrisch voertuig"><button type="button" data-nw="n">Nieuw</button><button type="button" data-nw="g">Gebruikt</button></div><input type="hidden" id="nw" value="n"><div class="nwu" id="nwG" hidden>${plateForm('E')}<input type="hidden" id="plkE" value="">${slider('eag')}</div>${slider('pE')}<p class="hint" id="pEh"></p>`)}<div class="wsec" style="margin-top:24px">${slider('jr')}</div>${dex(slider('rw'),slider('rwE')+'<p class="hint" id="rwEh"></p>')}`,
+ buy:()=>`${mpick()}${dex(`<div class="seg sm nwg" role="group" aria-label="Dieselvoertuig"><button type="button" data-dw="n">Nieuw</button><button type="button" data-dw="h">Huidige</button></div><input type="hidden" id="dw" value="n"><div class="nwu" id="dwG" hidden>${plateForm('D')}${slider('dag')}</div>${slider('pD')}<p class="hint" id="pDh"></p>`,`<div class="seg sm nwg" role="group" aria-label="Elektrisch voertuig"><button type="button" data-nw="n">Nieuw</button><button type="button" data-nw="g">Gebruikt</button></div><input type="hidden" id="nw" value="n"><div class="nwu" id="nwG" hidden>${plateForm('E')}<input type="hidden" id="plkE" value="">${slider('eag')}</div>${slider('pE')}<p class="hint" id="pEh"></p>`)}<div class="wsec" style="margin-top:24px">${slider('jr')}</div>${dex(slider('rw'),slider('rwE')+'<p class="hint" id="rwEh"></p>')}`,
  sub:()=>`<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div><div class="wsec"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
  en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+`<div class="ws-row">${sw('aSlim','Slim laden op goedkope uren',0)}${tipBtn('aSlim')}</div></div>`),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
@@ -1836,6 +1841,7 @@ function applyType(t){
  Object.entries(VT[t].p).forEach(([id,val])=>{const e=$(id);if(!e)return;absRange(e);e.defaultValue=val;e.value=val});
  regOptions();$('reg').value=VT[t].reg;
  modelOptions();fitRanges();
+ if($('dw')&&$('dw').value==='h'){autoPD=autoOD=null;dieselAuto(true)}
 }
 /* Schuifbereik per voertuig, zodat een bestelbus niet op een schaal voor trekkers staat: [min, max] */
 const RNG={
@@ -1848,9 +1854,10 @@ function absRange(e){const f=F[e.id];if(f&&e.type==='range'){e.min=f[2];e.max=e.
 /* Bereik rond het gekozen model, anders rond het voertuig. Een eigen waarde buiten het bereik verbreedt het. */
 function fitRanges(){
  const R={...RNG[vtype]},m=modelActive();
+ if($('dw')&&$('dw').value==='h')R.pD=[nice(newPriceD()*.03),nice(newPriceD(),1)];
  if($('nw')&&$('nw').value==='g')R.pE=[nice(newPriceE()*.15),nice(newPriceE(),1)];
  if(m){R.acc=[nice(mAcc(m)*.5),nice(mAcc(m)*1.5,1)];R.le=[nice(mEnergy(m)*.5),nice(mEnergy(m)*1.6,1)];
-  if(m.price&&$('nw').value!=='g')R.pE=[nice(m.price*.6),nice(m.price*1.4,1)];const dz=mDiesel(m);R.pD=[nice(dz.pD*.6),nice(dz.pD*1.4,1)];R.ld=[nice(dz.ld*.6),nice(dz.ld*1.5,1)]}
+  if(m.price&&$('nw').value!=='g')R.pE=[nice(m.price*.6),nice(m.price*1.4,1)];const dz=mDiesel(m);if($('dw').value!=='h')R.pD=[nice(dz.pD*.6),nice(dz.pD*1.4,1)];R.ld=[nice(dz.ld*.6),nice(dz.ld*1.5,1)]}
  Object.entries(R).forEach(([id,[a,b]])=>{const e=$(id),f=F[id];if(!e)return;const val=+e.value;
   e.min=Math.max(f[2],Math.min(a,val));e.max=Math.min(f[3],Math.max(b,val));e.value=val});
 }
@@ -1930,7 +1937,7 @@ function board(r){
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span>${BX?`<span class="brr">${spanTxt(BX.map(q=>(c==='d'?q.r.td:q.r.te)/q.r.km),n=>eur(n,2),.005)||eur(t/km,2)} per km</span>`:''}</div>`;
  const n=coreSteps().length;
  const inv=`<div class="bcta"><div class="bct"><b>${touched?'Gebaseerd op jouw cijfers':'Voorbeeldcijfers voor een '+T().w}</b></div><a class="cta big" href="#uitgebreid" data-xgo>Reken uitgebreid met je eigen cijfers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>`;
- setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
+ setH($('board'),half('d',$('dw').value==='h'?'Huidige diesel':'Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
   `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}${bd?`<span class="brg">Bandbreedte <b>${bandTxt(bd)}</b> per jaar</span>`:''}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button>${scA?'':`<button class="btn" type="button" data-sca aria-label="Bewaar deze berekening om te vergelijken">${ICON.ab}<span>Vergelijk</span></button>`}<button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div>`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
  tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
@@ -2019,7 +2026,7 @@ function render(){
  /* Acht blokjes. Op een breed scherm vullen ze per kolom, zodat diesel steeds boven elektrisch staat. */
  const dm=c=>`<i class="${c}" aria-hidden="true"></i>`;
  setH($('sum'),[['buy','Model',mActive?mName(mActive):'Marktgemiddelde'],['use','Kilometers per jaar',`${nf(v('km'))} km`],['use','Afschrijving',`${L} jaar · ${v('rw')===v('rwE')?v('rw'):v('rw')+'% / '+v('rwE')}% restwaarde`],['sub','Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],
-  ['buy',dm('d')+'Aanschaf diesel',eur(v('pD'))],['buy',dm('e')+'Aanschaf elektrisch',eur(v('pE'))+($('nw').value==='g'?' · gebruikt':'')],['en',dm('d')+'Dieselprijs',`${eur(v('dp'),2)} per liter`],['en',dm('e')+'Stroomprijs',`${eur(v('sp'),2)} per kWh`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
+  ['buy',dm('d')+($('dw').value==='h'?'Waarde diesel nu':'Aanschaf diesel'),eur(v('pD'))],['buy',dm('e')+'Aanschaf elektrisch',eur(v('pE'))+($('nw').value==='g'?' · gebruikt':'')],['en',dm('d')+'Dieselprijs',`${eur(v('dp'),2)} per liter`],['en',dm('e')+'Stroomprijs',`${eur(v('sp'),2)} per kWh`]].map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join(''));
  // Uitkomst
  board(r);simpleTiles();rowsPaint(r,x);
  {
@@ -2052,7 +2059,7 @@ function render(){
  const d=r.td-r.te;
  setH($('wzL'),`<span class="wzlk">Diesel <b>${eur(r.td/r.km,2)}</b> · elektrisch <b>${eur(r.te/r.km,2)}</b> per km · </span><b class="${d>=0?'good':'bad'}">${eur(Math.abs(d))}</b> ${d>=0?'besparing':'meerkosten'} per jaar`);
  if($('wz').open)wzNav();
- plPaint();usedPaint();scPaint();
+ plPaint();usedPaint();dieselPaint();scPaint();
  {const i=PL.D,kg=i&&!i.err&&(i.vt==='trekker'&&i.combo?Math.max(i.combo,i.mass):i.mass);setH($('hefh'),kg&&truck?`Tarief volgens je kenteken: ${hefBand(kg)}, CO₂-klasse 1 (diesel) en 5 (elektrisch).`:'')}
  $('rw').dataset.prev=$('rw').value;
  syncSl();fillRanges();srPaint();mini();save();
@@ -2135,6 +2142,7 @@ document.addEventListener('click',e=>{
  const u=e.target.closest('[data-u]');if(u){unit=u.dataset.u;render();return}
  const kq=e.target.closest('[data-km]');if(kq){$('km').value=kq.dataset.km;$('km').dispatchEvent(new Event('input',{bubbles:true}));return}
  const kh=e.target.closest('[data-kmh]');if(kh){$('kmH').max=v('km');$('kmH').value=Math.round(+kh.dataset.kmh*v('km')/1000)*1000;$('kmH').dispatchEvent(new Event('input',{bubbles:true}));return}
+ const dw=e.target.closest('[data-dw]');if(dw){if($('dw').value!==dw.dataset.dw){$('dw').value=dw.dataset.dw;dieselAuto(true);touched=true;render()}return}
  const nw=e.target.closest('[data-nw]');if(nw){if($('nw').value!==nw.dataset.nw){$('nw').value=nw.dataset.nw;usedAuto(true);touched=true;render()}return}
  const cl=e.target.closest('[data-cls]');if(cl){$('cls').value=cl.dataset.cls;touched=true;render();return}
  const tol=e.target.closest('[data-tol]');if(tol){const k=tol.dataset.tol;touched=true;if(tolSel.has(k)){tolSel.delete(k);$('k_'+k).value=0}else tolSel.add(k);render();return}
@@ -2265,7 +2273,7 @@ document.addEventListener('click',e=>{
 const KEY='stekkerofdiesel-v3';
 function save(){try{localStorage.setItem(KEY,JSON.stringify({touched,vtype,v:stateObj(),sr:SR}))}catch(e){}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;if(VT[s.vtype])applyType(s.vtype);srLoad(s.sr);['km'].concat(Object.keys(s.v||{})).forEach(id=>{const e=$(id);if(!e||!(id in s.v))return;if(e.type==='checkbox')e.checked=!!+s.v[id];else setNum(e,s.v[id])});fitRanges();touched=!!s.touched}catch(e){}}
-function reset(){PL.D=PL.E=null;autoPE=null;document.querySelectorAll('[data-plate] input').forEach(i=>i.value='');document.querySelectorAll(':is(#calc,#wz) input[type=range]').forEach(absRange);document.querySelectorAll(':is(#calc,#wz) input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';applyType(vtype);touched=false;tolSel.clear();srLoad();render()}
+function reset(){PL.D=PL.E=null;autoPE=autoPD=autoOD=null;document.querySelectorAll('[data-plate] input').forEach(i=>i.value='');document.querySelectorAll(':is(#calc,#wz) input[type=range]').forEach(absRange);document.querySelectorAll(':is(#calc,#wz) input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';$('dw').value=$('nw').value='n';applyType(vtype);touched=false;tolSel.clear();srLoad();render()}
 
 const TW={};
 function tween(key,els,vals,fmts){
@@ -2404,7 +2412,7 @@ function modelApply(id,keepOwnPrice=false){
  const m=MI[id];if(!m)return false;
  if(m.c!==vtype){applyType(m.c);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
  $('calcModel').value=id;mpList();
- const P=VT[m.c].p;setNum($('acc'),mAcc(m));setNum($('le'),mEnergy(m));if(m.price||!keepOwnPrice)setNum($('pE'),m.price||P.pE);const dz=mDiesel(m);setNum($('pD'),dz.pD);setNum($('ld'),dz.ld);
+ const P=VT[m.c].p;setNum($('acc'),mAcc(m));setNum($('le'),mEnergy(m));if(m.price||!keepOwnPrice)setNum($('pE'),m.price||P.pE);const dz=mDiesel(m);if($('dw').value!=='h'){setNum($('pD'),dz.pD);setNum($('ld'),dz.ld)}
  fitRanges();
  if(m.c==='bakwagen'){$('cls').value=(m.vc||'n3').toUpperCase();if(m.gvw&&m.gvw<10000)$('reg').value='geen'}
  touched=true;render();return true;
@@ -2592,7 +2600,8 @@ function zeTxt(i){
 /* Overstappen: het eerste jaar waarin een nieuw elektrisch voertuig (met al je cijfers) per jaar minder kost dan je huidige diesel aanhouden */
 function plSwitch(i){
  const x=calcX(),age=ageOf(i.first),P=plValue(i,'d').v,v0=valPct('d',i.vt,age)||1,op=x.D.en+x.D.ver+x.D.hef+x.D.tol;
- for(let y=0;y<=8;y++){const a=age+y,loss=P*(valPct('d',i.vt,a)-valPct('d',i.vt,a+1))/v0,keep=op+x.D.ond*(1+.05*a)+loss;if(x.te<=keep)return y}
+ const oB=x.km*($('dw').value==='h'?v('oD')/odF(Math.round(v('dag'))+x.L/2):v('oD'));
+ for(let y=0;y<=8;y++){const a=age+y,loss=P*(valPct('d',i.vt,a)-valPct('d',i.vt,a+1))/v0,keep=op+oB*odF(a)+loss;if(x.te<=keep)return y}
  return null;
 }
 function plPaint(){
@@ -2600,7 +2609,7 @@ function plPaint(){
  if(!i){el.hidden=true;return}
  if(i.err){el.hidden=false;setH(el,`<p class="dze">${i.err}</p><button class="wzx" type="button" data-plx="D" aria-label="Sluiten">${XSVG}</button>`);return}
  const ze=zeTxt(i),sy=plSwitch(i),now=new Date().getFullYear(),val=plValue(i,'d').v;
- const kv=[['Waarde nu',`± ${eur(Math.round(val/1000)*1000)}`,`d|${i.vt}`],ze&&['ZE-zone',ze],['Overstappen',sy===null?'Niet binnen 8 jaar':sy===0?'Nu voordelig':'Vanaf '+(now+sy)]].filter(Boolean);
+ const kv=[['Waarde nu',`± ${eur(Math.round(val/1000)*1000)}`,`d|${i.vt}`],ze&&['ZE-zone',ze],['Overstappen'+tipBtn('plSw'),sy===null?'Na '+(now+8):sy===0?'Nu voordelig':'Vanaf '+(now+sy)]].filter(Boolean);
  el.hidden=false;
  setH(el,`<div class="dzn"><b>${plName(i)}</b><small>${[i.first&&i.first.getFullYear(),i.euro&&'Euro '+i.euro,(i.vt==='trekker'&&i.combo?i.combo:i.mass)&&nf(Math.round((i.vt==='trekker'&&i.combo?i.combo:i.mass)/1000))+' ton'].filter(Boolean).join(' · ')}</small></div><dl>${kv.map(q=>`<div><dt>${q[0]}</dt><dd>${q[2]?`<a href="#restwaarde" data-rw="${q[2]}">${q[1]}</a>`:q[1]}</dd></div>`).join('')}</dl><button class="wzx" type="button" data-plx="D" aria-label="Kenteken wissen">${XSVG}</button>`);
 }
@@ -2612,7 +2621,7 @@ function plApplyD(i){
  if(i.vt==='bestel'&&i.lpk)setNum($('ld'),Math.round(i.lpk*1.15*10)/10);
  if(i.vt==='bakwagen'&&i.mass)setNum($('ld'),i.mass<=12000?17:i.mass<=18000?22:27);
  if(T().truck){const h=hefRow(i.vt==='trekker'&&i.combo?Math.max(i.combo,i.mass):i.mass||40000);setNum($('tD'),h[1]);setNum($('tE'),h[2])}
- fitRanges();touched=true;
+ $('dw').value='h';setNum($('dag'),Math.min(20,Math.max(1,Math.round(ageOf(i.first)))));dieselAuto(true);touched=true;
 }
 /* Kenteken van een gebruikt elektrisch voertuig: leeftijd en, als we hem kennen, het model */
 function plApplyE(i){
@@ -2624,10 +2633,10 @@ function plApplyE(i){
 }
 async function plLookup(kind,k,apply){
  if(!k){PL[kind]=null;$(kind==='E'?'plkE':'plk').value='';render();return}
- const f=document.querySelector(`[data-plate="${kind}"]`);if(f)f.classList.add('busy');
+ const fs=document.querySelectorAll(`[data-plate="${kind}"]`);fs.forEach(f=>{f.classList.add('busy');f.elements.kt.value=plFmt(k)});
  let i=null,err='';
  try{i=await rdwGet(k)}catch(e){err='De RDW is nu niet bereikbaar. Probeer het later opnieuw.'}
- if(f)f.classList.remove('busy');
+ fs.forEach(f=>f.classList.remove('busy'));
  if(!err&&!i)err=`Kenteken ${plFmt(k)} niet gevonden.`;
  else if(i&&!i.vt)err='Dit is geen bedrijfsvoertuig of bus.';
  else if(i&&kind==='D'&&i.el)err='Dit voertuig rijdt al elektrisch.';
@@ -2639,7 +2648,7 @@ async function plLookup(kind,k,apply){
  if(apply)track('plate_lookup',{kind,vt:i.vt,year:i.first?i.first.getFullYear():null,euro:i.euro||null});
 }
 document.addEventListener('submit',e=>{const f=e.target.closest('[data-plate]');if(!f)return;e.preventDefault();const k=plNorm(f.elements.kt.value);f.elements.kt.value=k?plFmt(k):'';plLookup(f.dataset.plate,k,true)});
-document.addEventListener('click',e=>{const x=e.target.closest('[data-plx]');if(!x)return;const k=x.dataset.plx;PL[k]=null;$(k==='E'?'plkE':'plk').value='';const f=document.querySelector(`[data-plate="${k}"]`);if(f)f.elements.kt.value='';render()});
+document.addEventListener('click',e=>{const x=e.target.closest('[data-plx]');if(!x)return;const k=x.dataset.plx;PL[k]=null;$(k==='E'?'plkE':'plk').value='';document.querySelectorAll(`[data-plate="${k}"]`).forEach(f=>f.elements.kt.value='');if(k==='D'&&$('dw').value==='h'){$('dw').value='n';dieselAuto(true)}render()});
 /* Gebruikt elektrisch: eerlijke prijs uit de waardecurve, restwaarde aan het eind van de looptijd */
 const newPriceE=()=>{const m=modelActive();return m&&m.price?m.price:VT[vtype].p.pE};
 const fairE=age=>{const ix=RIX&&RIX[`e|${vtype}|${age}`];return ix&&ix.n>=5?ix.p:newPriceE()*valPct('e',vtype,age)};
@@ -2647,8 +2656,34 @@ let autoPE=null;
 function usedAuto(force){
  const used=$('nw').value==='g',age=Math.round(v('eag')),L=Math.max(1,Math.round(v('jr')));
  if(used){const fp=Math.round(fairE(age)/1000)*1000;if(force||autoPE===null||Math.abs(v('pE')-autoPE)<1){setNum($('pE'),fp);autoPE=fp}setNum($('rwE'),Math.round(valPct('e',vtype,age+L)/valPct('e',vtype,age)*100))}
- else{autoPE=null;setNum($('rwE'),v('rw'))}
+ else{autoPE=null;setNum($('rwE'),$('dw').value==='h'?VT[vtype].p.rwE:v('rw'))}
  fitRanges();
+}
+/* Huidige diesel: rekenen vanaf de waarde nu, met de restwaarde aan het eind van de termijn en onderhoud dat met de leeftijd stijgt */
+const newPriceD=()=>{const m=modelActive();return m?mDiesel(m).pD:VT[vtype].p.pD};
+const odF=a=>1+.05*a;
+function dieselAuto(force){
+ const cur=$('dw').value==='h',age=Math.round(v('dag')),L=Math.max(1,Math.round(v('jr'))),i=PL.D,p=VT[vtype].p;
+ const fit=(id,val,auto,d)=>(force||auto===null||Math.abs(v(id)-auto)<d)&&(setNum($(id),val),true);
+ if(cur){
+  const fp=Math.round((i&&!i.err&&Math.round(ageOf(i.first))===age?plValue(i,'d').v:newPriceD()*valPct('d',vtype,age))/500)*500;
+  absRange($('pD'));if(fit('pD',fp,autoPD,1))autoPD=fp;
+  const od=Math.round(p.oD*odF(age+L/2)*100)/100;if(fit('oD',od,autoOD,.001))autoOD=od;
+  setNum($('rw'),Math.min(70,Math.round(valPct('d',vtype,age+L)/valPct('d',vtype,age)*100)));
+ }else{
+  if(autoPD!==null&&Math.abs(v('pD')-autoPD)<1)setNum($('pD'),newPriceD());
+  if(autoOD!==null&&Math.abs(v('oD')-autoOD)<.001)setNum($('oD'),p.oD);
+  if(autoPD!==null)setNum($('rw'),p.rw);
+  autoPD=autoOD=null;
+ }
+ fitRanges();
+}
+function dieselPaint(){
+ const cur=$('dw').value==='h';
+ document.querySelectorAll('[data-dw]').forEach(e=>e.setAttribute('aria-pressed',e.dataset.dw===$('dw').value));
+ $('dwG').hidden=!cur;
+ const lb=document.querySelector('label[for="pD"]');if(lb)lb.textContent=cur?'Waarde nu':F.pD[1];
+ const i=PL.D;setH($('pDh'),!cur||!i?'':i.err?`<span class="warn">${i.err}</span>`:`<b>${plName(i)}${i.first?' · '+i.first.getFullYear():''}</b>`);
 }
 /* Hoeveel capaciteit de accu ongeveer overhoudt: 1,5% per jaar plus slijtage per volledige laadbeurt */
 const soh=(yrs,kwh,acc)=>Math.max(.6,1-yrs*(.015+Math.min(400,kwh/Math.max(1,acc))*.00004));
@@ -2847,7 +2882,7 @@ document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.tar
 build();applyType('trekker');
 if(!fromURL())load();route(true);
 syncSupabase().then(syncExtra);
-[['D','plk'],['E','plkE']].forEach(([k,id])=>{const n=plNorm($(id).value);if(!n)return;const f=document.querySelector(`[data-plate="${k}"]`);if(f)f.elements.kt.value=plFmt(n);plLookup(k,n,false)});
+[['D','plk'],['E','plkE']].forEach(([k,id])=>{const n=plNorm($(id).value);if(!n)return;document.querySelectorAll(`[data-plate="${k}"]`).forEach(f=>f.elements.kt.value=plFmt(n));plLookup(k,n,false)});
 </script>
 <script id="meten-koppelen">
 /* ===== Metingen koppelen aan de calculator, modellen en pagina's ===== */
