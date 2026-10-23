@@ -928,7 +928,6 @@ a.cta.big,a.fcta{text-decoration:none}
 [data-page=uitgebreid] .bc2.dz .trk i{background:var(--amber);opacity:.5}
 [data-page=uitgebreid] .bc2.dz .trk .now{background:var(--amber);box-shadow:0 0 0 1px var(--amber-ink)}
 /* Kenteken, je huidige diesel en gebruikt elektrisch */
-.plw{display:flex;min-width:0}
 .plate{box-sizing:border-box;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 4px 0 12px;border-radius:8px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);max-width:100%}
 .plate:focus-within{box-shadow:inset 0 0 0 1.5px var(--volt)}
 .plate input{width:92px;min-width:0;border:0;outline:0;background:none;padding:0;color:var(--ink);font:600 14px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase}
@@ -944,12 +943,12 @@ a.cta.big,a.fcta{text-decoration:none}
 @keyframes plb{to{opacity:.25}}
 .plate.bad{box-shadow:inset 0 0 0 1.5px var(--amber)}
 .nwg{display:inline-flex;margin:0 0 18px}
-.nwu .plate{margin:0 0 18px}
+.nwu .plate{display:flex;width:100%;height:40px;margin:0 0 18px}.nwu .plate input{flex:1;width:auto}
 #pEh,#rwEh{margin-top:6px;font-size:13px}
 #pEh .warn{color:var(--amber-ink);font-weight:600}
 #pEh b{color:var(--ink-2);font-weight:600}
 #hefh{margin-top:16px}
-@media print{.plw,.nwg{display:none!important}}
+@media print{.nwg{display:none!important}}
 
 .mbtns{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px}
 .minfo .mbtns .cta{margin:0}
@@ -1183,10 +1182,6 @@ html.embed .intro{padding-top:20px}
  #calc .story .sumh,#calc .story .sumb{display:contents}
  #calc .story .sumh h2{flex:1;min-width:0;font-size:20px}
  #calc .story .sum{flex:1 1 100%}
- #calc .story .plw{order:2;flex:1 1 100%;margin-top:14px}
- #calc .story .plate{height:40px}
- #calc .story .plate input{flex:1;width:auto}
- #calc .story .plw .plate{width:100%}
  #calc .story .sum{order:4}
  #calc .story #sumRs{order:9;margin-top:14px;font-size:14px;font-weight:500;color:var(--ink-2)}
  .sum{grid-template-columns:minmax(0,1fr)!important;margin-top:12px}
@@ -1237,7 +1232,7 @@ html.embed .intro{padding-top:20px}
  <div class="wrap cg" id="cg">
   <div class="cmain">
    <section class="story" id="story" aria-labelledby="hSum">
-    <div class="sumh"><h2 id="hSum">Uitgangspunten</h2><div class="sumb"><button class="lnk" type="button" data-reset id="sumRs">Herstel voorbeeldcijfers</button><div class="plw" id="plW"></div><input type="hidden" id="plk" value=""><button class="btn" id="wzOpen" type="button" data-step="use"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg><span>Aanpassen</span></button></div></div>
+    <div class="sumh"><h2 id="hSum">Uitgangspunten</h2><div class="sumb"><button class="lnk" type="button" data-reset id="sumRs">Herstel voorbeeldcijfers</button><input type="hidden" id="plk" value=""><button class="btn" id="wzOpen" type="button" data-step="use"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg><span>Aanpassen</span></button></div></div>
     <div class="sum" id="sum"></div>
    </section>
    <div class="board" id="board" aria-live="polite"></div>
@@ -1791,7 +1786,7 @@ const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentCo
 const mpick=()=>`<div class="mpk" id="mpk"><input type="hidden" id="calcModel" value=""><button type="button" class="mpb" id="mpB" aria-haspopup="listbox" aria-expanded="false" aria-controls="mpP"><i aria-hidden="true"></i><span><small>Elektrisch model</small><b id="mpN">Geen specifiek model</b></span>${chev}</button><div class="mpp" id="mpP" hidden><input type="search" id="mpQ" placeholder="Zoek merk of model" aria-label="Zoek een model" autocomplete="off"><div class="mpl" id="mpL" role="listbox" aria-label="Elektrisch model"></div></div><p class="hint" id="mpH" hidden></p></div>`;
 const STEPBODY={
  use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div>`,
- buy:()=>`${mpick()}${dex(`<div class="seg sm nwg" role="group" aria-label="Dieselvoertuig"><button type="button" data-dw="n">Nieuw</button><button type="button" data-dw="h">Huidige</button></div><input type="hidden" id="dw" value="n"><div class="nwu" id="dwG" hidden>${plateForm('D')}${slider('dag')}</div>${slider('pD')}<p class="hint" id="pDh"></p>`,`<div class="seg sm nwg" role="group" aria-label="Elektrisch voertuig"><button type="button" data-nw="n">Nieuw</button><button type="button" data-nw="g">Gebruikt</button></div><input type="hidden" id="nw" value="n"><div class="nwu" id="nwG" hidden>${plateForm('E')}<input type="hidden" id="plkE" value="">${slider('eag')}</div>${slider('pE')}<p class="hint" id="pEh"></p>`)}<div class="wsec" style="margin-top:24px">${slider('jr')}</div>${dex(slider('rw'),slider('rwE')+'<p class="hint" id="rwEh"></p>')}`,
+ buy:()=>`${mpick()}${dex(`<div class="seg sm nwg" role="group" aria-label="Dieselvoertuig"><button type="button" data-dw="n">Nieuwe kopen</button><button type="button" data-dw="h">Huidige houden</button></div><input type="hidden" id="dw" value="n"><div class="nwu" id="dwG" hidden>${plateForm('D')}${slider('dag')}</div>${slider('pD')}<p class="hint" id="pDh"></p>`,`<div class="seg sm nwg" role="group" aria-label="Elektrisch voertuig"><button type="button" data-nw="n">Nieuw</button><button type="button" data-nw="g">Gebruikt</button></div><input type="hidden" id="nw" value="n"><div class="nwu" id="nwG" hidden>${plateForm('E')}<input type="hidden" id="plkE" value="">${slider('eag')}</div>${slider('pE')}<p class="hint" id="pEh"></p>`)}<div class="wsec" style="margin-top:24px">${slider('jr')}</div>${dex(slider('rw'),slider('rwE')+'<p class="hint" id="rwEh"></p>')}`,
  sub:()=>`<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div><div class="wsec"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
  en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+`<div class="ws-row">${sw('aSlim','Slim laden op goedkope uren',0)}${tipBtn('aSlim')}</div></div>`),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
@@ -1812,7 +1807,6 @@ function build(){
  $('rows').innerHTML=ROWS.map(rowHTML).join('');
  $('xrows').insertAdjacentHTML('beforeend',XROWS.map(rowHTML).join(''));
  $('wzB').innerHTML=STEPS.map(s=>`<section class="wst" data-st="${s[0]}" hidden aria-labelledby="wh-${s[0]}"><h3 id="wh-${s[0]}" tabindex="-1">${s[1]}</h3>${STEPBODY[s[0]]()}</section>`).join('');
- $('plW').innerHTML=plateForm('D');
  regOptions();
  document.querySelectorAll(':is(#calc,#wz) input[type=range],:is(#calc,#wz) input[type=checkbox],:is(#calc,#wz) select').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
 }
@@ -2543,7 +2537,7 @@ const plNorm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
 const plFmt=k=>k.replace(/([A-Z])(?=\d)|(\d)(?=[A-Z])/g,'$1$2-');
 const plCheck='<svg class="pok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>';
 const plArrow='<svg class="pgo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
-const plateForm=k=>`<form class="plate" data-plate="${k}" novalidate><input name="kt" maxlength="9" placeholder="Kenteken" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="search" aria-label="${k==='E'?'Kenteken van het gebruikte elektrische voertuig':'Kenteken van je huidige diesel'}"><span class="plo" aria-live="polite"></span><button type="submit" aria-label="Zoek kenteken">${plArrow}${plCheck}</button></form>`;
+const plateForm=k=>`<form class="plate" data-plate="${k}" novalidate><input name="kt" maxlength="9" placeholder="${k==='E'?'Kenteken':'Kenteken (optioneel)'}" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="search" aria-label="${k==='E'?'Kenteken van het gebruikte elektrische voertuig':'Kenteken van je huidige diesel'}"><span class="plo" aria-live="polite"></span><button type="submit" aria-label="Zoek kenteken">${plArrow}${plCheck}</button></form>`;
 /* Vrachtwagenheffing per gewichtsklasse, prijspeil 2026: diesel Euro VI in CO₂-klasse 1, elektrisch in klasse 5 */
 const HEF=[[12000,.113,.025],[18000,.160,.035],[32000,.182,.037],[Infinity,.201,.038]];
 const hefRow=kg=>HEF.find(h=>kg<=h[0]);
@@ -2587,7 +2581,7 @@ function zeTxt(i){
 }
 const XSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 /* Kenteken van je diesel: in het invulveld een korte bevestiging, de details staan in het invulvenster */
-function plPaint(){const i=PL.D,ok=!!(i&&!i.err);document.querySelectorAll('[data-plate="D"]').forEach(f=>{const bad=!!(i&&i.err);f.classList.toggle('bad',bad);f.classList.toggle('ok',ok);f.title=bad?i.err:'';f.elements.kt.setAttribute('aria-invalid',bad);const o=f.querySelector('.plo');if(o)o.textContent=ok&&f.closest('#plW')?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):''})}
+function plPaint(){const i=PL.D,ok=!!(i&&!i.err);document.querySelectorAll('[data-plate="D"]').forEach(f=>{const bad=!!(i&&i.err);f.classList.toggle('bad',bad);f.classList.toggle('ok',ok);f.title=bad?i.err:'';f.elements.kt.setAttribute('aria-invalid',bad);const o=f.querySelector('.plo');if(o)o.textContent=ok?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):''})}
 /* Kenteken van je diesel toepassen: soort voertuig, verbruik en heffing */
 function plApplyD(i){
  if(i.vt!==vtype){applyType(i.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
@@ -2658,7 +2652,7 @@ function dieselPaint(){
  $('dwG').hidden=!cur;
  const lb=document.querySelector('label[for="pD"]');if(lb)lb.textContent=cur?'Waarde nu':F.pD[1];
  const i=PL.D;const ze=cur&&i&&!i.err?zeTxt(i):'';
- setH($('pDh'),!cur||!i?'':i.err?`<span class="warn">${i.err}</span>`:[`<b>${plName(i)}</b>`,i.first&&i.first.getFullYear(),i.euro&&'Euro '+i.euro,ze&&(ze==='Geen toegang'?'Geen toegang tot ZE-zones':'ZE-zone '+ze.toLowerCase())].filter(Boolean).join(' · '));
+ setH($('pDh'),!cur||!i?'':i.err?`<span class="warn">${i.err}</span>`:[i.euro&&'Euro '+i.euro,ze&&(ze==='Geen toegang'?'Geen toegang tot ZE-zones':'ZE-zone '+ze.toLowerCase())].filter(Boolean).join(' · '));
 }
 /* Hoeveel capaciteit de accu ongeveer overhoudt: 1,5% per jaar plus slijtage per volledige laadbeurt */
 const soh=(yrs,kwh,acc)=>Math.max(.6,1-yrs*(.015+Math.min(400,kwh/Math.max(1,acc))*.00004));
