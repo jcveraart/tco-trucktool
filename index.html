@@ -2151,7 +2151,7 @@ document.addEventListener('click',e=>{
  const tol=e.target.closest('[data-tol]');if(tol){const k=tol.dataset.tol;touched=true;if(tolSel.has(k)){tolSel.delete(k);$('k_'+k).value=0}else tolSel.add(k);render();return}
  const g=e.target.closest('[data-gr]');if(g){$('gr').value=g.dataset.gr;touched=true;render();return}
  const ad=e.target.closest('[data-add]');if(ad){const k=ad.dataset.add;if(OPTSW[k]&&!ck(OPTSW[k]))$(OPTSW[k]).checked=true;touched=true;render();openWz(k);return}
- const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();history.pushState(null,'','#uitgebreid');route(false);if(!touched)openWz('use');return}
+ const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();history.pushState(null,'','#uitgebreid');route(false);openWz('use');return}
  if(e.target.closest('[data-reset]')){reset();return}
  const j=e.target.closest('[data-jump]');if(j){const t=$(j.dataset.jump);if(t.closest('.faq'))t.classList.add('open');t.scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
  const fh=e.target.closest('.faq section>h2');if(fh){fh.parentNode.classList.toggle('open');fh.setAttribute('aria-expanded',fh.parentNode.classList.contains('open'));return}
@@ -2526,10 +2526,7 @@ function mUse(id){
  if($('mDlg').open)$('mDlg').close();
  if(!modelApply(id))return;
  history.pushState(null,'',location.pathname+location.search);route(false);
- const t=$('toast');
- t.innerHTML=`<span><b>${mName(m)}</b> gekozen. Accu en verbruik staan klaar; controleer je aanschafprijs en overige cijfers.</span><button class="cta" type="button" data-step="buy" data-toastx>Prijs invullen</button><button class="wzx" type="button" data-toastx aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
- t.hidden=false;clearTimeout(t._t);t._t=setTimeout(()=>{t.hidden=true},9000);
- requestAnimationFrame(()=>{const b=$('board');b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')});
+ openWz('use');
 }
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-toastx]'))$('toast').hidden=true;
