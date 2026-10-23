@@ -955,6 +955,11 @@ a.cta.big,a.fcta{text-decoration:none}
 [data-page=uitgebreid] .pbq b{font:600 26px/1.15 var(--display);letter-spacing:0}
 [data-page=uitgebreid] .pbq b small{font:500 13px var(--text)}
 [data-page=uitgebreid] .pbw{margin:22px 20px 0}
+#xAn .pbc:has(+.pbsw:not([hidden])){border-radius:6px 6px 0 0!important}
+.pbsw{--fill:var(--ink);--track:var(--line);--thumb:var(--card);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 32px;padding:14px 20px 16px;border-radius:0 0 6px 6px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.pbsl{display:block;min-width:0}
+.pbsl span{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.pbsl b{font:600 15px var(--text);letter-spacing:0;text-transform:none;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 [data-page=uitgebreid] .pbc text{font:500 11px var(--mono)}
 [data-page=uitgebreid] .pbc .bel text{font:600 13px var(--text)}
 [data-page=uitgebreid] .pbk{margin:8px 20px 16px;font:500 12px var(--mono);letter-spacing:.04em;text-transform:uppercase}
@@ -1349,6 +1354,7 @@ html.embed .intro{padding-top:20px}
  .snp,[data-page=uitgebreid] .bc2 p{display:none}
  [data-page=uitgebreid] .hmw{padding:14px 12px;overflow-x:auto}
  [data-page=uitgebreid] .pbw{margin:18px 14px 0}
+ .pbsw{grid-template-columns:minmax(0,1fr);gap:6px;padding:12px 14px 10px}
  .pbtip{top:auto;bottom:calc(100% + 8px);min-width:0;width:min(250px,100%);padding:8px 10px;font-size:12px}
  .pbtip b{margin-bottom:3px;font-size:11px}
  [data-page=uitgebreid] .hmw>small{display:block;line-height:1.5}
@@ -1609,6 +1615,7 @@ html.embed .intro{padding-top:20px}
    <section class="an" id="xAn" aria-labelledby="hAn">
     <h2 id="hAn">Terugverdientijd</h2>
     <div id="pbX"></div>
+    <div class="pbsw" id="pbS"></div>
    </section>
 
    <section class="an" aria-labelledby="hSn">
@@ -2580,7 +2587,7 @@ function render(){
  // Uitkomst
  board(r);simpleTiles();rowsPaint(r,x);
  {
-  setH($('pbX'),payHTML(x));
+  setH($('pbX'),payHTML(x));pbSl();
   const anyOpt=optSteps().some(s=>optOn(s[0]));$('wfD').hidden=!anyOpt;
   const items=[['Basis',b.td-b.te,1],['Financiering',x.dFin],['Laadpaal',x.dLad],...(truck?[['Tol buitenland',x.dTol]]:[]),['Laden onderweg',x.dOw],['Totaal',x.td-x.te,2]];
   let run=0;const pts=items.map(it=>{if(it[2]){run=it[1];return[0,it[1]]}const a=run;run+=it[1];return[a,run]});
@@ -2648,6 +2655,23 @@ function payHTML(x){
  const svg=`<svg viewBox="0 0 ${W} ${H}" tabindex="0" role="img" aria-label="Opgeteld voordeel van elektrisch per jaar. Met de pijltjes loop je door de maanden.">${clip}${grid}<path d="${ar}" class="au" clip-path="url(#pbUp)"/><path d="${ar}" class="ad" clip-path="url(#pbDn)"/>${fan}${lm}<path d="${seg}" class="lu" clip-path="url(#pbUp)"/><path d="${seg}" class="ld" clip-path="url(#pbDn)"/>${brk}${mk}${ticks}<g class="hv" style="display:none"><line class="hl" x1="0" x2="0" y1="${mT}" y2="${bot}"/><circle class="hd" r="5.5"/></g><rect class="hit" x="${mL}" y="0" width="${W-mL-mR}" height="${H}"/></svg>`;
  return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div>${PB?(()=>{const bs=PB.map(p=>p.be),f=bs.filter(z=>z!==null),n=bs.length-f.length;return f.length&&(n||Math.max(...f)-Math.min(...f)>=1/12)?`<div class="pbr">Bandbreedte <b>${ym(Math.min(...f))} tot ${n?'niet terugverdiend':ym(Math.max(...f))}</b></div>`:''})():''}</div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b>${PB?`<small class="pbqr">${spanTxt(PB.map(p=>Math.max(0,p.gap)),eur,.5)}</small>`:''}</div><div><span>Lagere gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b>${PB?`<small class="pbqr">${spanTxt(PB.map(p=>p.sv),eur,.5)}</small>`:''}</div></div></div><div class="pbw">${svg}<div class="pbtip" hidden aria-live="polite"></div></div><div class="pbk"><span><i class="kd"></i><i class="ku"></i>Voordeel elektrisch, opgeteld</span>${PB?'<span><i class="kf"></i>Bandbreedte</span>':''}</div></div>`;
 }
+/* Onder de grafiek: de drie schuiven die voor deze berekening de terugverdientijd het meest verschuiven, gekoppeld aan de echte invoer */
+let pbHold=false;
+function pbKeys(){
+ const be=o=>{const p=payback(calcX(o),o);return p.be===null?30:Math.min(30,p.be)};
+ return['km','dp','sp','pD','pE','ld','le'].filter(id=>$(id)).map(id=>{const e=$(id),x=+e.value,mk=y=>{const o={[id]:y};if(id==='km')o.kmH=x?v('kmH')*y/x:0;return o};return[id,Math.abs(be(mk(Math.min(+e.max,x*1.1)))-be(mk(Math.max(+e.min,x*.9))))]}).filter(q=>q[1]>1/120).sort((a,b)=>b[1]-a[1]).slice(0,3).map(q=>q[0]);
+}
+function pbSl(){
+ const h=$('pbS');if(!h)return;
+ const keep=h._ids&&(pbHold||h.contains(document.activeElement)),ids=keep?h._ids:pbKeys(),k=ids.join();
+ if(h._k!==k){h._k=k;h._ids=ids;h.innerHTML=ids.map(id=>`<label class="pbsl"><span>${SENS[id][0]}<b></b></span><input type="range" data-pb="${id}"></label>`).join('')}
+ h.hidden=!ids.length;
+ h.querySelectorAll('[data-pb]').forEach(r=>{const e=$(r.dataset.pb);r.min=e.min;r.max=e.max;r.step=e.step;r.value=e.value;r.previousElementSibling.querySelector('b').textContent=fmtV(r.dataset.pb,+e.value)});
+}
+document.addEventListener('input',e=>{const id=e.target.dataset&&e.target.dataset.pb;if(!id)return;const o=$(id);o.value=e.target.value;o.dispatchEvent(new Event('input',{bubbles:true}))});
+$('pbS').addEventListener('pointerdown',()=>{pbHold=true});
+addEventListener('pointerup',()=>{if(pbHold){pbHold=false;pbSl()}});addEventListener('pointercancel',()=>{pbHold=false});
+$('pbS').addEventListener('focusout',()=>setTimeout(pbSl,0));
 /* Schuiven over de grafiek: per maand de opgetelde kosten van diesel en elektrisch en het verschil */
 function pbShow(m){
  const d=PBD,w=$('pbX').querySelector('.pbw');if(!d||!w)return;
