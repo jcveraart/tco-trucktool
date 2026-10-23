@@ -633,6 +633,7 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mcr small{font-size:15px;color:var(--ink-2)}
 .mbar{position:relative;display:block;height:6px;border-radius:3px;background:var(--line)}
 .mbar i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--volt)}
+.mbar i.mx{opacity:.35}
 .mcs{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0;padding:0;list-style:none}
 .mcs li{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:15px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .mcs b{color:var(--ink);font-weight:600}
@@ -2444,11 +2445,15 @@ const arrow='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 /* Eén kaart per model. Actieradius is het hoofdgetal; accu, laden en prijs staan eronder. Uitvoeringen wissel je in de kaart. */
 function mCard(k,vs,top,mx){
  const m=vs.find(x=>x.id===mVar[k])||top,sel=mSel.includes(m.id),now=m.st==='nu',rt=m.rt||'',upto=/^tot\s/.test(rt);
- const pick=vs.length>1?`<div class="mvar"><div class="seg sm" role="radiogroup" aria-label="Uitvoering">${vs.map(x=>`<button type="button" role="radio" data-mvar="${k}" data-mvid="${x.id}" aria-checked="${x.id===m.id}" tabindex="${x.id===m.id?0:-1}"${x.vl?` title="${x.vl}"`:''}>${x.vl?x.vl.split(' · ')[0]:mCapText(x)+' kWh'}</button>`).join('')}</div></div>`:'<div class="mvar" aria-hidden="true"></div>';
+ /* Zolang er geen uitvoering gekozen is, toont een familie de actieradius van kleinste tot grootste uitvoering */
+ const rs=vs.map(x=>x.r),r0=Math.min(...rs),r1=Math.max(...rs),span=!mVar[k]&&r0!==r1;
+ const caps=vs.map(x=>x.g||x.a||x.u||x.ue),ps=vs.map(x=>x.price).filter(Boolean),bat=span?mSpan(Math.min(...caps),Math.max(...caps)):mCapText(m),kw=span?Math.max(...vs.map(mK)):mK(m);
+ const pr=span?(ps.length?(ps.length<vs.length||Math.min(...ps)!==Math.max(...ps)?'vanaf ':'')+eur(Math.min(...ps)):''):m.price?eur(m.price):'';
+ const pick=vs.length>1?`<div class="mvar"><div class="seg sm" role="radiogroup" aria-label="Uitvoering">${vs.map(x=>`<button type="button" role="radio" data-mvar="${k}" data-mvid="${x.id}" aria-checked="${span?false:x.id===m.id}" tabindex="${(span?x===vs[0]:x.id===m.id)?0:-1}"${x.vl?` title="${x.vl}"`:''}>${x.vl?x.vl.split(' · ')[0]:mCapText(x)+' kWh'}</button>`).join('')}</div></div>`:'<div class="mvar" aria-hidden="true"></div>';
  return`<article class="mc${sel?' sel':''}"><div class="mch"><span>${m.b}</span><span class="mst${now?'':' soon'}"><i aria-hidden="true"></i>${now?'Leverbaar':'Verwacht '+m.y}</span></div>
   <h3 class="mcn">${m.fam||m.m}</h3>
-  <div class="mcr"><p><b>${upto?rt.slice(4):rt||nf(m.r)}</b><small>km</small></p>${mBar(m,mx)}</div>
-  <ul class="mcs"><li>${mIc('bat')}<b>${mCapText(m)}</b> kWh</li>${mK(m)?`<li>${mIc('bolt')}<b>${nf(mK(m))}</b> kW</li>`:''}<li${m.price?'':' class="na"'}>${mIc('eur')}${m.price?`<b>${eur(m.price)}</b>`:'Op aanvraag'}</li></ul>${pick}
+  <div class="mcr"><p><b>${span?`${nf(r0)}–${nf(r1)}`:upto?rt.slice(4):rt||nf(m.r)}</b><small>km actieradius</small></p>${span?`<span class="mbar" aria-hidden="true"><i class="mx" style="width:${Math.min(100,r1/mx*100)}%"></i><i style="width:${Math.min(100,r0/mx*100)}%"></i></span>`:mBar(m,mx)}</div>
+  <ul class="mcs"><li>${mIc('bat')}<b>${bat}</b> kWh</li>${kw?`<li>${mIc('bolt')}<b>${nf(kw)}</b> kW</li>`:''}<li${pr?'':' class="na"'}>${mIc('eur')}${pr?`<b>${pr}</b>`:'Op aanvraag'}</li></ul>${pick}
   <div class="mca"><button class="cta" type="button" data-muse="${m.id}">Reken hiermee ${arrow}</button><label class="mcv"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''}>Vergelijk</label><button type="button" class="mci" data-mrow="${m.id}" aria-haspopup="dialog">Info</button></div></article>`;
 }
 function mInfo(id){
