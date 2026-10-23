@@ -1168,22 +1168,13 @@ html.embed .intro{padding-top:20px}
  .vt svg{width:44px;height:20px;margin:0}
  .vt b{font-size:13px;font-weight:600}
  .vt small{display:none}
- #calc .cmain{display:flex;flex-direction:column}
- #calc .board{order:1}
- #calc #ins{order:2}
- #calc .story{order:3;margin:32px 0 0}
  .bd{padding:18px 14px 20px}
  .big{font-size:44px}
  .bfoot{padding:14px}
  .bfoot p{font-size:16px;line-height:1.45}
  .bct b{font-size:15px}
  .bcta{gap:12px}
- #calc .story{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px}
- #calc .story .sumh,#calc .story .sumb{display:contents}
- #calc .story .sumh h2{flex:1;min-width:0;font-size:20px}
- #calc .story .sum{flex:1 1 100%}
  #calc .story .sum{order:4}
- #calc .story #sumRs{order:9;margin-top:14px;font-size:14px;font-weight:500;color:var(--ink-2)}
  .sum{grid-template-columns:minmax(0,1fr)!important;margin-top:12px}
  .st{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:10px 40px 10px 14px}
  .st span{flex:none;font-size:14px}
@@ -1199,6 +1190,11 @@ html.embed .intro{padding-top:20px}
  .wzb{padding-top:18px}
  .wzb .wst>h3{margin-bottom:20px}
 }
+/* Calculator: uitkomst direct onder de voertuigkeuze, de uitgangspunten eronder zonder eigen kop */
+#calc .story{margin:12px 0 0}
+#calc .story .sum{margin-top:0}
+#sumRs{display:block;margin:10px 0 0 auto;font-size:14px;font-weight:500;color:var(--ink-3)}
+#sumRs[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -1231,12 +1227,13 @@ html.embed .intro{padding-top:20px}
 
  <div class="wrap cg" id="cg">
   <div class="cmain">
-   <section class="story" id="story" aria-labelledby="hSum">
-    <div class="sumh"><h2 id="hSum">Uitgangspunten</h2><div class="sumb"><button class="lnk" type="button" data-reset id="sumRs">Herstel voorbeeldcijfers</button><input type="hidden" id="plk" value=""><button class="btn" id="wzOpen" type="button" data-step="use"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg><span>Aanpassen</span></button></div></div>
-    <div class="sum" id="sum"></div>
-   </section>
    <div class="board" id="board" aria-live="polite"></div>
    <div class="scn" id="scn" hidden></div>
+   <section class="story" id="story" aria-label="Uitgangspunten">
+    <input type="hidden" id="plk" value="">
+    <div class="sum" id="sum"></div>
+    <button class="lnk" type="button" data-reset id="sumRs" hidden>Herstel voorbeeldcijfers</button>
+   </section>
    <div class="ins" id="ins"></div>
 
 
@@ -1997,7 +1994,7 @@ function render(){
  const used=TOL.reduce((a,c)=>a+v('k_'+c[0]),0);$('xth').textContent=`${nf(used)} van ${nf(kmH)} km`;$('xtb').style.width=(kmH?Math.min(100,used/kmH*100):0)+'%';
  ['xFin','xLad','xOw','xZon'].forEach(id=>{$(id).closest('.wst').querySelector('.xg').hidden=!ck(id)});
  {const big=gi===0,pc=big?20:40,sv0=Math.min(v('xl0')*pc/100,big?44000:88000);setH($('xsh'),ck('xSp')?(sv0>=2500?`<b>Subsidie ${eur(sv0)}</b> (${pc}%, maximaal ${eur(big?44000:88000)})`:`Subsidie ${eur(sv0)}: te laag, het minimum is € 2.500`):'')}
- $('hSum').textContent=touched?'Jouw cijfers':'Uitgangspunten';$('sumRs').hidden=!touched;
+ $('sumRs').hidden=!touched;
  {const amt={fin:x.E.fin-x.D.fin,lad:x.E.lad,ow:-x.dOw,tol:x.dTol};
   setH($('addL'),optSteps().map(s=>{const k=s[0],o=optOn(k),a=amt[k];return`<button type="button" class="addc" data-add="${k}" aria-pressed="${o}"><i aria-hidden="true">${o?'✓':'+'}</i>${s[1]}${o&&Math.abs(a)>=.5?`<small>${a>0?'+':'−'} ${eur(Math.abs(a))} per jaar</small>`:''}</button>`}).join(''))}
  layout();
