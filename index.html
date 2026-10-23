@@ -796,30 +796,40 @@ body{font-size:16px}
 .fln i{display:inline-flex;align-items:center;gap:10px;font:600 15px var(--text);font-style:normal;color:#fff;padding:10px 16px;border-radius:4px;background:var(--volt)}
 .fln:hover i{background:var(--volt-ink)}
 .fln svg{width:18px;height:18px}
-.fa{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:48px 64px;align-items:start}
-.fph{padding:22px 24px 18px;border-radius:6px;background:var(--asph);color:var(--on-asph)}
-.fphh{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.fphh span,.fphr>span,.fphk,.fio h2,.fst li::before,.fpr dt,.ffl,.ff>span,.ffs legend{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
-.fphh span:last-child{color:var(--on-asph-2)}
-.fphr{display:grid;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:12px;margin:0 0 8px}
+.fa{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:48px 64px;align-items:start;padding-bottom:24px}
+.fa>.ffm{scroll-margin-top:80px}
+@media(min-width:901px) and (min-height:860px){.fa>.ffm{position:sticky;top:88px}}
+.vgo{display:none}
+.vpl{margin:0;padding:24px 24px 20px;border-radius:6px;background:var(--asph);color:var(--on-asph)}
+.vplh{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.vplh span,.vkp span,.fphr>span,.fphr>b,.fphk,.vsec h2,.vst li::before,.ff>span,.ffs legend,.vcl{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.vplh span:last-child,.vkp span{color:var(--on-asph-2)}
+.vkp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 24px;padding-bottom:22px;border-bottom:1px solid var(--asph-3)}
+.vkp b{display:block;font:600 34px/1.05 var(--display);letter-spacing:-.01em;white-space:nowrap}
+.vkp div:first-child b{color:var(--volt-2)}
+.vkp span{display:block;margin-top:6px}
+.fphr{display:grid;grid-template-columns:44px minmax(0,1fr) 28px;align-items:center;gap:12px;margin:0 0 8px}
 .fphr>span{color:var(--on-asph-2)}
+.fphr>b{text-align:right;color:var(--on-asph)}
 .fphr>div{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:3px}
-.fphr i{height:18px;border-radius:2px;background:var(--asph-3)}
+.fphr i{height:16px;border-radius:2px;background:var(--asph-3)}
 .fphr i.e{background:var(--volt-2)}
 .fphk{display:flex;gap:20px;margin-top:16px;color:var(--on-asph-2)}
 .fphk span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:2px;background:var(--asph-3);vertical-align:-1px}
 .fphk .ke::before{background:var(--volt-2)}
-.fio{margin-top:44px}
-.fio h2{margin:0 0 10px;color:var(--ink-3)}
-.fio ul{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
-.fio li{padding:11px 0;border-bottom:1px solid var(--line);font-weight:500}
-.fst{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:44px 0 0;padding:0;list-style:none;counter-reset:fs}
-.fst li{counter-increment:fs;padding-top:12px;border-top:2px solid var(--ink)}
-.fst li::before{content:counter(fs,decimal-leading-zero);display:block;margin-bottom:4px;color:var(--ink-3)}
-.fst b{font-weight:600;line-height:1.3}
-.fpr{display:flex;gap:8px 24px;flex-wrap:wrap;align-items:baseline;margin:40px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.fpr dt{color:var(--ink-3)}
-.fpr dd{margin:0;font-weight:600}
+.vsec{margin-top:48px}
+.vsec h2{margin:0 0 14px;color:var(--ink-3)}
+.vget{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;margin:0;padding:0;list-style:none}
+.vget li{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-weight:500;line-height:1.35}
+.vget svg{flex:none;width:18px;height:18px;color:var(--volt)}
+.vst{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none;counter-reset:vs}
+.vst li{counter-increment:vs;position:relative;padding-top:18px;border-top:2px solid var(--ink)}
+.vst li::before{content:counter(vs,decimal-leading-zero);position:absolute;top:-11px;left:0;padding-right:8px;background:var(--page);color:var(--ink);line-height:20px}
+.vst b{display:block;font-weight:600;line-height:1.3}
+.vst span{display:block;margin-top:4px;color:var(--ink-2);font-size:15px;line-height:1.45}
+.vcl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-6px 0 18px;padding:9px 8px 9px 12px;border-radius:4px;background:var(--volt-soft);color:var(--volt-ink)}
+.vcl button{border:0;background:none;color:inherit;font:600 18px/1 var(--text);padding:2px 6px;cursor:pointer}
+.ff>span small{margin-left:4px;font:400 12px var(--text);color:var(--ink-3);text-transform:none;letter-spacing:0}
 .ffm{padding:28px;border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
 .ffm h2{margin:0 0 20px;font:600 24px/1.2 var(--text);letter-spacing:-.01em}
 .ffr{margin-bottom:14px}
@@ -840,9 +850,10 @@ body{font-size:16px}
 .fsub a{color:var(--ink-3);font-size:14px}
 .fsub .cta{border:0;cursor:pointer}
 .fsub .cta[disabled]{opacity:.6;cursor:progress}
+.fsub small{color:var(--ink-3);font-size:14px}
 .fok p{margin:0;color:var(--ink-2)}
-@media(max-width:900px){.fa{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:560px){.fst{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}.ffr.two{grid-template-columns:minmax(0,1fr)}.ffm{padding:22px 18px}.fphr>div{gap:2px}.fphr i{height:14px}.fln{padding:18px}}
+@media(max-width:900px){.fa{grid-template-columns:minmax(0,1fr)}.fa>.ffm{position:static;max-width:560px}}
+@media(max-width:560px){.ffr.two{grid-template-columns:minmax(0,1fr)}.ffm{padding:22px 18px}.fphr>div{gap:2px}.fphr i{height:13px}.fln{padding:18px}}
 @media print{.fln{display:none!important}}
 /* Cookiemelding */
 .ck{position:fixed;z-index:40;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(420px,calc(100vw - 32px));padding:18px 20px 20px;border-radius:6px;background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 24px 48px -20px rgba(0,0,0,.45);font-size:15px;line-height:1.5}
@@ -1301,8 +1312,18 @@ html.embed .intro{padding-top:20px}
  .fsub{flex-direction:column;align-items:stretch;gap:14px}
  .fsub .cta{justify-content:center;min-height:48px}
  .fsub a{align-self:center;padding:4px 8px}
- .fio{margin-top:36px}
- .fst{margin-top:36px}
+ .vgo{display:flex;justify-content:center;width:100%;margin-top:22px;min-height:48px}
+ .fsub small{align-self:center}
+ .fsub small a{padding:0}
+ .vpl{padding:20px 16px 16px}
+ .vkp{gap:10px;margin-bottom:18px;padding-bottom:18px}
+ .vkp b{font-size:24px}
+ .vkp span{font-size:11px;letter-spacing:.03em}
+ .fphr{grid-template-columns:36px minmax(0,1fr) 20px;gap:8px}
+ .vsec{margin-top:36px}
+ .vget{grid-template-columns:minmax(0,1fr)}
+ .vst{grid-template-columns:minmax(0,1fr);gap:24px}
+ .fa{gap:36px}
 
  /* Invulvenster */
  .wzb{padding:20px 18px 32px}
@@ -1796,32 +1817,31 @@ html.embed .intro{padding-top:20px}
 <!-- ===== Vlootanalyse ===== -->
 <section class="page" data-page="vloot" hidden>
  <div class="wrap">
-  <div class="phead"><h1 tabindex="-1">Vlootanalyse</h1><p>Van één voertuig naar je hele vloot. We zoeken samen uit welke voertuigen elektrisch kunnen, wanneer, en hoe je ze laadt.</p></div>
+  <div class="phead"><h1 tabindex="-1">Vlootanalyse</h1><p>Welke voertuigen kunnen elektrisch, wanneer vervang je ze en hoe laad je ze? We rekenen het door voor je hele vloot.</p><button class="cta vgo" type="button" id="fGo">Neem contact op</button></div>
   <div class="fa">
    <div class="fam">
-    <div class="fph" aria-label="Voorbeeld van een vervangingsplan">
-     <div class="fphh"><span>Vervangingsplan</span><span>Voorbeeld · 24 voertuigen</span></div>
+    <figure class="vpl" aria-label="Voorbeeld van een vlootplan voor 24 voertuigen">
+     <figcaption class="vplh"><span>Voorbeeld</span><span>Vloot van 24 voertuigen</span></figcaption>
+     <div class="vkp"><div><b>18</b><span>Elektrisch haalbaar</span></div><div><b>€ 96.000</b><span>Lager per jaar</span></div><div><b>−310 t</b><span>CO₂ per jaar</span></div></div>
      <div id="fPh"></div>
      <div class="fphk" aria-hidden="true"><span class="kd">Diesel</span><span class="ke">Elektrisch</span></div>
-    </div>
-    <div class="fio">
-     <div><h2>Wat we uitzoeken</h2><ul><li>Per rit: elektrisch haalbaar of niet</li><li>Ideale vlootsamenstelling en modellen</li><li>Laadplan per locatie</li><li>Vervangingsplan per jaar</li><li>Kosten, subsidies en CO₂ voor de hele vloot</li></ul></div>
-    </div>
-    <ol class="fst"><li><b>Contact</b></li><li><b>Kennismaking</b></li><li><b>Analyse</b></li><li><b>Plan voor je vloot</b></li></ol>
-    <dl class="fpr"><dt>Eerste gesprek</dt><dd>Vrijblijvend</dd></dl>
+    </figure>
+    <div class="vsec"><h2>Je krijgt</h2><ul class="vget"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Haalbaarheid per voertuig en rit</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Vervangingsplan per jaar</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Laadplan per locatie</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Kosten, subsidies en CO₂</li></ul></div>
+    <div class="vsec"><h2>Zo werkt het</h2><ol class="vst"><li><b>Kennismaking</b><span>Vrijblijvend gesprek over je vloot en ritten</span></li><li><b>Analyse</b><span>We rekenen elk voertuig en elke rit door</span></li><li><b>Vlootplan</b><span>Rapport met plan, samen besproken</span></li></ol></div>
    </div>
 
    <form class="ffm" id="fForm" novalidate>
-    <h2>Kennismaken</h2>
+    <h2>Plan een kennismaking</h2>
+    <p class="vcl" id="fCl" hidden><span>Je berekening gaat mee</span><button type="button" id="fClX" aria-label="Berekening niet meesturen">×</button></p>
     <div class="ffr two"><label class="ff"><span>Naam</span><input name="contact_name" required maxlength="200" autocomplete="name"></label><label class="ff"><span>Bedrijf</span><input name="company" required maxlength="200" autocomplete="organization"></label></div>
-    <div class="ffr two"><label class="ff"><span>E-mail</span><input name="email" type="email" required maxlength="200" autocomplete="email"></label><label class="ff"><span>Telefoon</span><input name="phone" type="tel" maxlength="50" autocomplete="tel"></label></div>
+    <div class="ffr two"><label class="ff"><span>E-mail</span><input name="email" type="email" required maxlength="200" autocomplete="email"></label><label class="ff"><span>Telefoon <small>optioneel</small></span><input name="phone" type="tel" maxlength="50" autocomplete="tel"></label></div>
     <fieldset class="ffs"><legend>Aantal voertuigen</legend><div class="seg"><label><input type="radio" name="fleet_size" value="1-5"><span>1–5</span></label><label><input type="radio" name="fleet_size" value="6-20" checked><span>6–20</span></label><label><input type="radio" name="fleet_size" value="21-50"><span>21–50</span></label><label><input type="radio" name="fleet_size" value="50+"><span>50+</span></label></div></fieldset>
-    <div class="ffr"><label class="ff"><span>Bericht</span><textarea name="message" rows="3" maxlength="4000"></textarea></label></div>
+    <div class="ffr"><label class="ff"><span>Bericht <small>optioneel</small></span><textarea name="message" rows="3" maxlength="4000"></textarea></label></div>
     <input class="fhp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="ferr" id="fErr" role="alert" hidden></p>
-    <div class="fsub"><button class="cta" type="submit" id="fSend"><span>Neem contact op</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><a href="#privacy">Privacy</a></div>
+    <div class="fsub"><button class="cta" type="submit" id="fSend"><span>Neem contact op</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><small>Vrijblijvend · <a href="#privacy">Privacy</a></small></div>
    </form>
-   <div class="ffm fok" id="fOk" hidden tabindex="-1"><h2>Bedankt</h2><p>We nemen contact met je op.</p></div>
+   <div class="ffm fok" id="fOk" hidden tabindex="-1"><h2>Bedankt</h2><p>We nemen contact met je op voor een kennismaking.</p></div>
   </div>
  </div>
 </section>
@@ -3127,14 +3147,17 @@ async function syncExtra(){
 
 /* ===== Vlootanalyse: contactaanvraag naar Supabase (tabel fleet_requests, alleen insert) ===== */
 const CONTACT_MAIL='';
-$('fPh').innerHTML=[[2026,2],[2027,6],[2028,12],[2029,18],[2030,24]].map(([y,n])=>`<div class="fphr"><span>${y}</span><div>${Array.from({length:24},(_,i)=>`<i${i<n?' class="e"':''}></i>`).join('')}</div></div>`).join('');
+$('fPh').innerHTML=[[2026,3],[2027,7],[2028,12],[2029,16],[2030,18]].map(([y,n])=>`<div class="fphr"><span>${y}</span><div>${Array.from({length:24},(_,i)=>`<i${i<n?' class="e"':''}></i>`).join('')}</div><b>${n}</b></div>`).join('');
 let fCalc='';
 function fErr(t){const e=$('fErr');e.innerHTML=t;e.hidden=!t}
 document.addEventListener('click',e=>{
  const c=e.target.closest('[data-fleet]');if(!c)return;
  const from=c.dataset.fleet;track('fleet_cta_click',{from});
  if(from==='calc'){try{fCalc=shareURL()}catch(x){}}
+ $('fCl').hidden=!fCalc;
 });
+$('fClX').addEventListener('click',()=>{fCalc='';$('fCl').hidden=true});
+$('fGo').addEventListener('click',()=>{$('fForm').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('fForm').elements.contact_name.focus({preventScroll:true}),400)});
 $('fForm').addEventListener('submit',async e=>{
  e.preventDefault();const f=e.target,fd=new FormData(f),val=n=>String(fd.get(n)||'').trim();
  if(val('website'))return;
