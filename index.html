@@ -495,14 +495,9 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .qs:hover::after,.qs:focus-visible::after{opacity:1;transition-delay:.15s}
 @media(hover:none){.qs::after{display:none}}
 .slb:has(.rxp.open) .qs{display:none}
-.rxp button,.rxc{height:18px;padding:0 7px;border:0;border-radius:9px;background:none;font:500 11px/18px var(--mono);color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
+.rxp button{height:18px;padding:0 7px;border:0;border-radius:9px;background:none;font:500 11px/18px var(--mono);color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
 .rxp button:hover{color:var(--ink);background:var(--card)}
 .rxp button[aria-pressed=true]{background:var(--ink);color:#fff}
-.rxc{display:inline-flex;align-items:center;cursor:text}
-.rxc.on{background:var(--ink);color:#fff}.rxc.on input,.rxc.on b{color:#fff}
-.rxc input{width:5ch;field-sizing:content;min-width:2ch;border:0;background:none;outline:0;padding:0;text-align:right;font:inherit;color:var(--ink)}
-.rxc input::placeholder{color:var(--ink-3)}
-.rxc b{font-weight:500;color:var(--ink-3)}
 .rxp .rxo{color:var(--ink-3);border-left:1px solid var(--line-2);border-radius:0 9px 9px 0;margin-left:2px}
 .rng .srg{padding-bottom:18px}
 .rng .rx{display:block;position:absolute;left:0;right:0;top:0;pointer-events:none;background:none}
@@ -940,7 +935,7 @@ a.cta.big,a.fcta{text-decoration:none}
 }
 @media(max-width:640px){
  /* Algemeen */
- .intro{display:grid;gap:18px;padding:26px 0 20px}
+ .intro{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding:26px 0 20px}
  .intro .mode{display:grid;grid-template-columns:1fr 1fr;margin:0}
  .mode a{padding:10px 12px;text-align:center}
  .phead{padding:28px 0 22px}
@@ -1064,11 +1059,10 @@ a.cta.big,a.fcta{text-decoration:none}
  .slh:has(.rxp.open){flex-wrap:wrap;justify-content:flex-start;gap:8px}
  .slb:has(.rxp.open){display:contents}
  .slh:has(.rxp.open) .slv{margin-left:auto}
- .rxp.open{order:9;display:flex;flex:1 1 100%;height:auto;margin-top:4px;padding:3px;gap:2px;border-radius:6px}
- .rxp button,.rxc{flex:1 1 0;justify-content:center;height:36px;padding:0 4px;border-radius:4px;font-size:13px;line-height:36px}
- .rxp .rxo{flex:0 0 auto;padding:0 10px;border-radius:4px;margin-left:0}
- .rxc{flex:1.4 1 0}
- .rxc input{font-size:16px}
+ .rxp.open{order:9;display:inline-flex;flex:0 0 auto;height:30px;margin:2px 0 0;padding:2px;gap:2px;border-radius:4px}
+ .rxp button{position:relative;height:26px;padding:0 11px;border-radius:3px;font-size:12px;line-height:26px}
+ .rxp button::before{content:"";position:absolute;inset:-7px 0}
+ .rxp .rxo{margin-left:2px;border-radius:3px}
  .rng .srg{padding-bottom:20px}
  .rng .rxl{top:40px;font-size:12px}
  .wzf{display:grid;grid-template-columns:1fr 1.6fr;gap:10px;padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px))}
@@ -1087,6 +1081,47 @@ a.cta.big,a.fcta{text-decoration:none}
  .cta.big,.fcta{font-size:15px}
  .mcat.seg button,.mfil #mRg button{font-size:13px;padding-left:4px;padding-right:4px}
  .qk button{font-size:12px}
+}
+/* Telefoon, calculator: eerst de uitkomst, dan de uitgangspunten als rustige lijst */
+@media(max-width:640px){
+ .intro{gap:14px;padding:22px 0 16px}
+ .intro h1{font-size:30px}
+ .mode a{padding:8px 12px;font-size:15px}
+ .pick{margin-bottom:16px}
+ .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .vt{align-items:center;gap:4px;padding:10px 2px 9px;text-align:center}
+ .vt svg{width:44px;height:20px;margin:0}
+ .vt b{font-size:13px;font-weight:600}
+ .vt small{display:none}
+ #calc .cmain{display:flex;flex-direction:column}
+ #calc .board{order:1}
+ #calc #ins{order:2}
+ #calc .story{order:3;margin:32px 0 0}
+ .bd{padding:18px 14px 20px}
+ .big{font-size:44px}
+ .bfoot{padding:14px}
+ .bfoot p{font-size:16px;line-height:1.45}
+ .bct b{font-size:15px}
+ .bcta{gap:12px}
+ #calc .story{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px}
+ #calc .story .sumh,#calc .story .sumb{display:contents}
+ #calc .story .sumh h2{flex:1;min-width:0;font-size:20px}
+ #calc .story .sum{flex:1 1 100%}
+ #calc .story #sumRs{order:9;margin-top:14px;font-size:14px;font-weight:500;color:var(--ink-2)}
+ .sum{grid-template-columns:minmax(0,1fr)!important;margin-top:12px}
+ .st{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:10px 40px 10px 14px}
+ .st span{flex:none;font-size:14px}
+ .st b{min-width:0;font-size:15px;font-weight:600;text-align:right}
+ .st svg{top:50%;margin-top:-8px;right:14px}
+ #ins .in>b{font-size:19px}
+ #ins .in .slb{font-size:11px!important;letter-spacing:.03em}
+ .fcta{display:none!important}
+ /* Invulvenster: de kop is alleen de stap */
+ .wzh{padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px}
+ .wzh h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .wzk{font-size:12px}
+ .wzb{padding-top:18px}
+ .wzb .wst>h3{margin-bottom:20px}
 }
 </style>
 </head>
@@ -1585,9 +1620,8 @@ function srPaint(){
   const[a,b]=srLim(id),mn=+e.min,mx=+e.max,f=n=>mx>mn?(n-mn)/(mx-mn):0,w=sl.querySelector('.srg').clientWidth;
   sl.style.setProperty('--a',f(a));sl.style.setProperty('--b',f(b));
   sl.querySelectorAll('.rx').forEach(r=>{r.min=mn;r.max=mx;r.step=e.step;r.value=r.dataset.x==='lo'?a:b});
-  const pc=SR[id][2],ci=sl.querySelector('[data-rpc]'),pre=[2.5,5,10,20].includes(pc);
+  const pc=SR[id][2];
   sl.querySelectorAll('[data-rp]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.rp===pc));
-  ci.parentNode.classList.toggle('on',pc!=null&&!pre);if(ci!==document.activeElement)ci.value=pc!=null&&!pre?nf(pc,pc%1?1:0):'';
   const ps=[...sl.querySelectorAll('.rxl')].map(l=>{const lo=l.dataset.x==='lo';l.textContent=fmtV(id,lo?a:b);const c=f(lo?a:b)*(w-24)+12,lw=l.offsetWidth;return{l,lo,lw,x:Math.min(w-lw,Math.max(0,lo?c-lw+6:c-6))}});
   /* Liggen de twee waarden te dicht bij elkaar, dan schuiven ze uit elkaar zodat ze niet over elkaar heen vallen */
   const L=ps.find(q=>q.lo),R=ps.find(q=>!q.lo);if(L&&R){const o=L.x+L.lw+10-R.x;if(o>0){L.x-=o/2;R.x+=o/2;if(L.x<0){R.x-=L.x;L.x=0}if(R.x+R.lw>w){L.x-=R.x+R.lw-w;R.x=w-R.lw}L.x=Math.max(0,L.x)}}
@@ -1596,7 +1630,7 @@ function srPaint(){
 
 /* ===== Bouwstenen voor invoer ===== */
 const decs=s=>(String(s).split('.')[1]||'').length;
-const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}${SENS[id]?`<button type="button" class="qs" data-sens="${id}" aria-pressed="false" data-tt="Niet zeker? Kies een bandbreedte" aria-label="Niet zeker van ${SENS[id][0].toLowerCase()}? Kies een bandbreedte">±</button><div class="rxp" role="group" aria-label="Bandbreedte ${SENS[id][0].toLowerCase()}">${[2.5,5,10,20].map(p=>`<button type="button" data-rp="${p}" data-for="${id}" aria-pressed="false">${nf(p,p%1?1:0)}%</button>`).join('')}<label class="rxc"><input type="text" inputmode="decimal" autocomplete="off" data-rpc data-for="${id}" placeholder="eigen" aria-label="Eigen percentage"><b>%</b></label><button type="button" class="rxo" data-rp="0" data-for="${id}" aria-label="Bandbreedte uit">uit</button></div>`:''}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div>${SENS[id]?'<div class="srg">':''}<input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}">${SENS[id]?['lo','hi'].map(x=>`<input class="rx" type="range" data-for="${id}" data-x="${x}" aria-label="${x==='lo'?'Ondergrens':'Bovengrens'} ${SENS[id][0].toLowerCase()}"><span class="rxl" data-x="${x}"></span>`).join('')+`</div>`:''}</div>`};
+const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}${SENS[id]?`<button type="button" class="qs" data-sens="${id}" aria-pressed="false" data-tt="Niet zeker? Kies een bandbreedte" aria-label="Niet zeker van ${SENS[id][0].toLowerCase()}? Kies een bandbreedte">±</button><div class="rxp" role="group" aria-label="Bandbreedte ${SENS[id][0].toLowerCase()}">${[2.5,5,10,20].map(p=>`<button type="button" data-rp="${p}" data-for="${id}" aria-pressed="false">${nf(p,p%1?1:0)}%</button>`).join('')}<button type="button" class="rxo" data-rp="0" data-for="${id}" aria-label="Bandbreedte uit">uit</button></div>`:''}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div>${SENS[id]?'<div class="srg">':''}<input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}">${SENS[id]?['lo','hi'].map(x=>`<input class="rx" type="range" data-for="${id}" data-x="${x}" aria-label="${x==='lo'?'Ondergrens':'Bovengrens'} ${SENS[id][0].toLowerCase()}"><span class="rxl" data-x="${x}"></span>`).join('')+`</div>`:''}</div>`};
 const sw=(id,t,on)=>`<label class="sw2 ln"><input id="${id}" type="checkbox"${on?' checked':''}><span>${t}</span></label>`;
 const vcards=()=>`<div class="vts" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" class="vt" role="radio" data-vt="${k}" aria-checked="false">${VICON[k]}<b>${q.n}</b><small>${q.sub}</small></button>`).join('')}</div>`;
 const dex=(a,b)=>`<div class="dex"><div class="dexc"><p class="dexh"><i class="d"></i>Diesel</p>${a}</div><div class="dexc"><p class="dexh"><i class="e"></i>Elektrisch</p>${b}</div></div>`;
@@ -1986,8 +2020,7 @@ document.addEventListener('click',e=>{
  const r=e.target.closest('[data-rp]');if(r){srOpen=null;srPct(r.dataset.for,+r.dataset.rp);return}
  if(srOpen&&!e.target.closest('.rxp')){srOpen=null;render()}
 });
-document.addEventListener('input',e=>{const i=e.target;if(!i.matches||!i.matches('[data-rpc]'))return;const p=parseFloat(i.value.replace(',','.'));if(p>0&&p<=100)srPct(i.dataset.for,p)});
-document.addEventListener('keydown',e=>{if(e.target.matches&&e.target.matches('[data-rpc]')&&e.key==='Enter'){e.preventDefault();srOpen=null;render()}else if(e.key==='Escape'&&srOpen){srOpen=null;render()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&srOpen){srOpen=null;render()}});
 document.addEventListener('input',e=>{const r=e.target;if(!r.classList||!r.classList.contains('rx'))return;e.stopPropagation();const id=r.dataset.for,x=+r.value;SR[id].length=2;SR[id][r.dataset.x==='lo'?0:1]=Math.max(0,r.dataset.x==='lo'?v(id)-x:x-v(id));touched=true;render()},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&qtBtn){e.preventDefault();e.stopPropagation();tipClose(true)}},true);
 addEventListener('scroll',tipPlace,{passive:true});
