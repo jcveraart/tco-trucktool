@@ -1639,7 +1639,7 @@ function build(){
  $('xrows').insertAdjacentHTML('beforeend',XROWS.map(rowHTML).join(''));
  $('wzB').innerHTML=STEPS.map(s=>`<section class="wst" data-st="${s[0]}" hidden aria-labelledby="wh-${s[0]}"><h3 id="wh-${s[0]}" tabindex="-1">${s[1]}</h3>${STEPBODY[s[0]]()}</section>`).join('');
  regOptions();
- document.querySelectorAll('#calc input[type=range],#calc input[type=checkbox],#calc select').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
+ document.querySelectorAll(':is(#calc,#wz) input[type=range],:is(#calc,#wz) input[type=checkbox],:is(#calc,#wz) select').forEach(e=>e.addEventListener('input',()=>{touched=true;render()}));
 }
 function regOptions(){
  const s=$('reg'),cur=s.value,o=T().truck?[['az','AanZET-subsidie'],['mia1','MIA, winst tot € 200.000'],['mia2','MIA, winst boven € 200.000'],['eigen','Eigen subsidiebedrag'],['geen','Geen']]:[['geen','Geen subsidie'],['eigen','Eigen subsidiebedrag']];
@@ -2032,7 +2032,7 @@ function menu(open){$('nav').classList.toggle('open',open);$('mnu').setAttribute
 $('mnu').onclick=()=>menu(!$('nav').classList.contains('open'));
 
 /* Delen: een link met precies deze berekening, plus een korte samenvatting */
-function stateObj(){const o={};document.querySelectorAll('#calc input[id],#calc select[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox'){if(e.checked!==e.defaultChecked)o[e.id]=e.checked?1:0}else if(e.tagName==='SELECT'||e.type==='hidden'||e.value!==e.defaultValue)o[e.id]=e.value});return o}
+function stateObj(){const o={};document.querySelectorAll(':is(#calc,#wz) input[id],:is(#calc,#wz) select[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox'){if(e.checked!==e.defaultChecked)o[e.id]=e.checked?1:0}else if(e.tagName==='SELECT'||e.type==='hidden'||e.value!==e.defaultValue)o[e.id]=e.value});return o}
 const b64e=s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d=s=>decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/'))));
 function shareURL(){return location.href.split(/[?#]/)[0]+'?s='+b64e(JSON.stringify({t:vtype,v:stateObj(),...(Object.keys(SR).length?{sr:SR}:{})}))}
@@ -2056,7 +2056,7 @@ addEventListener('afterprint',()=>{reopen.forEach(d=>d.open=false);reopen=[]});
 const KEY='stekkerofdiesel-v3';
 function save(){try{localStorage.setItem(KEY,JSON.stringify({touched,vtype,v:stateObj(),sr:SR}))}catch(e){}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;if(VT[s.vtype])applyType(s.vtype);srLoad(s.sr);['km'].concat(Object.keys(s.v||{})).forEach(id=>{const e=$(id);if(!e||!(id in s.v))return;if(e.type==='checkbox')e.checked=!!+s.v[id];else setNum(e,s.v[id])});fitRanges();touched=!!s.touched}catch(e){}}
-function reset(){document.querySelectorAll('#calc input[type=range]').forEach(absRange);document.querySelectorAll('#calc input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';applyType(vtype);touched=false;tolSel.clear();srLoad();render()}
+function reset(){document.querySelectorAll(':is(#calc,#wz) input[type=range]').forEach(absRange);document.querySelectorAll(':is(#calc,#wz) input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';applyType(vtype);touched=false;tolSel.clear();srLoad();render()}
 
 const TW={};
 function tween(key,els,vals,fmts){
@@ -2471,7 +2471,7 @@ syncSupabase();
  const ctaName=el=>el.closest('.bcta')?'board':el.id==='fcta'?'float':el.id==='wzOpen'?'sum_edit':el.closest('#sum')?'sum_row':el.closest('.rh')?'cost_row':el.closest('.toast')?'toast':el.closest('[data-add]')?'add':el.id||el.className.split(' ')[0]||'other';
  document.addEventListener('click',e=>{
   const t=e.target;if(!t.closest)return;let x;
-  if(x=t.closest('[data-step],[data-add]'))return track('cta_click',{cta:ctaName(x),step:x.dataset.step||x.dataset.add,text:(x.textContent||'').trim().slice(0,60)});
+  if(x=t.closest('[data-step],[data-add],[data-xgo]'))return track('cta_click',{cta:ctaName(x),step:x.dataset.step||x.dataset.add||(x.hasAttribute('data-xgo')?'uitgebreid':''),text:(x.textContent||'').trim().slice(0,60)});
   if(x=t.closest('[data-vt]')){if(x.dataset.vt!==vtype)track('vehicle_select',{vt:x.dataset.vt,from:vtype});return}
   if(x=t.closest('[data-u]'))return track('unit',{u:x.dataset.u});
   if(t.closest('[data-share]'))return track('share',{vt:vtype});
