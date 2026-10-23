@@ -1,4 +1,4 @@
-# Stekker of diesel
+# Stekker of Diesel
 
 Een rekentool die een nieuw diesel- en een nieuw elektrisch bedrijfsvoertuig vergelijkt: kosten per kilometer, per jaar en over de afschrijftermijn. Voor een trekker, bakwagen, bestelbus of bus.
 
