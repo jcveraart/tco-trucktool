@@ -957,7 +957,17 @@ a.cta.big,a.fcta{text-decoration:none}
 [data-page=uitgebreid] .pbw{margin:22px 20px 0}
 #xAn .pbc:has(+.pbsw:not([hidden])){border-radius:6px 6px 0 0!important}
 .pbsw{--fill:var(--ink);--track:var(--line);--thumb:var(--card);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 32px;padding:14px 20px 16px;border-radius:0 0 6px 6px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
-.pbsl{display:block;min-width:0}
+.pbsl{position:relative;min-width:0}
+.pbpk{display:inline-flex;align-items:center;gap:4px;margin:-4px -6px;padding:4px 6px;border:0;border-radius:4px;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer}
+.pbpk svg{width:12px;height:12px;flex:none;opacity:.7}
+.pbpk:hover,.pbpk[aria-expanded=true]{color:var(--ink);background:var(--soft)}
+.pbpk:focus-visible{outline:2px solid var(--volt);outline-offset:1px}
+.pbmn{position:absolute;left:-6px;top:24px;z-index:5;display:flex;flex-direction:column;min-width:220px;padding:4px;border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 8px 24px rgba(21,23,26,.12)}
+.pbmn button{display:flex;align-items:center;gap:8px;padding:8px 10px;border:0;border-radius:4px;background:none;font:500 14px var(--text);color:var(--ink);text-align:left;cursor:pointer}
+.pbmn button::before{content:"";width:6px;height:6px;border-radius:50%;flex:none}
+.pbmn button[aria-checked=true]::before{background:var(--ink)}
+.pbmn button:hover,.pbmn button:focus-visible{background:var(--soft);outline:0}
+.pbmn .pba{margin-top:4px;border-top:1px solid var(--line);border-radius:0 0 4px 4px;color:var(--ink-3);font-size:13px}
 .pbsl span{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .pbsl b{font:600 15px var(--text);letter-spacing:0;text-transform:none;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 [data-page=uitgebreid] .pbc text{font:500 11px var(--mono)}
@@ -1355,6 +1365,8 @@ html.embed .intro{padding-top:20px}
  [data-page=uitgebreid] .hmw{padding:14px 12px;overflow-x:auto}
  [data-page=uitgebreid] .pbw{margin:18px 14px 0}
  .pbsw{grid-template-columns:minmax(0,1fr);gap:6px;padding:12px 14px 10px}
+ .pbmn{min-width:0;width:min(260px,calc(100vw - 40px))}
+ .pbmn button{min-height:44px}
  .pbtip{top:auto;bottom:calc(100% + 8px);min-width:0;width:min(250px,100%);padding:8px 10px;font-size:12px}
  .pbtip b{margin-bottom:3px;font-size:11px}
  [data-page=uitgebreid] .hmw>small{display:block;line-height:1.5}
@@ -2657,19 +2669,35 @@ function payHTML(x){
 }
 /* Onder de grafiek: de drie schuiven die voor deze berekening de terugverdientijd het meest verschuiven, gekoppeld aan de echte invoer */
 let pbHold=false;
+const PBC=['km','dp','sp','pD','pE','ld','le'];
+let pbPin=null;try{const q=JSON.parse(localStorage.getItem('pbPin'));if(Array.isArray(q)&&q.length)pbPin=q.filter(id=>PBC.includes(id)).slice(0,3)}catch(e){}
 function pbKeys(){
  const be=o=>{const p=payback(calcX(o),o);return p.be===null?30:Math.min(30,p.be)};
- return['km','dp','sp','pD','pE','ld','le'].filter(id=>$(id)).map(id=>{const e=$(id),x=+e.value,mk=y=>{const o={[id]:y};if(id==='km')o.kmH=x?v('kmH')*y/x:0;return o};return[id,Math.abs(be(mk(Math.min(+e.max,x*1.1)))-be(mk(Math.max(+e.min,x*.9))))]}).filter(q=>q[1]>1/120).sort((a,b)=>b[1]-a[1]).slice(0,3).map(q=>q[0]);
+ return PBC.filter(id=>$(id)).map(id=>{const e=$(id),x=+e.value,mk=y=>{const o={[id]:y};if(id==='km')o.kmH=x?v('kmH')*y/x:0;return o};return[id,Math.abs(be(mk(Math.min(+e.max,x*1.1)))-be(mk(Math.max(+e.min,x*.9))))]}).filter(q=>q[1]>1/120).sort((a,b)=>b[1]-a[1]).slice(0,3).map(q=>q[0]);
 }
 function pbSl(){
  const h=$('pbS');if(!h)return;
- const keep=h._ids&&(pbHold||h.contains(document.activeElement)),ids=keep?h._ids:pbKeys(),k=ids.join();
- if(h._k!==k){h._k=k;h._ids=ids;h.innerHTML=ids.map(id=>`<label class="pbsl"><span>${SENS[id][0]}<b></b></span><input type="range" data-pb="${id}"></label>`).join('')}
+ const keep=h._ids&&(pbHold||h.contains(document.activeElement)),ids=pbPin?pbPin.filter(id=>$(id)):keep?h._ids:pbKeys(),k=ids.join();
+ if(h._k!==k){h._k=k;h._ids=ids;h.innerHTML=ids.map((id,i)=>`<div class="pbsl"><span><button type="button" class="pbpk" data-slot="${i}" aria-haspopup="true" aria-expanded="false">${SENS[id][0]}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><b></b></span><input type="range" data-pb="${id}" aria-label="${SENS[id][0]}"></div>`).join('')}
  h.hidden=!ids.length;
- h.querySelectorAll('[data-pb]').forEach(r=>{const e=$(r.dataset.pb);r.min=e.min;r.max=e.max;r.step=e.step;r.value=e.value;r.previousElementSibling.querySelector('b').textContent=fmtV(r.dataset.pb,+e.value)});
+ h.querySelectorAll('[data-pb]').forEach(r=>{const e=$(r.dataset.pb);r.min=e.min;r.max=e.max;r.step=e.step;r.value=e.value;r.parentNode.querySelector('b').textContent=fmtV(r.dataset.pb,+e.value)});
 }
 document.addEventListener('input',e=>{const id=e.target.dataset&&e.target.dataset.pb;if(!id)return;const o=$(id);o.value=e.target.value;o.dispatchEvent(new Event('input',{bubbles:true}))});
-$('pbS').addEventListener('pointerdown',()=>{pbHold=true});
+$('pbS').addEventListener('pointerdown',e=>{if(e.target.closest('[data-pb]'))pbHold=true});
+/* Zelf kiezen: tik op de naam van een schuif en kies een andere invoer. Nooit meer dan drie. */
+const pbMenuClose=()=>{const h=$('pbS');h.querySelectorAll('.pbmn').forEach(m=>m.remove());h.querySelectorAll('.pbpk').forEach(b=>b.setAttribute('aria-expanded','false'))};
+$('pbS').addEventListener('click',e=>{
+ const h=$('pbS'),o=e.target.closest('[data-pick]');
+ if(o){const ids=h._ids.slice(),i=+o.dataset.slot;if(o.dataset.pick==='auto')pbPin=null;else{ids[i]=o.dataset.pick;pbPin=ids}try{pbPin?localStorage.setItem('pbPin',JSON.stringify(pbPin)):localStorage.removeItem('pbPin')}catch(x){}h._k=null;pbSl();const b=h.querySelector(`[data-slot="${i}"]`);b&&b.focus();return}
+ const b=e.target.closest('.pbpk');if(!b)return;
+ const open=b.getAttribute('aria-expanded')==='true';pbMenuClose();if(open)return;
+ const i=+b.dataset.slot,cur=h._ids[i],opts=PBC.filter(id=>$(id)&&(id===cur||!h._ids.includes(id)));
+ b.setAttribute('aria-expanded','true');
+ b.closest('.pbsl').insertAdjacentHTML('beforeend',`<div class="pbmn" role="menu">${opts.map(id=>`<button type="button" role="menuitemradio" aria-checked="${id===cur}" data-pick="${id}" data-slot="${i}">${SENS[id][0]}</button>`).join('')}${pbPin?`<button type="button" role="menuitem" class="pba" data-pick="auto" data-slot="${i}">Automatisch</button>`:''}</div>`);
+ h.querySelector('.pbmn button[aria-checked=true]').focus();
+});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.pbmn,.pbpk'))pbMenuClose()});
+$('pbS').addEventListener('keydown',e=>{const m=$('pbS').querySelector('.pbmn');if(!m)return;if(e.key==='Escape'){const b=m.parentNode.querySelector('.pbpk');pbMenuClose();b.focus()}else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const bs=[...m.querySelectorAll('button')],j=bs.indexOf(document.activeElement);bs[(j+(e.key==='ArrowDown'?1:bs.length-1))%bs.length].focus()}});
 addEventListener('pointerup',()=>{if(pbHold){pbHold=false;pbSl()}});addEventListener('pointercancel',()=>{pbHold=false});
 $('pbS').addEventListener('focusout',()=>setTimeout(pbSl,0));
 /* Schuiven over de grafiek: per maand de opgetelde kosten van diesel en elektrisch en het verschil */
