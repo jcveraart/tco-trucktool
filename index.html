@@ -1017,6 +1017,156 @@ html.embed .intro{padding-top:20px}
 @media print{.mode,.bcta,.qi,.st svg{display:none!important}.prh{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--ink);font-size:14px}.prh b{font:700 20px var(--text)}.scn .lnk,.scn .wzx{display:none!important}}
 @media(max-width:640px){#calc .scn{order:1}.scv{flex:1 1 100%;order:2}.scd{margin-right:auto}}
 
+/* Overstapgids: overzicht met onderwerpen, daarna de vragen */
+.gtl{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.gtl a{display:flex;flex-direction:column;gap:10px;height:100%;min-height:118px;padding:16px 18px 18px;border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line);color:var(--ink);text-decoration:none;transition:box-shadow .15s}
+.gtl a:hover{box-shadow:0 0 0 1px var(--ink);color:var(--ink)}
+.gtl small{font:500 12px var(--mono);letter-spacing:.06em;color:var(--ink-3)}
+.gtl b{margin-top:auto;font:600 19px/1.25 var(--text)}
+.gtl li:first-child{grid-column:span 2}
+.gtl a.gsp{background:var(--asph);box-shadow:none;color:var(--on-asph)}
+.gtl a.gsp small,.gtl a.gsp span{color:var(--on-asph-2)}
+.gtl a.gsp b{font-size:24px}
+.gtl a.gsp span{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.gtl a.gsp:hover{box-shadow:0 0 0 2px var(--volt)}
+.gfh{margin:64px 0 24px;font:700 26px/1.2 var(--text)}
+/* Een onderwerp */
+.gw{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:56px;align-items:start;padding:30px 0 0}
+.gbk{display:inline-flex;align-items:center;gap:8px;color:var(--ink-3);text-decoration:none;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.gbk::before{content:"";width:7px;height:7px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg)}
+.gbk:hover{color:var(--ink)}
+.ga h1{margin:14px 0 0;font:700 clamp(32px,4.2vw,46px)/1.1 var(--text);letter-spacing:-.02em;outline:0}
+.ga .glead{margin:16px 0 0;max-width:680px;font:500 19px/1.5 var(--text);color:var(--ink-2)}
+.ga h2{margin:48px 0 10px;font:700 23px/1.25 var(--text)}
+.ga>p,.ga .gli,.ga .gnum{max-width:700px;color:var(--ink-2)}
+.ga a:not(.gcl):not(.gbk){font-weight:600}
+.gli,.gnum{margin:0;padding:0 0 0 22px}
+.gli li,.gnum li{margin:0 0 8px;padding-left:4px}
+.gnum b{color:var(--ink)}
+.gop{max-width:760px;border-top:1px solid var(--line)}
+.gop details{border-bottom:1px solid var(--line)}
+.gop summary{list-style:none;position:relative;padding:15px 40px 15px 0;font:600 17px/1.4 var(--text);cursor:pointer}
+.gop summary::-webkit-details-marker{display:none}
+.gop summary::after{content:"";position:absolute;right:6px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(currentColor,currentColor) center/14px 2px no-repeat,linear-gradient(currentColor,currentColor) center/2px 14px no-repeat;transition:transform .2s}
+.gop details[open] summary::after{transform:rotate(45deg)}
+.gop summary:hover{color:var(--volt-ink)}
+.gop p{margin:-4px 0 18px;max-width:680px;color:var(--ink-2)}
+.glk{display:flex;flex-direction:column;max-width:760px;margin:36px 0 0;border-top:1px solid var(--line)}
+.glk a{display:flex;justify-content:space-between;gap:16px;padding:14px 2px;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none}
+.glk a::after{content:"↗";color:var(--ink-3)}
+.glk a:hover{color:var(--volt-ink)}
+.gcl{display:inline-flex;align-items:center;gap:10px;margin:28px 0 0;color:var(--ink);font:600 16px var(--text);text-decoration:none}
+.gcl::after{content:"";width:8px;height:8px;border-top:2px solid var(--volt);border-right:2px solid var(--volt);transform:rotate(45deg)}
+.gcl:hover{color:var(--volt-ink)}
+.gnx{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:64px 0 0}
+.gnx a{display:flex;flex-direction:column;gap:4px;padding:14px 18px;border-radius:6px;box-shadow:0 0 0 1px var(--line);background:var(--card);color:var(--ink);text-decoration:none;font:600 16px/1.3 var(--text)}
+.gnx a:hover{box-shadow:0 0 0 1px var(--ink)}
+.gnx a.nx{grid-column:2;text-align:right}
+.gnx small{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.grl{position:sticky;top:96px;display:flex;flex-direction:column;gap:24px;padding-top:34px}
+.grl nav{display:flex;flex-direction:column;border-left:1px solid var(--line)}
+.grl nav a{margin-left:-1px;padding:7px 0 7px 14px;border-left:2px solid transparent;color:var(--ink-2);text-decoration:none;font:500 15px/1.35 var(--text)}
+.grl nav a:hover{color:var(--ink)}
+.grl nav a[aria-current]{border-left-color:var(--ink);color:var(--ink);font-weight:600}
+@media(max-width:900px){.gw{grid-template-columns:minmax(0,1fr);gap:0}.grl{position:static;padding-top:40px}.grl nav{display:none}}
+/* Rekenhulpen */
+.gtool{--fill:var(--ink);--track:var(--line);--thumb:var(--card);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px;max-width:860px;margin:28px 0 0;padding:22px 24px 24px;border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.gtool:empty{display:none}
+.gc{display:flex;flex-direction:column;gap:6px;min-width:0}
+.gl{display:flex;justify-content:space-between;gap:12px;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.gl output{font:600 15px var(--text);letter-spacing:0;text-transform:none;color:var(--ink)}
+.gc .seg.sm{align-self:flex-start;flex-wrap:nowrap}
+.gwd{grid-column:1/-1}
+.gout{grid-column:1/-1;padding-top:18px;border-top:1px solid var(--line)}
+.gres{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px}
+.gres b{font:600 40px/1.1 var(--display);letter-spacing:-.01em}
+.gres span{color:var(--ink-2);font-size:16px}
+.gwh{margin:12px 0 0;max-width:700px;color:var(--ink-2)}
+.gsc{position:relative;height:10px;margin:18px 0 30px;border-radius:5px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.gsc i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--volt);transition:width .2s}
+.gsc i.hi{background:var(--amber)}
+.gsc u{position:absolute;top:-4px;width:2px;height:18px;margin-left:-1px;background:var(--ink-2);text-decoration:none}
+.gsc u s{position:absolute;top:22px;left:50%;transform:translateX(-50%);font:500 11px var(--mono);color:var(--ink-3);text-decoration:none;white-space:nowrap}
+.gsc u.d{background:var(--ink)}
+.gsc u.d s{color:var(--ink)}
+.gbl{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.gres+.gbl{margin-top:18px}
+.gbr{display:grid;grid-template-columns:110px minmax(0,1fr) 98px 190px;align-items:center;gap:14px;font-size:15px}
+.gbr>span{font-weight:600}
+.gbr i{height:8px;border-radius:4px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.gbr i b{display:block;height:100%;border-radius:4px;background:var(--ink-3);transition:width .2s}
+.gbr i b.ok{background:var(--volt)}.gbr i b.hi{background:var(--line-2)}.gbr i b.dz{background:var(--asph)}
+.gbr em{font:600 17px var(--display);font-style:normal;text-align:right}
+.gbr small{font-size:13px;color:var(--ink-3)}
+.gsz{display:flex;flex-wrap:wrap;gap:6px 18px;margin:14px 0 0;font-size:14px;color:var(--ink-3)}
+.gsz b{color:var(--ink-2);font-weight:600}
+.gsz .on,.gsz .on b{color:var(--ink)}
+.gze{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin:16px 0 0;max-width:620px}
+.gze span{padding:7px 0;border-radius:3px;text-align:center;font:500 12px var(--mono)}
+.gze .ok{background:var(--volt-soft);color:var(--volt-ink)}
+.gze .no{background:var(--soft);color:var(--ink-3);box-shadow:inset 0 0 0 1px var(--line)}
+.gsl{display:flex;flex-direction:column}
+.gsb{display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:12px 0;border-bottom:1px solid var(--line)}
+.gsb:first-child{padding-top:0}.gsb:last-child{border-bottom:0;padding-bottom:0}
+.gsb b{font-weight:600}
+.gsb p{margin:2px 0 0;max-width:560px;font-size:15px;color:var(--ink-2)}
+.gsb em{flex:none;font:600 20px var(--display);font-style:normal;text-align:right}
+.gsb.best em{color:var(--volt-ink)}
+.gsb.best b::after{content:"meeste voordeel";margin-left:10px;padding:2px 7px;border-radius:3px;background:var(--volt-soft);color:var(--volt-ink);font:500 11px var(--mono);letter-spacing:.04em;text-transform:uppercase;vertical-align:2px}
+.gtb{max-width:860px;margin:20px 0 0;overflow-x:auto}
+.gtt{width:100%;border-collapse:collapse;font-size:15px}
+.gtt th,.gtt td{padding:11px 14px 11px 0;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.gtt thead th{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.gtt tbody th{font-weight:600}
+.gtt td{color:var(--ink-2)}
+.gch{display:block;width:100%;height:auto;margin:16px 0 0}
+.gch line{stroke:var(--line);stroke-width:1}
+.gch line.gw7{stroke:var(--amber-ink);stroke-dasharray:4 4}
+.gch text{font:500 11px var(--mono);fill:var(--ink-3)}
+.gch .gw7t{fill:var(--amber-ink)}
+.gch polyline{fill:none;stroke:var(--volt);stroke-width:3;stroke-linejoin:round}
+.gch circle{fill:var(--card);stroke:var(--ink);stroke-width:3}
+/* Stappenplan */
+.gst{max-width:760px;margin:30px 0 0;padding:0;list-style:none;counter-reset:gs;border-top:1px solid var(--line)}
+.gst li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:16px;padding:18px 0;border-bottom:1px solid var(--line);counter-increment:gs}
+.gst b{display:block;font:600 18px/1.35 var(--text)}
+.gst b::before{content:counter(gs) ". ";color:var(--ink-3)}
+.gst p{margin:4px 0 6px;color:var(--ink-2)}
+.gst a{font-weight:600}
+.gst li.done b,.gst li.done p{color:var(--ink-3)}
+.gst li.done b{text-decoration:line-through;text-decoration-thickness:1.5px}
+.gck{position:relative;width:28px;height:28px;margin-top:-2px;border:0;border-radius:50%;background:var(--card);box-shadow:inset 0 0 0 2px var(--line-2);cursor:pointer}
+.gck:hover{box-shadow:inset 0 0 0 2px var(--ink)}
+.gck[aria-pressed=true]{background:var(--volt);box-shadow:none}
+.gck[aria-pressed=true]::after{content:"";position:absolute;left:10px;top:6px;width:6px;height:11px;border-right:2.5px solid #fff;border-bottom:2.5px solid #fff;transform:rotate(45deg)}
+/* Netcongestie: kaart van Nederland */
+#gtMap{display:block}
+.gpc{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 18px}
+.gpc input{width:220px;min-height:40px;padding:8px 12px;border:0;border-radius:4px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);font:400 16px var(--text);color:var(--ink)}
+.gpc input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
+.gpc .btn{min-height:40px;padding:8px 16px}
+.gpm{font-size:14px;color:var(--amber-ink)}
+.nlm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}
+.nlm svg{display:block;width:100%;max-width:400px;height:auto}
+.nlm path{stroke:var(--card);stroke-width:1.6;stroke-linejoin:round;cursor:pointer;transition:fill .15s;outline:0}
+.nlm path.l1{fill:#F2C27E}
+.nlm path.l0{fill:#F8E2BF}
+.nlm path:hover,.nlm path:focus-visible{fill:#E9A64B}
+.nlm path.on{fill:var(--asph)}
+#gDot{fill:var(--volt);stroke:var(--card);stroke-width:3;pointer-events:none}
+.nlp h3{font:700 23px/1.2 var(--text)}
+.nlp p{margin:8px 0 0;color:var(--ink-2)}
+.nlp .nlw{margin-top:4px;font:500 12px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.nlp dl{margin:16px 0 0}
+.nlp dt{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.nlp dd{display:flex;flex-wrap:wrap;gap:4px 16px;margin:4px 0 0;font-weight:600}
+.nll{display:flex;flex-direction:column;gap:6px;margin:18px 0 0;font-weight:600}
+.nlk{display:flex;flex-wrap:wrap;gap:6px 18px;margin:14px 0 0;font:500 12px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.nlk span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:7px;border-radius:2px;vertical-align:-1px}
+.nlk .k1::before{background:#F2C27E}.nlk .k0::before{background:#F8E2BF}
+.nlk span:not([class])::before,.nlk a::before{display:none}
+.nlk a{color:var(--ink-3);text-decoration:none}
+@media(max-width:760px){.gtool{grid-template-columns:minmax(0,1fr);gap:16px}.nlm{grid-template-columns:minmax(0,1fr);gap:20px}.nlm svg{max-width:340px;margin:0 auto}.gbr{grid-template-columns:96px minmax(0,1fr) 84px;gap:10px}.gbr small{grid-column:2/-1;margin-top:-6px}}
 /* Telefoon: eigen, rustige indeling. Grotere tikvlakken, meer lucht tussen de schuiven, alles op één lijn. */
 @media(hover:none){
  .faq section:not(.open):not(:has(details[open]))>details{display:none}
@@ -1116,6 +1266,35 @@ html.embed .intro{padding-top:20px}
  .faq section>h2{font-size:19px;padding:16px 28px 16px 0;min-height:56px;align-items:center}
  .faq section>h2 small{display:none}
  .faq details summary{padding-top:14px;padding-bottom:14px}
+
+ /* Overstapgids */
+ .gtl{grid-template-columns:minmax(0,1fr);gap:8px}
+ .gtl li:first-child{grid-column:auto}
+ .gtl a{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:4px 14px;min-height:0;padding:15px 16px}
+ .gtl b{margin:0;flex:1;font-size:17px}
+ .gtl a.gsp b{font-size:20px}
+ .gtl a.gsp span{flex-basis:100%;padding-left:34px}
+ .gfh{margin:48px 0 16px;font-size:23px}
+ .gw{padding-top:22px}
+ .ga h1{font-size:30px}
+ .ga .glead{font-size:17px}
+ .ga h2{margin-top:40px;font-size:21px}
+ .gtool{margin-top:22px;padding:18px 16px 20px}
+ .gc .seg.sm{display:flex;flex-wrap:wrap;width:100%}
+ .gc .seg.sm button{padding:6px 8px;font-size:13px}
+ .gsc u:not(:last-child) s{display:none}
+ .gres b{font-size:32px}
+ .gres span{font-size:15px}
+ .gsb{flex-direction:column;gap:2px}
+ .gsb em{text-align:left;font-size:19px}
+ .gpc input{flex:1;width:auto;min-width:0}
+ .gpm{flex-basis:100%}
+ .gtt th,.gtt td{padding-right:12px;font-size:14px}
+ .gnx{grid-template-columns:minmax(0,1fr);margin-top:48px}
+ .gnx a.pv{display:none}
+ .gnx a.nx{grid-column:auto;text-align:left}
+ .gst li{grid-template-columns:32px minmax(0,1fr);gap:12px}
+ .gop summary{padding:16px 36px 16px 0}
 
  /* Vlootanalyse */
  .fsub{flex-direction:column;align-items:stretch;gap:14px}
@@ -1221,7 +1400,7 @@ html.embed .intro{padding-top:20px}
   <nav id="nav" aria-label="Hoofdmenu">
    <a href="#calculator" data-nav="calc">Calculator</a>
    <a href="#modellen" data-nav="modellen">Modellen</a>
-   <a href="#faq" data-nav="faq">Veelgestelde vragen</a>
+   <a href="#faq" data-nav="faq">Overstapgids</a>
    <a href="#nieuws" data-nav="nieuws">Nieuws</a>
    <a href="#vlootanalyse" data-nav="vloot" data-fleet="nav">Vlootanalyse</a>
    <a href="#over-ons" data-nav="over">Over ons</a>
@@ -1337,7 +1516,9 @@ html.embed .intro{padding-top:20px}
 <!-- ===== Veelgestelde vragen ===== -->
 <section class="page" data-page="faq" hidden>
  <div class="wrap">
-  <div class="phead"><h1 tabindex="-1">Veelgestelde vragen</h1></div>
+  <div class="phead"><h1 tabindex="-1">Overstapgids</h1></div>
+  <ol class="gtl" id="gTl"></ol>
+  <h2 class="gfh" id="vragen">Veelgestelde vragen</h2>
   <div class="faqw">
    <aside class="rail">
     <nav aria-label="Onderwerpen"><button type="button" data-jump="fq1">De berekening</button><button type="button" data-jump="fq5">Overstappen op elektrisch</button><button type="button" data-jump="fq2">Subsidies en fiscaal</button><button type="button" data-jump="fq3">Laden en heffing</button><button type="button" data-jump="fq4">Je gegevens</button></nav>
@@ -1355,20 +1536,20 @@ html.embed .intro{padding-top:20px}
     </section>
     <section id="fq5"><h2>Overstappen op elektrisch</h2>
      <details><summary>Welke elektrische modellen zijn er?</summary><p>Op de pagina <a href="#modellen">Modellen</a> staan de belangrijkste elektrische trekkers, bakwagens, bestelbussen en bussen, ook de modellen die eraan komen, zoals de Tesla Semi. Je ziet per model de accu, de actieradius en het laadvermogen, je kunt tot drie modellen naast elkaar zetten, en met Reken hiermee neem je accu, verbruik en prijs over in de calculator.</p></details>
-     <details><summary>Wat zijn zero-emissiezones?</summary><p>Steeds meer gemeenten hebben sinds 1 januari 2025 een zero-emissiezone voor stadslogistiek. Bestel- en vrachtauto's die vanaf 2025 nieuw op kenteken komen, moeten daar uitstootvrij zijn. Voor oudere voertuigen loopt een overgangsregeling per euroklasse af. Met de kentekencheck op <a href="https://opwegnaarzes.nl" target="_blank" rel="noopener">opwegnaarzes.nl</a> zie je hoe lang jouw voertuig nog toegang heeft.</p></details>
-     <details><summary>Kan ik op mijn eigen terrein laden?</summary><p>Meestal wel, maar snelladen of meerdere voertuigen tegelijk laden vraagt vaak een zwaardere netaansluiting. In veel regio's is er netcongestie en een wachtlijst. Kijk vroeg op de capaciteitskaart van Netbeheer Nederland, praat met je netbeheerder en vraag naar oplossingen als een batterij, slim laden of een flexibel contract. <a href="https://rvo.nl/sites/default/files/2024-07/Factsheets-oplossingen-netcongestie-bedrijven-versie-2.pdf" target="_blank" rel="noopener">RVO-factsheets over netcongestie</a>.</p></details>
-     <details><summary>Hoe lang duurt laden?</summary><p>Op eigen terrein laad je meestal 's nachts: een laadpaal van 50 kW vult een accu van 540 kWh in ongeveer elf uur. Een snellader van 350 kW laadt in een pauze een flink deel van de accu. Plan je het laden tijdens de verplichte pauze van de chauffeur, dan kost het nauwelijks extra tijd.</p></details>
-     <details><summary>Wat gebeurt er met de accu na een paar jaar?</summary><p>Een accu verliest langzaam capaciteit, vooral bij veel snelladen en extreme temperaturen. Vraag bij aankoop naar de accugarantie (looptijd en minimale restcapaciteit) en of de accugezondheid uit te lezen is. Dat bepaalt ook voor een groot deel de restwaarde.</p></details>
+     <details><summary>Wat zijn zero-emissiezones?</summary><p>Steeds meer gemeenten hebben sinds 1 januari 2025 een zero-emissiezone voor stadslogistiek. Bestel- en vrachtauto's die vanaf 2025 nieuw op kenteken komen, moeten daar uitstootvrij zijn. Voor oudere voertuigen loopt een overgangsregeling per euroklasse af. Bij <a href="#gids/zero-emissiezones">Zero-emissiezones</a> zie je hoe lang jouw voertuig nog toegang heeft.</p></details>
+     <details><summary>Kan ik op mijn eigen terrein laden?</summary><p>Meestal wel, maar snelladen of meerdere voertuigen tegelijk laden vraagt vaak een zwaardere netaansluiting. In veel regio's is er netcongestie en een wachtlijst. Kijk vroeg op de capaciteitskaart van Netbeheer Nederland, praat met je netbeheerder en vraag naar oplossingen als een batterij, slim laden of een flexibel contract. Alles daarover, met een kaart en een vermogenscheck, staat bij <a href="#gids/netcongestie">Netcongestie</a>.</p></details>
+     <details><summary>Hoe lang duurt laden?</summary><p>Op eigen terrein laad je meestal 's nachts: een laadpaal van 50 kW vult een accu van 540 kWh in ongeveer elf uur. Een snellader van 350 kW laadt in een pauze een flink deel van de accu. Plan je het laden tijdens de verplichte pauze van de chauffeur, dan kost het nauwelijks extra tijd. Reken het na bij <a href="#gids/laden">Laden</a>.</p></details>
+     <details><summary>Wat gebeurt er met de accu na een paar jaar?</summary><p>Een accu verliest langzaam capaciteit, vooral bij veel snelladen en extreme temperaturen. Vraag bij aankoop naar de accugarantie (looptijd en minimale restcapaciteit) en of de accugezondheid uit te lezen is. Dat bepaalt ook voor een groot deel de restwaarde. Zie <a href="#gids/accu">Accu, garantie en restwaarde</a>.</p></details>
      <details><summary>Wat verandert er voor de chauffeur en de planning?</summary><p>Elektrisch rijdt stiller en met minder trillingen, en optrekken gaat soepel. In de planning komen laadmomenten erbij: laad waar mogelijk op eigen terrein en tijdens pauzes. In de winter helpt voorverwarmen terwijl het voertuig nog aan de lader staat; dat spaart actieradius.</p></details>
     </section>
     <section id="fq2"><h2>Subsidies en fiscaal</h2>
-     <details><summary>Hoe is de AanZET-subsidie berekend?</summary><p>AanZET is een percentage van de chassisprijs (zonder opbouw en btw) van een nieuwe zero-emissie vrachtwagen, met een maximumbedrag. Dat hangt af van de bedrijfsgrootte en van de categorie: N3 (boven 12 ton) of N2 vanaf 10.000 kg. In 2026 is dat voor N3 11,1% tot 29% en voor N2 6,1% tot 14,8%. AanZET werkt met aanvraagrondes met een beperkt budget; controleer bij RVO of er een ronde openstaat.</p></details>
+     <details><summary>Hoe is de AanZET-subsidie berekend?</summary><p>AanZET is een percentage van de chassisprijs (zonder opbouw en btw) van een nieuwe zero-emissie vrachtwagen, met een maximumbedrag. Dat hangt af van de bedrijfsgrootte en van de categorie: N3 (boven 12 ton) of N2 vanaf 10.000 kg. In 2026 is dat voor N3 11,1% tot 29% en voor N2 6,1% tot 14,8%. AanZET werkt met aanvraagrondes met een beperkt budget; controleer bij RVO of er een ronde openstaat. Bij <a href="#gids/subsidies">Subsidies en regelingen</a> zie je wat er voor jou geldt.</p></details>
      <details><summary>Wat is de MIA en waarom niet samen met AanZET?</summary><p>De MIA is een fiscale regeling: je mag extra aftrekken van de winst. De tool rekent met een grondslag van 90% van de aanschafprijs en 36% extra aftrek daarover, en toont het indicatieve netto belastingvoordeel: 19% bij een winst tot € 200.000 en 25,8% daarboven. AanZET en MIA kunnen niet tegelijk worden gebruikt. Controleer de actuele voorwaarden altijd bij RVO en de Belastingdienst.</p></details>
      <details><summary>Is er subsidie voor een elektrische bestelbus of bus?</summary><p>De landelijke SEBA-subsidie voor elektrische bestelauto's is gestopt, en AanZET geldt alleen voor vrachtwagens. Krijg je een andere bijdrage, bijvoorbeeld van je gemeente of provincie, kies dan bij subsidie voor een eigen bedrag.</p></details>
      <details><summary>Wat is de ERE-opbrengst?</summary><p>Emissiereductie-eenheden kun je als lader van een elektrisch voertuig verkopen. De netto opbrengst per geladen kWh is een actuele aanname die kan veranderen. Pas hem aan naar de prijs die jij kunt krijgen.</p></details>
     </section>
     <section id="fq3"><h2>Laden en heffing</h2>
-     <details><summary>Hoe werkt de kilometerheffing in de berekening?</summary><p>De vrachtwagenheffing geldt sinds 1 juli 2026 per gereden kilometer voor vrachtwagens (N2 en N3) boven 3.500 kg, op wegen met kilometerheffing, met een lager tarief voor elektrisch. Bussen en gewone bestelauto's vallen erbuiten. In de tool vul je zelf in hoeveel kilometers over wegen met heffing gaan en welk tarief geldt. Controleer de actuele tarieven op vrachtwagenheffing.nl.</p></details>
+     <details><summary>Hoe werkt de kilometerheffing in de berekening?</summary><p>De vrachtwagenheffing geldt sinds 1 juli 2026 per gereden kilometer voor vrachtwagens (N2 en N3) boven 3.500 kg, op wegen met kilometerheffing, met een lager tarief voor elektrisch. Bussen en gewone bestelauto's vallen erbuiten. In de tool vul je zelf in hoeveel kilometers over wegen met heffing gaan en welk tarief geldt. Controleer de actuele tarieven op vrachtwagenheffing.nl. Zie ook <a href="#gids/heffing">Kilometerheffing en tol</a>.</p></details>
      <details><summary>Hoe zit het met de laadpaal?</summary><p>De laadpaal zet je aan bij Extra kosten. Er is gerekend met één laadpaal van 50 kW inclusief installatie. De investering na SPRILA-subsidie (mkb 40% met een maximum van € 88.000, grote ondernemingen 20% met een maximum van € 44.000, minimaal € 2.500 subsidie) is verdeeld over de afschrijftermijn, plus kosten voor netaansluiting, onderhoud en vaste netkosten.</p></details>
     </section>
     <section id="fq4"><h2>Je gegevens</h2>
@@ -1376,6 +1557,205 @@ html.embed .intro{padding-top:20px}
      <details><summary>Kan ik de uitkomst delen of bewaren?</summary><p>Ja. Met Deel kopieer je een korte samenvatting met een link naar precies deze berekening, bijvoorbeeld voor je boekhouder of een collega. Wie de link opent, ziet dezelfde cijfers. Met PDF bewaar of print je de berekening. Met Vergelijk zet je twee berekeningen naast elkaar.</p></details>
     </section>
    </div>
+  </div>
+ </div>
+</section>
+
+<!-- ===== Overstapgids: losse onderwerpen, elk met een eigen rekenhulp of check ===== -->
+<section class="page" data-page="gids" hidden>
+ <div class="wrap">
+  <div class="gw">
+   <div class="gm">
+    <a class="gbk" href="#faq">Overstapgids</a>
+
+    <article class="ga" data-g="stappenplan" hidden>
+     <h1 tabindex="-1">Stappenplan</h1>
+     <p class="glead">De overstap in negen stappen, in de volgorde waarin ze tijd kosten.</p>
+     <ol class="gst" id="gSt"></ol>
+    </article>
+
+    <article class="ga" data-g="netcongestie" hidden>
+     <h1 tabindex="-1">Netcongestie en je aansluiting</h1>
+     <p class="glead">Op veel plekken zit het stroomnet vol. Heb je voor het laden een zwaardere aansluiting nodig, dan kom je in die gebieden op een wachtrij. Begin hier daarom als eerste mee, nog voordat je een voertuig bestelt.</p>
+     <div class="gtool" id="gtMap"></div>
+     <h2>Hoeveel vermogen heb je nodig?</h2>
+     <p>Een kleinverbruikaansluiting gaat tot 3×80 ampère, ongeveer 55 kW. Daarboven heb je een grootverbruikaansluiting nodig, en juist die staat in congestiegebieden op de wachtrij.</p>
+     <div class="gtool" id="gtKw"></div>
+     <h2>Wat je kunt doen</h2>
+     <div class="gop">
+      <details><summary>Slim laden</summary><p>Laadmanagement verdeelt het laden over de hele nacht en houdt rekening met wat je pand al gebruikt. Zo blijf je onder je aansluiting. Vaak de goedkoopste eerste stap, en meestal genoeg voor een paar voertuigen.</p></details>
+      <details><summary>Onder 3×80 A blijven</summary><p>Past je laadbehoefte in een kleinverbruikaansluiting, dan val je meestal buiten de wachtrij voor grootverbruik. Met slim laden en langere laadtijden past er meer in dan je denkt. Reken het hierboven na.</p></details>
+      <details><summary>Batterij op eigen terrein</summary><p>Een batterij laadt als je aansluiting ruimte heeft en levert extra vermogen als je voertuigen laden. Zo vang je de piek op zonder zwaardere aansluiting. Met eigen zonnepanelen gaat er bovendien meer zonnestroom in je voertuigen.</p></details>
+      <details><summary>Flexibel contract met de netbeheerder</summary><p>Netbeheerders bieden contracten waarbij je alleen buiten de drukke uren meer mag afnemen (tijdsblokgebonden), een beperkt aantal uren per jaar minder krijgt (tijdsduurgebonden) of bij drukte mag worden teruggeschakeld (non-firm). Voor laden 's nachts past dat vaak goed, en het is sneller beschikbaar en goedkoper.</p></details>
+      <details><summary>Samen met buren</summary><p>Op een bedrijventerrein kun je met andere bedrijven een energiehub vormen: je deelt de netcapaciteit, bijvoorbeeld met één groepscontract, en stemt het gebruik op elkaar af. De een laadt 's nachts, de ander draait overdag.</p></details>
+      <details><summary>Laden bij de klant of onderweg</summary><p>Laad tijdens het lossen bij een klant of op een laadplein langs de snelweg. Dat is duurder per kWh, maar overbrugt de periode tot je eigen aansluiting klaar is. Zie <a href="#gids/laden">Laden</a>.</p></details>
+      <details><summary>Tijdelijk overbruggen</summary><p>Tot je aansluiting klaar is, kun je een mobiele batterij of laadunit huren. Vraag het na bij je dealer of laadpaalleverancier; sommigen bieden het mee aan bij de aankoop.</p></details>
+     </div>
+     <h2>Zo vraag je aan</h2>
+     <ol class="gnum">
+      <li><b>Check je adres</b> op de capaciteitskaart. Je ziet of er ruimte is voor afname en of er een wachtrij is.</li>
+      <li><b>Reken uit hoeveel vermogen</b> je nodig hebt, met je voertuigen van nu en over vijf jaar.</li>
+      <li><b>Vraag aan</b>: tot 3×80 A via Mijnaansluiting.nl, zwaarder rechtstreeks bij je netbeheerder. De wachtrij gaat op volgorde van aanvraag, dus wacht niet tot het voertuig er staat.</li>
+      <li><b>Vraag naar alternatieven</b>: een flexibel contract, de verwachte wachttijd en wat er tot die tijd wel kan.</li>
+     </ol>
+     <div class="glk">
+      <a href="https://capaciteitskaart.netbeheernederland.nl/" target="_blank" rel="noopener">Capaciteitskaart van Netbeheer Nederland</a>
+      <a href="https://www.mijnaansluiting.nl/" target="_blank" rel="noopener">Aansluiting aanvragen of verzwaren (Mijnaansluiting.nl)</a>
+      <a href="https://rvo.nl/sites/default/files/2024-07/Factsheets-oplossingen-netcongestie-bedrijven-versie-2.pdf" target="_blank" rel="noopener">Oplossingen voor netcongestie (RVO)</a>
+     </div>
+     <a class="gcl" href="#uitgebreid">Reken laadpaal en netaansluiting mee bij Extra kosten</a>
+    </article>
+
+    <article class="ga" data-g="laden" hidden>
+     <h1 tabindex="-1">Laden op eigen terrein en onderweg</h1>
+     <p class="glead">De meeste elektrische bedrijfsvoertuigen laden 's nachts op eigen terrein. Laden onderweg vult aan op lange dagen. Hoe lang het duurt, hangt af van de lader én van wat het voertuig aankan.</p>
+     <div class="gtool" id="gtLd"></div>
+     <h2>Op eigen terrein</h2>
+     <p>Laden op je eigen terrein is het goedkoopst: je betaalt je eigen stroomprijs en ontvangt zelf de ERE-opbrengst. Voor een bestelbus is een AC-laadpaal van 11 of 22 kW meestal genoeg. Voor een vrachtwagen ligt een DC-lader van 40 tot 50 kW per voertuig voor de hand, of een snellere lader die je met laadmanagement over meerdere voertuigen verdeelt.</p>
+     <p>Kies een laadpunt met een geijkte meter, zodat je ERE's kunt laten inboeken. Voor laadpunten voor je eigen bedrijfsvoertuigen is er de SPRILA-subsidie.</p>
+     <h2>Onderweg</h2>
+     <p>Langs de grote corridors komen steeds meer laadpleinen voor vrachtwagens, met laders van 350 kW en meer. Laad bij voorkeur tijdens de verplichte pauze van 45 minuten na 4,5 uur rijden: dan kost het nauwelijks extra tijd. Per kWh is laden onderweg duurder; met een zakelijk contract bij een exploitant vaak minder dan met een losse laadpas.</p>
+     <h2>Megawattladen</h2>
+     <p>Het Megawatt Charging System (MCS) is de nieuwe stekker voor zware vrachtwagens, met een laadvermogen tot ruim 1 MW. De eerste trucks en laadpunten zijn er. Vraag bij aankoop of het voertuig MCS heeft of kan krijgen, want dat bepaalt hoeveel je in een pauze laadt.</p>
+     <div class="glk">
+      <a href="https://ondernemersplein.overheid.nl/subsidies-en-regelingen/sprila/" target="_blank" rel="noopener">SPRILA-subsidie voor laadpunten</a>
+      <a href="https://www.rvo.nl/nieuws/brandstoftransitieverplichting-verdien-met-laden" target="_blank" rel="noopener">Verdienen met laden: ERE's (RVO)</a>
+      <a href="https://openchargemap.org/" target="_blank" rel="noopener">Laadpunten zoeken (Open Charge Map)</a>
+     </div>
+     <a class="gcl" href="#uitgebreid">Reken laadpaal, laden onderweg en slim laden mee bij Extra kosten</a>
+    </article>
+
+    <article class="ga" data-g="actieradius" hidden>
+     <h1 tabindex="-1">Actieradius en planning</h1>
+     <p class="glead">De opgegeven actieradius geldt voor gunstige omstandigheden. Kou, lading en snelheid halen er een flink stuk af. Reken met je eigen dagrit en een winterdag.</p>
+     <div class="gtool" id="gtAr"></div>
+     <h2>Wat het verbruik bepaalt</h2>
+     <p>Gewicht en snelheid tellen het zwaarst: 80 in plaats van 90 km per uur scheelt al snel tien procent. In de winter kost verwarmen van de cabine en de accu extra, en een koelopbouw of kraan op de accu ook. Op de snelweg verbruik je meer dan in de stad, waar je bij het remmen energie terugwint.</p>
+     <h2>Plannen met laden</h2>
+     <ul class="gli">
+      <li>Begin met de ritten die het best passen: vaste routes die elke avond terugkomen op je terrein.</li>
+      <li>Leg laadmomenten in de pauzes en bij klanten waar je toch staat.</li>
+      <li>Verwarm of koel voor terwijl het voertuig nog aan de lader staat; dat spaart actieradius.</li>
+      <li>Houd een buffer aan van 10 tot 20 procent bij aankomst, zeker in de winter.</li>
+      <li>Rijd eerst proef op je eigen routes. Veel dealers bieden een demo of korte huur.</li>
+     </ul>
+     <a class="gcl" href="#modellen">Modellen vergelijken op actieradius</a>
+    </article>
+
+    <article class="ga" data-g="zero-emissiezones" hidden>
+     <h1 tabindex="-1">Zero-emissiezones</h1>
+     <p class="glead">Steeds meer gemeenten weren bestel- en vrachtauto's met uitstoot uit hun centrum. Wat sinds 1 januari 2025 nieuw op kenteken komt, moet daar uitstootvrij zijn. Voor oudere diesels loopt een overgangsregeling.</p>
+     <div class="gtool" id="gtZe"></div>
+     <h2>Goed om te weten</h2>
+     <ul class="gli">
+      <li>De regels zijn landelijk gelijk, maar elke gemeente kiest zelf of en wanneer ze een zone invoert, en hoe groot die is.</li>
+      <li>Plug-in hybride vrachtauto's mogen tot 1 januari 2030 de zone in, als ze daar aantoonbaar elektrisch rijden.</li>
+      <li>Gemeenten geven ontheffingen, bijvoorbeeld een dagontheffing of voor bijzondere voertuigen.</li>
+      <li>Vul in de calculator het kenteken van je huidige diesel in: dan zie je direct tot wanneer hij de zone in mag en wanneer overstappen het meest oplevert.</li>
+     </ul>
+     <div class="glk">
+      <a href="https://opwegnaarzes.nl" target="_blank" rel="noopener">Kentekencheck en kaart met alle zones (Op weg naar ZES)</a>
+     </div>
+     <a class="gcl" href="#calculator">Reken met je huidige diesel in de calculator</a>
+    </article>
+
+    <article class="ga" data-g="subsidies" hidden>
+     <h1 tabindex="-1">Subsidies en regelingen</h1>
+     <p class="glead">Welke regelingen er voor jou zijn, hangt af van het voertuig en de grootte van je bedrijf. Kies hieronder en zie wat je ongeveer kunt verwachten.</p>
+     <div class="gtool" id="gtSb"></div>
+     <h2>Let op het moment</h2>
+     <ul class="gli">
+      <li>AanZET werkt met aanvraagrondes met een beperkt budget. Lees vóór je een koop- of leaseovereenkomst tekent de voorwaarden over wanneer je moet aanvragen; te vroeg tekenen kan je de subsidie kosten.</li>
+      <li>De MIA meld je binnen drie maanden nadat je de investering bent aangegaan, meestal de datum van de opdracht.</li>
+      <li>AanZET en MIA gaan niet samen voor hetzelfde voertuig. Reken uit welke het meest oplevert.</li>
+      <li>Ook bij SPRILA telt het moment van aanvragen. Check de voorwaarden voordat je de laadpunten bestelt.</li>
+     </ul>
+     <div class="glk">
+      <a href="https://www.rvo.nl/subsidies-financiering/aanzet" target="_blank" rel="noopener">AanZET (RVO)</a>
+      <a href="https://www.rvo.nl/subsidies-financiering/aanzet/voorwaarden" target="_blank" rel="noopener">Voorwaarden AanZET</a>
+      <a href="https://www.rvo.nl/subsidies-financiering/mia-vamil/ondernemers/mobiliteit" target="_blank" rel="noopener">MIA voor mobiliteit (RVO)</a>
+      <a href="https://ondernemersplein.overheid.nl/subsidies-en-regelingen/sprila/" target="_blank" rel="noopener">SPRILA (Ondernemersplein)</a>
+      <a href="https://www.rvo.nl/nieuws/brandstoftransitieverplichting-verdien-met-laden" target="_blank" rel="noopener">ERE's: verdienen met laden (RVO)</a>
+     </div>
+     <a class="gcl" href="#calculator">Reken subsidie mee in de calculator</a>
+    </article>
+
+    <article class="ga" data-g="heffing" hidden>
+     <h1 tabindex="-1">Kilometerheffing en tol</h1>
+     <p class="glead">Sinds 1 juli 2026 betalen vrachtwagens boven 3.500 kg per kilometer op wegen met heffing. Elektrisch valt in de laagste CO₂-klasse en betaalt een fractie van het dieseltarief.</p>
+     <div class="gtool" id="gtHf"></div>
+     <h2>Zo werkt het</h2>
+     <p>Het tarief hangt af van het gewicht, de CO₂-emissieklasse en de euroklasse. Van 1 september tot en met 31 december 2026 liggen alle tarieven 22,3% lager. Vanaf 1 januari 2027 gelden de tarieven uit de wet; daarmee rekent de calculator. Bussen en bestelauto's tot 3.500 kg vallen erbuiten.</p>
+     <h2>In het buitenland</h2>
+     <p>Ook in de buurlanden scheelt elektrisch, maar niet overal even veel. Hieronder de tarieven waarmee we rekenen, per kilometer.</p>
+     <div class="gtb" id="gtTol"></div>
+     <div class="glk">
+      <a href="https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.html" target="_blank" rel="noopener">Tarieven vrachtwagenheffing (Staatscourant)</a>
+     </div>
+     <a class="gcl" href="#uitgebreid">Reken tol buitenland mee bij Extra kosten</a>
+    </article>
+
+    <article class="ga" data-g="financiering" hidden>
+     <h1 tabindex="-1">Kopen, leasen of huren</h1>
+     <p class="glead">Een elektrisch voertuig is duurder in aanschaf en goedkoper in gebruik. Hoe je hem financiert, bepaalt wie het risico op de restwaarde draagt.</p>
+     <div class="gtool" id="gtFn"></div>
+     <h2>De vormen naast elkaar</h2>
+     <div class="gtb">
+      <table class="gtt">
+       <thead><tr><th></th><th>Eigenaar</th><th>Restwaarderisico</th><th>Subsidie</th></tr></thead>
+       <tbody>
+        <tr><th>Kopen</th><td>Jij</td><td>Jij</td><td>AanZET of MIA</td></tr>
+        <tr><th>Financial lease</th><td>Jij, economisch</td><td>Jij</td><td>AanZET of MIA</td></tr>
+        <tr><th>Operational lease</th><td>Leasemaatschappij</td><td>Leasemaatschappij</td><td>Zit in het leasetarief</td></tr>
+        <tr><th>Huur</th><td>Verhuurder</td><td>Verhuurder</td><td>Geen</td></tr>
+       </tbody>
+      </table>
+     </div>
+     <p>Operational lease is bij elektrisch aantrekkelijk zolang de tweedehandsmarkt nog jong is: de leasemaatschappij draagt het risico. Huren is een goede manier om eerst te testen op je eigen routes.</p>
+     <h2>Vraag in elke offerte naar</h2>
+     <ul class="gli">
+      <li>Accugarantie: looptijd, kilometers en de minimale restcapaciteit.</li>
+      <li>Een restwaardegarantie of terugkoopafspraak.</li>
+      <li>Wat het onderhoudscontract dekt, ook de accu en software-updates.</li>
+      <li>Vervangend vervoer bij uitval en de dichtstbijzijnde werkplaats voor elektrisch.</li>
+     </ul>
+     <a class="gcl" href="#restwaarde">Bekijk de restwaarde per jaar</a>
+    </article>
+
+    <article class="ga" data-g="accu" hidden>
+     <h1 tabindex="-1">Accu, garantie en restwaarde</h1>
+     <p class="glead">Een accu verliest langzaam capaciteit: elk jaar een beetje, en meer naarmate je hem vaker volledig laadt. De accu bepaalt daarmee ook een groot deel van de restwaarde.</p>
+     <div class="gtool" id="gtAc"></div>
+     <h2>Zo spaar je de accu</h2>
+     <ul class="gli">
+      <li>Laad op eigen terrein rustig en snellaad alleen als het nodig is.</li>
+      <li>Laad niet standaard tot 100% als je dat niet nodig hebt, en laat het voertuig niet lang vol of leeg staan, zeker niet in de hitte.</li>
+      <li>Verwarm de accu in de winter voor terwijl hij aan de lader staat.</li>
+     </ul>
+     <h2>Bij aankoop en verkoop</h2>
+     <p>Vraag naar de garantie op de accu en of je de accugezondheid (state of health) kunt uitlezen. Een recent accurapport maakt een gebruikt voertuig beter verkoopbaar. Koop je zelf gebruikt, vraag dan altijd om zo'n rapport.</p>
+     <a class="gcl" href="#restwaarde">Restwaarde, verkoopprijzen en prijsalarm</a>
+    </article>
+
+    <article class="ga" data-g="regels" hidden>
+     <h1 tabindex="-1">Rijbewijs, gewicht en werkplaats</h1>
+     <p class="glead">Een accu weegt. Daardoor valt een elektrisch voertuig soms in een zwaardere klasse dan zijn diesel, met gevolgen voor het rijbewijs. Daar staan uitzonderingen tegenover.</p>
+     <div class="gtool" id="gtRb"></div>
+     <h2>Gewicht en laadvermogen</h2>
+     <p>Voor zero-emissie vrachtwagens mag het maximaal toegestane gewicht volgens de Europese regels omhoog met het extra gewicht van de aandrijving, tot 2.000 kg. Zo houd je een groot deel van je laadvermogen. Kijk bij een offerte altijd naar het laadvermogen op het kenteken, niet alleen naar het totaalgewicht.</p>
+     <h2>Chauffeurs</h2>
+     <p>Rijden gaat soepeler en stiller, maar vraagt een andere stijl: vooruitkijken en op de motor afremmen levert actieradius op. Een korte training betaalt zich snel terug. Let in de stad op voetgangers en fietsers, die een stil voertuig niet horen aankomen.</p>
+     <h2>Werkplaats en stalling</h2>
+     <p>Werken aan de hoogspanning van een elektrisch voertuig mag alleen met de juiste opleiding volgens NEN 9140 en geïsoleerd gereedschap. Vraag je verzekeraar naar eisen voor de stalling en de laadplekken, bijvoorbeeld afstand tot gebouwen en brandmelding.</p>
+     <a class="gcl" href="#modellen">Bekijk modellen en hun gewichtsklasse</a>
+    </article>
+
+    <nav class="gnx" id="gNx" aria-label="Volgend onderwerp"></nav>
+   </div>
+   <aside class="grl">
+    <nav aria-label="Onderwerpen" id="gRl"></nav>
+    <div class="ad" aria-label="Advertentie">Advertentie</div>
+   </aside>
   </div>
  </div>
 </section>
@@ -1523,7 +1903,7 @@ html.embed .intro{padding-top:20px}
  <div class="wrap">
   <div class="fin">
    <div><a class="brand" href="#"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of diesel</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische bedrijfsvoertuigen.</p></div>
-   <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Veelgestelde vragen</a><a href="#nieuws">Nieuws</a><a href="#vlootanalyse" data-fleet="footer">Vlootanalyse</a><a href="#restwaarde">Restwaarde</a><a href="#over-ons">Over ons</a></nav>
+   <nav aria-label="Voettekst"><a href="#calculator">Calculator</a><a href="#modellen">Modellen</a><a href="#faq">Overstapgids</a><a href="#nieuws">Nieuws</a><a href="#vlootanalyse" data-fleet="footer">Vlootanalyse</a><a href="#restwaarde">Restwaarde</a><a href="#over-ons">Over ons</a></nav>
   </div>
   <div class="fdis">© Stekker of diesel · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst. · <a href="#privacy">Privacy</a> · <button class="fck" type="button" data-cookies>Cookies</button></div>
  </div>
@@ -1719,29 +2099,29 @@ const TIPS={
  wd:{t:'Rijdagen per jaar',b:['Hiermee berekenen we je gemiddelde dagrit: kilometers per jaar gedeeld door rijdagen. Die vergelijken we met de actieradius.','Rijdt het voertuig in ploegen of op wisselende dagen, tel dan de dagen dat het echt rijdt.']},
  rw:{t:'Restwaarde',b:['Wat het voertuig na de afschrijftermijn nog waard is, als percentage van de aanschafprijs.','Voor elektrische voertuigen is de tweedehandsmarkt nog jong; reken voorzichtig. De conditie van de accu bepaalt een groot deel van de waarde, dus vraag naar een uitleesbare accugezondheid.']},
  pE:{t:'Aanschafprijs elektrisch',b:['Vraag een offerte inclusief accu en let op levertijd, accugarantie (looptijd en minimale restcapaciteit) en wat er bij service en software-updates is inbegrepen.','AanZET rekent met de prijs van het chassis zonder opbouw en zonder btw.'],l:[['Voorwaarden AanZET','https://www.rvo.nl/subsidies-financiering/aanzet/voorwaarden']]},
- reg:{t:'Subsidie of regeling',b:['AanZET: subsidie voor een nieuwe zero-emissie vrachtwagen, N3 of N2 vanaf 10.000 kg, als percentage van de chassisprijs. Werkt met aanvraagrondes; de ronde van najaar 2026 is gesloten, de volgende wordt rond maart 2027 verwacht. Ook met financial lease kun je aanvragen.','MIA: extra aftrek van de winst voor investeringen op de Milieulijst. AanZET en MIA gaan niet samen.'],l:[['AanZET bij RVO','https://www.rvo.nl/subsidies-financiering/aanzet'],['MIA\\Vamil voor vervoersmiddelen','https://www.rvo.nl/subsidies-financiering/mia-vamil/ondernemers/mobiliteit']]},
- cls:{t:'N2 of N3',b:['N2 is een vrachtwagen van 3,5 tot 12 ton, N3 is zwaarder dan 12 ton. Het staat op je kentekenbewijs.','AanZET geldt voor N3 en voor N2 vanaf 10.000 kg, met lagere bedragen voor N2.'],l:[['AanZET bij RVO','https://www.rvo.nl/subsidies-financiering/aanzet']]},
+ reg:{t:'Subsidie of regeling',b:['AanZET: subsidie voor een nieuwe zero-emissie vrachtwagen, N3 of N2 vanaf 10.000 kg, als percentage van de chassisprijs. Werkt met aanvraagrondes; de ronde van najaar 2026 is gesloten, de volgende wordt rond maart 2027 verwacht. Ook met financial lease kun je aanvragen.','MIA: extra aftrek van de winst voor investeringen op de Milieulijst. AanZET en MIA gaan niet samen.'],l:[['AanZET bij RVO','https://www.rvo.nl/subsidies-financiering/aanzet'],['MIA\\Vamil voor vervoersmiddelen','https://www.rvo.nl/subsidies-financiering/mia-vamil/ondernemers/mobiliteit'],['Welke regelingen gelden voor jou?','#gids/subsidies']]},
+ cls:{t:'N2 of N3',b:['N2 is een vrachtwagen van 3,5 tot 12 ton, N3 is zwaarder dan 12 ton. Het staat op je kentekenbewijs.','AanZET geldt voor N3 en voor N2 vanaf 10.000 kg, met lagere bedragen voor N2.'],l:[['AanZET bij RVO','https://www.rvo.nl/subsidies-financiering/aanzet'],['Subsidies per voertuig','#gids/subsidies']]},
  le:{t:'Verbruik elektrisch',b:['In kWh per 100 km. Het hangt sterk af van gewicht, snelheid, temperatuur en rijstijl.','Vraag de dealer naar het verbruik op een rit die lijkt op jouw inzet, en reken in de winter met een hoger verbruik.']},
  sp:{t:'Stroomprijs eigen terrein',b:['De prijs per kWh die je op je eigen terrein betaalt, inclusief netbeheerkosten en energiebelasting, zonder btw.','Met eigen zonnepanelen of slim laden op goedkope uren ligt hij lager. Laden onderweg is duurder; zet dat aan bij Extra kosten.']},
- acc:{t:'Bruikbare accu',b:['Het deel van de accu dat je echt gebruikt. Fabrikanten noemen vaak de bruto capaciteit; de bruikbare capaciteit is lager, en je laadt meestal niet tot 100% en rijdt hem niet helemaal leeg.','Actieradius is bruikbare accu gedeeld door verbruik. In de winter ligt hij lager.']},
- ere:{t:'ERE-opbrengst',b:['Voor stroom die je in je eigen elektrische voertuigen laadt, kun je emissiereductie-eenheden laten inboeken en verkopen. Onder 2 miljoen kWh per jaar loopt dat via een inboekdienstverlener, die je per kWh een vergoeding betaalt.','Je laadpunt heeft daarvoor een geijkte meter nodig.'],l:[['Verdienen met laden (RVO)','https://www.rvo.nl/nieuws/brandstoftransitieverplichting-verdien-met-laden']]},
+ acc:{t:'Bruikbare accu',b:['Het deel van de accu dat je echt gebruikt. Fabrikanten noemen vaak de bruto capaciteit; de bruikbare capaciteit is lager, en je laadt meestal niet tot 100% en rijdt hem niet helemaal leeg.','Actieradius is bruikbare accu gedeeld door verbruik. In de winter ligt hij lager.'],l:[['Actieradius op een winterdag','#gids/actieradius']]},
+ ere:{t:'ERE-opbrengst',b:['Voor stroom die je in je eigen elektrische voertuigen laadt, kun je emissiereductie-eenheden laten inboeken en verkopen. Onder 2 miljoen kWh per jaar loopt dat via een inboekdienstverlener, die je per kWh een vergoeding betaalt.','Je laadpunt heeft daarvoor een geijkte meter nodig.'],l:[['Verdienen met laden (RVO)','https://www.rvo.nl/nieuws/brandstoftransitieverplichting-verdien-met-laden'],['Laden en ERE\'s','#gids/laden']]},
  oE:{t:'Onderhoud elektrisch',b:['Een elektrische aandrijving heeft geen motorolie, filters, koppeling of uitlaatsysteem, en de remmen slijten minder doordat de motor afremt en energie terugwint.','Banden slijten vaak wat sneller door het gewicht. Vraag naar een onderhoudscontract en waar de dichtstbijzijnde werkplaats voor elektrische voertuigen zit.']},
  vE:{t:'Verzekering elektrisch',b:['Vaak hoger door de hogere aanschafwaarde en duurdere reparaties aan accu en elektronica.','Vraag meerdere verzekeraars en vraag uitdrukkelijk naar dekking van de accu.']},
- tE:{t:'Tarief kilometerheffing',b:['Het tarief hangt af van het gewicht, de CO₂-emissieklasse en de euroklasse. Elektrische vrachtwagens vallen in de laagste CO₂-klasse en betalen het minst.','Van 1 september tot en met 31 december 2026 liggen alle tarieven 22,3% lager.'],l:[['Tarieven vrachtwagenheffing (Staatscourant)','https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.html']]},
- xfs:{t:'Financiering',b:['Veel elektrische vrachtwagens worden gefinancierd of geleased. Over het geleende deel betaal je rente; over je eigen geld rekenen we een rendementseis, omdat je dat ook anders had kunnen inzetten.','Ook met financial lease kun je AanZET aanvragen.'],l:[['Voorwaarden AanZET','https://www.rvo.nl/subsidies-financiering/aanzet/voorwaarden']]},
- xl0:{t:'Laadpaal',b:['Een laadpaal van 50 kW laadt een accu van 540 kWh in ongeveer elf uur: genoeg voor een nacht. Snelladers van 150 kW of meer laden in een pauze, maar kosten meer en vragen een zwaardere aansluiting.','Slim laden spreidt het laden over goedkope uren en de ruimte op je aansluiting.']},
- xla:{t:'Netaansluiting',b:['Laden vraagt vaak een zwaardere aansluiting. In veel regio\'s is er netcongestie en een wachtlijst; begin daarom vroeg.','Kijk op de capaciteitskaart van Netbeheer Nederland, neem contact op met je netbeheerder en vraag naar oplossingen zoals een batterij, slim laden of een flexibel contract.'],l:[['Netcongestie op jouw adres (capaciteitskaart)','https://capaciteitskaart.netbeheernederland.nl/'],['Oplossingen voor netcongestie (RVO)','https://rvo.nl/sites/default/files/2024-07/Factsheets-oplossingen-netcongestie-bedrijven-versie-2.pdf']]},
- xSp:{t:'SPRILA',b:['Subsidie voor laadpunten op eigen terrein voor je bedrijfsvoertuigen. Aanvragen kan in 2026 tot en met 18 december, met eHerkenning niveau 3.','Voor openbaar toegankelijke laadplekken voor zwaar vervoer is er een aparte regeling, SPULA.'],l:[['SPRILA op Ondernemersplein','https://ondernemersplein.overheid.nl/subsidies-en-regelingen/sprila/']]},
- xop:{t:'Openbaar laden',b:['Snelladen langs de weg kost per kWh meer dan laden op eigen terrein, en de ERE-opbrengst gaat naar de exploitant.','Voor vrachtwagens komen er steeds meer laadpleinen langs de corridors. Veel exploitanten bieden zakelijke contracten met lagere tarieven.']},
- xot:{t:'Tijdverlies bij laden',b:['De tijd dat het voertuig stilstaat om te laden, per 100 km die je onderweg laadt.','Laad je tijdens de verplichte pauze van de chauffeur (45 minuten na 4,5 uur rijden), dan is het tijdverlies klein. Zet het dan lager.']},
+ tE:{t:'Tarief kilometerheffing',b:['Het tarief hangt af van het gewicht, de CO₂-emissieklasse en de euroklasse. Elektrische vrachtwagens vallen in de laagste CO₂-klasse en betalen het minst.','Van 1 september tot en met 31 december 2026 liggen alle tarieven 22,3% lager.'],l:[['Tarieven vrachtwagenheffing (Staatscourant)','https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.html'],['Kilometerheffing en tol','#gids/heffing']]},
+ xfs:{t:'Financiering',b:['Veel elektrische vrachtwagens worden gefinancierd of geleased. Over het geleende deel betaal je rente; over je eigen geld rekenen we een rendementseis, omdat je dat ook anders had kunnen inzetten.','Ook met financial lease kun je AanZET aanvragen.'],l:[['Voorwaarden AanZET','https://www.rvo.nl/subsidies-financiering/aanzet/voorwaarden'],['Kopen, leasen of huren','#gids/financiering']]},
+ xl0:{t:'Laadpaal',b:['Een laadpaal van 50 kW laadt een accu van 540 kWh in ongeveer elf uur: genoeg voor een nacht. Snelladers van 150 kW of meer laden in een pauze, maar kosten meer en vragen een zwaardere aansluiting.','Slim laden spreidt het laden over goedkope uren en de ruimte op je aansluiting.'],l:[['Hoeveel vermogen heb je nodig?','#gids/netcongestie']]},
+ xla:{t:'Netaansluiting',b:['Laden vraagt vaak een zwaardere aansluiting. In veel regio\'s is er netcongestie en een wachtlijst; begin daarom vroeg.','Kijk op de capaciteitskaart van Netbeheer Nederland, neem contact op met je netbeheerder en vraag naar oplossingen zoals een batterij, slim laden of een flexibel contract.'],l:[['Netcongestie: kaart en vermogenscheck','#gids/netcongestie'],['Netcongestie op jouw adres (capaciteitskaart)','https://capaciteitskaart.netbeheernederland.nl/'],['Oplossingen voor netcongestie (RVO)','https://rvo.nl/sites/default/files/2024-07/Factsheets-oplossingen-netcongestie-bedrijven-versie-2.pdf']]},
+ xSp:{t:'SPRILA',b:['Subsidie voor laadpunten op eigen terrein voor je bedrijfsvoertuigen. Aanvragen kan in 2026 tot en met 18 december, met eHerkenning niveau 3.','Voor openbaar toegankelijke laadplekken voor zwaar vervoer is er een aparte regeling, SPULA.'],l:[['SPRILA op Ondernemersplein','https://ondernemersplein.overheid.nl/subsidies-en-regelingen/sprila/'],['Laden op eigen terrein','#gids/laden']]},
+ xop:{t:'Openbaar laden',b:['Snelladen langs de weg kost per kWh meer dan laden op eigen terrein, en de ERE-opbrengst gaat naar de exploitant.','Voor vrachtwagens komen er steeds meer laadpleinen langs de corridors. Veel exploitanten bieden zakelijke contracten met lagere tarieven.'],l:[['Laden onderweg en laadtijden','#gids/laden']]},
+ xot:{t:'Tijdverlies bij laden',b:['De tijd dat het voertuig stilstaat om te laden, per 100 km die je onderweg laadt.','Laad je tijdens de verplichte pauze van de chauffeur (45 minuten na 4,5 uur rijden), dan is het tijdverlies klein. Zet het dan lager.'],l:[['Laadtijd per lader','#gids/laden']]},
  dp:{t:'Dieselprijs',b:['De prijs per liter zonder btw. Het voorbeeld volgt de gemiddelde pompprijs van diesel volgens het CBS, zonder btw.','Tank je met een tankpas of op een eigen tank, dan betaal je vaak minder. Vul dan je eigen prijs in.'],l:[['Pompprijzen motorbrandstoffen (CBS)','https://opendata.cbs.nl/#/CBS/nl/dataset/80416ned/table']]},
  aSlim:{t:'Slim laden',b:['Met een dynamisch energiecontract laad je op de uren dat stroom het goedkoopst is, meestal \'s nachts. Je stroomprijs daalt dan met het verschil tussen die uren en het daggemiddelde.','We rekenen met het gemiddelde verschil op de stroombeurs over de afgelopen dertig dagen.']},
  xZon:{t:'Zonnepanelen',b:['Een kWp aan panelen levert in Nederland gemiddeld zo\'n 900 kWh per jaar. Het deel dat in je voertuigen gaat, kost je ongeveer € 0,06 per kWh in plaats van je stroomprijs.','Zon en laden vallen niet altijd samen. Laad je vooral \'s nachts, dan gaat er zonder buurtbatterij minder direct in je voertuig.'],l:[['Opbrengst per locatie (PVGIS)','https://re.jrc.ec.europa.eu/pvg_tools/nl/']]},
- dag:{t:'Leeftijd van je diesel',b:['Met je huidige diesel rekenen we vanaf de waarde nu, niet vanaf de nieuwprijs. De restwaarde is wat er aan het eind van de afschrijftermijn van die waarde over is, en het onderhoud stijgt met de leeftijd.','Vul je het kenteken in, dan nemen we de leeftijd en de waarde daarvan over.']},
- rwE:{t:'Restwaarde elektrisch',b:['De tweedehandsmarkt voor elektrische bedrijfsvoertuigen is nog jong. De conditie van de accu bepaalt een groot deel van de waarde.','Onder de schuif zie je hoeveel capaciteit de accu aan het eind van je afschrijftermijn ongeveer nog heeft.']},
+ dag:{t:'Leeftijd van je diesel',b:['Met je huidige diesel rekenen we vanaf de waarde nu, niet vanaf de nieuwprijs. De restwaarde is wat er aan het eind van de afschrijftermijn van die waarde over is, en het onderhoud stijgt met de leeftijd.','Vul je het kenteken in, dan nemen we de leeftijd en de waarde daarvan over.'],l:[['Zero-emissiezones','#gids/zero-emissiezones']]},
+ rwE:{t:'Restwaarde elektrisch',b:['De tweedehandsmarkt voor elektrische bedrijfsvoertuigen is nog jong. De conditie van de accu bepaalt een groot deel van de waarde.','Onder de schuif zie je hoeveel capaciteit de accu aan het eind van je afschrijftermijn ongeveer nog heeft.'],l:[['Accu, garantie en restwaarde','#gids/accu']]},
  'i-pb':{t:'Terugverdientijd',b:['Hoe lang het duurt voordat de extra investering in elektrisch is terugverdiend met lagere gebruikskosten: energie, onderhoud, verzekering en heffing.','De restwaarde telt hier niet mee, want die ontvang je pas bij verkoop.']},
  'i-km':{t:'Goedkoper vanaf',b:['Het aantal kilometers per jaar waarbij elektrisch per jaar goedkoper wordt dan diesel, met al je andere cijfers gelijk.','Hoe meer je rijdt, hoe zwaarder de lagere kosten per kilometer tegen de hogere aanschaf opwegen.']},
- 'i-range':{t:'Actieradius',b:['Bruikbare accu gedeeld door het verbruik. De balk laat zien hoe je gemiddelde dagrit zich daartoe verhoudt.','Is de dagrit langer dan de actieradius, dan moet je onderweg laden. Zet dan Laden onderweg aan bij Extra kosten.']},
+ 'i-range':{t:'Actieradius',b:['Bruikbare accu gedeeld door het verbruik. De balk laat zien hoe je gemiddelde dagrit zich daartoe verhoudt.','Is de dagrit langer dan de actieradius, dan moet je onderweg laden. Zet dan Laden onderweg aan bij Extra kosten.'],l:[['Actieradius en planning','#gids/actieradius']]},
  'i-co2':{t:'CO₂-besparing',b:['Het verschil in uitstoot per jaar: 3,2 kg CO₂ per liter diesel tegenover 0,45 kg per kWh grijze stroom.','Met groene stroom of eigen zonnepanelen is de besparing groter.']}};
 const tipBtn=k=>TIPS[k]?`<button type="button" class="qi" data-tip="${k}" aria-expanded="false" aria-label="Uitleg: ${TIPS[k].t}">?</button>`:'';
 
@@ -2172,7 +2552,7 @@ function tipOpen(btn){
  let q=$('qt');if(!q){q=document.createElement('div');q.id='qt';q.className='qt';q.setAttribute('role','dialog');q.tabIndex=-1;q.hidden=true}
  (btn.closest('dialog')||document.body).appendChild(q);
  q.setAttribute('aria-label',tp.t);
- q.innerHTML=`<p class="qtt">${tp.t}</p>${tp.b.map(x=>`<p>${x}</p>`).join('')}${tp.l?`<div class="qtl">${tp.l.map(a=>`<a href="${a[1]}" target="_blank" rel="noopener">${a[0]} <span aria-hidden="true">↗</span></a>`).join('')}</div>`:''}<button type="button" class="qtx" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
+ q.innerHTML=`<p class="qtt">${tp.t}</p>${tp.b.map(x=>`<p>${x}</p>`).join('')}${tp.l?`<div class="qtl">${tp.l.map(a=>a[1][0]==='#'?`<a href="${a[1]}">${a[0]} <span aria-hidden="true">→</span></a>`:`<a href="${a[1]}" target="_blank" rel="noopener">${a[0]} <span aria-hidden="true">↗</span></a>`).join('')}</div>`:''}<button type="button" class="qtx" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
  q.hidden=false;qtBtn=btn;btn.setAttribute('aria-expanded','true');
  tipPlace();q.focus({preventScroll:true});
 }
@@ -2203,22 +2583,23 @@ addEventListener('scroll',mini,{passive:true});
 
 /* ===== Pagina's ===== */
 function setView(){render()}
-const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'uitgebreid',faq:'faq','veelgestelde-vragen':'faq',nieuws:'nieuws','over-ons':'over',privacy:'privacy',modellen:'modellen',vlootanalyse:'vloot',vloot:'vloot',restwaarde:'restwaarde'};
-const TITLES={calc:BRAND+' · Diesel of elektrisch vergelijken',faq:'Veelgestelde vragen · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,privacy:'Privacybeleid · '+BRAND,modellen:'Elektrische modellen · '+BRAND,vloot:'Vlootanalyse · '+BRAND,restwaarde:'Restwaarde · '+BRAND,uitgebreid:'Uitgebreide berekening · '+BRAND};
+const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'uitgebreid',faq:'faq','veelgestelde-vragen':'faq',overstapgids:'faq',gids:'gids',nieuws:'nieuws','over-ons':'over',privacy:'privacy',modellen:'modellen',vlootanalyse:'vloot',vloot:'vloot',restwaarde:'restwaarde'};
+const TITLES={calc:BRAND+' · Diesel of elektrisch vergelijken',faq:'Overstapgids · '+BRAND,nieuws:'Nieuws · '+BRAND,over:'Over ons · '+BRAND,privacy:'Privacybeleid · '+BRAND,modellen:'Elektrische modellen · '+BRAND,vloot:'Vlootanalyse · '+BRAND,restwaarde:'Restwaarde · '+BRAND,uitgebreid:'Uitgebreide berekening · '+BRAND};
 function route(first){
  let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
- const p=PAGES[h]||'calc',prevP=page;
+ let g=null;if(h.startsWith('gids/')){g=h.slice(5);h='gids'}
+ const p=PAGES[h]||'calc',prevP=page,prevG=gid;
  page=p;
  if(p!=='calc'&&p!=='uitgebreid'&&$('wz').open)$('wz').close();
  if(p!=='modellen'&&$('mDlg').open)$('mDlg').close();
  document.querySelectorAll('.page').forEach(s=>s.hidden=s.dataset.page!==p);
  document.querySelectorAll('[data-nav]').forEach(a=>a.dataset.nav===(p==='uitgebreid'?'calc':p)?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
  if(p==='calc'||p==='uitgebreid')setView();
- document.title=TITLES[p];
- menu(false);
+ document.title=p==='gids'?gShow(g)+' · Overstapgids · '+BRAND:TITLES[p];
+ menu(false);tipClose(false);
  if(p==='modellen')mPaint();else $('mBar').hidden=true;
  if(p==='restwaarde')rwPaint();
- if(!first&&p!==prevP){scrollTo(0,0);const h1=document.querySelector(`.page[data-page="${p}"] h1`);if(h1)h1.focus({preventScroll:true})}
+ if(!first&&(p!==prevP||p==='gids'&&gid!==prevG)){scrollTo(0,0);const h1=[...document.querySelectorAll(`.page[data-page="${p}"] h1`)].find(e=>!e.closest('[hidden]'));if(h1)h1.focus({preventScroll:true})}
  mini();ads();
 }
 /* AdSense: zolang AD_SLOT leeg is blijven de vakken placeholder. Vul pas als de pagina zichtbaar is, anders heeft het blok geen breedte. */
@@ -2600,7 +2981,7 @@ function zeTxt(i){
  if(i.vt==='bus'||i.el)return'';
  const y=i.first?i.first.getFullYear()+i.first.getMonth()/12:0;
  if(i.vt==='bestel')return y>=2025?'Geen toegang':i.euro>=6?'Tot 2028':i.euro===5?'Tot 2027':'Geen toegang';
- return i.euro>=6?(y>=2017?'Tot 2030':'Tot 2028'):'Geen toegang';
+ if(i.euro<6||y<2017)return'Geen toegang';return i.vt==='bakwagen'&&y<2020?'Tot 2028':'Tot 2030';
 }
 const XSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 /* Kenteken van je diesel: in het invulveld een korte bevestiging, de details staan in het invulvenster */
@@ -2870,6 +3251,172 @@ async function syncSupabase() {
  }
 }
 
+
+/* ===== Overstapgids: losse onderwerpen met een eigen rekenhulp, check of kaart ===== */
+const GIDS=[['stappenplan','Stappenplan'],['netcongestie','Netcongestie en je aansluiting'],['laden','Laden op eigen terrein en onderweg'],['actieradius','Actieradius en planning'],['zero-emissiezones','Zero-emissiezones'],['subsidies','Subsidies en regelingen'],['heffing','Kilometerheffing en tol'],['financiering','Kopen, leasen of huren'],['accu','Accu, garantie en restwaarde'],['regels','Rijbewijs, gewicht en werkplaats']];
+const GSTEPS=[
+ ['Breng je ritten in kaart','Dagritten, stilstand en waar het voertuig \'s nachts staat. Daarmee weet je hoeveel accu en laadvermogen je nodig hebt.','#gids/actieradius','Actieradius en planning'],
+ ['Check je netaansluiting','Doe dit als eerste: in congestiegebieden kan een zwaardere aansluiting jaren duren.','#gids/netcongestie','Netcongestie'],
+ ['Reken de kosten door','Met je eigen kilometers, prijzen en subsidie, en met je huidige diesel als vergelijking.','#calculator','Naar de calculator'],
+ ['Kies een model','Let op bruikbare accu, laadvermogen en levertijd. Rijd proef op je eigen routes.','#modellen','Modellen'],
+ ['Regel subsidie op tijd','Check bij AanZET en SPRILA wanneer je moet aanvragen, en meld de MIA binnen drie maanden.','#gids/subsidies','Subsidies en regelingen'],
+ ['Regel het laden','Laadpunten op eigen terrein, een laadpas voor onderweg en een geijkte meter voor je ERE\'s.','#gids/laden','Laden'],
+ ['Kies kopen, lease of huur','Vergelijk maandlasten en wie het risico op de restwaarde draagt.','#gids/financiering','Kopen, leasen of huren'],
+ ['Bereid chauffeurs en werkplaats voor','Rijbewijs, training, NEN 9140 voor de werkplaats en de eisen van je verzekeraar.','#gids/regels','Rijbewijs, gewicht en werkplaats'],
+ ['Meet en stuur bij','Houd verbruik, laadkosten en accugezondheid bij. Dat helpt bij het volgende voertuig en bij verkoop.','#gids/accu','Accu en restwaarde']];
+const GKEY='sod-gids-stappen';
+const gDone=()=>{try{return new Set(JSON.parse(localStorage.getItem(GKEY)||'[]'))}catch(e){return new Set()}};
+let gid=null;
+const G={},GF={};/* toestand en opmaak per rekenhulp */
+const gArrow='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+const gSeg=(k,label,opts,wide)=>`<div class="gc${wide?' gwd':''}"><span class="gl">${label}</span><div class="seg sm" role="group" aria-label="${label}">${opts.map(o=>`<button type="button" data-gs="${k}" data-v="${o[0]}" aria-pressed="${String(G[k])===String(o[0])}">${o[1]}</button>`).join('')}</div></div>`;
+const gRng=(k,label,min,max,step,fmt)=>{GF[k]=fmt;return`<label class="gc"><span class="gl">${label}<output data-go="${k}"></output></span><input type="range" data-gr="${k}" min="${min}" max="${max}" step="${step}" value="${G[k]}" aria-label="${label}"></label>`};
+const gFill=el=>{const f=(el.value-el.min)/(el.max-el.min||1);el.style.setProperty('--f',f);const o=el.closest('.gtool').querySelector(`[data-go="${el.dataset.gr}"]`);if(o)o.textContent=GF[el.dataset.gr](+el.value)};
+const gDur=h=>{const m=Math.max(1,Math.round(h*60));return m<60?m+' min':Math.floor(m/60)+' u'+(m%60?' '+m%60+' min':'')};
+const gDef=()=>{const t=VT[vtype]?vtype:'trekker',p=VT[t].p;let s;try{s=v('acc')&&v('km')}catch(e){s=0}
+ return s?{t,acc:v('acc'),le:v('le'),km:v('km'),wd:v('wd'),jr:v('jr'),pE:v('pE')}:{t,acc:p.acc,le:p.le,km:p.km,wd:p.wd,jr:p.jr,pE:p.pE}};
+
+/* Netcongestie: provincies met netbeheerders en een indicatie van de wachtrij voor afname (1 grote delen, 0 delen) */
+const NLP={"dr":"M468,124 472,125 474,120 476,116 478,110 480,107 481,105 482,105 482,102 484,101 486,100 489,98 492,96 494,96 497,95 501,97 504,99 507,104 508,107 510,106 511,107 511,110 515,112 516,113 517,116 518,118 519,120 525,117 528,117 535,117 537,119 544,126 547,129 549,132 558,142 566,150 570,156 578,168 580,170 583,171 579,181 583,182 583,184 586,187 587,188 588,191 591,191 588,198 588,201 585,241 583,244 581,244 578,243 577,242 573,241 571,242 569,243 566,243 565,242 563,240 561,240 557,240 555,240 550,239 548,240 546,240 544,239 541,239 540,240 537,241 533,243 531,245 529,246 529,244 530,242 530,240 525,238 515,233 505,236 499,240 499,244 500,250 498,249 497,248 495,248 493,247 491,249 489,249 487,248 486,246 485,247 483,247 481,248 479,250 478,248 477,245 476,243 475,242 474,241 472,239 471,238 470,237 469,235 467,236 465,237 463,235 461,236 460,235 458,234 457,233 455,232 453,231 450,231 448,232 445,230 443,228 442,225 440,222 437,213 438,212 442,211 445,209 450,202 446,197 439,190 438,188 437,186 444,181 450,177 455,171 457,170 459,167 466,168 471,173 480,166 486,156 476,140 476,131 467,127Z","fl":"M327,272 327,268 329,263 331,262 333,261 332,254 323,240 332,254 334,260 331,263 328,269 327,272ZM372,191 375,193 375,189 378,190 384,196 385,200 387,202 389,204 392,204 394,205 399,208 400,209 401,210 406,214 408,218 409,223 411,225 413,228 412,229 409,231 407,233 409,235 411,235 413,236 416,238 418,239 420,241 420,243 416,245 411,246 407,249 405,249 403,248 394,250 392,251 383,251 383,258 387,257 395,265 397,274 395,278 394,280 394,282 393,285 391,286 389,290 390,292 388,294 385,298 380,302 377,305 375,306 373,307 372,308 370,309 367,309 363,313 362,312 358,314 355,314 353,314 351,318 346,334 345,337 326,343 324,343 321,341 313,333 309,329 304,326 295,324 284,325 282,323 283,322 281,320 281,314 279,311 285,306 285,304 293,300 295,300 297,298 300,296 320,281 323,280 329,275 329,272 330,270 332,266 333,265 338,265 344,259 349,254 359,251 361,250 363,248 358,240 355,238 354,237 354,210 365,193 372,191Z","fr":"M318,128 320,129 321,132 322,134 319,133 318,131 317,129ZM313,129 312,130 307,131 294,142 293,143 286,149 291,143 306,130 311,129ZM271,67 275,68 275,70 272,70 270,71 269,72 267,73 264,75 258,77 255,78 256,81 255,82 255,85 251,86 249,89 246,89 241,91 239,89 248,82 250,81 253,77 255,75 265,69 267,68 270,67ZM282,72 280,74 278,73 280,70 281,69 283,67 284,68 283,71ZM448,40 445,45 445,49 446,51 447,53 453,54 454,56 455,58 458,57 461,57 463,59 463,66 465,67 462,69 462,70 461,72 458,72 458,76 459,78 457,79 456,81 454,83 452,85 454,88 454,90 454,92 453,94 451,96 450,98 448,99 446,103 446,106 446,113 448,116 450,118 456,119 460,118 462,120 463,121 464,122 468,124 467,127 476,131 476,140 486,156 480,166 471,173 466,168 460,167 457,168 455,171 450,177 444,181 437,186 435,188 433,189 431,190 428,190 426,191 427,194 424,196 422,195 419,196 417,195 415,193 414,192 414,190 412,190 411,192 409,192 407,192 406,195 405,196 403,198 399,200 397,199 394,199 392,198 390,197 386,199 384,196 378,190 375,189 376,192 374,191 372,190 371,189 368,189 367,188 366,189 364,189 363,186 362,185 357,187 355,187 352,188 352,190 349,192 347,192 343,191 336,188 332,186 331,187 327,188 323,186 320,183 318,182 317,180 316,178 317,177 318,175 321,174 323,173 324,169 323,165 324,163 324,160 324,159 325,157 324,154 324,152 323,148 324,145 324,143 323,141 323,138 323,136 323,138 322,140 321,137 320,136 321,134 323,135 322,132 321,130 320,125 315,129 314,130 313,128 315,127 319,123 320,121 322,118 324,116 325,113 325,107 325,105 325,103 325,102 326,100 327,96 329,93 330,91 333,88 336,85 339,83 341,82 343,80 345,79 348,76 348,73 353,69 357,66 359,66 365,64 368,63 371,62 381,56 384,54 386,53 389,52 391,51 395,49 397,48 400,47 399,44 400,46 403,46 405,46 410,45 411,44 414,43 416,43 421,42 425,42 429,41 432,41 433,40 435,41 440,42 446,39 448,40ZM343,30 341,31 346,31 346,33 344,35 342,35 339,36 336,38 334,37 334,39 331,38 333,39 335,40 333,41 325,42 323,42 321,42 316,46 315,47 313,48 311,49 309,48 308,49 307,51 304,50 301,50 298,52 295,52 294,54 292,55 291,56 289,58 287,57 285,56 284,53 285,51 288,49 289,46 290,45 308,40 311,39 327,35 331,33 341,29 344,29 346,29 343,30ZM428,27 428,29 426,30 424,28 425,27 428,27ZM374,27 383,27 393,25 396,26 407,25 413,26 415,26 412,28 408,28 404,27 401,29 398,30 396,30 392,31 387,33 384,33 383,34 379,32 376,31 374,32 371,35 369,36 366,36 364,37 362,36 360,35 358,33 357,31 358,26 359,24 362,24 365,25 370,27 374,27ZM442,14 445,16 447,16 449,16 461,15 467,14 473,14 471,16 468,17 464,19 462,19 461,20 457,22 453,23 449,23 445,24 443,25 441,25 442,27 439,27 437,29 436,27 437,25 437,23 438,21 440,19 443,16 437,14 436,17 436,13 442,14Z","ge":"M396,274 399,273 401,275 403,278 404,279 406,283 408,284 410,283 413,285 419,278 421,277 422,276 424,276 427,279 428,281 430,283 432,285 434,286 434,290 434,293 436,294 438,298 439,300 439,305 438,309 434,311 431,312 430,313 432,315 431,317 430,320 430,323 429,325 431,326 431,330 434,330 435,332 436,336 437,338 438,340 438,343 440,343 442,344 441,346 441,348 444,350 444,351 444,349 445,347 447,346 450,346 452,348 455,349 457,349 459,349 462,349 464,348 466,350 469,350 471,349 472,347 473,346 477,345 478,345 481,345 484,345 485,348 486,350 489,353 490,356 492,356 493,360 495,361 499,361 506,362 511,361 513,362 513,364 515,365 516,364 518,363 519,364 521,363 524,365 525,367 524,369 524,372 523,374 525,375 529,376 531,377 538,377 538,382 536,384 537,385 535,388 528,389 527,393 527,397 531,397 537,400 539,402 540,403 546,408 549,409 549,413 550,415 549,417 546,418 545,418 544,421 544,424 543,425 540,429 537,430 535,432 533,434 530,432 529,431 528,429 526,429 519,432 518,433 510,435 508,437 507,438 504,437 503,438 502,439 500,440 498,441 497,443 494,444 492,445 490,443 487,444 486,442 484,441 481,440 479,442 482,445 482,447 483,449 482,452 479,450 477,450 475,447 470,446 467,446 466,442 464,440 461,440 460,441 456,441 452,441 450,440 448,438 449,436 445,433 443,432 439,433 437,433 436,434 437,435 439,436 441,439 444,443 444,448 441,447 439,446 436,447 434,446 430,443 428,442 427,444 427,446 425,447 423,448 421,448 420,450 418,451 416,451 413,450 410,453 412,454 410,455 412,457 415,459 414,461 415,462 415,465 417,467 412,471 411,473 408,474 406,472 405,471 404,468 401,465 397,465 398,469 394,469 387,470 383,471 381,471 379,470 377,468 376,466 372,465 370,462 369,461 366,461 364,459 363,458 362,455 360,454 357,453 355,452 353,451 351,452 348,452 346,454 342,454 339,451 336,452 335,454 334,456 332,456 329,456 327,455 326,453 323,453 323,455 321,457 318,462 317,465 317,469 315,470 310,473 307,475 304,474 301,474 300,475 298,475 296,474 294,473 291,474 288,473 280,475 282,471 281,469 282,467 278,464 277,462 275,462 272,464 269,462 268,460 263,457 262,456 261,454 264,448 260,448 259,446 259,443 261,444 265,444 269,444 268,441 270,440 273,439 274,438 274,436 278,437 279,434 281,430 284,425 288,416 291,417 293,418 295,417 296,414 298,413 301,415 303,416 305,417 307,417 310,419 313,418 315,416 317,415 320,415 326,413 328,412 333,412 336,412 339,413 345,416 347,418 349,419 353,420 356,422 357,421 359,420 358,416 359,414 357,412 357,410 355,409 354,408 353,405 351,403 352,398 349,397 348,395 349,390 349,388 349,385 348,383 347,380 344,381 345,383 345,384 343,385 343,388 340,387 338,389 334,388 334,384 337,383 337,380 338,379 337,378 340,378 340,377 338,375 340,374 341,372 339,371 338,369 336,367 335,366 329,365 326,364 326,361 328,360 329,358 322,351 324,343 326,343 344,337 346,334 351,318 353,315 355,314 357,315 362,312 363,313 367,309 370,309 372,308 373,307 375,305 376,304 379,302 383,299 388,295 390,292 389,290 391,286 393,285 394,282 394,280 395,278Z","gr":"M543,28 547,26 550,27 550,29 547,29 549,30 548,31 550,31 552,31 551,30 551,28 554,29 558,32 557,37 556,41 559,44 559,48 560,51 561,56 565,59 566,60 565,62 567,63 570,64 572,64 575,66 577,67 580,68 583,69 588,69 591,68 590,70 589,72 588,78 589,80 591,81 592,82 595,82 597,82 599,83 601,84 603,85 605,85 609,86 609,84 610,88 611,91 611,96 610,98 612,101 610,102 607,106 606,110 605,111 605,116 608,118 608,127 610,144 611,146 609,148 606,162 593,183 591,187 591,191 588,191 588,188 586,187 584,184 583,182 579,181 583,171 580,170 579,168 570,156 566,150 558,142 549,132 547,129 544,126 537,119 535,117 528,117 525,117 519,120 518,118 517,116 516,113 515,112 513,110 511,108 510,106 508,107 507,104 504,100 503,97 497,95 494,96 492,96 489,97 488,99 484,101 483,102 482,105 481,105 480,107 478,110 476,116 476,120 472,125 468,124 464,122 463,121 462,120 460,118 456,119 450,118 448,116 446,113 446,106 446,103 448,99 450,98 450,96 452,95 454,93 454,91 454,89 452,87 455,85 455,82 456,80 457,78 459,77 458,72 461,72 462,70 462,69 465,67 463,66 463,58 461,57 458,57 456,58 454,57 453,55 447,53 446,51 445,49 445,45 448,40 450,41 456,39 459,39 465,42 467,44 469,43 471,41 476,39 480,37 487,36 507,34 511,33 514,32 517,30 521,29 528,26 536,25 541,27 543,28ZM515,5 513,5 514,7 511,5 508,6 509,4 513,4 515,5ZM496,4 498,5 501,7 499,7 497,6 497,8 494,8 494,10 492,10 491,7 489,6 488,3 489,0 490,3 496,4Z","li":"M397,470 397,465 400,464 404,468 405,471 406,472 408,474 410,473 417,474 419,476 422,477 424,479 425,480 423,481 422,482 423,485 423,487 423,490 425,492 427,492 430,494 432,494 437,495 436,498 435,501 434,504 433,508 435,510 437,512 438,514 440,516 443,518 445,523 446,525 448,526 450,528 452,532 452,537 453,539 454,542 453,548 452,553 451,560 454,560 452,564 454,570 448,575 445,578 444,580 443,582 443,584 441,587 439,589 438,591 432,599 429,600 432,605 430,605 429,609 430,615 431,618 434,618 436,617 438,616 444,612 447,614 440,617 446,621 444,623 443,624 439,625 437,626 435,627 433,627 432,629 431,630 428,632 427,634 425,636 423,637 421,638 419,639 417,641 416,642 415,644 413,646 413,648 412,651 411,652 409,652 408,651 406,649 405,645 401,648 397,648 399,652 398,654 399,656 402,658 403,661 403,664 401,666 403,667 406,666 408,665 411,664 413,666 415,665 422,665 421,670 419,672 421,673 421,678 425,679 427,679 429,681 431,681 433,682 432,683 430,688 432,691 432,693 432,695 430,696 430,699 427,698 423,699 421,703 422,705 422,707 421,709 420,710 417,710 415,709 414,712 416,713 418,715 422,718 421,720 421,722 418,723 415,723 414,721 408,722 406,723 405,722 403,723 401,722 400,719 396,721 395,722 394,720 392,721 389,722 385,718 383,715 378,719 377,721 374,720 371,721 369,722 368,721 370,718 371,715 369,712 370,710 370,708 367,708 366,707 364,706 363,704 362,702 361,700 362,697 362,694 366,691 368,689 369,688 370,684 372,683 373,684 375,683 375,680 377,677 378,674 380,674 379,672 378,671 376,672 374,672 376,668 378,666 380,663 381,662 381,659 383,656 382,654 380,653 381,651 382,648 382,646 385,646 386,645 386,643 387,642 386,639 387,637 390,638 391,637 391,634 389,634 388,632 390,629 393,628 393,626 395,625 392,623 392,620 390,619 389,620 386,621 384,623 383,621 382,620 383,618 381,615 379,614 378,614 376,615 373,615 371,615 369,615 367,615 365,614 363,613 361,610 349,605 354,604 358,603 359,598 359,592 366,582 398,572 407,564 398,548 396,537 395,534 392,518 401,520 403,522 408,521 413,520 419,517 421,519 423,521 424,521 424,518 424,514 423,511 422,509 422,506 421,504 417,501 414,498 413,497 414,494 413,493 411,492 412,489 411,485 411,482 408,480 404,480 401,479 400,477 400,474 399,471Z","nb":"M260,453 262,456 263,457 267,459 269,461 271,464 274,462 277,462 278,464 282,466 281,468 282,470 280,473 285,473 291,474 294,473 296,474 298,475 300,475 301,474 304,474 306,475 310,472 315,470 317,469 317,465 318,462 321,457 323,455 323,453 325,453 327,455 329,456 331,456 334,456 335,454 336,451 338,451 342,454 345,455 347,452 351,452 353,451 355,452 357,453 360,454 362,455 363,458 364,459 366,461 369,461 370,462 371,464 375,465 377,467 378,469 380,471 383,471 387,470 394,469 397,470 399,471 400,474 400,477 401,479 403,479 408,480 410,481 411,485 412,489 411,491 413,493 414,494 413,497 414,498 417,501 421,504 422,506 422,508 423,511 424,514 424,518 425,520 423,521 421,519 419,517 413,520 409,521 403,522 401,520 392,518 395,534 396,537 398,548 407,564 398,572 366,582 359,592 359,598 358,603 354,605 349,605 348,600 348,597 348,594 346,593 343,590 342,588 338,586 336,587 334,589 330,590 329,592 326,595 320,594 315,592 314,595 310,595 306,596 302,594 298,596 296,594 298,585 292,580 288,582 286,583 281,582 281,574 279,572 278,569 271,562 275,555 277,552 272,542 268,542 266,540 265,538 263,540 261,542 261,546 260,549 254,554 249,561 246,561 246,560 245,558 243,557 240,556 239,557 237,557 234,557 227,558 225,557 224,555 223,553 226,552 227,553 231,554 233,555 234,556 236,555 233,555 232,552 232,549 234,546 235,546 234,544 234,542 235,540 232,539 231,537 228,535 226,535 224,534 222,534 220,536 219,538 217,539 216,542 215,543 213,543 212,545 211,547 207,549 207,553 205,554 203,555 201,554 193,552 186,554 185,548 188,542 186,539 179,541 176,541 175,542 171,543 163,548 161,549 164,549 164,551 164,553 162,555 164,558 170,567 170,569 164,571 161,572 159,571 156,571 155,567 145,566 144,565 144,562 143,556 145,554 138,538 136,534 137,529 139,524 139,521 138,519 132,512 132,511 132,507 133,505 135,503 139,501 141,498 145,499 149,498 151,497 154,496 157,495 160,492 161,490 164,487 165,486 166,484 169,482 181,486 184,486 196,483 198,481 208,478 213,475 217,472 219,469 221,464 223,461 226,460 228,459 230,459 234,459 237,459 239,457 242,454 246,452 250,452 255,453 260,453ZM248,547 249,549 248,548 247,550 246,551 248,552 250,553 250,551 249,550 251,548 252,547 249,548Z","nh":"M308,229 316,232 323,240 316,233 308,229 306,229 308,229ZM213,156 210,156 205,157 203,158 202,159 201,158 202,156 204,155 205,154 207,154 210,154 213,155ZM269,164 267,166 266,169 272,176 273,178 278,189 276,207 278,208 279,212 282,214 284,216 287,217 288,216 291,212 295,212 297,213 298,214 302,213 304,215 305,218 305,220 306,222 308,224 306,226 305,227 304,229 301,230 299,231 297,238 293,241 291,243 289,243 285,246 283,247 280,247 279,244 277,244 275,243 272,242 271,243 269,244 268,242 266,243 264,244 263,245 263,250 264,253 264,255 264,257 265,259 267,262 269,267 269,269 270,271 271,273 273,275 273,277 272,280 271,281 269,283 271,286 269,287 266,288 267,289 268,288 268,290 268,293 269,294 272,295 274,291 275,289 276,287 274,282 276,287 278,288 280,288 278,290 277,291 275,295 274,296 272,297 271,299 271,301 268,301 267,303 265,304 264,308 262,308 261,311 260,310 257,311 255,310 254,311 256,312 255,314 256,315 258,316 259,317 261,319 263,318 265,319 264,320 267,321 269,320 272,320 274,320 276,321 277,322 280,323 283,325 295,324 304,326 309,329 313,333 308,336 304,335 302,337 299,342 295,345 295,351 295,353 293,356 290,361 287,361 279,361 281,359 283,356 281,352 279,351 272,352 270,352 267,350 266,348 269,346 267,344 266,341 265,340 264,337 265,337 268,336 269,334 267,335 265,334 264,335 262,336 260,333 258,333 255,334 255,335 252,335 250,335 249,338 247,339 246,340 241,341 238,342 237,343 235,345 233,347 230,348 227,348 224,349 223,350 222,351 219,353 217,354 216,352 216,348 213,347 210,349 207,349 202,352 198,353 196,352 194,351 192,352 190,351 189,349 190,347 191,341 191,339 194,335 195,332 197,329 198,327 194,325 191,326 190,328 180,323 188,301 190,295 191,293 191,289 191,287 193,284 194,279 196,269 198,256 199,246 201,238 202,230 203,217 204,210 205,208 207,205 209,196 213,182 214,178 215,164 215,161 216,159 218,158 220,158 222,157 225,157 225,160 228,159 227,163 227,165 227,167 229,171 240,177 245,176 247,175 250,173 253,170 253,168 255,167 257,166 260,165 262,166 264,165 266,166 268,164 286,148 269,164ZM241,107 244,109 245,113 245,114 244,122 244,124 244,128 241,130 240,131 240,134 238,136 237,138 236,139 234,140 231,140 227,146 226,148 224,147 221,146 223,148 224,149 221,150 220,151 217,151 215,151 214,148 213,145 214,140 215,135 216,132 217,129 220,123 225,115 226,113 232,105 234,102 236,100 237,100 239,102 241,104 241,107Z","ov":"M437,186 438,188 439,190 445,197 449,201 445,208 442,211 438,212 437,213 440,222 442,225 443,228 444,230 446,232 450,232 451,231 454,232 456,233 458,234 460,235 461,236 463,235 464,236 465,236 468,235 470,236 471,238 472,239 474,240 475,242 476,243 477,245 478,248 479,250 480,249 482,248 485,248 486,246 487,248 488,249 491,249 492,246 493,247 496,248 498,248 499,250 500,245 499,241 504,236 515,233 525,238 530,240 530,242 529,244 529,246 531,246 532,247 533,249 532,252 532,254 539,262 537,263 535,263 533,262 532,265 526,265 530,273 528,282 531,284 533,285 537,288 541,289 550,289 552,289 553,292 562,293 567,295 570,293 573,288 574,287 575,288 577,292 578,297 580,299 582,304 584,305 586,307 588,311 588,317 585,321 584,324 583,327 582,329 581,332 581,335 582,338 583,342 586,345 586,347 582,349 580,349 577,349 574,350 573,352 572,354 570,358 568,361 565,362 562,362 558,367 556,374 553,377 548,377 538,377 531,377 529,376 525,375 523,374 524,372 524,369 525,367 524,365 521,363 519,364 518,363 516,364 515,365 514,364 513,362 512,361 506,362 499,361 496,362 494,361 492,358 491,356 489,353 486,350 485,348 484,346 481,345 478,345 477,345 474,345 472,347 471,349 469,350 466,350 464,348 462,349 461,350 457,349 455,349 452,348 450,346 447,346 445,347 444,349 445,351 442,349 441,347 442,345 440,344 438,343 439,341 437,338 436,336 436,333 434,331 432,330 431,327 429,326 430,323 430,320 430,317 432,316 431,314 430,312 434,311 437,310 438,306 439,301 438,298 436,294 434,293 434,290 434,287 432,285 430,283 429,282 427,279 424,276 422,276 421,277 419,278 413,285 411,283 408,285 406,283 404,279 403,278 401,275 399,273 396,274 395,266 388,258 383,258 383,251 392,251 394,250 403,248 405,249 407,249 411,247 416,245 420,243 420,241 418,239 416,238 413,236 411,235 409,234 409,231 411,230 412,229 412,226 410,224 408,218 407,215 403,211 400,209 399,208 396,206 393,204 389,204 387,202 386,199 390,197 392,198 394,199 396,199 398,200 402,199 404,197 406,195 407,192 409,192 411,192 412,190 414,190 414,192 415,193 416,195 417,196 420,195 423,196 427,194 426,191 428,190 430,191 432,189 435,188Z","ut":"M227,348 230,348 233,347 235,345 236,343 238,342 240,341 245,341 246,339 248,338 248,335 251,335 254,336 256,334 258,333 260,333 262,336 263,336 264,334 267,335 268,333 270,334 268,335 266,336 265,337 264,340 265,342 267,343 269,346 266,348 267,350 270,352 272,352 279,352 281,352 283,356 282,358 279,360 287,361 290,361 293,356 295,353 295,351 295,345 299,342 301,336 304,335 308,336 313,333 321,341 324,343 322,351 329,357 328,360 326,361 327,363 329,365 335,365 336,367 338,369 339,371 341,372 340,374 338,375 340,377 340,378 337,378 338,379 337,380 337,383 334,384 333,387 336,389 340,389 342,387 344,386 345,384 345,383 344,381 346,381 347,383 348,385 349,388 348,389 348,394 349,396 352,398 351,403 352,405 353,407 355,409 357,410 357,412 359,414 358,416 359,418 358,420 356,422 353,420 349,419 347,418 345,416 340,414 337,412 333,412 329,411 326,413 321,415 317,415 315,416 313,418 311,419 307,417 305,417 303,416 301,415 299,413 297,413 295,417 293,418 291,417 288,416 285,415 283,412 282,410 280,408 277,407 274,407 271,409 267,412 266,414 263,415 261,414 258,414 256,417 253,418 251,417 249,418 248,420 247,422 244,423 241,423 239,418 238,416 235,413 233,411 232,409 230,407 237,405 235,403 232,403 229,404 229,402 230,401 230,399 233,395 235,393 239,391 240,390 235,390 233,389 232,386 232,383 232,380 226,376 229,374 229,372 230,371 233,370 234,371 238,372 240,372 239,368 242,366 237,362 235,361 230,356 229,354 229,352 228,350Z","ze":"M123,570 124,571 121,571 123,569ZM30,560 33,561 34,562 36,563 38,564 41,565 45,566 52,568 53,569 56,571 57,573 60,573 64,573 63,575 65,576 65,573 68,573 70,574 71,576 72,578 73,576 74,575 75,576 81,576 82,575 84,573 88,570 90,570 92,569 94,569 95,567 96,565 96,563 96,561 98,559 100,559 105,560 106,562 107,564 109,568 114,569 116,569 120,573 123,576 124,577 123,575 122,573 123,572 125,573 128,575 130,574 127,573 131,572 128,572 125,569 127,568 128,567 129,570 131,571 130,570 130,568 131,566 134,567 135,567 136,570 137,571 139,573 136,576 128,587 117,595 115,597 112,599 108,600 106,600 104,599 102,600 101,602 98,604 96,605 95,607 93,607 90,606 89,606 89,608 86,610 84,611 82,609 84,607 84,605 79,608 77,607 75,608 72,608 70,607 68,604 68,599 69,597 66,595 65,595 63,593 58,592 53,592 53,590 50,590 48,588 45,588 43,587 37,584 35,586 36,588 34,588 32,587 31,588 29,590 27,589 27,599 20,600 15,600 12,599 11,597 9,596 7,595 6,594 5,592 3,591 4,589 2,588 3,585 0,582 4,577 4,575 3,573 3,570 1,568 4,566 7,565 10,563 13,564 15,562 18,561 20,561 22,560 24,558 26,559 29,559ZM64,523 66,524 62,524 64,523ZM52,522 53,523 52,526 52,524 51,522ZM76,469 77,471 82,472 86,468 89,466 92,466 95,466 97,468 103,469 104,473 107,476 107,481 108,483 109,486 117,487 120,488 123,488 125,488 133,494 138,497 141,498 139,501 135,503 133,505 132,507 132,510 132,512 138,519 139,521 139,523 137,529 136,532 138,538 144,553 144,555 144,560 144,563 145,565 140,567 140,565 138,561 135,560 133,559 130,560 126,561 124,561 118,560 115,558 113,557 111,557 110,555 109,554 107,552 104,550 102,549 101,548 100,547 99,545 96,546 91,548 89,549 90,551 89,553 88,555 86,561 81,561 79,562 77,563 75,564 73,564 70,562 68,561 66,559 64,558 63,556 61,557 59,557 57,553 56,552 54,550 52,548 46,547 45,549 42,550 40,550 38,547 38,549 37,548 38,550 35,550 33,549 32,548 28,546 27,544 24,539 22,537 21,535 15,532 14,530 13,529 12,526 13,524 16,522 20,519 22,518 26,516 30,513 34,511 37,511 40,512 42,513 48,511 50,511 51,507 51,505 52,503 56,499 57,497 57,493 55,492 53,491 51,488 51,485 52,480 53,478 55,477 58,476 65,473 69,473 73,474 74,471 76,469ZM70,486 68,487 63,491 58,493 58,496 56,500 57,502 55,503 53,504 52,506 51,510 54,510 56,511 58,512 60,511 62,510 64,510 66,510 70,509 72,508 74,509 75,508 80,510 81,512 84,516 85,519 84,520 82,521 80,524 77,522 75,521 73,521 71,523 68,522 66,521 64,521 59,524 56,526 55,528 54,527 55,525 54,523 52,521 54,518 52,520 51,520 50,519 48,518 45,514 43,514 43,516 45,518 45,520 47,521 49,522 51,525 52,528 54,531 55,533 57,532 55,531 57,529 59,526 61,524 66,524 69,525 71,523 73,523 75,523 77,523 78,525 79,525 80,524 84,524 86,524 88,523 90,524 91,526 92,528 95,527 100,529 102,530 102,532 102,530 104,530 106,532 108,533 110,534 110,537 110,539 111,541 113,543 114,545 116,548 122,551 123,552 126,552 129,550 133,550 135,551 136,546 136,537 129,534 128,533 129,531 128,530 126,529 124,529 121,529 118,529 116,528 113,528 112,526 111,524 110,523 107,521 106,519 105,518 104,517 102,516 100,515 99,513 100,511 102,511 105,510 108,509 110,507 113,506 116,507 118,507 119,509 120,510 125,509 127,509 129,508 129,506 126,506 122,506 120,503 119,502 117,499 121,496 125,497 127,498 129,499 132,501 131,498 130,497 126,496 123,495 127,494 124,493 126,493 126,491 119,491 117,493 118,495 117,496 115,499 113,502 111,502 108,503 105,504 103,505 100,505 97,506 94,503 92,501 91,502 88,503 85,502 89,498 85,501 84,499 84,498 83,495 82,493 79,490 74,488 73,486 71,485Z","zh":"M156,479 158,479 159,481 156,481 154,480 156,479ZM144,471 150,472 155,474 157,475 158,476 155,478 152,477 150,477 148,476 143,472 144,471ZM180,323 190,328 191,326 194,325 198,327 197,329 196,332 194,335 191,339 191,341 190,347 189,349 190,351 192,352 194,351 196,352 199,353 202,352 207,349 210,349 212,348 216,348 216,351 217,353 219,352 221,351 223,350 224,348 226,348 228,350 229,352 229,354 230,356 235,361 237,362 243,366 239,368 240,372 238,372 235,372 234,370 231,370 229,372 229,374 227,375 232,380 232,383 232,386 233,389 235,390 240,390 239,391 236,393 233,395 231,398 230,400 229,401 229,404 232,403 234,403 237,405 230,407 232,409 234,411 235,413 237,415 238,417 241,423 242,423 247,422 248,420 249,418 250,417 254,418 256,417 258,414 259,413 263,415 266,414 267,412 270,410 274,407 277,407 280,408 282,409 283,412 284,414 288,415 284,425 282,428 279,434 279,436 276,436 274,436 273,439 270,440 268,441 270,443 267,444 261,444 260,443 260,445 260,448 264,448 263,453 260,453 255,453 250,452 248,452 242,454 239,457 237,459 234,459 230,459 228,459 226,460 224,461 221,464 220,468 217,472 213,475 209,478 199,481 196,483 184,486 181,486 169,482 167,484 165,486 164,487 162,489 160,492 159,494 154,496 151,497 149,498 145,499 141,498 138,497 133,494 126,488 123,488 120,488 117,487 110,486 108,483 107,481 107,476 104,473 104,470 97,468 95,466 92,465 89,466 87,468 83,472 77,471 76,469 78,468 80,464 79,458 80,455 82,453 85,452 89,452 93,450 98,448 100,447 103,447 105,448 104,450 106,451 107,452 108,451 110,449 111,448 113,446 112,445 107,438 107,435 110,430 109,428 107,429 105,428 103,429 101,428 104,419 104,417 104,413 107,411 109,412 111,412 113,413 118,411 120,410 121,408 123,407 125,404 127,401 139,387 142,382 144,381 146,378 150,374 157,365 162,358 168,348 172,339 180,323ZM110,450 109,451 109,453 111,454 112,455 118,458 120,459 124,462 127,464 132,465 136,469 138,471 140,472 143,477 147,479 151,482 154,483 156,483 162,483 164,482 165,478 164,477 157,474 152,471 145,469 141,467 138,464 138,462 136,459 133,458 131,458 127,454 125,453 123,454 121,453 116,451 115,450 113,448 111,449Z"};
+const NLPV={dr:['Drenthe',['Enexis','Rendo'],0],fl:['Flevoland',['Liander'],1],fr:['Friesland',['Liander'],0],ge:['Gelderland',['Liander'],1],gr:['Groningen',['Enexis'],0],li:['Limburg',['Enexis'],1],nb:['Noord-Brabant',['Enexis'],1],nh:['Noord-Holland',['Liander'],1],ov:['Overijssel',['Enexis','Rendo','Coteq'],0],ut:['Utrecht',['Stedin'],1],ze:['Zeeland',['Stedin'],0],zh:['Zuid-Holland',['Stedin','Liander','Westland Infra'],1]};
+const NBH={Liander:'https://www.liander.nl/',Stedin:'https://www.stedin.net/',Enexis:'https://www.enexis.nl/',Rendo:'https://www.rendo.nl/',Coteq:'https://www.coteq.nl/','Westland Infra':'https://www.westlandinfra.nl/'};
+const NLST=['In delen van de provincie is er een wachtrij voor nieuwe en zwaardere grootverbruikaansluitingen. Elders is er nog ruimte, en de krapte zit hier vaak vooral bij teruglevering.','In grote delen van de provincie staan nieuwe en zwaardere grootverbruikaansluitingen op een wachtrij. Reken op jaren wachttijd als je boven 3×80 A uitkomt.'];
+/* Lengte- en breedtegraad naar de kaart (lineair, past op deze projectie van de provincies) */
+const nlXY=(lo,la)=>[(lo-3.36)/3.87*613,(53.56-la)/2.81*724];
+const gExt=(t,u)=>`<a href="${u}" target="_blank" rel="noopener">${t} <span aria-hidden="true">↗</span></a>`;
+let nlSel=null,nlPlace='';
+function nlPanel(){
+ const p=nlSel&&NLPV[nlSel];
+ if(!p)return`<h3>Nederland</h3><p>In bijna alle provincies is er een wachtrij voor nieuwe grootverbruikaansluitingen. Tot 3×80 A val je er meestal buiten.</p><div class="nll">${gExt('Check je adres op de capaciteitskaart','https://capaciteitskaart.netbeheernederland.nl/')}</div>`;
+ return`<h3>${p[0]}</h3>${nlPlace?`<p class="nlw">${nlPlace}</p>`:''}<p>${NLST[p[2]]}</p><dl><dt>Netbeheerder</dt><dd>${p[1].map(n=>gExt(n,NBH[n])).join('')}</dd></dl><div class="nll">${gExt('Check je adres op de capaciteitskaart','https://capaciteitskaart.netbeheernederland.nl/')}${gExt('Aanvragen tot 3×80 A','https://www.mijnaansluiting.nl/')}</div>`;
+}
+function nlPaint(){const el=$('gtMap');if(!el)return;el.querySelectorAll('[data-pv]').forEach(p=>{p.classList.toggle('on',p.dataset.pv===nlSel);p.setAttribute('aria-pressed',p.dataset.pv===nlSel)});setH($('gNp'),nlPanel())}
+async function nlFind(q){
+ const msg=$('gPcM');msg.textContent='';
+ try{
+  const r=await fetch('https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?rows=1&fl=provincienaam,gemeentenaam,woonplaatsnaam,centroide_ll,weergavenaam&q='+encodeURIComponent(q));
+  const d=(await r.json()).response.docs[0];if(!d)throw 0;
+  const id=Object.keys(NLPV).find(k=>NLPV[k][0]===d.provincienaam||(k==='fr'&&/Frysl/.test(d.provincienaam)));if(!id)throw 0;
+  const m=/POINT\(([\d.]+) ([\d.]+)\)/.exec(d.centroide_ll||'');const dot=$('gDot');
+  if(m){const[x,y]=nlXY(+m[1],+m[2]);dot.setAttribute('cx',x);dot.setAttribute('cy',y);dot.removeAttribute('hidden')}
+  nlSel=id;nlPlace=d.weergavenaam||d.gemeentenaam||'';nlPaint();
+ }catch(e){msg.textContent='Niet gevonden. Probeer een postcode, zoals 3511 AB.'}
+}
+
+/* Rekenhulpen: bouw de bediening één keer, daarna alleen de uitkomst opnieuw */
+const GT={
+ gtMap:{init(){return`<form class="gpc" id="gPc" role="search"><input name="q" type="text" placeholder="Postcode of plaats" aria-label="Postcode of plaats" autocomplete="postal-code" maxlength="60"><button class="btn" type="submit">Zoek</button><span class="gpm" id="gPcM" role="status"></span></form>
+  <div class="nlm"><svg viewBox="0 0 613 724" role="group" aria-label="Kaart van Nederland per provincie">${Object.entries(NLP).map(([k,d])=>`<path d="${d}" data-pv="${k}" class="l${NLPV[k][2]}" tabindex="0" role="button" aria-label="${NLPV[k][0]}"><title>${NLPV[k][0]}</title></path>`).join('')}<circle id="gDot" r="9" hidden/></svg><div class="nlp" id="gNp" aria-live="polite"></div></div>
+  <div class="nlk"><span class="k1">Wachtrij in grote delen</span><span class="k0">Wachtrij in delen</span><span>Indicatief, oktober 2026</span><a href="https://github.com/VictorCazanave/svg-maps" target="_blank" rel="noopener">Kaart: svg-maps, CC BY 4.0</a></div>`},paint:nlPaint},
+ gtKw:{init(){const d=gDef();G.kwT=d.t;G.kwN=1;G.kwE=Math.round(d.km/d.wd*d.le/100);G.kwH=10;
+  return gSeg('kwT','Voertuig',Object.keys(VT).map(k=>[k,VT[k].n]))+gRng('kwN','Aantal voertuigen',1,40,1,x=>nf(x))+gRng('kwE','Laden per voertuig per dag',10,900,5,x=>nf(x)+' kWh')+gRng('kwH','Uren om te laden',2,16,1,x=>x+' uur')+'<div class="gout"></div>'},
+  seg(k){if(k==='kwT'){const p=VT[G.kwT].p;G.kwE=Math.round(p.km/p.wd*p.le/100);gSet('kwE')}},
+  paint(el){
+   const tot=G.kwN*G.kwE/.92,P=tot/G.kwH,KV=[[17,'3×25 A'],[24,'3×35 A'],[35,'3×50 A'],[43,'3×63 A'],[55,'3×80 A']],fit=KV.find(s=>P<=s[0]),mx=Math.max(80,P*1.15);
+   const H=tot/55,B=(P-55)*G.kwH/.9,bOk=P>55&&(P-55)*G.kwH<=55*(24-G.kwH)*.9;
+   const why=fit?`Past op een kleinverbruikaansluiting van ${fit[1]}. Tel daar op wat je pand al gebruikt.`:`Je hebt een grootverbruikaansluiting nodig, en in een congestiegebied kom je op de wachtrij.${H<=20?` Met ${Math.ceil(H)} uur laden past het wel op 3×80 A.`:''}${bOk?` Of een batterij van ongeveer ${nf(Math.ceil(B/10)*10)} kWh vangt de piek op.`:''}`;
+   setH(el.querySelector('.gout'),`<div class="gres"><b>${nf(P)} kW</b><span>laadvermogen nodig</span></div>
+    <div class="gsc" aria-hidden="true"><i class="${fit?'ok':'hi'}" style="width:${Math.min(100,P/mx*100)}%"></i>${KV.map(s=>`<u style="left:${s[0]/mx*100}%"><s>${s[1].replace('3×','')}</s></u>`).join('')}</div>
+    <p class="gwh">${why}</p>`)}},
+ gtLd:{init(){const d=gDef();G.ldA=Math.round(d.acc);G.ldP=70;G.ldV={trekker:400,bakwagen:250,bestel:100,bus:250}[d.t];
+  return gRng('ldA','Bruikbare accu',30,900,5,x=>nf(x)+' kWh')+gRng('ldP','Te laden',10,90,5,x=>x+'% · '+nf(G.ldA*x/100)+' kWh')+gSeg('ldV','Voertuig laadt maximaal',[[100,'100 kW'],[150,'150 kW'],[250,'250 kW'],[400,'400 kW'],[1000,'MCS']],1)+'<div class="gout"></div>'},
+  input(k){if(k==='ldA')gSet('ldP')},
+  paint(el){
+   const kwh=G.ldA*G.ldP/100,L=[[11,'AC 11 kW'],[22,'AC 22 kW'],[50,'DC 50 kW'],[150,'DC 150 kW'],[350,'DC 350 kW'],[1000,'MCS 1 MW']];
+   const rows=L.map(([p,n])=>{const ac=p<50,eff=ac?p*.92:Math.min(p,G.ldV)*.85,h=kwh/eff;return{n,h,lim:!ac&&p>G.ldV}}),mx=Math.max(...rows.map(r=>Math.min(r.h,14)));
+   setH(el.querySelector('.gout'),`<div class="gbl">${rows.map(r=>`<div class="gbr"><span>${r.n}</span><i><b class="${r.h<=.75?'ok':r.h<=10?'':'hi'}" style="width:${Math.max(2,Math.min(r.h,14)/mx*100)}%"></b></i><em>${gDur(r.h)}</em><small>${r.h<=.75?'In de pauze':r.h<=10?'In een nacht':'Langer dan een nacht'}${r.lim?' · max '+G.ldV+' kW':''}</small></div>`).join('')}</div>`)}},
+ gtAr:{init(){const d=gDef();G.arA=Math.round(d.acc);G.arL=d.le;G.arD=Math.round(d.km/d.wd/5)*5;G.arS='w';G.arB='h';G.arR=10;
+  return gRng('arD','Dagrit',20,1000,5,x=>nf(x)+' km')+gRng('arA','Bruikbare accu',30,900,5,x=>nf(x)+' kWh')+gRng('arL','Verbruik',10,200,1,x=>nf(x)+' kWh/100 km')+gSeg('arS','Seizoen',[['z','Zomer'],['v','Voorjaar'],['w','Winter'],['k','Vorst']])+gSeg('arB','Belading',[['l','Leeg'],['h','Half'],['v','Vol']])+gSeg('arR','Buffer bij aankomst',[[0,'Geen'],[10,'10%'],[20,'20%']])+'<div class="gout"></div>'},
+  paint(el){
+   const fs={z:1,v:1.08,w:1.2,k:1.32},fb={l:.88,h:1,v:1.12},use=s=>G.arL*fs[s]*fb[G.arB]/100,rg=s=>G.arA*(1-G.arR/100)/use(s),R=rg(G.arS),D=G.arD,mx=Math.max(R,D)*1.08;
+   const kwh=(D-R)*use(G.arS);
+   const why=D<=R?`Je dagrit past, met ${nf(R-D)} km over.`:`Je komt ${nf(D-R)} km tekort. Laad onderweg zo'n ${nf(Math.ceil(kwh/5)*5)} kWh: ongeveer ${gDur(kwh/300)} aan een snellader van 350 kW.`;
+   setH(el.querySelector('.gout'),`<div class="gres"><b>${nf(R)} km</b><span>actieradius op deze dag</span></div>
+    <div class="gsc" aria-hidden="true"><i class="${D<=R?'ok':'hi'}" style="width:${R/mx*100}%"></i><u class="d" style="left:${D/mx*100}%"><s>dagrit</s></u></div>
+    <p class="gwh">${why}</p><p class="gsz">${[['z','Zomer'],['v','Voorjaar'],['w','Winter'],['k','Vorst']].map(s=>`<span${s[0]===G.arS?' class="on"':''}>${s[1]} <b>${nf(rg(s[0]))} km</b></span>`).join('')}</p>`)}},
+ gtZe:{init(){G.zeT=vtype==='trekker'||vtype==='bakwagen'?vtype:'bestel';G.zeE=6;G.zeY=2019;
+  return gSeg('zeT','Voertuig',[['bestel','Bestelauto'],['bakwagen','Bakwagen'],['trekker','Trekker']])+gSeg('zeE','Euroklasse',[[4,'4 of lager'],[5,'5'],[6,'6']])+gRng('zeY','Eerste toelating',2005,2026,1,x=>String(x))+'<div class="gout"></div>'},
+  paint(el){
+   const t=G.zeT,e=G.zeE,y=G.zeY;let end=0,why;
+   if(y>=2025){why='Diesels die vanaf 1 januari 2025 nieuw op kenteken komen, mogen de zone niet in.'}
+   else if(t==='bestel'){if(e===5){end=2027;why='Bestelauto\'s met Euro 5 mogen tot 1 januari 2027 de zone in.'}else if(e===6){end=2028;why='Bestelauto\'s met Euro 6 mogen tot 1 januari 2028 de zone in. Een verlenging tot 1 januari 2029 is voorgesteld; Schiphol hanteert die datum al.'}else why='Bestelauto\'s met Euro 4 of lager mogen sinds 1 januari 2025 niet meer de zone in.'}
+   else if(e<6)why='Vrachtauto\'s onder Euro VI mogen sinds 1 januari 2025 niet meer de zone in.';
+   else if(t==='bakwagen'){if(y>=2020){end=2030;why='Euro VI-bakwagens die op 1 januari 2025 hooguit vijf jaar oud waren, mogen tot 1 januari 2030 de zone in.'}else if(y>=2017){end=2028;why='Euro VI-bakwagens die op 1 januari 2025 hooguit acht jaar oud waren, mogen tot 1 januari 2028 de zone in.'}else why='Euro VI-bakwagens die op 1 januari 2025 ouder waren dan acht jaar, vallen buiten de overgangsregeling.'}
+   else{if(y>=2017){end=2030;why='Euro VI-trekkers die op 1 januari 2025 hooguit acht jaar oud waren, mogen tot 1 januari 2030 de zone in.'}else why='Euro VI-trekkers die op 1 januari 2025 ouder waren dan acht jaar, vallen buiten de overgangsregeling.'}
+   const yrs=[2025,2026,2027,2028,2029,2030,2031];
+   setH(el.querySelector('.gout'),`<div class="gres"><b>${end?'Tot 1 januari '+end:'Geen toegang'}</b></div>
+    <div class="gze" aria-hidden="true">${yrs.map(x=>`<span class="${end>x?'ok':'no'}">${x}</span>`).join('')}</div>
+    <p class="gwh">${why} Een elektrisch voertuig mag er altijd in.</p>`)}},
+ gtSb:{init(){G.sbT=vtype==='bakwagen'?'n3':vtype;G.sbS=2;G.sbP=VT[vtype].p.pE;
+  return gSeg('sbT','Voertuig',[['trekker','Trekker'],['n3','Bakwagen N3'],['n2','Bakwagen N2'],['bestel','Bestelbus'],['bus','Bus']],1)+gSeg('sbS','Bedrijf',[[2,'Klein'],[1,'Middelgroot'],[0,'Groot']])+gRng('sbP','Prijs elektrisch excl. btw',20000,700000,5000,x=>eur(x))+'<div class="gout"></div>'},
+  seg(k){if(k==='sbT'){G.sbP=VT[{n3:'bakwagen',n2:'bakwagen'}[G.sbT]||G.sbT].p.pE;gSet('sbP')}},
+  paint(el){
+   const truck=['trekker','n3','n2'].includes(G.sbT),cls=G.sbT==='n2'?'N2':'N3',az=AZT[cls][G.sbS],P=G.sbP,azB=Math.min(P*az[1],az[2]),mia=[P*.9*.36*.19,P*.9*.36*.258];
+   const pv=VT[{n3:'bakwagen',n2:'bakwagen'}[G.sbT]||G.sbT].p,ere=pv.km*pv.le/100*.12,mkb=G.sbS>0,spr=15200*(mkb?.4:.2);
+   const row=(n,a,t,hi)=>`<div class="gsb${hi?' best':''}"><div><b>${n}</b><p>${t}</p></div><em>${a}</em></div>`;
+   setH(el.querySelector('.gout'),`<div class="gsl">${truck?row('AanZET',eur(azB),`${nf(az[1]*100,1)}% van de chassisprijs, maximaal ${eur(az[2])}${cls==='N2'?', vanaf 10.000 kg':''}. Niet samen met de MIA.`,azB>=mia[1])+row('MIA',`${eur(mia[0])} – ${eur(mia[1]).replace('€ ','')}`,'Netto belastingvoordeel bij 19% of 25,8% vennootschapsbelasting. Alternatief voor AanZET.',azB<mia[1]):row('AanZET','Niet van toepassing','AanZET geldt alleen voor nieuwe vrachtwagens.')}
+    ${row('SPRILA',eur(spr),`${mkb?'40':'20'}% van een laadpaal van ${eur(15200)}, maximaal ${eur(mkb?88000:44000)}.`)}
+    ${row('ERE\'s',eur(ere)+' per jaar',`Bij ${nf(pv.km)} km per jaar en € 0,12 per geladen kWh op eigen terrein.`)}
+    ${G.sbS>0?row('KIA','Extra aftrek','Investeer je in een jaar een beperkt bedrag in bedrijfsmiddelen, dan krijg je extra aftrek, ook naast de MIA.'):''}
+    ${row('Gemeente of provincie','Wisselend','Sommige gemeenten en provincies hebben eigen regelingen, vaak voor bestelauto\'s in steden met een zero-emissiezone.')}</div>`)}},
+ gtHf:{init(){G.hfT=vtype==='bakwagen'?'bakwagen':'trekker';G.hfK=VT[G.hfT].p.kmH;
+  return gSeg('hfT','Voertuig',[['trekker','Trekker'],['bakwagen','Bakwagen']])+gRng('hfK','Kilometers per jaar met heffing',5000,200000,1000,x=>nf(x)+' km')+'<div class="gout"></div>'},
+  seg(k){if(k==='hfT'){G.hfK=VT[G.hfT].p.kmH;gSet('hfK')}},
+  paint(el){
+   const p=VT[G.hfT].p,d=G.hfK*p.tD,e=G.hfK*p.tE;
+   setH(el.querySelector('.gout'),`<div class="gres"><b>${eur(d-e)}</b><span>minder heffing per jaar met elektrisch</span></div>
+    <div class="gbl">${[['Diesel',d,p.tD,'dz'],['Elektrisch',e,p.tE,'ok']].map(r=>`<div class="gbr"><span>${r[0]}</span><i><b class="${r[3]}" style="width:${Math.max(1,r[1]/d*100)}%"></b></i><em>${eur(r[1])}</em><small>${eur(r[2],3)} per km</small></div>`).join('')}</div>`);
+   setH($('gtTol'),`<table class="gtt"><thead><tr><th></th><th>Diesel</th><th>Elektrisch</th><th>Per 10.000 km</th></tr></thead><tbody>${TOL.map(c=>`<tr><th>${c[1]}</th><td>${eur(c[3],3)}</td><td>${eur(c[2],3)}</td><td>${eur((c[3]-c[2])*10000)}</td></tr>`).join('')}</tbody></table>`)}},
+ gtFn:{init(){const d=gDef();G.fnP=Math.round(d.pE/5000)*5000;G.fnA=10;G.fnR=6;G.fnL=72;G.fnS=10;
+  return gRng('fnP','Aanschafprijs excl. btw',20000,700000,5000,x=>eur(x))+gRng('fnA','Eigen inbreng',0,50,5,x=>x+'%')+gRng('fnR','Rente',0,12,.1,x=>nf(x,1)+'%')+gRng('fnL','Looptijd',24,120,12,x=>x+' maanden')+gRng('fnS','Slottermijn',0,40,5,x=>x+'%')+'<div class="gout"></div>'},
+  paint(el){
+   const P=G.fnP,L=P*(1-G.fnA/100),S=P*G.fnS/100,n=G.fnL,r=G.fnR/1200,pm=r?(L-S/Math.pow(1+r,n))*r/(1-Math.pow(1+r,-n)):(L-S)/n,int=pm*n+S-L;
+   setH(el.querySelector('.gout'),`<div class="gres"><b>${eur(pm)}</b><span>per maand</span></div><p class="gwh">Over ${n/12} jaar betaal je ${eur(int)} rente${S?`, en aan het eind ${eur(S)} slottermijn`:''}. Exclusief btw, onderhoud en verzekering.</p>`)}},
+ gtAc:{init(){const d=gDef();G.acA=Math.round(d.acc);G.acK=d.km;G.acL=d.le;G.acJ=d.jr;G.acM='m';
+  return gRng('acK','Kilometers per jaar',5000,250000,5000,x=>nf(x)+' km')+gRng('acA','Bruikbare accu',30,900,5,x=>nf(x)+' kWh')+gRng('acJ','Leeftijd',1,12,1,x=>x+' jaar')+gSeg('acM','Laden',[['r','Vooral rustig'],['m','Gemengd'],['s','Veel snelladen']])+'<div class="gout"></div>'},
+  paint(el){
+   const m={r:.85,m:1,s:1.3}[G.acM],cyc=G.acK*G.acL/100/G.acA,s=y=>Math.max(.6,1-y*(.015+Math.min(400,cyc)*.00004*m)),R0=G.acA/G.acL*100,sj=s(G.acJ);
+   const W=innerWidth<640?360:600,H=innerWidth<640?190:170,x=y=>34+y/12*(W-44),yy=f=>12+(1-f)/.4*(H-36);
+   const pts=Array.from({length:13},(_,i)=>`${x(i).toFixed(1)},${yy(s(i)).toFixed(1)}`).join(' ');
+   setH(el.querySelector('.gout'),`<div class="gres"><b>${nf(sj*100)}%</b><span>capaciteit na ${G.acJ} jaar · actieradius ± ${nf(R0*sj)} km in plaats van ${nf(R0)} km</span></div>
+    <svg class="gch" viewBox="0 0 ${W} ${H}" aria-hidden="true">${[1,.9,.8,.7,.6].map(f=>`<line x1="34" x2="${W-10}" y1="${yy(f)}" y2="${yy(f)}" class="${f===.7?'gw7':''}"/><text x="28" y="${yy(f)+4}" text-anchor="end">${f*100}%</text>`).join('')}${[0,2,4,6,8,10,12].map(i=>`<text x="${x(i)}" y="${H-4}" text-anchor="middle">${i}</text>`).join('')}<text x="42" y="${yy(.7)-6}" class="gw7t">veelgebruikte garantiegrens</text><polyline points="${pts}"/><circle cx="${x(G.acJ)}" cy="${yy(sj)}" r="5"/></svg>
+    <p class="gwh">Ongeveer ${nf(cyc)} volledige laadbeurten per jaar. Een indicatie: chemie, temperatuur en software maken veel verschil.</p>`)}},
+ gtRb:{init(){G.rbF='e';G.rbM=4250;G.rbH='n';
+  return gSeg('rbF','Aandrijving',[['e','Elektrisch'],['d','Diesel']])+gRng('rbM','Toegestane maximummassa',2000,20000,250,x=>nf(x)+' kg')+gSeg('rbH','Aanhanger',[['n','Nee'],['j','Ja']])+'<div class="gout"></div>'},
+  paint(el){
+   const e=G.rbF==='e',m=G.rbM,h=G.rbH==='j';let lic,why;
+   if(m<=3500){lic=h?'B of BE':'B';why=h?'Met een zware aanhanger heb je BE nodig.':'Een gewoon rijbewijs is genoeg.'}
+   else if(m<=4250&&e&&!h){lic='B';why='Een elektrische bestelauto tot 4.250 kg mag je met rijbewijs B rijden als je dat minstens twee jaar hebt. Het voertuig blijft een vrachtauto (N2): een snelheidsbegrenzer is verplicht en verboden voor vrachtauto\'s gelden ook voor jou. Check de voorwaarden bij het CBR.'}
+   else if(m<=7500){lic=h?'C1E':'C1';why=(e&&m<=4250&&h?'Met een aanhanger geldt de uitzondering voor B niet. ':'')+'Rijd je beroepsmatig, dan heb je ook code 95 nodig.'}
+   else{lic=h?'CE':'C';why='Rijd je beroepsmatig, dan heb je ook code 95 nodig.'}
+   const tach=m<=3500?'Geen tachograaf nodig.':e&&m<=7500?'Geen tachograaf nodig zolang je binnen 100 km van je vestiging blijft. Houd je werktijden wel bij.':'Een tachograaf is verplicht.';
+   setH(el.querySelector('.gout'),`<div class="gres"><b>Rijbewijs ${lic}</b></div><p class="gwh">${why}</p><p class="gwh">${tach}</p>`)}}
+};
+function gSet(k){const el=document.querySelector(`[data-gr="${k}"]`);if(!el)return;el.value=G[k];gFill(el)}
+function gTool(id){const el=$(id),t=GT[id];if(!el||!t)return;if(!el.dataset.on){el.dataset.on=1;el.innerHTML=t.init();el.querySelectorAll('[data-gr]').forEach(gFill)}t.paint(el)}
+function gStPaint(){const d=gDone();setH($('gSt'),GSTEPS.map((s,i)=>`<li class="${d.has(i)?'done':''}"><button type="button" class="gck" data-gst="${i}" aria-pressed="${d.has(i)}" aria-label="${s[0]}: ${d.has(i)?'gedaan':'nog doen'}"></button><div><b>${s[0]}</b><p>${s[1]}</p><a href="${s[2]}">${s[3]}</a></div></li>`).join(''));gHub()}
+function gHub(){const el=$('gTl');if(!el)return;const n=gDone().size;setH(el,GIDS.map(([k,t],i)=>`<li><a href="#gids/${k}"${i?'':' class="gsp"'}><small>${String(i+1).padStart(2,'0')}</small><b>${t}</b>${i?'':`<span>${n?`${n} van ${GSTEPS.length} gedaan`:`${GSTEPS.length} stappen`}</span>`}</a></li>`).join(''))}
+function gShow(k){
+ if(!GIDS.some(g=>g[0]===k))k='stappenplan';gid=k;
+ document.querySelectorAll('.ga').forEach(a=>a.hidden=a.dataset.g!==k);
+ const i=GIDS.findIndex(g=>g[0]===k),nx=GIDS[i+1],pv=GIDS[i-1];
+ setH($('gRl'),GIDS.map(([g,t])=>`<a href="#gids/${g}"${g===k?' aria-current="page"':''}>${t}</a>`).join(''));
+ setH($('gNx'),`${pv?`<a class="pv" href="#gids/${pv[0]}"><small>Vorige</small>${pv[1]}</a>`:'<span></span>'}${nx?`<a class="nx" href="#gids/${nx[0]}"><small>Volgende</small>${nx[1]}</a>`:''}`);
+ if(k==='stappenplan')gStPaint();
+ document.querySelectorAll(`.ga[data-g="${k}"] .gtool[id]`).forEach(t=>gTool(t.id));
+ if(k==='heffing')gTool('gtHf');
+ return GIDS[i][1];
+}
+document.addEventListener('click',e=>{
+ const t=e.target;if(!t.closest)return;let x;
+ if(x=t.closest('[data-gs]')){const k=x.dataset.gs,raw=x.dataset.v;G[k]=isNaN(+raw)?raw:+raw;x.parentNode.querySelectorAll('[data-gs]').forEach(b=>b.setAttribute('aria-pressed',b===x));const tl=x.closest('.gtool'),T=GT[tl.id];if(T.seg)T.seg(k);T.paint(tl);return}
+ if(x=t.closest('[data-gst]')){const d=gDone(),i=+x.dataset.gst;d.has(i)?d.delete(i):d.add(i);try{localStorage.setItem(GKEY,JSON.stringify([...d]))}catch(err){}gStPaint();return}
+ if(x=t.closest('[data-pv]')){nlSel=nlSel===x.dataset.pv?null:x.dataset.pv;nlPlace='';$('gDot').setAttribute('hidden','');nlPaint()}
+});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[data-pv]')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
+document.addEventListener('input',e=>{const x=e.target;if(!x.dataset||!x.dataset.gr)return;G[x.dataset.gr]=+x.value;gFill(x);const tl=x.closest('.gtool'),T=GT[tl.id];if(T.input)T.input(x.dataset.gr);T.paint(tl)});
+document.addEventListener('submit',e=>{if(e.target.id!=='gPc')return;e.preventDefault();const q=e.target.elements.q.value.trim();if(q)nlFind(q)});
+gHub();
 
 document.querySelectorAll('.faq section>h2').forEach(h=>{const n=h.parentNode.querySelectorAll('details').length;h.insertAdjacentHTML('beforeend',` <small>${n} ${n===1?'vraag':'vragen'}</small>`);h.tabIndex=0;h.setAttribute('role','button');h.setAttribute('aria-expanded','false')});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.faq section>h2')){e.preventDefault();e.target.click()}});
