@@ -39,7 +39,7 @@ window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
    Eén ding tegelijk: details klappen pas open als je erom vraagt. */
 :root{
  --page:#ECEEEA;--card:#fff;--soft:#F6F7F4;
- --ink:#15171A;--ink-2:#4F565D;--ink-3:#7A8188;--line:#D7DBD5;--line-2:#BCC2BB;
+ --ink:#15171A;--ink-2:#4F565D;--ink-3:#626A71;--line:#D7DBD5;--line-2:#BCC2BB;
  --asph:#191B1E;--asph-2:#24282C;--asph-3:#383D43;--on-asph:#F1EFE9;--on-asph-2:#A7ADB2;
  --amber:#F2A33A;--amber-ink:#B8700E;
  --volt:#0A8F5B;--volt-2:#3FA877;--volt-soft:#DCF0E5;--volt-ink:#07734A;
@@ -1214,6 +1214,50 @@ html.embed .intro{padding-top:20px}
  .wzb{padding-top:18px}
  .wzb .wst>h3{margin-bottom:20px}
 }
+/* ===== Designronde: rustiger en consequenter ===== */
+/* 1. Kenteken als rustig invulveld, niet als tweede felle knop */
+#calc .plate{height:34px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2)}
+#calc .plate:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+#calc .plate>span{background:#1D4FA8}
+#calc .plate input{font:600 15px/1 var(--display);letter-spacing:.06em}
+#calc .plate input::placeholder{color:var(--ink-3)}
+/* 3. Drie vaste cijfermaten: groot (scorebord), middel 24px (kopcijfers), klein 18px (overzichten) */
+[data-page=uitgebreid] .pbn,[data-page=uitgebreid] .pbq b,[data-page=uitgebreid] .bc2>b{font-size:24px!important}
+#ins .in b,.xsum p,.st b{font-size:18px}
+#ins .in b small,.st b small{font-size:13px}
+/* 4. Uitgebreid: vaste balk om te springen, met de prijs per km erbij */
+.xnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 67px);z-index:19;margin-top:20px;background:var(--page);border-bottom:1px solid var(--line)}
+.xnav .wrap{display:flex;align-items:center;gap:4px;height:46px}
+.xnav button{border:0;background:none;padding:8px 12px;font:600 15px var(--text);color:var(--ink-2);cursor:pointer;border-radius:4px}
+.xnav button:hover{color:var(--ink);background:rgba(21,23,26,.05)}
+.xnr{display:flex;gap:16px;margin-left:auto;font:600 15px var(--text);font-variant-numeric:tabular-nums}
+.xnr i{display:inline-block;width:9px;height:9px;margin-right:7px;border-radius:2px;vertical-align:0}
+.xnr i.d{background:var(--amber)}.xnr i.e{background:var(--volt)}
+[data-page=uitgebreid] .add{margin-top:12px}
+[data-page=uitgebreid] .vs,[data-page=uitgebreid] .an{scroll-margin-top:130px}
+[data-page=uitgebreid] .vs{margin-top:32px}
+/* 5. Minder herhaling: geen voortgangsbalk boven de grafiek, smallere eerste kolom in de tabel */
+[data-page=uitgebreid] .pbbar{display:none}
+[data-page=uitgebreid] .hm th:first-child{width:1%;padding-right:14px;white-space:nowrap}
+/* 6. Kleine labels iets groter */
+#ins .in .slb,.who,.colh>span,.pbq span{font-size:12px!important}
+/* 8. Bronnen en actualiteit */
+.trust{margin:14px 0 0;font:500 12px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.sumx{display:none}
+@media(max-width:640px){
+ /* 2. Telefoon: dezelfde volgorde als desktop, uitgangspunten eerst maar kort */
+ #calc .story{order:1;margin:0 0 16px}
+ #calc .board{order:2}
+ #calc #ins{order:3}
+ #calc .trust{order:4}
+ #calc .sum:not(.all) .st:not(:nth-child(2)):not(:nth-child(5)):not(:nth-child(6)){display:none}
+ .sumx{display:block;order:5;flex:1 1 100%;margin-top:10px;font-size:14px}
+ #ins .in .slb{font-size:12px!important}
+ .xnav .wrap{gap:0;overflow-x:auto}
+ .xnav button{padding:8px 9px;font-size:14px;white-space:nowrap}
+ .xnr{display:none}
+ .trust{line-height:1.6}
+}
 </style>
 </head>
 <body>
@@ -1226,6 +1270,7 @@ html.embed .intro{padding-top:20px}
    <a href="#modellen" data-nav="modellen">Modellen</a>
    <a href="#faq" data-nav="faq">Veelgestelde vragen</a>
    <a href="#nieuws" data-nav="nieuws">Nieuws</a>
+   <a href="#restwaarde" data-nav="restwaarde">Restwaarde</a>
    <a href="#vlootanalyse" data-nav="vloot" data-fleet="nav">Vlootanalyse</a>
    <a href="#over-ons" data-nav="over">Over ons</a>
   </nav>
@@ -1250,10 +1295,12 @@ html.embed .intro{padding-top:20px}
     <div class="sumh"><h2 id="hSum">Uitgangspunten</h2><div class="sumb"><button class="lnk" type="button" data-reset id="sumRs">Herstel voorbeeldcijfers</button><div class="plw" id="plW"></div><input type="hidden" id="plk" value=""><button class="btn" id="wzOpen" type="button" data-step="use"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg><span>Aanpassen</span></button></div></div>
     <div class="dzl" id="dzl" hidden></div>
     <div class="sum" id="sum"></div>
+    <button class="lnk sumx" id="sumX" type="button" aria-expanded="false" aria-controls="sum">Alle 8 uitgangspunten</button>
    </section>
    <div class="board" id="board" aria-live="polite"></div>
    <div class="scn" id="scn" hidden></div>
    <div class="ins" id="ins"></div>
+   <p class="trust" id="trust"></p>
 
 
 
@@ -1272,10 +1319,12 @@ html.embed .intro{padding-top:20px}
    <nav class="mode" aria-label="Rekenwijze"><a href="#calculator" data-mode="b">Simpel</a><a href="#uitgebreid" data-mode="x" aria-current="page">Uitgebreid</a></nav>
   </div>
   <div class="xsum" id="xSum"></div>
+   <section class="add" id="xAd" aria-labelledby="hAdd"><div class="addt"><h2 id="hAdd">Extra kosten</h2></div><div class="addl" id="addL"></div></section>
  </div>
+ <nav class="xnav" aria-label="Onderdelen"><div class="wrap"><button type="button" data-jump="xV">Kosten</button><button type="button" data-jump="xAn">Terugverdientijd</button><button type="button" data-jump="xSn">Gevoeligheid</button><span class="xnr" id="xnR"></span></div></nav>
  <div class="wrap">
   <div class="cmain">
-   <section class="vs" aria-labelledby="hVs">
+   <section class="vs" id="xV" aria-labelledby="hVs">
     <div class="vsh"><h2 id="hVs">Kosten per onderdeel</h2><div class="seg sm" id="unit" role="group" aria-label="Eenheid"></div></div>
     <div class="vsl">
      <div class="grid3 colh" aria-hidden="true"><span class="cd">Diesel</span><span class="cm"></span><span class="ce">Elektrisch</span></div>
@@ -1290,13 +1339,12 @@ html.embed .intro{padding-top:20px}
     <div id="pbX"></div>
    </section>
 
-   <section class="an" aria-labelledby="hSn">
+   <section class="an" id="xSn" aria-labelledby="hSn">
     <h2 id="hSn">Gevoeligheid</h2>
     <p class="snp">Vanaf hoeveel kilometers en bij welke energieprijzen elektrisch goedkoper is.</p>
     <div class="snw" id="snX"></div>
    </section>
 
-   <section class="add" aria-labelledby="hAdd"><div class="addt"><h2 id="hAdd">Extra kosten</h2></div><div class="addl" id="addL"></div></section>
 
    <a class="fln" href="#vlootanalyse" data-fleet="calc"><div><span>Vlootanalyse</span><b>Een plan voor je hele vloot</b></div><i>Neem contact op<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></i></a>
 
@@ -1934,11 +1982,14 @@ function board(r){
   `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}${bd?`<span class="brg">Bandbreedte <b>${bandTxt(bd)}</b> per jaar</span>`:''}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button>${scA?'':`<button class="btn" type="button" data-sca aria-label="Bewaar deze berekening om te vergelijken">${ICON.ab}<span>Vergelijk</span></button>`}<button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div>`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
  tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
+ setH($('xnR'),`<span><i class="d"></i>${eur(r.td/km,2)}</span><span><i class="e"></i>${eur(r.te/km,2)}</span>`);
  setH($('xSum'),`<p><span><i class="d"></i>Diesel <b>${eur(r.td/km,2)}</b> per km</span><span><i class="e"></i>Elektrisch <b>${eur(r.te/km,2)}</b> per km</span><span class="${cheap||even?'good':'bad'}">${even?'Ongeveer gelijk':`Elektrisch ${nf(pc)}% ${cheap?'goedkoper':'duurder'}: <b>${eur(Math.abs(d))}</b> per jaar`}</span></p><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button>`);
  $('mD').textContent=eur(r.td/km,2);$('mE').textContent=eur(r.te/km,2);$('mM').textContent=even?'≈':(cheap?'−':'+')+nf(pc)+'%';
 }
 /* Simpel: twee kleine blokjes. Vanaf hoeveel kilometer elektrisch goedkoper is, en wat de stroomprijs met de besparing doet. */
 function simpleTiles(){
+ {const d=MODELS.map(m=>m.checked).filter(Boolean).sort().pop(),mo=d?new Intl.DateTimeFormat('nl-NL',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(d+'T12:00:00Z')):'';
+  setH($('trust'),`Bronnen: RVO, Staatscourant en fabrikanten · ${MODELS.length} elektrische modellen${mo?' · bijgewerkt '+mo:''}`)}
  const x0=calcX(),co2=x0.co2d-x0.co2e,sv=o=>{const q=calcX(o);return q.td-q.te},kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
  setH($('ins'),
   `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b></div>`+
@@ -2143,6 +2194,7 @@ document.addEventListener('click',e=>{
  const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();history.pushState(null,'','#uitgebreid');route(false);if(!touched)openWz('use');return}
  if(e.target.closest('[data-reset]')){reset();return}
  const j=e.target.closest('[data-jump]');if(j){const t=$(j.dataset.jump);if(t.closest('.faq'))t.classList.add('open');t.scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
+ if(e.target.closest('#sumX')){const o=$('sum').classList.toggle('all');$('sumX').setAttribute('aria-expanded',o);$('sumX').textContent=o?'Minder uitgangspunten':'Alle 8 uitgangspunten';return}
  const fh=e.target.closest('.faq section>h2');if(fh){fh.parentNode.classList.toggle('open');fh.setAttribute('aria-expanded',fh.parentNode.classList.contains('open'));return}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
@@ -2185,7 +2237,7 @@ addEventListener('scroll',tipPlace,{passive:true});
 addEventListener('resize',()=>tipClose(false));
 
 /* Klein scorebord zodra het grote uit beeld is */
-function mini(){const b=$(page==='uitgebreid'?'xSum':'board').getBoundingClientRect(),show=(page==='calc'||page==='uitgebreid')&&b.bottom<64;$('mini').classList.toggle('show',show);
+function mini(){const b=$('board').getBoundingClientRect(),show=page==='calc'&&b.bottom<64;$('mini').classList.toggle('show',show);
  const c=document.querySelector('.bcta'),r=c&&c.getBoundingClientRect();$('fcta').hidden=!(c&&page==='calc'&&!$('wz').open&&(r.bottom<64||r.top>innerHeight))}
 addEventListener('scroll',mini,{passive:true});
 
