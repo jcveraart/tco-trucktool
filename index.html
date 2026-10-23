@@ -1063,8 +1063,11 @@ a.cta.big,a.fcta{text-decoration:none}
  .rxp button{position:relative;height:26px;padding:0 11px;border-radius:3px;font-size:12px;line-height:26px}
  .rxp button::before{content:"";position:absolute;inset:-7px 0}
  .rxp .rxo{margin-left:2px;border-radius:3px}
- .rng .srg{padding-bottom:20px}
- .rng .rxl{top:40px;font-size:12px}
+ /* Bandbreedte op de telefoon: geen extra bolletjes om te slepen, alleen de gekleurde band en de percentages */
+ .rng .rx{display:none!important}
+ .rng .srg{padding-bottom:0}
+ .rng .rxl{position:static!important;display:inline-block!important;margin:0 0 8px;font-size:12px}
+ .rng .rxl[data-x=hi]::before{content:"–";margin:0 6px}
  .wzf{display:grid;grid-template-columns:1fr 1.6fr;gap:10px;padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px))}
  .wzl{grid-column:1/-1;font-size:15px;margin:0}
  .wzlk{display:none}
