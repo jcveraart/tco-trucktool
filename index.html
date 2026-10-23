@@ -928,24 +928,21 @@ a.cta.big,a.fcta{text-decoration:none}
 [data-page=uitgebreid] .bc2.dz .trk i{background:var(--amber);opacity:.5}
 [data-page=uitgebreid] .bc2.dz .trk .now{background:var(--amber);box-shadow:0 0 0 1px var(--amber-ink)}
 /* Kenteken, je huidige diesel en gebruikt elektrisch */
-.plw{display:flex}
-.plate{display:inline-flex;align-items:center;height:34px;border-radius:8px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2)}
-.plate:focus-within{box-shadow:inset 0 0 0 1.5px var(--ink)}
-.plate input{width:104px;min-width:0;border:0;outline:0;background:none;padding:0 0 0 12px;color:var(--ink);font:600 14px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.plw{display:flex;min-width:0}
+.plate{box-sizing:border-box;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 4px 0 12px;border-radius:8px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-2);max-width:100%}
+.plate:focus-within{box-shadow:inset 0 0 0 1.5px var(--volt)}
+.plate input{width:92px;min-width:0;border:0;outline:0;background:none;padding:0;color:var(--ink);font:600 14px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .plate input::placeholder{color:var(--ink-3);font:500 14px/1 var(--text);letter-spacing:0;text-transform:none}
-.plate button{display:grid;place-items:center;width:32px;height:100%;border:0;background:none;color:var(--ink-3);cursor:pointer}
-.plate button:hover{color:var(--ink)}
-.plate button svg{width:15px;height:15px}
+.plo{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:var(--ink-2)}
+.plo:empty{display:none}
+.plate button{flex:none;display:grid;place-items:center;width:26px;height:26px;border:0;border-radius:6px;background:var(--volt);color:#fff;cursor:pointer}
+.plate button:hover{background:var(--volt-ink)}
+.plate button svg{width:14px;height:14px}
+.plate .pok,.plate.ok .pgo{display:none}.plate.ok .pok{display:block}
+.plate.ok button{background:var(--volt-soft);color:var(--volt-ink)}
 .plate.busy button{animation:plb .8s ease-in-out infinite alternate}
 @keyframes plb{to{opacity:.25}}
-.dzl{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;margin-top:12px;font-size:14px;line-height:1.5;color:var(--ink-2)}
-.dzl b{color:var(--ink);font-weight:600}
-.dzl>:is(b,span)+span::before{content:'·';margin:0 9px;color:var(--ink-3)}
-.dzl a{color:inherit;text-decoration-color:var(--line-2);text-underline-offset:3px}
-.dzl .qi{margin-left:6px;vertical-align:1px}
-.dzl .wzx{flex:none;width:26px;height:26px;margin-left:6px;color:var(--ink-3)}
-.dzl .wzx svg{width:14px;height:14px}
-.dze{margin:0;color:var(--amber-ink);font-weight:600}
+.plate.bad{box-shadow:inset 0 0 0 1.5px var(--amber)}
 .nwg{display:inline-flex;margin:0 0 18px}
 .nwu .plate{margin:0 0 18px}
 #pEh,#rwEh{margin-top:6px;font-size:13px}
@@ -1000,7 +997,7 @@ html.embed .intro{padding-top:20px}
 .scn .lnk{font-size:14px}
 .scn .wzx{width:30px;height:30px}.scn .wzx svg{width:15px;height:15px}
 .prh{display:none}
-@media print{.mode,.bcta,.qi,.st svg,.dzl .wzx{display:none!important}.prh{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--ink);font-size:14px}.prh b{font:700 20px var(--text)}.scn .lnk,.scn .wzx{display:none!important}}
+@media print{.mode,.bcta,.qi,.st svg{display:none!important}.prh{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--ink);font-size:14px}.prh b{font:700 20px var(--text)}.scn .lnk,.scn .wzx{display:none!important}}
 @media(max-width:640px){#calc .scn{order:1}.scv{flex:1 1 100%;order:2}.scd{margin-right:auto}}
 
 /* Telefoon: eigen, rustige indeling. Grotere tikvlakken, meer lucht tussen de schuiven, alles op één lijn. */
@@ -1190,9 +1187,7 @@ html.embed .intro{padding-top:20px}
  #calc .story .plate{height:40px}
  #calc .story .plate input{flex:1;width:auto}
  #calc .story .plw .plate{width:100%}
- #calc .story .dzl{order:3;flex:1 1 100%}
  #calc .story .sum{order:4}
- .dzl{gap:2px 16px}.dzl>b{flex:1 1 100%}.dzl>:is(b,span)+span::before{content:none}
  #calc .story #sumRs{order:9;margin-top:14px;font-size:14px;font-weight:500;color:var(--ink-2)}
  .sum{grid-template-columns:minmax(0,1fr)!important;margin-top:12px}
  .st{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:10px 40px 10px 14px}
@@ -1243,7 +1238,6 @@ html.embed .intro{padding-top:20px}
   <div class="cmain">
    <section class="story" id="story" aria-labelledby="hSum">
     <div class="sumh"><h2 id="hSum">Uitgangspunten</h2><div class="sumb"><button class="lnk" type="button" data-reset id="sumRs">Herstel voorbeeldcijfers</button><div class="plw" id="plW"></div><input type="hidden" id="plk" value=""><button class="btn" id="wzOpen" type="button" data-step="use"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg><span>Aanpassen</span></button></div></div>
-    <div class="dzl" id="dzl" hidden></div>
     <div class="sum" id="sum"></div>
    </section>
    <div class="board" id="board" aria-live="polite"></div>
@@ -1735,7 +1729,6 @@ const TIPS={
  dp:{t:'Dieselprijs',b:['De prijs per liter zonder btw. Het voorbeeld volgt de gemiddelde pompprijs van diesel volgens het CBS, zonder btw.','Tank je met een tankpas of op een eigen tank, dan betaal je vaak minder. Vul dan je eigen prijs in.'],l:[['Pompprijzen motorbrandstoffen (CBS)','https://opendata.cbs.nl/#/CBS/nl/dataset/80416ned/table']]},
  aSlim:{t:'Slim laden',b:['Met een dynamisch energiecontract laad je op de uren dat stroom het goedkoopst is, meestal \'s nachts. Je stroomprijs daalt dan met het verschil tussen die uren en het daggemiddelde.','We rekenen met het gemiddelde verschil op de stroombeurs over de afgelopen dertig dagen.']},
  xZon:{t:'Zonnepanelen',b:['Een kWp aan panelen levert in Nederland gemiddeld zo\'n 900 kWh per jaar. Het deel dat in je voertuigen gaat, kost je ongeveer € 0,06 per kWh in plaats van je stroomprijs.','Zon en laden vallen niet altijd samen. Laad je vooral \'s nachts, dan gaat er zonder buurtbatterij minder direct in je voertuig.'],l:[['Opbrengst per locatie (PVGIS)','https://re.jrc.ec.europa.eu/pvg_tools/nl/']]},
- plSw:{t:'Overstappen',b:['Het eerste jaar waarin een nieuwe elektrische, met al jouw cijfers inclusief afschrijving, per jaar minder kost dan je huidige diesel blijven gebruiken. Bij de diesel tellen brandstof, verzekering, heffing, onderhoud dat elk jaar ongeveer 5% stijgt en het waardeverlies.','Een oudere diesel die weinig meer waard is, is vaak goedkoop om aan te houden: de afschrijving op een nieuwe elektrische weegt dan zwaarder dan de besparing op brandstof. Rijd je in een zero-emissiezone, dan bepaalt die zone het uiterlijke moment.']},
  dag:{t:'Leeftijd van je diesel',b:['Met je huidige diesel rekenen we vanaf de waarde nu, niet vanaf de nieuwprijs. De restwaarde is wat er aan het eind van de afschrijftermijn van die waarde over is, en het onderhoud stijgt met de leeftijd.','Vul je het kenteken in, dan nemen we de leeftijd en de waarde daarvan over.']},
  rwE:{t:'Restwaarde elektrisch',b:['De tweedehandsmarkt voor elektrische bedrijfsvoertuigen is nog jong. De conditie van de accu bepaalt een groot deel van de waarde.','Onder de schuif zie je hoeveel capaciteit de accu aan het eind van je afschrijftermijn ongeveer nog heeft.']},
  'i-pb':{t:'Terugverdientijd',b:['Hoe lang het duurt voordat de extra investering in elektrisch is terugverdiend met lagere gebruikskosten: energie, onderhoud, verzekering en heffing.','De restwaarde telt hier niet mee, want die ontvang je pas bij verkoop.']},
@@ -2548,8 +2541,9 @@ $('mDlg').addEventListener('close',mPaint);
 const RDW='https://opendata.rdw.nl/resource/';
 const plNorm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
 const plFmt=k=>k.replace(/([A-Z])(?=\d)|(\d)(?=[A-Z])/g,'$1$2-');
-const plArrow='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
-const plateForm=k=>`<form class="plate" data-plate="${k}" novalidate><input name="kt" maxlength="9" placeholder="Kenteken" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="search" aria-label="${k==='E'?'Kenteken van het gebruikte elektrische voertuig':'Kenteken van je huidige diesel'}"><button type="submit" aria-label="Zoek kenteken">${plArrow}</button></form>`;
+const plCheck='<svg class="pok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>';
+const plArrow='<svg class="pgo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+const plateForm=k=>`<form class="plate" data-plate="${k}" novalidate><input name="kt" maxlength="9" placeholder="Kenteken" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="search" aria-label="${k==='E'?'Kenteken van het gebruikte elektrische voertuig':'Kenteken van je huidige diesel'}"><span class="plo" aria-live="polite"></span><button type="submit" aria-label="Zoek kenteken">${plArrow}${plCheck}</button></form>`;
 /* Vrachtwagenheffing per gewichtsklasse, prijspeil 2026: diesel Euro VI in CO₂-klasse 1, elektrisch in klasse 5 */
 const HEF=[[12000,.113,.025],[18000,.160,.035],[32000,.182,.037],[Infinity,.201,.038]];
 const hefRow=kg=>HEF.find(h=>kg<=h[0]);
@@ -2591,27 +2585,9 @@ function zeTxt(i){
  if(i.vt==='bestel')return y>=2025?'Geen toegang':i.euro>=6?'Tot 2028':i.euro===5?'Tot 2027':'Geen toegang';
  return i.euro>=6?(y>=2017?'Tot 2030':'Tot 2028'):'Geen toegang';
 }
-/* Overstappen: het eerste jaar waarin een nieuw elektrisch voertuig (met al je cijfers) per jaar minder kost dan je huidige diesel aanhouden */
-function plSwitch(i){
- const x=calcX(),age=ageOf(i.first),P=plValue(i,'d').v,v0=valPct('d',i.vt,age)||1,op=x.D.en+x.D.ver+x.D.hef+x.D.tol;
- const oB=x.km*($('dw').value==='h'?v('oD')/odF(Math.round(v('dag'))+x.L/2):v('oD'));
- for(let y=0;y<=8;y++){const a=age+y,loss=P*(valPct('d',i.vt,a)-valPct('d',i.vt,a+1))/v0,keep=op+oB*odF(a)+loss;if(x.te<=keep)return y}
- return null;
-}
-function plPaint(){
- const i=PL.D,el=$('dzl');if(!el)return;
- if(!i){el.hidden=true;return}
- const x=`<button class="wzx" type="button" data-plx="D" aria-label="Kenteken wissen">${XSVG}</button>`;
- if(i.err){el.hidden=false;setH(el,`<p class="dze">${i.err}</p>${x}`);return}
- const ze=zeTxt(i),sy=plSwitch(i),now=new Date().getFullYear(),val=plValue(i,'d').v;
- const parts=[[i.first&&i.first.getFullYear(),i.euro&&'Euro '+i.euro].filter(Boolean).join(' · '),
-  `<a href="#restwaarde" data-rw="d|${i.vt}">± ${eur(Math.round(val/1000)*1000)}</a> waard`,
-  ze&&(ze==='Geen toegang'?'Geen toegang tot ZE-zones':'ZE-zone '+ze.toLowerCase()),
-  (sy===null?'Overstappen na '+(now+8):sy===0?'Overstappen loont nu':'Overstappen vanaf '+(now+sy))+tipBtn('plSw')].filter(Boolean);
- el.hidden=false;
- setH(el,`<b>${plName(i)}</b>${parts.map(t=>`<span>${t}</span>`).join('')}${x}`);
-}
 const XSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+/* Kenteken van je diesel: in het invulveld een korte bevestiging, de details staan in het invulvenster */
+function plPaint(){const i=PL.D,ok=!!(i&&!i.err);document.querySelectorAll('[data-plate="D"]').forEach(f=>{const bad=!!(i&&i.err);f.classList.toggle('bad',bad);f.classList.toggle('ok',ok);f.title=bad?i.err:'';f.elements.kt.setAttribute('aria-invalid',bad);const o=f.querySelector('.plo');if(o)o.textContent=ok&&f.closest('#plW')?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):''})}
 /* Kenteken van je diesel toepassen: soort voertuig, verbruik en heffing */
 function plApplyD(i){
  if(i.vt!==vtype){applyType(i.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
@@ -2630,7 +2606,7 @@ function plApplyE(i){
  $('nw').value='g';setNum($('eag'),age);usedAuto(true);touched=true;
 }
 async function plLookup(kind,k,apply){
- if(!k){PL[kind]=null;$(kind==='E'?'plkE':'plk').value='';render();return}
+ if(!k){PL[kind]=null;$(kind==='E'?'plkE':'plk').value='';if(kind==='D'&&$('dw').value==='h'){$('dw').value='n';dieselAuto(true)}render();return}
  const fs=document.querySelectorAll(`[data-plate="${kind}"]`);fs.forEach(f=>{f.classList.add('busy');f.elements.kt.value=plFmt(k)});
  let i=null,err='';
  try{i=await rdwGet(k)}catch(e){err='De RDW is nu niet bereikbaar. Probeer het later opnieuw.'}
@@ -2645,8 +2621,8 @@ async function plLookup(kind,k,apply){
  render();
  if(apply)track('plate_lookup',{kind,vt:i.vt,year:i.first?i.first.getFullYear():null,euro:i.euro||null});
 }
+document.addEventListener('input',e=>{const f=e.target.closest('[data-plate]');if(!f||e.target.name!=='kt')return;f.classList.remove('ok','bad');const o=f.querySelector('.plo');if(o)o.textContent=''});
 document.addEventListener('submit',e=>{const f=e.target.closest('[data-plate]');if(!f)return;e.preventDefault();const k=plNorm(f.elements.kt.value);f.elements.kt.value=k?plFmt(k):'';plLookup(f.dataset.plate,k,true)});
-document.addEventListener('click',e=>{const x=e.target.closest('[data-plx]');if(!x)return;const k=x.dataset.plx;PL[k]=null;$(k==='E'?'plkE':'plk').value='';document.querySelectorAll(`[data-plate="${k}"]`).forEach(f=>f.elements.kt.value='');if(k==='D'&&$('dw').value==='h'){$('dw').value='n';dieselAuto(true)}render()});
 /* Gebruikt elektrisch: eerlijke prijs uit de waardecurve, restwaarde aan het eind van de looptijd */
 const newPriceE=()=>{const m=modelActive();return m&&m.price?m.price:VT[vtype].p.pE};
 const fairE=age=>{const ix=RIX&&RIX[`e|${vtype}|${age}`];return ix&&ix.n>=5?ix.p:newPriceE()*valPct('e',vtype,age)};
@@ -2681,7 +2657,8 @@ function dieselPaint(){
  document.querySelectorAll('[data-dw]').forEach(e=>e.setAttribute('aria-pressed',e.dataset.dw===$('dw').value));
  $('dwG').hidden=!cur;
  const lb=document.querySelector('label[for="pD"]');if(lb)lb.textContent=cur?'Waarde nu':F.pD[1];
- const i=PL.D;setH($('pDh'),cur&&i&&i.err?`<span class="warn">${i.err}</span>`:'');
+ const i=PL.D;const ze=cur&&i&&!i.err?zeTxt(i):'';
+ setH($('pDh'),!cur||!i?'':i.err?`<span class="warn">${i.err}</span>`:[`<b>${plName(i)}</b>`,i.first&&i.first.getFullYear(),i.euro&&'Euro '+i.euro,ze&&(ze==='Geen toegang'?'Geen toegang tot ZE-zones':'ZE-zone '+ze.toLowerCase())].filter(Boolean).join(' · '));
 }
 /* Hoeveel capaciteit de accu ongeveer overhoudt: 1,5% per jaar plus slijtage per volledige laadbeurt */
 const soh=(yrs,kwh,acc)=>Math.max(.6,1-yrs*(.015+Math.min(400,kwh/Math.max(1,acc))*.00004));
