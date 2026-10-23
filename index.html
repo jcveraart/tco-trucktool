@@ -640,6 +640,7 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .mcs b{color:var(--ink);font-weight:600}
 .mcs svg{width:18px;height:18px;color:var(--ink-3)}
 .mcs .na{color:var(--ink-3)}
+.mcs .mpr{flex-basis:100%}
 .mca{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;align-self:end;padding-top:14px;border-top:1px solid var(--line)}
 .mca .cta{padding:9px 14px;font-size:14px}
 .mca .cta svg{width:16px;height:16px}
@@ -2835,7 +2836,7 @@ function mCard(k,vs,top,mx){
  return`<article class="mc${sel?' sel':''}"><div class="mch"><span>${m.b}</span><span class="mst${now?'':' soon'}"><i aria-hidden="true"></i>${now?'Leverbaar':'Verwacht '+m.y}</span></div>
   <h3 class="mcn">${m.fam||m.m}</h3>
   <div class="mcr"><p><b>${span?`${nf(r0)}–${nf(r1)}`:upto?rt.slice(4):rt||nf(m.r)}</b><small>km actieradius</small></p>${span?`<span class="mbar" aria-hidden="true"><i class="mx" style="width:${Math.min(100,r1/mx*100)}%"></i><i style="width:${Math.min(100,r0/mx*100)}%"></i></span>`:mBar(m,mx)}</div>
-  <ul class="mcs"><li>${mIc('bat')}<b>${bat}</b> kWh</li>${kw?`<li>${mIc('bolt')}<b>${nf(kw)}</b> kW</li>`:''}<li${pr?'':' class="na"'}>${mIc('eur')}${pr?`<b>${pr}</b>`:'Op aanvraag'}</li></ul>${pick}
+  <ul class="mcs"><li>${mIc('bat')}<b>${bat}</b> kWh</li>${kw?`<li>${mIc('bolt')}<b>${nf(kw)}</b> kW</li>`:''}<li class="mpr${pr?'':' na'}">${mIc('eur')}${pr?`<b>${pr}</b>`:'Op aanvraag'}</li></ul>${pick}
   <div class="mca"><button class="cta" type="button" data-muse="${m.id}">Reken hiermee ${arrow}</button><label class="mcv"><input type="checkbox" data-msel="${m.id}"${sel?' checked':''}${!sel&&mSel.length>=3?' disabled':''}>Vergelijk</label><button type="button" class="mci" data-mrow="${m.id}" aria-haspopup="dialog">Info</button></div></article>`;
 }
 function mInfo(id){
