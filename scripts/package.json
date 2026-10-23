@@ -1,0 +1,7 @@
+{
+  "name": "stekkerofdiesel-restwaarde",
+  "private": true,
+  "type": "module",
+  "scripts": { "restwaarde": "node restwaarde.mjs" },
+  "dependencies": { "@anthropic-ai/sdk": "^1.2.0" }
+}
