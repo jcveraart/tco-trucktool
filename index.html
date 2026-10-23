@@ -230,12 +230,38 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(
 .pbq span{font-size:14px;color:var(--ink-3)}
 .pbq b{font:700 20px var(--text);font-variant-numeric:tabular-nums}
 .pbq small{font:400 13px var(--text);color:var(--ink-3)}
-.pbbar{height:8px;border-radius:4px;background:var(--soft);margin-top:20px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
-.pbbar i{display:block;height:100%;background:var(--volt)}
-.pbc svg{display:block;width:100%;height:auto;margin-top:18px;overflow:visible}
-.pbc text{font:500 12px var(--text);fill:var(--ink-3)}
+.pbw{position:relative;margin-top:22px}
+.pbw svg{display:block;width:100%;height:auto;overflow:visible;cursor:crosshair;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.pbw svg:focus{outline:none}.pbw svg:focus-visible{outline:2px solid var(--volt);outline-offset:6px;border-radius:4px}
+.pbc text{font:500 12px var(--mono);fill:var(--ink-3)}
+.pbw .lt{fill:var(--ink);font-weight:600}
+.pbw .g{stroke:var(--ink);stroke-opacity:.07}
+.pbw .z{stroke:var(--ink);stroke-opacity:.55;stroke-width:1.25}
+.pbw .au{fill:var(--volt);opacity:.13}.pbw .ad{fill:var(--amber);opacity:.16}
+.pbw .lu,.pbw .ld{fill:none;stroke-width:3;stroke-linecap:round}.pbw .lu{stroke:var(--volt)}.pbw .ld{stroke:var(--amber-ink)}
+.pbw .fan{fill:var(--ink);opacity:.07}
+.pbw .fe{fill:none;stroke:var(--ink);stroke-opacity:.28;stroke-width:1;stroke-dasharray:2 3}
+.pbw .brk{stroke:var(--ink);stroke-opacity:.5;stroke-width:5;stroke-linecap:round}
+.pbw .lm{stroke:var(--ink);stroke-opacity:.22;stroke-dasharray:3 4}
+.pbw .bem{fill:#fff;stroke:var(--ink);stroke-width:3}
+.pbw .bel rect{fill:var(--ink)}.pbw .bel text{fill:#fff;font:600 13px var(--text)}
+.pbw .hit{fill:transparent}
+.pbw .hv{pointer-events:none}
+.pbw .hl{stroke:var(--ink);stroke-opacity:.45}
+.pbw .hd{fill:var(--amber-ink);stroke:#fff;stroke-width:2.5}.pbw .hd.up{fill:var(--volt)}
+.pbtip{position:absolute;top:0;z-index:2;min-width:188px;padding:10px 12px;border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 6px 18px rgba(21,23,26,.1);pointer-events:none;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.pbtip b{display:block;margin-bottom:6px;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.pbtip span{display:flex;align-items:center;gap:7px;line-height:1.7}
+.pbtip em{margin-left:auto;padding-left:14px;font-style:normal;font-weight:600;color:var(--ink)}
+.pbtip .pv{margin-top:4px;padding-top:5px;border-top:1px solid var(--line);color:var(--ink)}
+.pbtip .pv.up em{color:var(--volt-ink)}.pbtip .pv.dn em{color:var(--amber-ink)}
+.pbtip small{display:block;text-align:right;font:500 12px var(--mono);color:var(--ink-3)}
+.pbtip i,.pbk i{display:inline-block;width:14px;height:3px;border-radius:2px;flex:none}
+.pbtip .kd{background:var(--amber-ink)}.pbtip .ku{background:var(--volt)}
 .pbk{display:flex;gap:6px 18px;flex-wrap:wrap;margin-top:12px;font-size:14px;color:var(--ink-3)}
-.pbk i{display:inline-block;width:18px;height:4px;margin-right:6px;vertical-align:middle;border-radius:2px}
+.pbk span{display:inline-flex;align-items:center}
+.pbk .kd{width:9px;border-radius:2px 0 0 2px;background:var(--amber-ink)}.pbk .ku{width:9px;margin-right:7px;border-radius:0 2px 2px 0;background:var(--volt)}
+.pbk .kf{width:18px;height:10px;margin-right:7px;background:rgba(21,23,26,.08);box-shadow:inset 0 0 0 1px rgba(21,23,26,.25)}
 .wfp{position:relative;display:flex;height:240px;border-bottom:2px solid var(--ink)}
 .wc{position:relative;flex:1;min-width:0}
 .wbar{position:absolute;left:18%;right:18%;border-radius:4px}
@@ -919,7 +945,7 @@ a.cta.big,a.fcta{text-decoration:none}
 /* Uitgebreid: terugverdientijd en gevoeligheid in de huisstijl. Witte vlakken met haarlijnen,
    labels in Plex Mono, cijfers in Plex Condensed, oranje voor diesel en groen voor elektrisch. */
 [data-page=uitgebreid] .pbc{padding:0;overflow:hidden}
-[data-page=uitgebreid] .pbt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+[data-page=uitgebreid] .pbt{align-items:stretch;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
 [data-page=uitgebreid] .pbq{display:contents}
 [data-page=uitgebreid] .pbt>div:first-child,[data-page=uitgebreid] .pbq>div{display:flex;flex-direction:column;gap:2px;min-width:0;padding:14px 16px 15px;background:var(--card)}
 [data-page=uitgebreid] .pbt>div:first-child::before{content:"Terugverdientijd";font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
@@ -928,10 +954,9 @@ a.cta.big,a.fcta{text-decoration:none}
 [data-page=uitgebreid] .pbs,[data-page=uitgebreid] .pbr{margin:0;font-size:13px;color:var(--ink-3)}
 [data-page=uitgebreid] .pbq b{font:600 26px/1.15 var(--display);letter-spacing:0}
 [data-page=uitgebreid] .pbq b small{font:500 13px var(--text)}
-[data-page=uitgebreid] .pbbar{height:4px;margin:18px 20px 0;border-radius:2px;box-shadow:none;background:var(--soft)}
-[data-page=uitgebreid] .pbc svg{width:calc(100% - 40px);margin:10px 20px 0}
+[data-page=uitgebreid] .pbw{margin:22px 20px 0}
 [data-page=uitgebreid] .pbc text{font:500 11px var(--mono)}
-[data-page=uitgebreid] .pbc g text{font-family:var(--text)}
+[data-page=uitgebreid] .pbc .bel text{font:600 13px var(--text)}
 [data-page=uitgebreid] .pbk{margin:8px 20px 16px;font:500 12px var(--mono);letter-spacing:.04em;text-transform:uppercase}
 [data-page=uitgebreid] .snw .bec{gap:1px;background:var(--line);box-shadow:0 0 0 1px var(--line);border-radius:6px;overflow:hidden}
 [data-page=uitgebreid] .snw .bc2{border-radius:0!important;padding:14px 16px 16px}
@@ -1322,6 +1347,9 @@ html.embed .intro{padding-top:20px}
  .vsh .seg.sm button{padding:9px 6px}
  .snp,[data-page=uitgebreid] .bc2 p{display:none}
  [data-page=uitgebreid] .hmw{padding:14px 12px;overflow-x:auto}
+ [data-page=uitgebreid] .pbw{margin:18px 14px 0}
+ .pbtip{top:auto;bottom:calc(100% + 8px);min-width:0;width:min(250px,100%);padding:8px 10px;font-size:12px}
+ .pbtip b{margin-bottom:3px;font-size:11px}
  [data-page=uitgebreid] .hmw>small{display:block;line-height:1.5}
  [data-page=uitgebreid] .hm{margin:8px 0 0;border-spacing:2px;font-size:12px}
  [data-page=uitgebreid] .hm th{font-size:11px}
@@ -2585,25 +2613,63 @@ function render(){
  $('rw').dataset.prev=$('rw').value;
  syncSl();fillRanges();srPaint();mini();save();
 }
+/* Terugverdiengrafiek: het opgetelde voordeel van elektrisch. Start onder nul (de extra investering), stijgt met de lagere gebruikskosten en snijdt de nullijn op het moment van terugverdienen. Met bandbreedte een waaier om de lijn. */
+let PBD=null;
 function payHTML(x){
  const L=x.L,{upD,upE,opD,opE,sv,gap,be}=payback(x),PB=BX&&BX.map(q=>payback(q.r,q.o));
- const T2=Math.max(L,be!==null?Math.min(Math.ceil(be)+1,15):L),W=Math.round(Math.max(480,Math.min(900,$('xAn').clientWidth||640))),H=280,mL=58,mR=8,mT=14,mB=26,cD=t=>upD+opD*t,cE=t=>upE+opE*t;
- const hi0=Math.max(cD(T2),cE(T2),cD(0),cE(0)),lo0=Math.min(cD(0),cE(0),cD(T2),cE(T2)),raw=(hi0-lo0)/4||1,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mg).find(m=>m>=raw),lo=Math.max(0,Math.floor(lo0/stp)*stp),hi=Math.ceil(hi0/stp)*stp,nT=Math.round((hi-lo)/stp);
- const X=t=>mL+t/T2*(W-mL-mR),Y=c=>mT+(1-(c-lo)/((hi-lo)||1))*(H-mT-mB);
- const ln=f=>`M${X(0).toFixed(1)},${Y(f(0)).toFixed(1)}L${X(T2).toFixed(1)},${Y(f(T2)).toFixed(1)}`;
- let area='',mk='',env='';
- /* Bandbreedte: alleen het moment van terugverdienen als rustige zone achter het snijpunt */
- if(PB){const bes=PB.map(p=>p.be).filter(z=>z!==null&&z<T2);if(bes.length){const a=Math.min(...bes),b2=PB.some(p=>p.be===null||p.be>=T2)?T2:Math.max(...bes);if(X(b2)-X(a)>1)env=`<rect x="${X(a).toFixed(1)}" y="${mT}" width="${(X(b2)-X(a)).toFixed(1)}" height="${H-mT-mB}" fill="#15171A" opacity=".05"/>`}}
- if(be!==null&&be<T2){const bx=X(be),by=Y(cD(be));area=`<path d="M${bx},${by}L${X(T2)},${Y(cD(T2))}L${X(T2)},${Y(cE(T2))}Z" fill="#0A8F5B" opacity=".14"/>`;
-  mk=`<line x1="${bx}" x2="${bx}" y1="${mT}" y2="${H-mB}" stroke="#15171A" stroke-opacity=".3" stroke-dasharray="3 4"/><circle cx="${bx}" cy="${by}" r="7" fill="#fff" stroke="#0A8F5B" stroke-width="3.5"/>`;}
- const ticks=[];for(let t=0;t<=T2;t++)ticks.push(`<text x="${X(t)}" y="${H-6}" text-anchor="${t===0?'start':t===T2?'end':'middle'}">${t===0?'Start':t}</text>`);
- const grid=Array.from({length:nT+1},(_,i)=>i/nT).map(f=>{const y=mT+f*(H-mT-mB),c=lo+(1-f)*(hi-lo);return`<line x1="${mL}" x2="${W-mR}" y1="${y}" y2="${y}" stroke="#15171A" stroke-opacity=".08"/><text x="${mL-8}" y="${y+4}" text-anchor="end">€ ${nf(Math.round(c/1000))}k</text>`}).join('');
+ const bes=PB?PB.map(p=>p.be).filter(z=>z!==null):[],far=Math.max(be||0,...bes);
+ const T2=Math.max(L,be!==null||bes.length?Math.min(Math.ceil(far)+1,15):L);
+ const cw=$('xAn').clientWidth,ph=cw>0&&cw<560,W=Math.round(Math.max(300,Math.min(900,(cw||680)-40))),H=ph?230:290,mL=ph?50:60,mR=10,mT=24,mB=26;
+ const dv=(g,s,t)=>s*t-g,sc=PB?PB.map(p=>[p.gap,p.sv]):[[gap,sv]];
+ const ends=[0,...[0,T2].flatMap(t=>sc.concat([[gap,sv]]).map(q=>dv(q[0],q[1],t)))];
+ const lo0=Math.min(...ends),hi0=Math.max(...ends),raw=(hi0-lo0)/4||1,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mg).find(m=>m>=raw),lo=Math.floor(lo0/stp)*stp,hi=Math.ceil(hi0/stp)*stp,nT=Math.round((hi-lo)/stp);
+ const X=t=>mL+t/T2*(W-mL-mR),Y=c=>mT+(1-(c-lo)/((hi-lo)||1))*(H-mT-mB),f1=n=>n.toFixed(1),y0=Y(0),bot=H-mB;
+ const kf=c=>c===0?'€ 0':(c<0?'−':'+')+'€ '+(stp>=1000?nf(Math.abs(c)/1000,stp%1000?1:0)+'k':nf(Math.abs(c)));
+ const grid=Array.from({length:nT+1},(_,i)=>lo+i*stp).map(c=>`<line x1="${mL}" x2="${W-mR}" y1="${f1(Y(c))}" y2="${f1(Y(c))}" class="${c===0?'z':'g'}"/><text x="${mL-8}" y="${f1(Y(c)+4)}" text-anchor="end">${kf(c)}</text>`).join('');
+ const ev=Math.max(1,Math.ceil(T2/Math.max(1,Math.floor((W-mL-mR)/34))));
+ const ticks=Array.from({length:T2+1},(_,t)=>t).filter(t=>t%ev===0||t===L).map(t=>`<text x="${f1(X(t))}" y="${H-6}" text-anchor="${t===0?'start':t===T2?'end':'middle'}"${t===L?' class="lt"':''}>${t===0?(ph?'0':'Start'):t}</text>`).join('');
+ const p0=[X(0),Y(-gap)],p1=[X(T2),Y(dv(gap,sv,T2))],seg=`M${f1(p0[0])},${f1(p0[1])}L${f1(p1[0])},${f1(p1[1])}`;
+ /* Boven de nullijn groen (terugverdiend), eronder amber (nog in te lopen) */
+ const clip=`<clipPath id="pbUp"><rect x="0" y="0" width="${W}" height="${f1(y0)}"/></clipPath><clipPath id="pbDn"><rect x="0" y="${f1(y0)}" width="${W}" height="${f1(H-y0)}"/></clipPath>`;
+ const ar=`M${f1(p0[0])},${f1(y0)}L${f1(p0[0])},${f1(p0[1])}L${f1(p1[0])},${f1(p1[1])}L${f1(p1[0])},${f1(y0)}Z`;
+ let fan='',brk='';
+ if(PB){const N=48,ts=Array.from({length:N+1},(_,i)=>i/N*T2),up=ts.map(t=>[X(t),Y(Math.max(...sc.map(q=>dv(q[0],q[1],t))))]),dn=ts.map(t=>[X(t),Y(Math.min(...sc.map(q=>dv(q[0],q[1],t))))]),pl=a=>a.map((p,i)=>(i?'L':'M')+f1(p[0])+','+f1(p[1])).join('');
+  fan=`<path class="fan" d="${pl(up)}${pl(dn.slice().reverse()).replace('M','L')}Z"/><path class="fe" d="${pl(up)}"/><path class="fe" d="${pl(dn)}"/>`;
+  if(bes.length){const a=Math.min(...bes),b2=bes.length<PB.length?T2:Math.min(T2,Math.max(...bes));if(X(b2)-X(a)>2)brk=`<line class="brk" x1="${f1(X(a))}" x2="${f1(X(b2))}" y1="${f1(y0)}" y2="${f1(y0)}"/>`}}
  const M=be===null?0:Math.round(be*12),yr=Math.floor(M/12),mo=M%12;
+ const lm=L<T2?`<line class="lm" x1="${f1(X(L))}" x2="${f1(X(L))}" y1="${mT}" y2="${bot}"/>`:'';
+ let mk='';
+ if(be!==null&&be>0&&be<T2){const bx=X(be),lx=Math.min(Math.max(bx,mL+46),W-mR-46),ly=y0-26<mT+8?y0+30:y0-24;
+  mk=`<circle cx="${f1(bx)}" cy="${f1(y0)}" r="6.5" class="bem"/><g transform="translate(${f1(lx)},${f1(ly)})" class="bel"><rect x="-44" y="-14" width="88" height="26" rx="4"/><text y="4" text-anchor="middle">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`}
+ PBD={T2,W,mL,mR,X,Y,mT,bot,upD,opD,upE,opE,gap,sv,sc:PB?sc:null};
  const txt=be===null?'Niet terugverdiend':be===0?'Direct':[yr?`${yr} <small>jaar</small>`:'',mo?`${mo} <small>${mo===1?'maand':'maanden'}</small>`:''].filter(Boolean).join(' ')||'0 <small>maanden</small>';
  const note=be===null?'Elektrisch is per jaar niet goedkoper dan diesel.':be===0?'Elektrisch is vanaf de start goedkoper.':be>L?`Pas na de afschrijftermijn van ${L} jaar.`:'';
- const pct=be===null?0:be===0?100:Math.min(100,be/T2*100);
- const lab=be!==null&&be>0&&be<T2?`<g transform="translate(${Math.min(Math.max(X(be),52),W-52)},${Y(cD(be))-28})"><rect x="-46" y="-15" width="92" height="28" rx="4" fill="#0A8F5B"/><text y="3" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">${yr?yr+' jr ':''}${mo?mo+' mnd':''}</text></g>`:'';
- return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div>${PB?(()=>{const bs=PB.map(p=>p.be),f=bs.filter(z=>z!==null),n=bs.length-f.length;return f.length&&(n||Math.max(...f)-Math.min(...f)>=1/12)?`<div class="pbr">Bandbreedte <b>${ym(Math.min(...f))} tot ${n?'niet terugverdiend':ym(Math.max(...f))}</b></div>`:''})():''}</div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b>${PB?`<small class="pbqr">${spanTxt(PB.map(p=>Math.max(0,p.gap)),eur,.5)}</small>`:''}</div><div><span>Lagere gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b>${PB?`<small class="pbqr">${spanTxt(PB.map(p=>p.sv),eur,.5)}</small>`:''}</div></div></div><div class="pbbar"><i style="width:${pct}%"></i></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Opgebouwde kosten per jaar, diesel en elektrisch">${grid}${env}${area}<path d="${ln(cD)}" stroke="#B8700E" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="${ln(cE)}" stroke="#0A8F5B" stroke-width="3.5" fill="none" stroke-linecap="round"/>${mk}${lab}${ticks.join('')}</svg><div class="pbk"><span><i style="background:#B8700E"></i>Diesel</span><span><i style="background:#0A8F5B"></i>Elektrisch</span></div></div>`;
+ const svg=`<svg viewBox="0 0 ${W} ${H}" tabindex="0" role="img" aria-label="Opgeteld voordeel van elektrisch per jaar. Met de pijltjes loop je door de maanden.">${clip}${grid}<path d="${ar}" class="au" clip-path="url(#pbUp)"/><path d="${ar}" class="ad" clip-path="url(#pbDn)"/>${fan}${lm}<path d="${seg}" class="lu" clip-path="url(#pbUp)"/><path d="${seg}" class="ld" clip-path="url(#pbDn)"/>${brk}${mk}${ticks}<g class="hv" style="display:none"><line class="hl" x1="0" x2="0" y1="${mT}" y2="${bot}"/><circle class="hd" r="5.5"/></g><rect class="hit" x="${mL}" y="0" width="${W-mL-mR}" height="${H}"/></svg>`;
+ return`<div class="pbc"><div class="pbt"><div><div class="pbn">${txt}</div><div class="pbs">${note}</div>${PB?(()=>{const bs=PB.map(p=>p.be),f=bs.filter(z=>z!==null),n=bs.length-f.length;return f.length&&(n||Math.max(...f)-Math.min(...f)>=1/12)?`<div class="pbr">Bandbreedte <b>${ym(Math.min(...f))} tot ${n?'niet terugverdiend':ym(Math.max(...f))}</b></div>`:''})():''}</div><div class="pbq"><div><span>Extra investering</span><b>${gap>0?eur(gap):eur(0)}</b>${PB?`<small class="pbqr">${spanTxt(PB.map(p=>Math.max(0,p.gap)),eur,.5)}</small>`:''}</div><div><span>Lagere gebruikskosten</span><b>${eur(sv)} <small>per jaar</small></b>${PB?`<small class="pbqr">${spanTxt(PB.map(p=>p.sv),eur,.5)}</small>`:''}</div></div></div><div class="pbw">${svg}<div class="pbtip" hidden aria-live="polite"></div></div><div class="pbk"><span><i class="kd"></i><i class="ku"></i>Voordeel elektrisch, opgeteld</span>${PB?'<span><i class="kf"></i>Bandbreedte</span>':''}</div></div>`;
+}
+/* Schuiven over de grafiek: per maand de opgetelde kosten van diesel en elektrisch en het verschil */
+function pbShow(m){
+ const d=PBD,w=$('pbX').querySelector('.pbw');if(!d||!w)return;
+ m=Math.max(0,Math.min(d.T2*12,Math.round(m)));d.m=m;const t=m/12,v0=d.sv*t-d.gap,x=d.X(t),y=d.Y(v0);
+ const g=w.querySelector('.hv');g.style.display='';g.querySelector('.hl').setAttribute('x1',x);g.querySelector('.hl').setAttribute('x2',x);
+ const c=g.querySelector('.hd');c.setAttribute('cx',x);c.setAttribute('cy',y);c.classList.toggle('up',v0>=0);
+ const yy=Math.floor(m/12),mm2=m%12,when=m===0?'Start':[yy?yy+' jaar':'',mm2?mm2+' mnd':''].filter(Boolean).join(' ');
+ const rg=d.sc&&mm(d.sc.map(q=>q[1]*t-q[0])),cD=d.upD+d.opD*t,cE=d.upE+d.opE*t;
+ const tp=w.querySelector('.pbtip');tp.hidden=false;
+ tp.innerHTML=`<b>${when}</b><span><i class="kd"></i>Diesel<em>${eur(cD)}</em></span><span><i class="ku"></i>Elektrisch<em>${eur(cE)}</em></span><span class="pv ${v0>=0?'up':'dn'}">Voordeel elektrisch<em>${sg(v0)}</em></span>${rg&&rg[1]-rg[0]>1?`<small>${sg(rg[0])} tot ${sg(rg[1])}</small>`:''}`;
+ const s=w.clientWidth/d.W,px=x*s,tw=tp.offsetWidth,gap=14;
+ tp.style.left=(px+gap+tw>w.clientWidth?Math.max(0,px-gap-tw):px+gap)+'px';
+}
+function pbHide(){const w=$('pbX').querySelector('.pbw');if(!w)return;w.querySelector('.hv').style.display='none';w.querySelector('.pbtip').hidden=true}
+{
+ const host=$('pbX'),at=e=>{const s=host.querySelector('.pbw svg');if(!s||!PBD)return null;const r=s.getBoundingClientRect(),x=(e.clientX-r.left)*PBD.W/r.width;return(x-PBD.mL)/(PBD.W-PBD.mL-PBD.mR)*PBD.T2*12};
+ host.addEventListener('pointermove',e=>{if(!e.target.closest('.pbw svg'))return;const m=at(e);if(m!==null)pbShow(m)});
+ host.addEventListener('pointerdown',e=>{if(!e.target.closest('.pbw svg'))return;const m=at(e);if(m!==null)pbShow(m)});
+ host.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&e.target.matches('.pbw svg'))pbHide()},true);
+ host.addEventListener('focusout',e=>{if(e.target.matches('.pbw svg'))pbHide()});
+ host.addEventListener('keydown',e=>{if(!e.target.matches('.pbw svg')||!PBD)return;const k={ArrowLeft:-1,ArrowRight:1,Home:-1e3,End:1e3}[e.key];if(!k)return;e.preventDefault();pbShow((PBD.m??0)+(e.shiftKey&&Math.abs(k)===1?k*12:k))});
+ /* Breedte veranderd of de pagina komt in beeld: opnieuw tekenen zodat de letters steeds even groot zijn */
+ let lw=0;if(window.ResizeObserver)new ResizeObserver(()=>{const w=$('xAn').clientWidth;if(!w||Math.abs(w-lw)<24)return;lw=w;if(typeof calcX==='function'&&$('pbX').firstChild)setH($('pbX'),payHTML(calcX()))}).observe($('xAn'));
 }
 function sensHTML(sv){
  const dp0=v('dp'),sp0=v('sp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,sE=sv({sp:sp0+1})-s0;
@@ -2786,7 +2852,7 @@ function rptChart(x,pb){
  const hi0=Math.max(cD(T2),cE(T2)),lo0=Math.min(cD(0),cE(0)),raw=(hi0-lo0)/4||1,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(m=>m*mg).find(m=>m>=raw),lo=Math.max(0,Math.floor(lo0/stp)*stp),hi=Math.ceil(hi0/stp)*stp,nT=Math.round((hi-lo)/stp);
  const X=t=>mL+t/T2*(W-mL-mR),Y=c=>mT+(1-(c-lo)/((hi-lo)||1))*(H-mT-mB),ln=(f,c)=>`<path d="M${X(0)},${Y(f(0))}L${X(T2)},${Y(f(T2))}" stroke="${c}" stroke-width="2.5" fill="none"/>`;
  const grid=Array.from({length:nT+1},(_,i)=>{const y=mT+i/nT*(H-mT-mB),c=hi-i*stp;return`<line x1="${mL}" x2="${W-mR}" y1="${y}" y2="${y}" stroke="#15171A" stroke-opacity=".08"/><text x="${mL-8}" y="${y+3.5}" text-anchor="end">€ ${c?nf(Math.round(c/1000))+'k':0}</text>`}).join('');
- const ticks=Array.from({length:T2+1},(_,t)=>`<text x="${X(t)}" y="${H-5}" text-anchor="${t===0?'start':t===T2?'end':'middle'}">${t===0?'Start':t}</text>`).join('');
+ const ticks=Array.from({length:T2+1},(_,t)=>`<text x="${X(t)}" y="${H-5}" text-anchor="${t===0?'start':t===T2?'end':'middle'}">${t===0?(ph?'0':'Start'):t}</text>`).join('');
  let mk='';if(be!==null&&be>0&&be<T2){const bx=X(be),by=Y(cD(be));mk=`<path d="M${bx},${by}L${X(T2)},${Y(cD(T2))}L${X(T2)},${Y(cE(T2))}Z" fill="#0A8F5B" opacity=".12"/><line x1="${bx}" x2="${bx}" y1="${mT}" y2="${H-mB}" stroke="#15171A" stroke-opacity=".3" stroke-dasharray="3 4"/><circle cx="${bx}" cy="${by}" r="5" fill="#fff" stroke="#0A8F5B" stroke-width="3"/>`}
  return`<svg viewBox="0 0 ${W} ${H}">${grid}${ticks}${mk}${ln(cD,'#F2A33A')}${ln(cE,'#0A8F5B')}</svg>`;
 }
