@@ -1,0 +1,8 @@
+{
+  "uitleg": "Pagina's die de wekelijkse verzamelaar leest. kind is listing (vraagprijzen, tellen voor 90% mee) of auction (verkochte kavels). Zet actief op false om een bron over te slaan. Marktplaats en andere advertentiesites verbieden automatisch verzamelen in hun voorwaarden; zet die alleen aan na eigen afweging of met toestemming.",
+  "bronnen": [
+    { "naam": "Marktplaats elektrische bestelbus", "url": "https://www.marktplaats.nl/l/auto-s/bestelauto-s/f/elektrisch/473/", "kind": "listing", "actief": false },
+    { "naam": "TruckScout24 elektrische trekker", "url": "https://www.truckscout24.nl/transporter/gebruikt/trekker?fuel=electric", "kind": "listing", "actief": false },
+    { "naam": "Domeinen Roerende Zaken veilingen", "url": "https://www.domeinenrz.nl/catalogus?veilingsoort=bedrijfswagens", "kind": "auction", "actief": false }
+  ]
+}

@@ -20,7 +20,9 @@ Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main
 | `index.html#modellen` | Elektrische modellen |
 | `index.html#faq` | Veelgestelde vragen |
 | `index.html#nieuws` | Nieuws |
+| `index.html#restwaarde` | Restwaarde-index, verkoopprijs melden en prijsalarm |
 | `index.html#over-ons` | Over ons |
+| `index.html?embed=1` | Calculator als widget voor een andere site |
 
 ## Opbouw van de calculator
 
@@ -57,6 +59,14 @@ Onder **Modellen** staat per voertuig (trekker, bakwagen, bestelbus, bus) wat er
 De gegevens staan in `MODELS` in het script: per model het voertuig (`c`), merk en model, bruto en bruikbare accu (`g`, `u`, of afgeleid `ue`), opgegeven capaciteit waarvan bruto/netto onbekend is (`a`), actieradius (`r`), meetcyclus (`rc`), laadvermogen CCS en MCS (`dc`, `mcs`), status (`nu` of `komt` met jaar `y`), een korte toelichting en de bron. Optionele velden zijn verbruik in kWh/100 km (`consumption`), prijs excl. btw voor die uitvoering (`price`), gewicht in kg (`gvw`), N2/N3 (`vc`) en datum van broncontrole (`checked`). Het zijn opgaven van fabrikanten; houd ze bij als er nieuwe modellen of uitvoeringen komen. Zie [bronkeuzes en aannames](docs/model-data.md).
 
 De optionele ontwikkelcontrole heeft alleen Node.js nodig: `node --test tests/catalog.test.cjs`. De website zelf blijft één statisch HTML-bestand, zonder installatie of build-stap.
+
+## Kenteken, restwaarde en live prijzen
+
+- **Kenteken**: boven de uitkomst vul je het kenteken van je huidige diesel in (of bij gebruikt kopen dat van de elektrische). De site haalt merk, bouwjaar, gewicht en euroklasse op bij RDW open data (vanuit de browser, zonder sleutel) en vult daarmee leeftijd, geschatte waarde, kilometerheffing en de toegang tot zero-emissiezones in.
+- **Restwaarde-index** (`#restwaarde`): mediaanprijs per aandrijving, voertuig en leeftijd uit de Supabase-view `residual_index`. Zolang er te weinig prijzen zijn, staat de eigen afschrijvingscurve er gestreept als schatting. Bezoekers kunnen een verkoopprijs melden en een prijsalarm zetten.
+- **Live prijzen**: Supabase haalt elke ochtend de dieselprijs (CBS) en het stroomverschil nacht/dag (EnergyZero) op in `live_prices`; de site gebruikt die als voorbeeldwaarde.
+- **Database**: alles staat in `supabase/migrations/20261023120000_restwaarde_offertes_live.sql`. Draai dat bestand eenmalig in de Supabase SQL-editor.
+- **Wekelijkse verzamelaar**: `.github/workflows/restwaarde.yml` draait elke maandag `scripts/restwaarde.mjs`. Die leest de pagina's in `scripts/bronnen.json`, laat Claude de voertuigen met prijs eruit halen, slaat ze op in `residual_listings` en mailt prijsalarmen (via Resend). Zet in GitHub onder **Settings → Secrets and variables → Actions** de secrets `ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY` en eventueel `RESEND_API_KEY`. Alle bronnen staan standaard uit: veel advertentiesites verbieden automatisch verzamelen, dus zet een bron pas aan na eigen afweging. Proefdraaien: `cd scripts && npm install && node restwaarde.mjs --droog`.
 
 ## Rekenmethode
 
