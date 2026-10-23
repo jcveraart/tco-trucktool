@@ -2388,7 +2388,7 @@ function modelPaint(){
 
  $('mpH').hidden=!m;
  const lk=(s,t)=>s?` <a href="${s[1]}" target="_blank" rel="noopener">${t||s[0]} ↗</a>`:'';
- setH($('mpH'),m?`<b>Elektrisch:</b> ${m.price?`${eur(m.price)} ${m.pt==='list'||!m.pt?'catalogusprijs':'indicatief'}, `:'prijs onbekend, voorbeeldbedrag ingevuld, '}accu ${mFmt(mAcc(m))} kWh, verbruik ${nf(mEnergy(m),1)} kWh/100 km.${lk(m.s,'Bron')}${m.price&&m.ps?lk(m.ps,'Prijs'):''}<br><b>Diesel ter vergelijking:</b> ${(dz=>m.pD?`${m.pDm}, ${eur(m.pD)}, ${nf(dz.ld,1)} l/100 km${m.ld?'':' (geschat)'}.${lk(m.pDs,'Bron')}`:`geschat naar verhouding, ${eur(dz.pD)}${dz.est?'':' (voorbeeldbedrag)'} en ${nf(dz.ld,1)} l/100 km.`)(mDiesel(m))}`:'');
+ setH($('mpH'),m?`<b>Elektrisch:</b> ${m.price?`${eur(m.price)} ${m.pt==='list'||!m.pt?'catalogusprijs':m.pt==='estimate'?'geschat':'indicatief'}, `:'prijs onbekend, voorbeeldbedrag ingevuld, '}accu ${mFmt(mAcc(m))} kWh, verbruik ${nf(mEnergy(m),1)} kWh/100 km.${lk(m.s,'Bron')}${m.price&&m.ps?lk(m.ps,'Prijs'):''}<br><b>Diesel ter vergelijking:</b> ${(dz=>m.pD?`${m.pDm}, ${eur(m.pD)}, ${nf(dz.ld,1)} l/100 km${m.ld?'':' (geschat)'}.${lk(m.pDs,'Bron')}`:`geschat naar verhouding, ${eur(dz.pD)}${dz.est?'':' (voorbeeldbedrag)'} en ${nf(dz.ld,1)} l/100 km.`)(mDiesel(m))}`:'');
 }
 function mpOpen(open){
  const p=$('mpP');if(p.hidden===!open)return;p.hidden=!open;$('mpB').setAttribute('aria-expanded',open);
