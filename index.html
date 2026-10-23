@@ -130,7 +130,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* Schuif met typbare waarde */
 .sl{--fill:var(--ink);--track:var(--line);--thumb:var(--card)}
-.sl+.sl{margin-top:16px}
+.sl+.sl{margin-top:12px}
 .slh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .slh label{font-size:15px;line-height:1.3}
 .slv{display:inline-flex;align-items:baseline;gap:5px;flex:none;border-radius:6px;padding:2px 8px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);cursor:text}
@@ -149,6 +149,7 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(
 /* Velden */
 .hint{margin:12px 0 0;font-size:14px;line-height:1.5;color:var(--ink-3)}
 .hint b{font-weight:700;color:inherit}
+.hint:empty{display:none}
 
 /* Schakelaar en keuzes */
 .sw2{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;cursor:pointer;user-select:none}
@@ -157,8 +158,8 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(
 .sw2 input:checked{background:var(--volt)}
 .sw2 input:checked::after{left:21px}
 .sw2.ln{display:flex;margin:0 0 16px}
-.dexc:first-child .sl{--fill:var(--amber-ink)}
-.dexc:last-child .sl{--fill:var(--volt)}
+.dexc.cd .sl{--fill:var(--amber-ink)}
+.dexc.ce .sl{--fill:var(--volt)}
 .seg{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
 .seg>*{flex:1}
 .seg button,.seg label span{display:block;border:0;background:none;border-radius:8px;padding:9px 12px;font:600 15px var(--text);color:var(--ink-2);cursor:pointer;text-align:center;white-space:nowrap}
@@ -397,7 +398,7 @@ button.cta{border:0;cursor:pointer}
 /* Invulvenster: één onderwerp per stap */
 dialog.wz{width:min(980px,calc(100vw - 32px));max-width:none;max-height:none;padding:0;border:0;border-radius:18px;background:var(--card);color:var(--ink);box-shadow:0 40px 90px -30px rgba(0,0,0,.55);overflow:hidden}
 dialog.wz::backdrop{background:rgba(21,23,26,.5)}
-.wzi{display:grid;grid-template-columns:232px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;height:min(720px,calc(100vh - 48px))}
+.wzi{display:grid;grid-template-columns:232px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;height:min(780px,calc(100vh - 32px))}
 .wzh{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px 14px 24px;border-bottom:1px solid var(--line)}
 .wzk{margin:0;font-size:13px;color:var(--ink-3)}
 .wzh h2{font:700 20px/1.2 var(--text)}
@@ -411,7 +412,13 @@ dialog.wz::backdrop{background:rgba(21,23,26,.5)}
 .wzn button.done .num{background:var(--volt);color:#fff;box-shadow:none}
 .wzn button[aria-current=step]{background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
 .wzn button[aria-current=step] .num{background:var(--ink);color:#fff;box-shadow:none}
-.wzb{padding:26px 32px 32px;overflow:auto}
+.wzb{padding:24px 32px 28px;overflow:auto}
+/* Lage schermen: alles iets dichter op elkaar, zodat een stap zonder scrollen past */
+@media(max-height:700px){.wzb{padding-top:16px!important;padding-bottom:12px!important}.sl+.sl{margin-top:8px!important}.wsec+.wsec{margin-top:14px!important}.hint{margin-top:6px}.qk{margin-top:2px}.dex>.dxt{margin-bottom:12px!important}.nwg{margin-bottom:10px}.nwu .plate{margin-bottom:10px}.hint{margin-top:4px}}
+@media(max-height:700px) and (min-width:761px){.wzi{height:calc(100vh - 16px)}.wzf{padding-top:10px;padding-bottom:10px}}
+@media(max-height:660px) and (max-width:760px){.wzb{padding-top:12px!important;padding-bottom:4px!important}.wzl{display:none}.wzh{padding-bottom:6px}.slh{min-height:28px!important}.nwu .plate{height:36px}.dex>.dxt button,.nwg button{padding-top:5px;padding-bottom:5px}.wzf .wbtn,.wzf .cta{min-height:42px}}
+.xg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px;align-items:end}.xg>.sl+.sl{margin-top:0}.xg>:is(.ws-row,.hint){grid-column:1/-1}
+@media(max-width:760px){.xg{display:block}.xg>.sl+.sl{margin-top:16px}}
 .wst h3{font:700 24px/1.2 var(--text);outline:0}
 .wsi{margin:6px 0 22px;color:var(--ink-2)}
 .wsec+.wsec{margin-top:28px}
@@ -425,7 +432,16 @@ dialog.wz::backdrop{background:rgba(21,23,26,.5)}
 .wzpg i{display:block;height:100%;background:var(--ink);transition:width .2s}
 .dex{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 28px}
 .dexc{min-width:0}
-.dexh{display:flex;align-items:center;gap:8px;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line);font:700 15px var(--text)}
+.dex>.dxt{display:none}
+@media(max-width:760px){
+ .dex>.dxt{display:flex;width:100%;margin:0 0 20px}
+ .dxt button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px}
+ .dxt i{width:9px;height:9px;border-radius:2px}.dxt i.d{background:var(--amber)}.dxt i.e{background:var(--volt)}
+ .dxt button[aria-selected=true]{background:var(--ink);color:#fff}
+ .dex .dexh{display:none}
+ .dex[data-tab="0"]>.ce,.dex[data-tab="1"]>.cd{display:none}
+}
+.dexh{display:flex;align-items:center;gap:8px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);font:700 15px var(--text)}
 .dexh i{width:10px;height:10px;border-radius:2px}
 .dexh .d{background:var(--amber)}.dexh .e{background:var(--volt)}
 .qk{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
@@ -530,7 +546,7 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .qtx svg{width:16px;height:16px}
 @media(max-width:640px){.qt{left:0!important;right:0;top:auto!important;bottom:0;width:auto;border-radius:18px 18px 0 0;padding:22px 52px calc(10px + env(safe-area-inset-bottom,0px)) 20px;font-size:15px}}
 .wsl{display:flex;align-items:center;gap:7px}
-.wzb .wst>h3{margin-bottom:22px}
+.wzb .wst>h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* Eén duidelijke uitnodiging: in het scorebord, en zwevend zolang je nog niets hebt ingevuld */
 .bcta{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;padding:18px clamp(18px,3.4vw,40px);background:var(--volt);color:#fff}
@@ -1108,11 +1124,10 @@ html.embed .intro{padding-top:20px}
 
  /* Invulvenster */
  .wzb{padding:20px 18px 32px}
- .wzb .wst>h3{margin-bottom:24px;font-size:22px}
- .wsec+.wsec{margin-top:32px}
- .dex{gap:32px}
+ .wsec+.wsec{margin-top:24px}
+ .dex{gap:0}
  .dexh{margin-bottom:18px}
- .sl+.sl{margin-top:26px}
+ .sl+.sl{margin-top:20px}
  .hint+.sl{margin-top:22px}
  .slh{align-items:center;min-height:36px}
  .slv{padding:5px 10px}
@@ -1183,12 +1198,11 @@ html.embed .intro{padding-top:20px}
  #ins .in>b{font-size:19px}
  #ins .in .slb{font-size:11px!important;letter-spacing:.03em}
  .fcta{display:none!important}
- /* Invulvenster: de kop is alleen de stap */
+ /* Invulvenster: de kop is de stap */
  .wzh{padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px}
- .wzh h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .wzh h2{font-size:19px}
  .wzk{font-size:12px}
  .wzb{padding-top:18px}
- .wzb .wst>h3{margin-bottom:20px}
 }
 /* Calculator: uitkomst direct onder de voertuigkeuze, de uitgangspunten eronder zonder eigen kop */
 #calc .story{margin:12px 0 0}
@@ -1764,13 +1778,13 @@ const decs=s=>(String(s).split('.')[1]||'').length;
 const slider=(id,lab)=>{const f=F[id],d=decs(f[4]),eu=f[5][0]==='€',su=eu?f[5].slice(1):f[5];return`<div class="sl"><div class="slh"><span class="slb"><label for="${id}">${lab||f[1]}</label>${tipBtn(id)}${SENS[id]?`<button type="button" class="qs" data-sens="${id}" aria-pressed="false" data-tt="Niet zeker? Kies een bandbreedte" aria-label="Niet zeker van ${SENS[id][0].toLowerCase()}? Kies een bandbreedte">±</button><div class="rxp" role="group" aria-label="Bandbreedte ${SENS[id][0].toLowerCase()}">${[2.5,5,10,20].map(p=>`<button type="button" data-rp="${p}" data-for="${id}" aria-pressed="false">${nf(p,p%1?1:0)}%</button>`).join('')}<button type="button" class="rxo" data-rp="0" data-for="${id}" aria-label="Bandbreedte uit">uit</button></div>`:''}</span><span class="slv">${eu?'<span class="un">€</span>':''}<input class="slin" id="${id}_v" data-for="${id}" type="text" inputmode="${d?'decimal':'numeric'}" autocomplete="off" size="${nf(f[3],d).length}" aria-label="${f[1]}${f[5]?' in '+f[5]:''}">${su?`<span class="un">${su}</span>`:''}</span></div>${SENS[id]?'<div class="srg">':''}<input id="${id}" type="range" min="${f[2]}" max="${f[3]}" data-mx="${f[3]}" step="${f[4]}" value="${f[6]}">${SENS[id]?['lo','hi'].map(x=>`<input class="rx" type="range" data-for="${id}" data-x="${x}" aria-label="${x==='lo'?'Ondergrens':'Bovengrens'} ${SENS[id][0].toLowerCase()}"><span class="rxl" data-x="${x}"></span>`).join('')+`</div>`:''}</div>`};
 const sw=(id,t,on)=>`<label class="sw2 ln"><input id="${id}" type="checkbox"${on?' checked':''}><span>${t}</span></label>`;
 const vcards=()=>`<div class="vts" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" class="vt" role="radio" data-vt="${k}" aria-checked="false">${VICON[k]}<b>${q.n}</b><small>${q.sub}</small></button>`).join('')}</div>`;
-const dex=(a,b)=>`<div class="dex"><div class="dexc"><p class="dexh"><i class="d"></i>Diesel</p>${a}</div><div class="dexc"><p class="dexh"><i class="e"></i>Elektrisch</p>${b}</div></div>`;
+const dex=(a,b)=>`<div class="dex" data-tab="0"><div class="dxt seg sm" role="tablist" aria-label="Diesel of elektrisch"><button type="button" role="tab" data-dxt="0" aria-selected="true"><i class="d"></i>Diesel</button><button type="button" role="tab" data-dxt="1" aria-selected="false"><i class="e"></i>Elektrisch</button></div><div class="dexc cd"><p class="dexh"><i class="d"></i>Diesel</p>${a}</div><div class="dexc ce"><p class="dexh"><i class="e"></i>Elektrisch</p>${b}</div></div>`;
 const tr=n=>eur(n,Math.round(n*1000)%10?3:2);
 const tolTxt=c=>(c[2]===c[3]?`Diesel en elektrisch ${tr(c[3])} per km`:c[2]===0?`Elektrisch geen tol · diesel ${tr(c[3])} per km`:`Elektrisch ${tr(c[2])} · diesel ${tr(c[3])} per km`)+(c[4]?` · ${c[4]}`:'');
 const sg=n=>(n>0.5?'+ ':n<-0.5?'− ':'')+'€ '+nf(Math.abs(n));
 
 /* ===== Stappen: eerst de vaste stappen, daarna optionele kosten die je zelf aanzet ===== */
-const STEPS=[['use','Gebruik'],['buy','Aanschaf en afschrijving'],['sub','Subsidie'],['en','Energie en actieradius'],['up','Onderhoud en verzekering'],['hef','Kilometerheffing','truck'],
+const STEPS=[['use','Gebruik'],['buy','Aanschaf'],['sub','Subsidie'],['en','Energie en actieradius'],['up','Onderhoud en verzekering'],['hef','Kilometerheffing','truck'],
  ['fin','Financiering','opt'],['lad','Laadpaal','opt'],['ow','Laden onderweg','opt'],['zon','Zonnepanelen','opt'],['tol','Tol buitenland','optt']];
 const coreSteps=()=>STEPS.filter(s=>!s[2]||(s[2]==='truck'&&T().truck));
 const optSteps=()=>STEPS.filter(s=>s[2]==='opt'||(s[2]==='optt'&&T().truck));
@@ -1782,8 +1796,8 @@ const optOn=k=>k==='tol'?tolSel.size>0:ck(OPTSW[k]);
 const chev='<svg class="mchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 const mpick=()=>`<div class="mpk" id="mpk"><input type="hidden" id="calcModel" value=""><button type="button" class="mpb" id="mpB" aria-haspopup="listbox" aria-expanded="false" aria-controls="mpP"><i aria-hidden="true"></i><span><small>Elektrisch model</small><b id="mpN">Geen specifiek model</b></span>${chev}</button><div class="mpp" id="mpP" hidden><input type="search" id="mpQ" placeholder="Zoek merk of model" aria-label="Zoek een model" autocomplete="off"><div class="mpl" id="mpL" role="listbox" aria-label="Elektrisch model"></div></div><p class="hint" id="mpH" hidden></p></div>`;
 const STEPBODY={
- use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div>`,
- buy:()=>`${mpick()}${dex(`<div class="seg sm nwg" role="group" aria-label="Dieselvoertuig"><button type="button" data-dw="n">Nieuwe kopen</button><button type="button" data-dw="h">Huidige houden</button></div><input type="hidden" id="dw" value="n"><div class="nwu" id="dwG" hidden>${plateForm('D')}${slider('dag')}</div>${slider('pD')}<p class="hint" id="pDh"></p>`,`<div class="seg sm nwg" role="group" aria-label="Elektrisch voertuig"><button type="button" data-nw="n">Nieuw</button><button type="button" data-nw="g">Gebruikt</button></div><input type="hidden" id="nw" value="n"><div class="nwu" id="nwG" hidden>${plateForm('E')}<input type="hidden" id="plkE" value="">${slider('eag')}</div>${slider('pE')}<p class="hint" id="pEh"></p>`)}<div class="wsec" style="margin-top:24px">${slider('jr')}</div>${dex(slider('rw'),slider('rwE')+'<p class="hint" id="rwEh"></p>')}`,
+ use:()=>`<div class="wsec">${slider('km')}<div class="qk" id="qk-km" role="group" aria-label="Veelgekozen"></div></div><div class="wsec" id="kmHW">${slider('kmH')}<div class="qk" role="group" aria-label="Snelkeuze"><button type="button" data-kmh="1">Alles</button><button type="button" data-kmh=".75">75%</button><button type="button" data-kmh=".5">De helft</button><button type="button" data-kmh="0">Geen</button></div></div><div class="wsec">${slider('wd')}</div><div class="wsec">${slider('jr')}</div>`,
+ buy:()=>`${mpick()}${dex(`<div class="seg sm nwg" role="group" aria-label="Dieselvoertuig"><button type="button" data-dw="n">Nieuwe kopen</button><button type="button" data-dw="h">Huidige houden</button></div><input type="hidden" id="dw" value="n"><div class="nwu" id="dwG" hidden>${plateForm('D')}${slider('dag')}</div>${slider('pD')}<p class="hint" id="pDh"></p>${slider('rw')}`,`<div class="seg sm nwg" role="group" aria-label="Elektrisch voertuig"><button type="button" data-nw="n">Nieuw</button><button type="button" data-nw="g">Gebruikt</button></div><input type="hidden" id="nw" value="n"><div class="nwu" id="nwG" hidden>${plateForm('E')}<input type="hidden" id="plkE" value="">${slider('eag')}</div>${slider('pE')}<p class="hint" id="pEh"></p>${slider('rwE')}<p class="hint" id="rwEh"></p>`)}`,
  sub:()=>`<div class="wsec" id="clsW"><p class="wsl">Gewichtsklasse ${tipBtn('cls')}</p><div class="seg" role="group" aria-label="Gewichtsklasse"><button type="button" data-cls="N2">N2 · 3,5 tot 12 ton</button><button type="button" data-cls="N3">N3 · boven 12 ton</button></div><input type="hidden" id="cls" value="N3"></div><div class="wsec"><p class="wsl"><label for="reg">Subsidie of regeling</label> ${tipBtn('reg')}</p><span class="selw"><select id="reg"></select></span><div id="grW" class="wsec" style="margin-top:16px"><p class="wsl">Bedrijfsgrootte</p><div class="seg" id="grs" role="group" aria-label="Bedrijfsgrootte"><button type="button" data-gr="2">Klein</button><button type="button" data-gr="1">Middelgroot</button><button type="button" data-gr="0">Groot</button></div><input type="hidden" id="gr" value="1"><div class="sz" id="azd"></div></div><div id="subXW" style="margin-top:16px">${slider('subX')}</div><p class="res" id="subR"></p></div>`,
  en:()=>dex(slider('ld')+slider('dp'),slider('le')+slider('sp')+slider('acc')+slider('ere')+'<div style="margin-top:14px">'+sw('aERE','ERE-opbrengst meerekenen',1)+`<div class="ws-row">${sw('aSlim','Slim laden op goedkope uren',0)}${tipBtn('aSlim')}</div></div>`),
  up:()=>dex(slider('oD')+slider('vD'),slider('oE')+slider('vE')),
@@ -2091,14 +2105,23 @@ function wzNav(){
  const cs=coreSteps(),os=optSteps(),opt=isOpt(wzStep),i=Math.max(0,cs.findIndex(s=>s[0]===wzStep));
  const btn=(s,num,cls)=>`<button type="button" data-go="${s[0]}"${s[0]===wzStep?' aria-current="step"':''} class="${cls}"><span class="num">${num}</span>${s[1]}</button>`;
  setH($('wzN'),cs.map((s,j)=>{const done=seen.has(s[0])&&s[0]!==wzStep;return btn(s,done?'✓':j+1,done?'done':'')}).join('')+`<p class="wzo">Extra kosten</p>`+os.map(s=>{const o=optOn(s[0]);return btn(s,o?'✓':'+','opt'+(o?' on':''))}).join(''));
- $('wzK').textContent=opt?'Extra kosten':`Stap ${i+1} van ${cs.length}`;$('wzPg').style.width=(opt?100:(i+1)/cs.length*100)+'%';
- $('wzP').hidden=opt||i===0;$('wzNxT').textContent=opt?'Klaar':i===cs.length-1?'Bekijk uitkomst':'Volgende';
+ const tb=dxOn();
+ const sn=STEPS.find(s=>s[0]===wzStep);$('wzT').textContent=sn?sn[1]:'Jouw cijfers';
+ $('wzK').textContent=opt?'Extra kosten':`Stap ${i+1} van ${cs.length}`;$('wzPg').style.width=(opt?100:(i+(tb===0?.5:1))/cs.length*100)+'%';
+ $('wzP').hidden=opt||(i===0&&tb<1);$('wzNxT').textContent=opt?'Klaar':i===cs.length-1&&tb!==0?'Bekijk uitkomst':'Volgende';
 }
-function go(k,focus=true){
+/* Telefoon: diesel en elektrisch staan als tabbladen in één stap, Volgende loopt ze na elkaar door */
+const mob=()=>matchMedia('(max-width:760px)').matches;
+const curDex=()=>document.querySelector(`#wzB .wst[data-st="${wzStep}"] .dex`);
+const dxOn=()=>{const d=mob()&&curDex();return d?+d.dataset.tab:-1};
+function dxTab(d,n){if(!d)return;d.dataset.tab=n;d.querySelectorAll('[data-dxt]').forEach(b=>b.setAttribute('aria-selected',+b.dataset.dxt===n))}
+function dxGo(n){dxTab(curDex(),n);wzNav();$('wzB').scrollTop=0}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-dxt]');if(b)dxGo(+b.dataset.dxt)});
+function go(k,focus=true,tab=0){
  const st=steps();if(!st.some(s=>s[0]===k))k=st[0][0];
  wzStep=k;seen.add(k);
  document.querySelectorAll('#wzB .wst').forEach(s=>s.hidden=s.dataset.st!==k);
- wzNav();fillRanges();$('wzB').scrollTop=0;
+ dxTab(curDex(),tab);wzNav();fillRanges();$('wzB').scrollTop=0;
  if(focus)$('wh-'+k).focus({preventScroll:true});
 }
 function openWz(k){
@@ -2106,8 +2129,8 @@ function openWz(k){
 }
 function closeWz(show){$('wz').close();if(show){touched=true;render();const b=$(page==='uitgebreid'?'xSum':'board');b.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center'});b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')}mini()}
 $('wzX').onclick=()=>closeWz(false);
-$('wzP').onclick=()=>{const st=coreSteps(),i=st.findIndex(s=>s[0]===wzStep);if(i>0)go(st[i-1][0])};
-$('wzNx').onclick=()=>{const st=coreSteps(),i=st.findIndex(s=>s[0]===wzStep);if(!isOpt(wzStep)&&i<st.length-1)go(st[i+1][0]);else closeWz(true)};
+$('wzP').onclick=()=>{if(dxOn()===1)return dxGo(0);const st=coreSteps(),i=st.findIndex(s=>s[0]===wzStep);if(i>0)go(st[i-1][0],true,1)};
+$('wzNx').onclick=()=>{if(dxOn()===0)return dxGo(1);const st=coreSteps(),i=st.findIndex(s=>s[0]===wzStep);if(!isOpt(wzStep)&&i<st.length-1)go(st[i+1][0]);else closeWz(true)};
 $('wz').addEventListener('click',e=>{if(e.target===$('wz'))closeWz(false)});
 $('wz').addEventListener('cancel',e=>{if(qtBtn){e.preventDefault();tipClose(true)}else if(!$('mpP').hidden){e.preventDefault();mpOpen(false);$('mpB').focus()}});
 $('wzB').addEventListener('scroll',tipPlace,{passive:true});
@@ -2646,10 +2669,12 @@ function dieselAuto(force){
 function dieselPaint(){
  const cur=$('dw').value==='h';
  document.querySelectorAll('[data-dw]').forEach(e=>e.setAttribute('aria-pressed',e.dataset.dw===$('dw').value));
- $('dwG').hidden=!cur;
+ $('dwG').hidden=!cur;$('dag').closest('.sl').hidden=!!(PL.D&&!PL.D.err);
  const lb=document.querySelector('label[for="pD"]');if(lb)lb.textContent=cur?'Waarde nu':F.pD[1];
- const i=PL.D;const ze=cur&&i&&!i.err?zeTxt(i):'';
- setH($('pDh'),!cur||!i?'':i.err?`<span class="warn">${i.err}</span>`:[i.euro&&'Euro '+i.euro,ze&&(ze==='Geen toegang'?'Geen toegang tot ZE-zones':'ZE-zone '+ze.toLowerCase())].filter(Boolean).join(' · '));
+ /* Bij je huidige diesel volgt de restwaarde uit de leeftijd: geen aparte schuif, wel het bedrag */
+ $('rw').closest('.sl').hidden=cur;
+ const i=PL.D,ok=cur&&i&&!i.err,ze=ok?zeTxt(i):'',L=Math.max(1,Math.round(v('jr')));
+ setH($('pDh'),!cur?'':i&&i.err?`<span class="warn">${i.err}</span>`:[`Over ${L} jaar ± ${eur(Math.round(v('pD')*v('rw')/100/500)*500)}`,ok&&i.euro&&'Euro '+i.euro,ze&&(ze==='Geen toegang'?'Geen toegang tot ZE-zones':'ZE-zone '+ze.toLowerCase())].filter(Boolean).join(' · '));
 }
 /* Hoeveel capaciteit de accu ongeveer overhoudt: 1,5% per jaar plus slijtage per volledige laadbeurt */
 const soh=(yrs,kwh,acc)=>Math.max(.6,1-yrs*(.015+Math.min(400,kwh/Math.max(1,acc))*.00004));
@@ -2658,7 +2683,7 @@ function maxPE(){const x0=calcX(),x1=calcX({pE:v('pE')+1000}),sl=(x1.te-x0.te)/1
 function usedPaint(){
  const used=$('nw').value==='g',L=Math.max(1,Math.round(v('jr'))),age=used?Math.round(v('eag')):0,b=calc();
  document.querySelectorAll('[data-nw]').forEach(e=>e.setAttribute('aria-pressed',e.dataset.nw===$('nw').value));
- $('nwG').hidden=!used;
+ $('nwG').hidden=!used;$('eag').closest('.sl').hidden=!!(PL.E&&!PL.E.err);
  const mp=maxPE(),fp=used?Math.round(fairE(age)/1000)*1000:0,iE=PL.E;
  setH($('pEh'),[used&&iE&&iE.err?`<span class="warn">${iE.err}</span>`:'',used&&iE&&!iE.err?`<b>${modelActive()?'Bouwjaar '+(iE.first?iE.first.getFullYear():''):plName(iE)+(iE.first?' · '+iE.first.getFullYear():'')}</b>`:'',used?`Eerlijke prijs ± ${eur(fp)}`:'',mp===null?'':mp<=0?'Niet lonend tegenover diesel':`Lonend tot ${eur(Math.floor(mp/1000)*1000)}`].filter(Boolean).join(' · '));
  const s0=used?soh(age,b.kwh,v('acc')):1,s1=soh(age+L,b.kwh,v('acc'));
