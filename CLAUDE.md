@@ -1,4 +1,4 @@
-# Claude Development Guidelines: Stekker of diesel (TCO Truck Tool)
+# Claude Development Guidelines: Stekker of Diesel (TCO Truck Tool)
 
 ## Single Source of Truth: Supabase Database Schema
 

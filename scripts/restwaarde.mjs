@@ -120,7 +120,7 @@ async function mail(alarm, treffers) {
     method: "POST",
     headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, "content-type": "application/json" },
     body: JSON.stringify({
-      from: process.env.MAIL_FROM || "Stekker of diesel <prijsalarm@stekkerofdiesel.nl>",
+      from: process.env.MAIL_FROM || "Stekker of Diesel <prijsalarm@stekkerofdiesel.nl>",
       to: alarm.email,
       subject: treffers.length === 1 ? `Prijsalarm: ${naam(treffers[0])} voor ${eur(treffers[0].price)}` : `Prijsalarm: ${treffers.length} voertuigen onder ${eur(alarm.max_price)}`,
       html: `<p>Deze voertuigen passen bij je prijsalarm:</p><ul>${regels}</ul><p style="color:#666;font-size:13px">Geen mail meer? <a href="${SITE}/?afmelden=${alarm.token}">Zet het prijsalarm uit</a>.</p>`,
