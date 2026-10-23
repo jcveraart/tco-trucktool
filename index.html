@@ -467,7 +467,7 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 /* Voorpagina: uitgangspunten direct onder het scorebord, twee kerncijfers */
 .story{margin:0 0 20px}
 .story .sumh{margin-top:0}
-.ins{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ins{grid-template-columns:repeat(3,minmax(0,1fr))}
 @keyframes flash{0%,40%{background:var(--volt-soft)}100%{background:transparent}}
 /* Gevoeligheid voor energieprijzen */
 .snw{margin-top:18px}
@@ -959,6 +959,19 @@ a.cta.big,a.fcta{text-decoration:none}
 @media(max-width:900px){.dzl{flex-wrap:wrap}.dzl dl{order:3;width:100%;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.dzl .wzx{margin-left:auto}}
 @media print{.plw,.nwg{display:none!important}.dzl{box-shadow:none;border:1px solid var(--line)}}
 
+/* Vergelijken en PDF */
+.scn{display:flex;align-items:center;flex-wrap:wrap;gap:8px 18px;margin-top:12px;padding:10px 8px 10px 12px;border-radius:12px;background:var(--card);box-shadow:0 0 0 1px var(--line);font-size:15px}
+.scl{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:6px;background:var(--ink);color:#fff;font:600 14px var(--mono)}
+.scv{flex:1;min-width:0;color:var(--ink-2)}
+.scv b{color:var(--ink);font-variant-numeric:tabular-nums}.scv em{font-style:normal;color:var(--ink)}
+.scv b.good,.scd b.good{color:var(--volt-ink)}.scv b.bad,.scd b.bad{color:var(--amber-ink)}
+.scd{color:var(--ink-2);white-space:nowrap}
+.scn .lnk{font-size:14px}
+.scn .wzx{width:30px;height:30px}.scn .wzx svg{width:15px;height:15px}
+.prh{display:none}
+@media print{.mode,.bcta,.qi,.st svg,.dzl .wzx{display:none!important}.prh{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--ink);font-size:14px}.prh b{font:700 20px var(--text)}.scn .lnk,.scn .wzx{display:none!important}}
+@media(max-width:640px){#calc .scn{order:1}.scv{flex:1 1 100%;order:2}.scd{margin-right:auto}}
+
 /* Telefoon: eigen, rustige indeling. Grotere tikvlakken, meer lucht tussen de schuiven, alles op één lijn. */
 @media(hover:none){
  .faq section:not(.open):not(:has(details[open]))>details{display:none}
@@ -1143,8 +1156,8 @@ a.cta.big,a.fcta{text-decoration:none}
  #calc .story .sumh h2{flex:1;min-width:0;font-size:20px}
  #calc .story .sum{flex:1 1 100%}
  #calc .story .plw{order:2;flex:1 1 100%;margin-top:14px}
- #calc .story .plate{width:100%;height:44px}
- #calc .story .plate input{flex:1;font-size:19px}
+ #calc .story .plate{height:42px}
+ #calc .story .plate input{width:150px;font-size:18px}
  #calc .story .dzl{order:3;flex:1 1 100%}
  #calc .story .sum{order:4}
  .dzl{padding:12px 6px 14px 14px}
@@ -1187,6 +1200,7 @@ a.cta.big,a.fcta{text-decoration:none}
 <!-- ===== Calculator ===== -->
 <section class="page" data-page="calc" id="calc">
  <div class="wrap">
+  <div class="prh" aria-hidden="true"><b>Stekker of diesel</b><span id="prD"></span></div>
   <div class="intro">
    <h1 tabindex="-1">Diesel of elektrisch?</h1>
    <nav class="mode" aria-label="Rekenwijze"><a href="#calculator" data-mode="b" aria-current="page">Simpel</a><a href="#uitgebreid" data-mode="x">Uitgebreid</a></nav>
@@ -1202,6 +1216,7 @@ a.cta.big,a.fcta{text-decoration:none}
     <div class="sum" id="sum"></div>
    </section>
    <div class="board" id="board" aria-live="polite"></div>
+   <div class="scn" id="scn" hidden></div>
    <div class="ins" id="ins"></div>
 
 
@@ -1324,7 +1339,7 @@ a.cta.big,a.fcta{text-decoration:none}
     </section>
     <section id="fq4"><h2>Je gegevens</h2>
      <details><summary>Worden mijn gegevens opgeslagen?</summary><p>Je invoer wordt in je eigen browser bewaard, zodat je de volgende keer verder kunt waar je was. Met Herstel voorbeeldcijfers zet je alles terug. Geef je toestemming voor statistieken, dan meten we hoe je de calculator gebruikt, zonder naam of contactgegevens. Je keuze pas je aan via Cookies onderaan de pagina. Meer in het <a href="#privacy">privacybeleid</a>.</p></details>
-     <details><summary>Kan ik de uitkomst delen of bewaren?</summary><p>Ja. Met Deel kopieer je een korte samenvatting met een link naar precies deze berekening, bijvoorbeeld voor je boekhouder of een collega. Wie de link opent, ziet dezelfde cijfers. Met Print bewaar je de berekening als PDF.</p></details>
+     <details><summary>Kan ik de uitkomst delen of bewaren?</summary><p>Ja. Met Deel kopieer je een korte samenvatting met een link naar precies deze berekening, bijvoorbeeld voor je boekhouder of een collega. Wie de link opent, ziet dezelfde cijfers. Met PDF bewaar of print je de berekening. Met Vergelijk zet je twee berekeningen naast elkaar.</p></details>
     </section>
    </div>
   </div>
@@ -1833,14 +1848,14 @@ function kmBreak(o={},it=28){
 }
 
 /* ===== Weergave ===== */
-const ICON={share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg>',pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg>'};
+const ICON={ab:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M17 4v16M3 8l4-4 4 4M13 16l4 4 4-4"/></svg>',share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg>',pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/></svg>'};
 function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km,m=modelActive(),bd=band();
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span>${BX?`<span class="brr">${spanTxt(BX.map(q=>(c==='d'?q.r.td:q.r.te)/q.r.km),n=>eur(n,2),.005)||eur(t/km,2)} per km</span>`:''}</div>`;
  const n=coreSteps().length;
  const inv=`<div class="bcta"><div class="bct"><b>${touched?'Gebaseerd op jouw cijfers':'Voorbeeldcijfers voor een '+T().w}</b></div><a class="cta big" href="#uitgebreid" data-xgo>Reken uitgebreid met je eigen cijfers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>`;
  setH($('board'),half('d','Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
-  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}${bd?`<span class="brg">Bandbreedte <b>${bandTxt(bd)}</b> per jaar</span>`:''}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button><button class="btn" type="button" data-print aria-label="Afdrukken of opslaan als PDF">${ICON.print}<span>Print</span></button></div>`:''}</div>`+inv);
+  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}${bd?`<span class="brg">Bandbreedte <b>${bandTxt(bd)}</b> per jaar</span>`:''}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button>${scA?'':`<button class="btn" type="button" data-sca aria-label="Bewaar deze berekening om te vergelijken">${ICON.ab}<span>Vergelijk</span></button>`}<button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div>`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
  tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
  setH($('xSum'),`<p><span><i class="d"></i>Diesel <b>${eur(r.td/km,2)}</b> per km</span><span><i class="e"></i>Elektrisch <b>${eur(r.te/km,2)}</b> per km</span><span class="${cheap||even?'good':'bad'}">${even?'Ongeveer gelijk':`Elektrisch ${nf(pc)}% ${cheap?'goedkoper':'duurder'}: <b>${eur(Math.abs(d))}</b> per jaar`}</span></p><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button>`);
@@ -1848,10 +1863,11 @@ function board(r){
 }
 /* Simpel: twee kleine blokjes. Vanaf hoeveel kilometer elektrisch goedkoper is, en wat de stroomprijs met de besparing doet. */
 function simpleTiles(){
- const sv=o=>{const q=calcX(o);return q.td-q.te},kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
+ const x0=calcX(),co2=x0.co2d-x0.co2e,sv=o=>{const q=calcX(o);return q.td-q.te},kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
  setH($('ins'),
   `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b></div>`+
-  `<div class="in"><span class="slb">Goedkoper vanaf dieselprijs</span><b>${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b></div>`);
+  `<div class="in"><span class="slb">Goedkoper vanaf dieselprijs</span><b>${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b></div>`+
+  `<div class="in"><span class="slb">CO₂-besparing ${tipBtn('i-co2')}</span><b>${nf(Math.round(co2))} ton <small>per jaar</small></b></div>`);
 }
 function insights(r){
  const rr=f=>BX?`<small class="inr">${f}</small>`:'',kmT=k=>k===0?'elke afstand':k===null?'niet':nf(Math.ceil(k/1000)*1000)+' km';
@@ -1863,17 +1879,17 @@ function insights(r){
   `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b><small>${kb===0?'':'per jaar'}</small>${kbR?rr(kbR):''}</div>`+
   `<div class="in"><span class="slb">Actieradius ${tipBtn('i-range')}</span><b>± ${nf(Math.round(range/5)*5)} km</b><i class="rbar${over?' over':''}" aria-hidden="true"><i style="width:${Math.min(100,day/range*100)}%"></i></i><small class="${over?'warn':''}">Dagrit ± ${nf(Math.round(day/5)*5)} km${over?' · laden onderweg nodig':''}</small>${raR?rr(raR):''}</div>`);
 }
-const units=()=>[['km','Per km'],['jr','Per jaar'],['tot','Totaal']].map(u=>`<button type="button" data-u="${u[0]}" aria-pressed="${u[0]===unit}">${u[1]}</button>`).join('');
+const units=()=>[['km','Per km'],['mnd','Per maand'],['jr','Per jaar'],['tot','Totaal']].map(u=>`<button type="button" data-u="${u[0]}" aria-pressed="${u[0]===unit}">${u[1]}</button>`).join('');
 const dfHTML=(df,dd,z)=>Math.abs(df)<z?'gelijk':`<span class="${df<0?'good':'bad'}"><span class="dfl">elektrisch </span>${df<0?'−':'+'}${eur(Math.abs(df),dd)}</span>`;
 function rowsPaint(r,x){
- const k=unit==='km'?1/r.km:unit==='tot'?r.L:1,dd=unit==='km'?2:0,z=dd?0.005:0.5,truck=T().truck;
+ const k=unit==='km'?1/r.km:unit==='tot'?r.L:unit==='mnd'?1/12:1,dd=unit==='km'?2:0,z=dd?0.005:0.5,truck=T().truck;
  const on={fin:ck('xFin'),lad:ck('xLad'),tij:ck('xOw'),tol:truck&&tolSel.size>0};
  $('row-hef').hidden=!truck;XROWS.forEach(q=>{$('row-'+q[0]).hidden=!on[q[0]]});$('xrows').hidden=!XROWS.some(q=>on[q[0]]);
  const list=ROWS.map(q=>q[0]).filter(c=>truck||c!=='hef').concat(XROWS.map(q=>q[0]).filter(c=>on[c]));
  const offOf=()=>false;
  const mx=Math.max(1e-9,...list.map(c=>offOf(c)?0:Math.max(r.D[c],r.E[c])*k));
  const vt=n=>Math.abs(n)<z?'—':eur(n,dd);
- const kq=q=>unit==='km'?1/q.r.km:unit==='tot'?q.r.L:1,sx=n=>(n<0?'−':n>0?'+':'')+eur(Math.abs(n),dd);
+ const kq=q=>unit==='km'?1/q.r.km:unit==='tot'?q.r.L:unit==='mnd'?1/12:1,sx=n=>(n<0?'−':n>0?'+':'')+eur(Math.abs(n),dd);
  const rowR=f=>{if(!BX)return'';const t=spanTxt(BX.map(q=>f(q)*kq(q)),sx,z*2);return t?`<span class="rr">${t}</span>`:''};
  list.forEach(c=>{
   const off=offOf(c),dv=r.D[c]*k,ev=r.E[c]*k;
@@ -1947,7 +1963,7 @@ function render(){
   ['Netto aanschaf elektrisch',eur(b.netE)],
   ['Stroom per jaar',`${eur(b.stroom)} · ${nf(b.kwh)} kWh`],
   ['ERE-opbrengst per jaar',eur(b.ereV)],
-  ['CO₂-besparing per jaar',`${nf(b.co2d-b.co2e)} ton`],
+  ['CO₂-besparing per jaar',`${nf(x.co2d-x.co2e)} ton`],
   ['Actieradius',`± ${nf(Math.round(v('acc')/(v('le')/100)/5)*5)} km · dagrit ± ${nf(Math.round(v('km')/Math.max(1,v('wd'))/5)*5)} km`],
   ck('xFin')&&['Financiering',`${nf(v('xfs'))}% geleend tegen ${nf(v('xri'),1)}%, eigen deel ${nf(v('xre'),1)}% rendementseis`],
   ck('xLad')&&['Laadpaal per jaar',`${eur(x.E.lad)}${x.spr>0?` · na SPRILA ${eur(x.spr)}`:''}`],
@@ -1960,7 +1976,7 @@ function render(){
  const d=r.td-r.te;
  setH($('wzL'),`<span class="wzlk">Diesel <b>${eur(r.td/r.km,2)}</b> · elektrisch <b>${eur(r.te/r.km,2)}</b> per km · </span><b class="${d>=0?'good':'bad'}">${eur(Math.abs(d))}</b> ${d>=0?'besparing':'meerkosten'} per jaar`);
  if($('wz').open)wzNav();
- plPaint();usedPaint();
+ plPaint();usedPaint();scPaint();
  {const i=PL.D,kg=i&&!i.err&&(i.vt==='trekker'&&i.combo?Math.max(i.combo,i.mass):i.mass);setH($('hefh'),kg&&truck?`Tarief volgens je kenteken: ${hefBand(kg)}, CO₂-klasse 1 (diesel) en 5 (elektrisch).`:'')}
  $('rw').dataset.prev=$('rw').value;
  syncSl();fillRanges();srPaint();mini();save();
@@ -2148,8 +2164,24 @@ document.addEventListener('click',async e=>{
  if(e.target.closest('[data-print]'))print();
 });
 let reopen=[];
-addEventListener('beforeprint',()=>{reopen=[...document.querySelectorAll('.page:not([hidden]) details:not([open])')];reopen.forEach(d=>d.open=true)});
+addEventListener('beforeprint',()=>{$('prD').textContent=new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric'}).format(new Date());reopen=[...document.querySelectorAll('.page:not([hidden]) details:not([open])')];reopen.forEach(d=>d.open=true)});
 addEventListener('afterprint',()=>{reopen.forEach(d=>d.open=false);reopen=[]});
+
+/* Vergelijken: bewaar de huidige berekening als A en zet hem naast wat je daarna verandert */
+let scA=null;
+const snap=()=>{const r=calcX();return{t:vtype,v:stateObj(),sr:JSON.parse(JSON.stringify(SR)),m:modelActive()?mName(modelActive()):'',td:r.td,te:r.te,km:r.km}};
+function snapApply(s){applyType(s.t);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);srLoad(s.sr);Object.entries(s.v||{}).forEach(([id,val])=>{const e=$(id);if(!e)return;if(e.type==='checkbox')e.checked=!!+val;else setNum(e,val)});fitRanges();touched=true;render()}
+function scPaint(){
+ const el=$('scn');if(!scA){el.hidden=true;return}
+ const r=calcX(),dA=scA.td-scA.te,dN=r.td-r.te,df=dN-dA;
+ el.hidden=false;
+ setH(el,`<span class="scl">A</span><span class="scv">${scA.m?`<em>${scA.m}</em> `:''}Diesel <b>${eur(scA.td/scA.km,2)}</b> · elektrisch <b>${eur(scA.te/scA.km,2)}</b> per km · <b class="${dA>=0?'good':'bad'}">${eur(Math.abs(dA))}</b> ${dA>=0?'besparing':'meerkosten'} per jaar</span><span class="scd">Nu <b class="${df>=0?'good':'bad'}">${Math.abs(df)<.5?'gelijk':sg(df)}</b>${Math.abs(df)<.5?'':' per jaar'}</span><button class="lnk" type="button" data-scw>Wissel</button><button class="wzx" type="button" data-scx aria-label="Vergelijken sluiten">${XSVG}</button>`);
+}
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-sca]')){scA=snap();render();track('scenario_save',{vt:vtype});return}
+ if(e.target.closest('[data-scx]')){scA=null;render();return}
+ if(e.target.closest('[data-scw]')){const a=scA;scA=snap();snapApply(a);track('scenario_swap',{});return}
+});
 
 /* Invoer onthouden in deze browser, en terugzetten */
 const KEY='stekkerofdiesel-v3';
