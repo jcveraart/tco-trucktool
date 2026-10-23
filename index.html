@@ -959,6 +959,14 @@ a.cta.big,a.fcta{text-decoration:none}
 @media(max-width:900px){.dzl{flex-wrap:wrap}.dzl dl{order:3;width:100%;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.dzl .wzx{margin-left:auto}}
 @media print{.plw,.nwg{display:none!important}.dzl{box-shadow:none;border:1px solid var(--line)}}
 
+.mbtns{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px}
+.minfo .mbtns .cta{margin:0}
+.mbtns .btn{padding:10px 14px;font-size:15px}
+.mct tbody th small{display:block;font-weight:400;font-size:12px}
+.qf{max-width:560px}
+.qfm{margin:0 0 18px;font-size:17px}.qfm small{color:var(--ink-3);font-size:14px}
+.qf .ffs .seg{grid-template-columns:repeat(3,minmax(0,1fr));max-width:300px}
+@media(max-width:640px){.qf,#mDlgB>.fok{padding:0 16px}}
 /* Vergelijken en PDF */
 .scn{display:flex;align-items:center;flex-wrap:wrap;gap:8px 18px;margin-top:12px;padding:10px 8px 10px 12px;border-radius:12px;background:var(--card);box-shadow:0 0 0 1px var(--line);font-size:15px}
 .scl{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:6px;background:var(--ink);color:#fff;font:600 14px var(--mono)}
@@ -2368,7 +2376,7 @@ function mInfo(id){
  const m=MI[id];if(!m)return;
  const when=m.checked?new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(m.checked+'T12:00:00Z')):'';
  $('mDlgT').textContent=mName(m);
- $('mDlgB').innerHTML=`<div class="minfo"><p>${m.n}</p><dl class="mkv"><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div><div><dt>Prijs</dt><dd>${m.price?`${eur(m.price)} <small>excl. btw${m.pt&&m.pt!=='list'?', indicatief':''}</small>`:'Op aanvraag'}</dd></div><div><dt>Bron</dt><dd><a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?` <small>${when}</small>`:''}</dd></div></dl><button class="cta" type="button" data-muse="${m.id}">Reken hiermee ${arrow}</button></div>`;
+ $('mDlgB').innerHTML=`<div class="minfo"><p>${m.n}</p><dl class="mkv"><div><dt>Actieradius</dt><dd>${m.rt||nf(m.r)} km <small>${m.rc||(m.c==='bestel'?'WLTP gecombineerd':'opgave fabrikant')}</small></dd></div><div><dt>Accu</dt><dd>${mAccLine(m)}</dd></div><div><dt>Snelladen</dt><dd>${mCharge(m)}</dd></div><div><dt>Prijs</dt><dd>${m.price?`${eur(m.price)} <small>excl. btw${m.pt&&m.pt!=='list'?', indicatief':''}</small>`:'Op aanvraag'}</dd></div>${PRAK[m.id]?`<div><dt>Praktijk</dt><dd>${nf(PRAK[m.id].le,1)} kWh/100 km <small>gemiddeld uit ${nf(PRAK[m.id].n)} berekeningen</small></dd></div>`:''}<div><dt>Tweedehands</dt><dd>${usedLinks(m)}</dd></div><div><dt>Bron</dt><dd><a href="${m.s[1]}" target="_blank" rel="noopener">${m.s[0]} <span aria-hidden="true">↗</span></a>${when?` <small>${when}</small>`:''}</dd></div></dl><div class="mbtns"><button class="cta" type="button" data-muse="${m.id}">Reken hiermee ${arrow}</button><button class="btn" type="button" data-mquote="${m.id}">Offerte aanvragen</button></div></div>`;
  const d=$('mDlg');if(!d.open)d.showModal();
 }
 const MRG=[0,200,300,400,500];
@@ -2395,9 +2403,39 @@ function mCompare(){
   ${row('Accu bruto',m=>m.g?(m.gt||mFmt(m.g))+' kWh':'–')}${row('Accu type niet vermeld',m=>m.a?(m.at||mFmt(m.a))+' kWh':'–')}${row('Accu bruikbaar',m=>m.u||m.ue?`${m.ut||mFmt(m.u||m.ue)} kWh${m.u?'':' (afgeleid)'}`:`≈ ${nf(mU(m))} kWh (90% geschat)`,mU)}
   ${row('Actieradius',m=>`${mRange(m)}${mBar(m,mx)}`,m=>m.r)}
   ${row('Snelladen',m=>mCharge(m),mK)}${row('Prijs excl. btw',m=>m.price?eur(m.price):'–')}
+  ${ms.some(m=>m.c===vtype)?row('Kosten per km <small>met jouw cijfers</small>',m=>{const c=mTco(m);return c===null?'–':eur(c,2)},m=>{const c=mTco(m);return c===null?0:1/c}):''}
   ${row('',m=>`<button class="wbtn" type="button" data-muse="${m.id}">Reken hiermee</button>`)}</tbody></table>`;
  const d=$('mDlg');if(!d.open)d.showModal();mPaint();
 }
+/* Kosten per km van een model met al je andere cijfers uit de calculator */
+const mTco=m=>{if(m.c!==vtype)return null;const r=calcX({acc:mAcc(m),le:mEnergy(m),pE:m.price||v('pE')});return r.te/r.km};
+/* Tweedehands: gefilterd zoeken op Marktplaats en op de grote bedrijfswagensites */
+const mQ=m=>`${m.b} ${(m.fam||m.m).replace(/\(.*?\)/g,'')}`.replace(/\s+/g,' ').trim();
+const usedLinks=m=>{const q=mQ(m);return`<a href="https://www.marktplaats.nl/q/${encodeURIComponent(q).replace(/%20/g,'+')}/" target="_blank" rel="noopener">Marktplaats <span aria-hidden="true">↗</span></a> · <a href="https://www.google.com/search?q=${encodeURIComponent(q+' te koop site:truckscout24.nl OR site:autoline.nl OR site:trucks.nl OR site:busworld.com')}" target="_blank" rel="noopener">Bedrijfswagensites <span aria-hidden="true">↗</span></a>`};
+/* Offerte aanvragen: naar Supabase (tabel quote_requests, alleen insert) */
+async function sbInsert(table,row){try{const r=await fetch(SB_URL+'/rest/v1/'+table,{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(row)});return r.ok}catch(e){return false}}
+function mQuote(id){
+ const m=MI[id];if(!m)return;
+ $('mDlgT').textContent='Offerte aanvragen';
+ $('mDlgB').innerHTML=`<form class="qf" id="qForm" data-qid="${m.id}" novalidate><p class="qfm"><b>${mName(m)}</b>${m.vl?` <small>${m.vl}</small>`:''}</p><div class="ffr two"><label class="ff"><span>Naam</span><input name="contact_name" required maxlength="200" autocomplete="name"></label><label class="ff"><span>Bedrijf</span><input name="company" required maxlength="200" autocomplete="organization"></label></div><div class="ffr two"><label class="ff"><span>E-mail</span><input name="email" type="email" required maxlength="200" autocomplete="email"></label><label class="ff"><span>Telefoon</span><input name="phone" type="tel" maxlength="50" autocomplete="tel"></label></div><fieldset class="ffs"><legend>Aantal</legend><div class="seg"><label><input type="radio" name="quantity" value="1" checked><span>1</span></label><label><input type="radio" name="quantity" value="2-5"><span>2–5</span></label><label><input type="radio" name="quantity" value="6+"><span>6+</span></label></div></fieldset><input class="fhp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><p class="ferr" id="qErr" role="alert" hidden></p><div class="fsub"><button class="cta" type="submit"><span>Verstuur</span>${arrow}</button><a href="#privacy">Privacy</a></div></form>`;
+ const d=$('mDlg');if(!d.open)d.showModal();
+ track('quote_open',{id});
+}
+document.addEventListener('submit',async e=>{
+ const f=e.target;if(f.id!=='qForm')return;e.preventDefault();
+ const fd=new FormData(f),val=n=>String(fd.get(n)||'').trim(),err=t=>{$('qErr').textContent=t;$('qErr').hidden=!t};
+ if(val('website'))return;
+ let bad=null;['contact_name','company','email'].forEach(n=>{const el=f.elements[n],ok=!!el.value.trim()&&el.checkValidity();el.setAttribute('aria-invalid',String(!ok));if(!ok&&!bad)bad=el});
+ if(bad){err('Vul je naam, bedrijf en een geldig e-mailadres in.');bad.focus();return}
+ err('');const btn=f.querySelector('button[type=submit]');btn.disabled=true;
+ const m=MI[f.dataset.qid];let link='';try{link=shareURL()}catch(x){}
+ const ok=await sbInsert('quote_requests',{model_id:m.id,model_name:mName(m),category:m.c,company:val('company'),contact_name:val('contact_name'),email:val('email'),phone:val('phone')||null,quantity:val('quantity'),calc_link:link||null});
+ btn.disabled=false;
+ if(!ok){err('Versturen lukte niet. Probeer het later opnieuw.');return}
+ track('quote_sent',{id:m.id});
+ $('mDlgB').innerHTML=`<div class="fok"><h2>Bedankt</h2><p>We vragen offertes op voor de ${mName(m)} en nemen contact met je op.</p></div>`;
+});
+
 function mUse(id){
  const m=MI[id];if(!m)return;
  if($('mDlg').open)$('mDlg').close();
@@ -2415,6 +2453,7 @@ document.addEventListener('click',e=>{
  const r=e.target.closest('[data-mrow]');if(r){mInfo(r.dataset.mrow);return}
  const g=e.target.closest('[data-mrg]');if(g){mMin=+g.dataset.mrg;mPaint();return}
  const u=e.target.closest('[data-muse]');if(u){mUse(u.dataset.muse);return}
+ const qq=e.target.closest('[data-mquote]');if(qq){mQuote(qq.dataset.mquote);return}
  if(e.target.closest('[data-mclear]')){mSel=[];mPaint();return}
  if(e.target.closest('[data-mclose]')){$('mDlg').close();return}
  if(e.target===$('mDlg'))$('mDlg').close();
@@ -2447,7 +2486,7 @@ const hefBand=kg=>kg<=12000?'3,5 tot 12 ton':kg<=18000?'12 tot 18 ton':kg<=32000
 const VCURVE={d:{trekker:[.80,.86],bakwagen:[.80,.87],bestel:[.82,.87],bus:[.78,.88]},e:{trekker:[.75,.85],bakwagen:[.75,.85],bestel:[.78,.85],bus:[.74,.86]}};
 const valPct=(f,vt,age)=>{if(age<=0)return 1;const c=VCURVE[f][vt]||VCURVE[f].bakwagen;return age<1?1-(1-c[0])*age:c[0]*Math.pow(c[1],age-1)};
 const PL={D:null,E:null};
-let RIX=null;/* restwaarde-index uit Supabase: 'd|trekker|5' → {p: mediaanprijs, n: aantal} */
+let RIX=null,PRAK={};/* restwaarde-index uit Supabase: 'd|trekker|5' → {p: mediaanprijs, n: aantal} */
 const num=x=>{const n=parseFloat(x);return isFinite(n)?n:0};
 const rdwDate=s=>{s=String(s||'');return s.length>=8?new Date(+s.slice(0,4),+s.slice(4,6)-1,+s.slice(6,8)):null};
 const ageOf=d=>d?Math.max(0,(Date.now()-d)/31557600000):0;
