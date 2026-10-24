@@ -1570,6 +1570,19 @@ html.embed .intro{padding-top:20px}
 .vt[aria-checked=true] svg{animation:vtgo .6s cubic-bezier(.3,.7,.2,1)}
 @keyframes vtgo{0%{transform:translateX(-8px);color:var(--ink-3)}55%{transform:translateX(3px)}100%{transform:none;color:var(--volt)}}
 @media (prefers-reduced-motion:reduce){.vt::after{transition:none}.vt[aria-checked=true] svg{animation:none}}
+/* Voorpagina: de uitgangspunten klappen pas open als je er met de muis op staat (of erop tikt) */
+#calc .story{margin:12px 0 0;border-radius:6px;background:var(--card);box-shadow:0 0 0 1px var(--line);overflow:hidden}
+.sumt{position:relative;display:flex;align-items:baseline;gap:12px;width:100%;min-height:52px;padding:14px 48px 14px 18px;border:0;background:none;color:var(--ink);font:600 16px var(--text);text-align:left;cursor:pointer}
+.sumt small{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.sumt i{position:absolute;right:20px;top:50%;width:8px;height:8px;margin-top:-6px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg);transition:transform .2s}
+#calc .story .sumb2{display:none;border-top:1px solid var(--line)}
+#calc .story:is(.open,:focus-within) .sumb2{display:block}
+@media(hover:hover){#calc .story:hover .sumb2{display:block}#calc .story:hover{box-shadow:0 0 0 1px var(--ink)}#calc .story:hover .sumt i{transform:rotate(225deg);margin-top:-2px}}
+#calc .story:is(.open,:focus-within) .sumt i{transform:rotate(225deg);margin-top:-2px}
+#calc .story .sum{margin:0;border-radius:0;box-shadow:none}
+#calc .story #sumRs{display:inline-block;margin:12px 18px}
+#calc .story #sumRs[hidden]{display:none}
+@media(max-width:640px){.sumt small{display:none}}
 </style>
 </head>
 <body>
@@ -1605,8 +1618,11 @@ html.embed .intro{padding-top:20px}
    <div class="scn" id="scn" hidden></div>
    <section class="story" id="story" aria-label="Uitgangspunten">
     <input type="hidden" id="plk" value="">
+    <button class="sumt" id="sumT" type="button" aria-expanded="false" aria-controls="sumB">Waarop dit is gebaseerd <small>8 uitgangspunten</small><i aria-hidden="true"></i></button>
+    <div class="sumb2" id="sumB">
     <div class="sum" id="sum"></div>
     <button class="lnk" type="button" data-reset id="sumRs" hidden>Herstel voorbeeldcijfers</button>
+    </div>
    </section>
    <div class="ins" id="ins"></div>
 
@@ -2523,7 +2539,7 @@ function board(r){
  const n=coreSteps().length;
  const inv=`<div class="bcta"><div class="bct"><b>${touched?'Gebaseerd op jouw cijfers':'Voorbeeldcijfers voor een '+T().w}</b></div><a class="cta big" href="/uitgebreid/" data-xgo>Reken uitgebreid met je eigen cijfers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>`;
  setH($('board'),half('d',$('dw').value==='h'?'Huidige diesel':'Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
-  `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}${bd?`<span class="brg">Bandbreedte <b>${bandTxt(bd)}</b> per jaar</span>`:''}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button>${scA?'':`<button class="btn" type="button" data-sca aria-label="Bewaar deze berekening om te vergelijken">${ICON.ab}<span>Vergelijk</span></button>`}<button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div>`+inv);
+  `${touched?`<div class="bfoot"><div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button>${scA?'':`<button class="btn" type="button" data-sca aria-label="Bewaar deze berekening om te vergelijken">${ICON.ab}<span>Vergelijk</span></button>`}<button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div></div>`:''}`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
  tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
  setH($('xSum'),`<p><span><i class="d"></i>Diesel <b>${eur(r.td/km,2)}</b> per km</span><span><i class="e"></i>Elektrisch <b>${eur(r.te/km,2)}</b> per km</span><span class="${cheap||even?'good':'bad'}">${even?'Ongeveer gelijk':`Elektrisch ${nf(pc)}% ${cheap?'goedkoper':'duurder'}: <b>${eur(Math.abs(d))}</b> per jaar`}</span></p><span class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></span>`);
@@ -2814,6 +2830,7 @@ document.addEventListener('click',e=>{
  const g=e.target.closest('button[data-gr]');if(g){$('gr').value=g.dataset.gr;touched=true;render();return}
  const ad=e.target.closest('[data-add]');if(ad){const k=ad.dataset.add;if(OPTSW[k]&&!ck(OPTSW[k]))$(OPTSW[k]).checked=true;touched=true;render();openWz(k);return}
  const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();navTo('/uitgebreid/');openWz('use');return}
+ if(e.target.closest('#sumT')){const o=$('story').classList.toggle('open');$('sumT').setAttribute('aria-expanded',o);return}
  if(e.target.closest('[data-reset]')){reset();return}
  const j=e.target.closest('[data-jump]');if(j){const t=$(j.dataset.jump);if(t.closest('.faq'))t.classList.add('open');t.scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
  const fh=e.target.closest('.faq section>h2');if(fh){fh.parentNode.classList.toggle('open');fh.setAttribute('aria-expanded',fh.parentNode.classList.contains('open'));return}
