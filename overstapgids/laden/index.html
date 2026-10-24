@@ -2159,7 +2159,7 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
  <div class="wrap">
   <div class="phead"><h1 tabindex="-1">Privacybeleid</h1></div>
   <div class="prose">
-   <p>Stekker of Diesel (stekkerofdiesel.nl) is een gratis rekentool. Hieronder lees je welke gegevens daarbij worden verwerkt en waarom. Laatst bijgewerkt op 23 oktober 2026.</p>
+   <p>Stekker of Diesel (stekkerofdiesel.nl) is een gratis rekentool. Hieronder lees je welke gegevens daarbij worden verwerkt en waarom. Laatst bijgewerkt op 24 oktober 2026.</p>
    <h2>Wat we niet vragen</h2>
    <p>Voor de calculator hoef je geen account aan te maken en vragen we geen naam, e-mailadres of andere persoonsgegevens.</p>
    <h2>Vlootanalyse aanvragen</h2>
@@ -2169,14 +2169,16 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
    <h2>Prijsalarm en verkoopprijs melden</h2>
    <p>Voor een prijsalarm bewaren we je e-mailadres, het soort voertuig en je maximale prijs, zodat we je kunnen mailen bij een passend aanbod. In elke mail staat een link om je af te melden; daarna verwijderen we je gegevens. Een gemelde verkoopprijs bewaren we zonder naam, e-mailadres of kenteken en gebruiken we alleen voor de restwaarde-index.</p>
    <h2>Kenteken</h2>
-   <p>Vul je een kenteken in, dan haalt je browser de openbare voertuiggegevens rechtstreeks op bij de RDW. Wij slaan het kenteken alleen op in je eigen browser, zodat je verder kunt waar je was.</p>
+   <p>Vul je een kenteken in, dan haalt je browser de openbare voertuiggegevens rechtstreeks op bij de RDW. Wij slaan het kenteken alleen op in je eigen browser, zodat je verder kunt waar je was. Bij je berekening bewaren we alleen het soort voertuig, merk, model, bouwjaar, gewicht en euroklasse, nooit het kenteken zelf.</p>
+   <h2>Je berekeningen</h2>
+   <p>Om de calculator te verbeteren bewaren we elke berekening die je maakt: alles wat je invult of aanpast, het gekozen voertuig en de uitkomst, met het soort apparaat, de schermbreedte en de site waar je vandaan kwam. Zonder je toestemming voor statistieken bewaren we die anoniem, zonder bezoekersnummer en zonder iets op je apparaat op te slaan. Met je toestemming staat je bezoekersnummer erbij. De berekeningen staan in onze eigen database bij Supabase en worden na 25 maanden verwijderd.</p>
    <h2>Je keuze over cookies</h2>
    <p>Bij je eerste bezoek vragen we of we cookies en vergelijkbare technieken mogen gebruiken voor statistieken en voor advertenties op maat. Je kunt beide los aan- of uitzetten. Je keuze bewaren we twaalf maanden in je browser. Via Cookies onderaan elke pagina pas je hem aan of trek je hem in.</p>
    <h2>Statistieken, alleen met je toestemming</h2>
    <p>Om de calculator te verbeteren meten we hoe de site wordt gebruikt: welke pagina's je bekijkt, op welke knoppen je klikt, welke stappen je invult, welke modellen je bekijkt en welke uitkomst de berekening geeft, inclusief de rekeninstellingen. Daarnaast het soort apparaat, de schermbreedte, de taal van je browser, de site waar je vandaan kwam en eventuele campagnecodes in de link.</p>
    <p>Om bezoeken van elkaar te onderscheiden plaatsen we een willekeurig bezoekersnummer in de lokale opslag van je browser. Dat nummer zegt niets over wie je bent en we koppelen het niet aan andere gegevens. We slaan geen IP-adres op. De gegevens staan in onze eigen database bij Supabase en worden na 25 maanden verwijderd. We gebruiken ze ook om varianten van de site met elkaar te vergelijken (A/B-tests): dan zie je bijvoorbeeld een andere tekst op een knop dan een andere bezoeker.</p>
    <p>Mogelijk gebruiken we daarnaast Google Analytics, eveneens alleen met je toestemming voor statistieken. Google plaatst dan cookies die met _ga beginnen.</p>
-   <p>Geef je geen toestemming, dan tellen we alleen dat een pagina is bekeken, met de site waar je vandaan kwam en of het een mobiel apparaat is. Zonder bezoekersnummer en zonder iets op je apparaat op te slaan. Trek je je toestemming in, dan verwijderen we het bezoekersnummer uit je browser.</p>
+   <p>Geef je geen toestemming, dan tellen we alleen dat een pagina is bekeken, met de site waar je vandaan kwam en of het een mobiel apparaat is, en bewaren we je berekeningen anoniem. Zonder bezoekersnummer en zonder iets op je apparaat op te slaan. Trek je je toestemming in, dan verwijderen we het bezoekersnummer uit je browser.</p>
    <h2>Advertenties</h2>
    <p>Om de site gratis te houden tonen we advertenties via Google AdSense. Met je toestemming voor advertenties op maat mogen Google en zijn partners cookies gebruiken om advertenties af te stemmen op eerdere bezoeken aan deze en andere sites. Zonder die toestemming toont Google alleen advertenties die niet op jou zijn afgestemd. We geven je keuze door via Google Consent Mode. Meer over hoe Google gegevens gebruikt lees je op <a href="https://policies.google.com/technologies/partner-sites?hl=nl" target="_blank" rel="noopener">policies.google.com</a>.</p>
    <h2>Wat in je eigen browser blijft</h2>
@@ -4006,7 +4008,7 @@ syncSupabase().then(syncExtra);
   if(!show){track('wizard_close',{step:wzStep,seen:seen.size});return}
   const r=calcX(),d=r.td-r.te,m=modelActive();
   track('wizard_complete',{vt:vtype,km:r.km,jr:r.L,diff_year:Math.round(d),pct:Math.round(d/r.td*1000)/10,cheaper:d>=0?'e':'d',
-   model:m?m.id:null,reg:reg(),opts:optSteps().filter(s=>optOn(s[0])).map(s=>s[0]).join(','),seen:seen.size,inputs:stateObj()});
+   model:m?m.id:null,reg:reg(),opts:optSteps().filter(s=>optOn(s[0])).map(s=>s[0]).join(','),seen:seen.size,inputs:(({plk,plkE,...o})=>o)(stateObj())});
  });
  wrap('modelApply',id=>track('model_apply',{id,from:page}));
  wrap('reset',()=>track('reset',{vt:vtype}));
@@ -4036,6 +4038,50 @@ syncSupabase().then(syncExtra);
 
  /* Fouten in de pagina, maximaal vijf per bezoek */
  let errs=0;addEventListener('error',e=>{if(errs++<5)track('js_error',{m:String(e.message).slice(0,200),src:String(e.filename||'').split('/').pop().slice(0,60),line:e.lineno})});
+})();
+</script>
+<script id="berekeningen">
+/* ===== Elke berekening opslaan (tabel calc_runs in Supabase, zie docs/analytics.md) =====
+   Na het invulvenster en na elke aanpassing (als het 4 seconden stil is) gaan alle invoer, het voertuig en de uitkomst naar Supabase.
+   Zonder toestemming voor statistieken zonder bezoekers- en sessie-ID. Het kenteken zelf (plk, plkE) gaat nooit mee, alleen de RDW-gegevens. */
+(()=>{
+ const reeks=uuid(),PLK=['plk','plkE'];let nr=0,last='',tmr=0;
+ const rnd=(x,d=0)=>typeof x==='number'&&isFinite(x)?Math.round(x*10**d)/10**d:x;
+ const cats=o=>Object.fromEntries(Object.entries(o).filter(e=>typeof e[1]==='number').map(([k,x])=>[k,rnd(x)]));
+ function invoer(){
+  const o={};document.querySelectorAll(':is(#calc,#wz) input[id],:is(#calc,#wz) select[id]').forEach(e=>{
+   if(e.classList.contains('slin')||e.name==='kt'||PLK.includes(e.id))return;
+   o[e.id]=e.type==='checkbox'?e.checked:(e.type==='range'||e.type==='number')&&e.value!==''?+e.value:e.value;
+  });return o;
+ }
+ const kt=i=>i&&!i.err?{vt:i.vt,eu:i.eu,merk:i.merk,model:i.model,jaar:i.first?i.first.getFullYear():null,massa:i.mass,combinatie:i.combo,euro:i.euro,elektrisch:i.el,verbruik:i.lpk,catalogusprijs:i.cat}:null;
+ function snap(trigger){
+  const r=calcX(),pb=payback(r),m=modelActive(),bd=band(),kb=kmBreak(),d=r.td-r.te;
+  return{
+   client_ts:new Date().toISOString(),consent:statOK()?'stat':'anon',visitor_id:statOK()?vid:null,session_id:statOK()?sid:null,
+   reeks,nr:++nr,trigger,modus:page==='uitgebreid'?'uitgebreid':'simpel',vt:vtype,model_id:m?m.id:null,km:rnd(r.km),jaren:rnd(r.L),
+   goedkoper:Math.abs(d)/r.td<.005?'gelijk':d>0?'e':'d',verschil_jaar:rnd(d),
+   invoer:invoer(),gewijzigd:Object.keys(stateObj()).filter(k=>!PLK.includes(k)),
+   voertuig:{soort:T().w,model:m?mName(m):null,diesel:$('dw').value==='h'?'huidig':'nieuw',elektrisch:$('nw').value==='n'?'nieuw':'gebruikt',
+    kenteken_diesel:kt(PL.D),kenteken_elektrisch:kt(PL.E),tol:[...tolSel],bandbreedte:Object.fromEntries(Object.entries(SR).map(([k,x])=>[k,x.map(y=>rnd(y,2))]))},
+   uitkomst:{diesel_jaar:rnd(r.td),elektrisch_jaar:rnd(r.te),diesel_km:rnd(r.td/r.km,3),elektrisch_km:rnd(r.te/r.km,3),pct:rnd(d/r.td*100,1),
+    diesel:cats(r.D),elektrisch:cats(r.E),terugverdien_jaar:pb.be===null?null:rnd(pb.be,2),meerprijs:rnd(pb.gap),besparing_gebruik_jaar:rnd(pb.sv),
+    goedkoper_vanaf_km:kb===null?null:rnd(kb),bandbreedte_jaar:bd?bd.map(y=>rnd(y)):null,co2_ton:rnd(r.co2d-r.co2e,1)},
+   bron:{ref:LAND.ref,utm_source:LAND.utm_source||null,mobile:LAND.mobile,vw:LAND.vw}
+  };
+ }
+ function save(trigger){
+  clearTimeout(tmr);tmr=0;
+  if((page!=='calc'&&page!=='uitgebreid')||!touched||$('wz').open)return;
+  let row;try{row=snap(trigger)}catch(e){return}
+  const key=JSON.stringify([row.modus,row.vt,row.invoer,row.voertuig]);if(key===last)return;last=key;
+  try{fetch(SB_URL+'/rest/v1/calc_runs',{method:'POST',keepalive:true,headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(row)}).catch(()=>{})}catch(e){}
+ }
+ const o=window.render,c=window.closeWz;
+ window.render=function(...a){const x=o.apply(this,a);clearTimeout(tmr);tmr=setTimeout(()=>save('aanpassing'),4000);return x};
+ window.closeWz=function(show,...a){const x=c.call(this,show,...a);if(show)save('invulvenster');return x};
+ addEventListener('pagehide',()=>{if(tmr)save('aanpassing')});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&tmr)save('aanpassing')});
 })();
 </script>
 <div class="rpt" id="rpt" aria-hidden="true"></div>
