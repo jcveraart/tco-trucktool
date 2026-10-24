@@ -1993,7 +1993,7 @@ html:is(.r-g,.r-h) body:has(#calc:not([hidden])) .bkw{display:none}
  .rhp .rcn div:last-child{grid-column:auto}
 }
 /* ===== Ronde 3: I tot en met M, rustigere varianten op H ===== */
-html:is(.r-i,.r-j,.r-k,.r-l,.r-m) body:has(#calc:not([hidden])) .bkw{display:none}
+html:is(.r-i,.r-j,.r-k,.r-l,.r-m,.r-n,.r-o,.r-p,.r-q,.r-r,.r-s) body:has(#calc:not([hidden])) .bkw{display:none}
 .rhgo{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:6;align-self:center;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:12px;background:var(--ink);color:#fff;text-decoration:none;font:700 17px var(--text);box-shadow:0 16px 34px -16px rgba(0,0,0,.55)}
 .rhgo:hover{background:#000;color:#fff}
 .rhgo svg{width:19px;height:19px}
@@ -2043,6 +2043,111 @@ html:is(.r-i,.r-j,.r-k,.r-l,.r-m) body:has(#calc:not([hidden])) .bkw{display:non
 @media(max-width:640px){
  .rhgo{align-self:stretch;justify-content:center;padding:15px 18px;font-size:16px}
  .rH.rHm .rhgo{position:sticky;padding:16px 18px;font-size:17px}
+}
+/* ===== Ronde 4: 12 verfijnd (L, N, O, P) en 13 met extra's (M, Q, R, S) ===== */
+/* 13: knop iets kleiner */
+.rH.rHm .rhgo{padding:15px 26px;font-size:17px;border-radius:12px}
+/* 12: alleen lijnen. Elke rij heeft dezelfde twee kolommen, zodat de scheidingslijn doorloopt */
+.rN{display:flex;flex-direction:column;padding:12px 0 10px}
+.nS{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+.nS>.nA{padding:26px 36px 26px 0;min-width:0}
+.nS>.nB{padding:26px 0 26px 36px;border-left:1px solid var(--line);min-width:0}
+.nX{display:block;padding:24px 0 26px}
+.nk{margin:0 0 14px;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.nTop>.nA{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding-top:8px}
+.nTop>.nA .bk{margin-bottom:6px}
+.nSub{margin:0;color:var(--ink-2);font-size:15px}
+.nTop>.nB{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding-top:8px}
+.nV{margin:0;font:600 clamp(32px,3.6vw,48px)/1.08 var(--text);letter-spacing:-.02em;text-wrap:balance}
+.nV b{color:var(--volt-ink);font-variant-numeric:tabular-nums}.nB.neg .nV b{color:var(--amber-ink)}
+.nVs{margin:0;font-size:17px;color:var(--ink-2)}
+.rN .rcb{font-size:16px}
+.rN .rcb i{height:12px}
+.nPk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:22px;border-top:1px solid var(--line)}
+.nPk div{display:flex;flex-direction:column;gap:2px;padding:14px 0 0}
+.nPk div+div{padding-left:18px;border-left:1px solid var(--line)}
+.nPk span{font-size:13px;color:var(--ink-3)}
+.nPk b{font:600 24px/1.2 var(--display);font-variant-numeric:tabular-nums}
+.nSl{display:flex;flex-direction:column;gap:20px}
+#res .rN .rsl input{--fill:var(--ink);--track:var(--line);--thumb:#fff}
+.nTl{display:grid;grid-template-columns:minmax(0,1fr)}
+.nTl .st{flex-direction:row;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 26px 11px 0;border-bottom:1px solid var(--line);background:none}
+.nTl .st:hover{background:none}.nTl .st:hover b{text-decoration:underline;text-underline-offset:3px}
+.nTl .st span{display:flex;align-items:center;gap:7px;font-size:14px;white-space:nowrap}
+.nTl .st span i{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--amber)}.nTl .st span i.e{background:var(--volt)}
+.nTl .st b{font-size:15px;text-align:right}
+.nTl .st svg{top:50%;right:0;margin-top:-8px}
+.nF{display:flex;flex-direction:column}
+.nF .rf{padding:11px 0;border-bottom:1px solid var(--line)}
+.nF .rf:first-child{padding-top:0}
+.nF .rf:last-child{border-bottom:0}
+#res .nF .rf>span{font:400 14px var(--text);letter-spacing:0;text-transform:none;color:var(--ink-2)}
+.nTl .st:first-child{padding-top:0}
+.nTl .st:first-child svg{margin-top:-14px}
+.nTl .st:last-child{border-bottom:0}
+.rN .rhgo{margin-top:26px}
+/* Extra blokken */
+.xdh,.xdr{display:grid;grid-template-columns:150px minmax(0,1fr) 110px 110px 120px;align-items:center;gap:12px;font-variant-numeric:tabular-nums}
+.xdh{padding-bottom:8px;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.xdh span:nth-child(n+3){text-align:right}
+.xdr{padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.xdl{color:var(--ink-2)}
+.xdb{display:flex;flex-direction:column;gap:3px}
+.xdb i{display:block;height:6px;border-radius:2px;background:var(--amber)}.xdb i.e{background:var(--volt-2)}
+.xdv{text-align:right}
+.xdf{text-align:right;font-weight:600}.xdf.g{color:var(--volt-ink)}.xdf.a{color:var(--amber-ink)}
+.xcw{display:flex;flex-direction:column;gap:6px}
+.xch{margin:0;font:600 20px var(--text)}
+.xc{display:block;width:100%;height:auto;max-width:760px;overflow:visible}
+.xc path{fill:none;stroke-width:2.5;stroke-linecap:round}
+.xc path.d{stroke:var(--amber)}.xc path.e{stroke:var(--volt)}
+.xc path.dr{stroke-width:1.5;stroke-dasharray:3 4}
+.xc circle.d{fill:var(--amber)}.xc circle.e{fill:var(--volt)}
+.xc circle.mk{fill:#fff;stroke:var(--ink);stroke-width:2.5}
+.xc .ax{stroke:var(--line-2);stroke-width:1}
+.xc .gl{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:2 4}
+.xc text{font:500 12px var(--text);fill:var(--ink-3)}
+.xc text.d{fill:var(--amber-ink);font-weight:600;font-size:13px}.xc text.e{fill:var(--volt-ink);font-weight:600;font-size:13px}
+.xc text.tv{fill:var(--ink);font-weight:700;font-size:14px}
+.xcl{display:flex;gap:18px;margin:0;font-size:13px;color:var(--ink-3)}
+.xcl span{display:inline-flex;align-items:center;gap:6px}
+.xcl i{width:14px;height:3px;border-radius:2px;background:var(--amber)}.xcl i.e{background:var(--volt)}
+.xcl span:last-child{margin-left:auto}
+.xr{display:flex;flex-direction:column;gap:8px;max-width:760px}
+.xrt{display:flex;justify-content:space-between;gap:12px;font-size:15px;color:var(--ink-2)}
+.xrt b{color:var(--ink);font-variant-numeric:tabular-nums}
+.xrb{display:block;height:8px;border-radius:4px;background:var(--line)}
+.xrb u{display:block;height:100%;border-radius:4px;background:var(--ink)}
+.xr.over .xrb u{background:var(--amber)}
+.xr p{margin:0;font-size:14px;font-weight:600;color:var(--volt-ink)}.xr.over p{color:var(--amber-ink)}
+/* 13-stijl: extra blok als eigen wit vlak */
+.rhx{padding:22px 26px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.rH .rhx .nk{margin-bottom:12px}
+.rhx.two{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:30px}
+.rhx.two>div+div{padding-left:30px;border-left:1px solid var(--line)}
+.xc{max-width:none}
+.nF .rf b small{font:500 14px var(--text);color:var(--ink-3)}
+@media(max-width:900px){
+ .nS{grid-template-columns:minmax(0,1fr)}
+ .nS>.nA{padding:22px 0}
+ .nS>.nB{padding:22px 0;border-left:0;border-top:1px solid var(--line)}
+ .nTop>.nB{padding-top:20px}
+ .rhx.two{grid-template-columns:minmax(0,1fr);gap:18px}
+ .rhx.two>div+div{padding:18px 0 0;border-left:0;border-top:1px solid var(--line)}
+}
+@media(max-width:640px){
+ .rN{padding-top:4px}
+ .nV{font-size:30px}.nVs{font-size:15px}
+ .nPk b{font-size:19px}.nPk div+div{padding-left:10px}
+ .nTl{grid-template-columns:minmax(0,1fr)}
+ .xdh,.xdr{grid-template-columns:minmax(0,1fr) 68px 68px 72px;gap:8px;font-size:13px}
+ .xdh{font-size:9px}
+ .xdh span:nth-child(2),.xdb{display:none}
+ .xch{font-size:17px}
+ .xc text{font-size:15px}.xc text.d,.xc text.e,.xc text.tv{font-size:16px}
+ .rhx{padding:16px}
+ .rhx.two{grid-template-columns:minmax(0,1fr);gap:18px}
+ .rhx.two>div+div{padding:18px 0 0;border-left:0;border-top:1px solid var(--line)}
 }
 </style>
 </head>
@@ -3329,7 +3434,7 @@ document.addEventListener('click',e=>{
 /* ===== Resultaat na het invulvenster: vijf ontwerpen (html.r-a … r-e) =====
    Het voertuig is al gekozen op het startscherm, dus hier staat het alleen als naam. A houdt het oude scorebord, B tot en met E tekenen alles in #res. */
 var RD='a';
-function rDesign(d){RD=d;const c=document.documentElement.classList;'abcdefghijklm'.split('').forEach(k=>c.toggle('r-'+k,k===d));render();mini()}
+function rDesign(d){RD=d;const c=document.documentElement.classList;'abcdefghijklmnopqrs'.split('').forEach(k=>c.toggle('r-'+k,k===d));render();mini()}
 document.documentElement.classList.add("r-"+RD);
 /* Terug naar het startscherm, met alles wat je al had ingevuld */
 function goHome(){const k=$('dw').value;setUsed(false);hc=k;navTo('/');homePaint();scrollTo(0,0)}
@@ -3392,11 +3497,44 @@ function rPaint(r){
  if(RD==='g')h=`<div class="rG"><div class="rgt"><a class="bk" href="/" data-home>${BKI}Start</a><div class="rveh">${vh}<span>${q.sub}</span>${pl}</div><nav class="rgsw" aria-label="Resultaten"><a href="/" aria-current="page">Simpel</a><a href="/uitgebreid/" data-xgo>Uitgebreid ${HARR}</a></nav></div>
 <div class="rgp"><div class="rgm"><div class="rgh">${per}</div><div class="rbc" data-r="cols">${col2('d',dn,r.td)}${col2('e',en,r.te)}</div>${vrd}</div><aside class="rgw"><p class="rek">Wat als</p>${sKm}${sDp}${sSp}<div class="rfs" data-r="facts">${facts}</div></aside></div>
 <div class="sum rsum" data-r="tiles">${tilesX}</div></div>`;
- if('hijklm'.includes(RD)){const mx2=Math.max(r.td,r.te),x8=RD!=='h';
-  h=`<div class="rH${x8?' rH'+RD+('ikl'.includes(RD)?' lt':'')+(RD==='m'?' lt':''):''}"><div class="rht"><div class="rhv"><a class="bk" href="/" data-home>${BKI}Terug naar start</a><div class="rveh">${vh}</div><p>${[q.sub,pn].filter(Boolean).join(' · ')}</p>${pl}</div>
+ /* Ronde 4: extra blokken voor Simpel. Waar zit het verschil, uitgaven opgeteld, verschil per kilometerstand en actieradius */
+ const truckR=q.truck,rows=ROWS.filter(z=>truckR||z[0]!=='hef'),cmx=Math.max(1,...rows.map(z=>Math.max(r.D[z[0]],r.E[z[0]])));
+ const exDiff=`<div class="xd" data-r="xd">${rows.map(z=>{const a=r.D[z[0]],b2=r.E[z[0]],df=b2-a;return`<div class="xdr"><span class="xdl">${z[1]}</span><span class="xdb"><i class="d" style="width:${Math.max(0,a)/cmx*100}%"></i><i class="e" style="width:${Math.max(0,b2)/cmx*100}%"></i></span><span class="xdv">${eur(a)}</span><span class="xdv">${eur(b2)}</span><b class="xdf${df<0?' g':df>0?' a':''}">${Math.abs(df)<.5?'gelijk':(df<0?'−':'+')+' '+eur(Math.abs(df))}</b></div>`}).join('')}</div>`;
+ const exDiffH=`<div class="xdh"><span></span><span></span><span>${dn}</span><span>${en}</span><span>Verschil</span></div>`;
+ const pb=payback(r),W=640,H2=210,pl0=8,pr0=96,pt=14,pbm=28;
+ const cum=()=>{const yD=t=>pb.upD+pb.opD*t,yE=t=>pb.upE+pb.opE*t,endD=r.td*L,endE=r.te*L,ym2=Math.max(yD(L),yE(L),endD,endE)*1.06,X=t=>pl0+t/L*(W-pl0-pr0),Y=n=>pt+(1-n/ym2)*(H2-pt-pbm);
+  const ln=(f,end,c)=>`<path class="${c}" d="M${X(0)},${Y(f(0))} L${X(L)},${Y(f(L))}"/><path class="${c} dr" d="M${X(L)},${Y(f(L))} L${X(L)},${Y(end)}"/><circle class="${c}" cx="${X(L)}" cy="${Y(end)}" r="4"/>`;
+  const lab=(end,c,o)=>`<text class="${c}" x="${X(L)+10}" y="${Y(end)+4+o}">${eur(end)}</text>`,od=Math.abs(Y(endD)-Y(endE))<16?(Y(endD)<Y(endE)?-8:8):0;
+  const be=pb.be,mk=be!==null&&be>0&&be<L?`<line class="gl" x1="${X(be)}" x2="${X(be)}" y1="${pt}" y2="${H2-pbm}"/><circle class="mk" cx="${X(be)}" cy="${Y(yE(be))}" r="5"/>`:'';
+  const ticks=Array.from({length:L+1},(_,t)=>`<text class="tk" x="${X(t)}" y="${H2-8}" text-anchor="middle">${t}</text>`).join('');
+  return`<svg viewBox="0 0 ${W} ${H2}" class="xc" role="img" aria-label="Uitgaven opgeteld over ${L} jaar"><line class="ax" x1="${pl0}" x2="${X(L)}" y1="${H2-pbm}" y2="${H2-pbm}"/>${ticks}${mk}${ln(yD,endD,'d')}${ln(yE,endE,'e')}${lab(endD,'d',od)}${lab(endE,'e',-od)}</svg>`};
+ const pbT=pb.be===null?'Niet terugverdiend':pb.be===0?'Direct goedkoper':pb.be>L?`Na ${L} jaar nog niet terugverdiend`:'Terugverdiend na '+ym(pb.be);
+ const exCum=`<div class="xcw" data-r="xc"><p class="xch">${pbT}</p>${cum()}<p class="xcl"><span><i class="d"></i>${dn}</span><span><i class="e"></i>${en}</span><span>Jaren</span></p></div>`;
+ const kmc=()=>{const hk=HKM[vtype]||[15000,150000],k0=Math.min(hk[0],km),k1=Math.max(hk[1],km),ratio=truckR&&km?Math.min(v('kmH'),km)/km:0,n=24,pts=[];
+  for(let j=0;j<=n;j++){const k=k0+(k1-k0)*j/n,z=calcX({km:k,kmH:k*ratio});pts.push([k,z.td-z.te])}
+  const lo=Math.min(0,...pts.map(z=>z[1])),hi=Math.max(0,...pts.map(z=>z[1])),sp=(hi-lo)*1.12||1,X=k=>pl0+(k-k0)/(k1-k0)*(W-pl0-pr0),Y=n2=>pt+(hi*1.06-n2)/sp*(H2-pt-pbm);
+  const path=pts.map((z,j)=>(j?'L':'M')+X(z[0]).toFixed(1)+','+Y(z[1]).toFixed(1)).join(' '),cx=X(km),cy=Y(d);
+  const bl=kb>k0&&kb<k1?`<line class="gl" x1="${X(kb)}" x2="${X(kb)}" y1="${pt}" y2="${H2-pbm}"/><text class="tk" x="${X(kb)+6}" y="${pt+10}">${nf(Math.ceil(kb/1000)*1000)} km</text>`:'';
+  return`<svg viewBox="0 0 ${W} ${H2}" class="xc" role="img" aria-label="Verschil per jaar bij meer of minder kilometers"><line class="ax" x1="${pl0}" x2="${X(k1)}" y1="${Y(0)}" y2="${Y(0)}"/><text class="tk" x="${X(k1)+10}" y="${Y(0)+4}">€ 0</text>${bl}<path class="e" d="${path}"/><circle class="mk" cx="${cx}" cy="${cy}" r="5"/><text class="tv" x="${Math.min(cx,W-pr0-40)}" y="${cy-12}" text-anchor="middle">${(d<0?'− ':'')+eur(Math.abs(d))}</text><text class="tk" x="${pl0}" y="${H2-8}">${nf(k0)} km</text><text class="tk" x="${X(k1)}" y="${H2-8}" text-anchor="end">${nf(k1)} km</text></svg>`};
+ const rng=v('acc')/(v('le')/100),day=v('km')/Math.max(1,v('wd')),over=day>rng;
+ const exKm=`<div class="xcw" data-r="xk"><p class="xch">${d>=0?'Elektrisch voordeliger':'Diesel voordeliger'} bij ${nf(km)} km</p>${kmc()}</div>`;
+ const exRa=`<div class="xr${over?' over':''}" data-r="xr"><div class="xrt"><span>Dagrit <b>± ${nf(Math.round(day/5)*5)} km</b></span><span>Actieradius <b>± ${nf(Math.round(rng/5)*5)} km</b></span></div><i class="xrb"><u style="width:${Math.min(100,day/rng*100)}%"></u></i><p>${over?'Laden onderweg nodig':'Past zonder laden onderweg'}</p></div>`;
+ const exPb=`<div class="nF" data-r="xpb"><div class="rf"><span>Extra aanschaf elektrisch</span><b>${pb.gap>0?eur(pb.gap):'Geen'}</b></div><div class="rf"><span>${pb.sv>=0?'Lagere':'Hogere'} gebruikskosten per jaar</span><b>${eur(Math.abs(pb.sv))}</b></div><div class="rf"><span>Totale kosten in ${L} jaar</span><b>${even?'Gelijk':`${eur(Math.abs(d)*L)} <small>${cheap?'lager':'hoger'}</small>`}</b></div></div>`;
+ const EXT={n:[['Waar zit het verschil',exDiffH+exDiff]],o:[['Uitgaven opgeteld',exCum,'Terugverdienen',exPb]],p:[['Verschil per jaar',exKm,'Actieradius',exRa]]};EXT.q=EXT.n;EXT.r=EXT.o;EXT.s=EXT.p;const EX=EXT[RD]||[];
+ /* 12 verfijnd (L) en de varianten N, O, P: alleen lijnen, overal dezelfde twee kolommen */
+ if('lnop'.includes(RD)){const mx3=Math.max(r.td,r.te);
+  const ex=EX.map(z=>z[2]?`<section class="nS"><div class="nA"><p class="nk">${z[0]}</p>${z[1]}</div><div class="nB"><p class="nk">${z[2]}</p>${z[3]}</div></section>`:`<section class="nS nX"><p class="nk">${z[0]}</p>${z[1]}</section>`).join('');
+  const lst=sumItems(r.b,L,m).filter((s,j)=>j!==1&&j!==6&&j!==7).map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join('');
+  h=`<div class="rN rN${RD}"><section class="nS nTop"><div class="nA"><a class="bk" href="/" data-home>${BKI}Terug naar start</a><div class="rveh">${vh}</div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p>${pl}</div>
+<div class="nB${win==='d'?' neg':''}" data-r="head"><p class="nV">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b>${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · ${eur(Math.abs(d)*L)} in ${L} jaar`}</p>${brg}</div></section>
+<section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p><div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx3*100}%"></u></i><b>${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx3*100}%"></u></i><b>${eur(r.te)}</b></div><div class="nPk" data-r="pkm"><div><span>Diesel per km</span><b>${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b>${eur(r.te/km,2)}</b></div><div><span>Verschil per km</span><b>${eur(Math.abs(d)/km,2)}</b></div></div></div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${sKm}${sDp}${sSp}</div></div></section>
+${ex}<section class="nS"><div class="nA"><p class="nk">Jouw cijfers</p><div class="nTl" data-r="tiles">${lst}</div></div><div class="nB"><p class="nk">Omslagpunten</p><div class="nF" data-r="facts">${facts}</div></div></section>
+<a class="rhgo" href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></div>`}
+ if('hijkmqrs'.includes(RD)){const mx2=Math.max(r.td,r.te),x8=RD!=='h';
+  h=`<div class="rH${x8?' rH'+('qrs'.includes(RD)?'m rH'+RD:RD)+('ikmqrs'.includes(RD)?' lt':''):''}"><div class="rht"><div class="rhv"><a class="bk" href="/" data-home>${BKI}Terug naar start</a><div class="rveh">${vh}</div><p>${[q.sub,pn].filter(Boolean).join(' · ')}</p>${pl}</div>
 <div class="rhh${win==='d'?' neg':''}" data-r="head"><p class="rch">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b>${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="rck">in totale kosten per jaar${even?'':`, ${eur(Math.abs(d)*L)} in ${L} jaar`}</p>${brg}</div></div>
 <div class="rhp"><div class="rhb"><p class="rck">Totale kosten per jaar</p><div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx2*100}%"></u></i><b>${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx2*100}%"></u></i><b>${eur(r.te)}</b></div><div class="rcn" data-r="pkm"><div><span>Diesel per km</span><b>${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b>${eur(r.te/km,2)}</b></div></div>${x8?'':acts}</div><div class="rhs">${sKm}${sDp}${sSp}</div></div>
-<div class="rhg"><div class="sum rsum" data-r="tiles">${tilesX}</div><div class="rfs" data-r="facts">${facts}</div></div>
+${EX.map(z=>`<section class="rhx${z[2]?' two':''}"><div><p class="nk">${z[0]}</p>${z[1]}</div>${z[2]?`<div><p class="nk">${z[2]}</p>${z[3]}</div>`:''}</section>`).join('')}<div class="rhg"><div class="sum rsum" data-r="tiles">${tilesX}</div><div class="rfs" data-r="facts">${facts}</div></div>
 ${x8?`<a class="rhgo" href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a>`:`<nav class="rhsw" aria-label="Resultaten"><a href="/" aria-current="page">Simpele resultaten</a><a href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></nav>`}</div>`}
  rSet(el,h);
 }
