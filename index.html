@@ -1628,6 +1628,8 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hks label{font-size:17px}
 .hks label b{font:600 22px var(--display)}
 .hkr{--fill:var(--volt-2);--track:var(--asph-3);--thumb:var(--asph);height:34px!important;margin:0!important}
+.hkw{display:flex;flex-direction:column;gap:10px}
+.hkh{margin:0;font-size:14px;color:var(--on-asph-2)}
 .hkb{display:grid;grid-template-columns:80px minmax(0,1fr) 92px;align-items:center;gap:10px 12px;font-size:15px;font-variant-numeric:tabular-nums}
 .hkb i{display:block;height:12px}
 .hkb u{display:block;height:100%;border-radius:3px;background:var(--amber);transition:width .15s}
@@ -1637,7 +1639,7 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hkc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .hkc>div{display:flex;flex-direction:column;align-items:flex-start;gap:6px;font-variant-numeric:tabular-nums}
 .hkc b{font:600 22px var(--display)}
-.hkc i{position:relative;display:block;width:100%;height:96px;border-radius:6px;background:var(--asph-2)}
+.hkc i{position:relative;display:block;width:100%;height:70px;border-radius:6px;background:var(--asph-2)}
 .hkc u{position:absolute;left:0;right:0;bottom:0;display:block;border-radius:6px;background:var(--amber);transition:height .15s}
 .hkc .e u{background:var(--volt-2)}
 .hkc span{font-size:15px;color:var(--on-asph-2)}
@@ -2916,7 +2918,7 @@ function hkmPaint(km){
  const r=hAt(km),d=r.td-r.te,el=$('home'),x=el.querySelector('.hx'),mx=+(x&&x.dataset.mx)||Math.max(r.td,r.te);
  const s=(id,h)=>{const e=el.querySelector('#'+id);if(e)e.innerHTML=h};
  const sl=el.querySelector('#hkm');if(sl)sl.style.setProperty('--f',(km-sl.min)/(sl.max-sl.min||1));
- s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',hVerd(d,1));
+ s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',Math.abs(d)<500?'Verschil: diesel en elektrisch kosten ongeveer hetzelfde':`Verschil: <b>${eur(Math.abs(d))}</b> per jaar in het voordeel van ${d>0?'elektrisch':'diesel'}`);
  el.querySelectorAll('[data-bar]').forEach(b=>{const p=Math.min(100,(b.dataset.bar==='d'?r.td:r.te)/mx*100)+'%';if(b.closest('.hkc'))b.style.height=p;else b.style.width=p});
 }
 document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.value)});
@@ -2928,9 +2930,9 @@ function homeHTML(){
  const ch=`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${opt('h','Ik heb een diesel','Doorrijden of nu vervangen?')}${opt('n','Ik koop nieuw','Diesel of elektrisch?')}</div>`;
  const k=Math.min(k1,Math.max(k0,v('km'))),st=Math.max(1000,Math.round((k1-k0)/20/1000)*1000);
  const sld=`<div class="hks"><label for="hkm">Bij <b id="hkV">${nf(k)}</b> km per jaar</label><input id="hkm" class="hkr" type="range" min="${k0}" max="${k1}" step="${st}" value="${k}"></div>`;
- const bars=DESIGN==='b'
+ const bars=`<div class="hkw"><p class="hkh">Totale kosten per jaar</p>`+(DESIGN==='b'
   ?`<div class="hkc"><div><b id="hkD"></b><i><u data-bar="d"></u></i><span>Diesel</span></div><div class="e"><b id="hkE"></b><i><u data-bar="e"></u></i><span>Elektrisch</span></div></div>`
-  :`<div class="hkb"><span>Diesel</span><i><u data-bar="d"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u data-bar="e"></u></i><b id="hkE"></b></div>`;
+  :`<div class="hkb"><span>Diesel</span><i><u data-bar="d"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u data-bar="e"></u></i><b id="hkE"></b></div>`)+'</div>';
  return`<div class="wrap hA h${DESIGN}"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hAg"><div class="hAl">${ch}${hc==='h'?plt:''}${vcards()}</div><aside class="hx" data-mx="${Math.round(mx)}" aria-label="Voorbeeldberekening voor een ${T().w}">${tot}${sld}${bars}<p class="hxv" id="hkT"></p></aside></div><button class="cta big hgo" type="button" data-start>Reken het uit voor mijn bedrijf ${HARR}</button></div>`;
 }
 let hPaint=false;
