@@ -1571,6 +1571,119 @@ html.embed .intro{padding-top:20px}
 .vt[aria-checked=true] svg{animation:vtgo .6s cubic-bezier(.3,.7,.2,1)}
 @keyframes vtgo{0%{transform:translateX(-8px);color:var(--ink-3)}55%{transform:translateX(3px)}100%{transform:none;color:var(--volt)}}
 @media (prefers-reduced-motion:reduce){.vt::after{transition:none}.vt[aria-checked=true] svg{animation:none}}
+/* ===== Startscherm: zolang de calculator nog niet is gebruikt (html.fresh) =====
+   Ontwerp A (html.dA) keuzekaarten + venster, B (html.dB) één zin + volledig scherm, C (html.dC) leeg bord + zijpaneel */
+.home{display:none}
+html.fresh .home{display:block}
+html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fcta,html.fresh .mode{display:none!important}
+.home h1{outline:0}
+.hgo{gap:12px}
+.hgo svg{width:22px;height:22px}
+.hch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.hch button{position:relative;display:flex;align-items:center;gap:16px;min-width:0;border:0;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:box-shadow .12s}
+.hch button:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
+.hch button[aria-checked=true]{box-shadow:inset 0 0 0 2px var(--ink)}
+.hch svg{flex:none;width:26px;height:26px;color:var(--ink-3)}
+.hch button[aria-checked=true] svg{color:var(--volt)}
+.hch b{font:600 clamp(19px,2vw,24px)/1.2 var(--text);letter-spacing:-.01em}
+/* A: twee grote keuzekaarten, voertuigsoort eronder, één knop */
+.hA{padding-top:44px;padding-bottom:72px}
+.hA h1{margin:0 0 28px;font:700 clamp(32px,4.2vw,48px)/1.1 var(--text);letter-spacing:-.02em}
+.hA .hch button{padding:34px 28px;min-height:132px}
+.hA .hch button::after{content:"";position:absolute;top:18px;right:18px;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.hA .hch button[aria-checked=true]::after{background:var(--volt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center/14px no-repeat;box-shadow:none}
+.hA .vts{margin-top:12px}
+.hA .hgo{margin-top:28px;padding:20px 34px;background:var(--volt);color:#fff;font-size:19px}
+.hA .hgo:hover{background:var(--volt-ink);color:#fff}
+/* B: donker vlak met één zin, knop eronder */
+.hB{background:var(--asph);color:var(--on-asph)}
+.hB .wrap{display:flex;flex-direction:column;justify-content:center;min-height:min(640px,calc(100vh - 66px));padding-top:56px;padding-bottom:64px}
+.hB h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hsn{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:18px 26px;max-width:980px}
+.hsn>span{font:500 clamp(30px,4vw,52px)/1.1 var(--display);letter-spacing:-.01em;color:var(--on-asph-2)}
+.hsn .hch,.hsn .hvt{display:flex;flex-wrap:wrap;gap:8px}
+.hB .hch button,.hvt button{padding:12px 20px;border-radius:12px;background:var(--asph-2);box-shadow:inset 0 0 0 1px var(--asph-3);color:var(--on-asph)}
+.hB .hch button:hover,.hvt button:hover{box-shadow:inset 0 0 0 1px var(--on-asph-2)}
+.hB .hch button[aria-checked=true],.hvt button[aria-checked=true]{background:var(--on-asph);color:var(--ink);box-shadow:none}
+.hB .hch svg{display:none}
+.hB .hch b,.hvt b{font:600 clamp(20px,2.2vw,28px)/1.2 var(--text);letter-spacing:-.01em}
+.hvt button{border:0;font:inherit;cursor:pointer}
+.hvt b{font-weight:500}
+.hpl{grid-column:2;max-width:340px}
+.hpl .plate{width:100%;height:44px}
+.hpl .plate input{flex:1;width:auto;font-size:16px}
+html.dB.fresh body:has(#calc:not([hidden])) .foot{margin-top:0}
+.hpl[hidden]{display:none}
+.hB .hgo{align-self:flex-start;margin-top:44px;padding:20px 34px;background:var(--volt);color:#fff;font-size:19px;box-shadow:none}
+.hB .hgo:hover{background:var(--volt-2);color:#fff}
+/* C: het bord zelf, nog leeg, met de keuze erboven en de knop in de groene balk */
+.hC{padding-top:34px;padding-bottom:72px}
+.hC .hct{display:flex;justify-content:space-between;align-items:flex-end;gap:18px 40px;flex-wrap:wrap;margin-bottom:22px}
+.hC h1{margin:0;font:700 clamp(32px,4.2vw,48px)/1.1 var(--text);letter-spacing:-.02em}
+.hC .hch{display:flex;gap:4px;padding:4px;border-radius:12px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.hC .hch button{padding:10px 16px;border-radius:9px;box-shadow:none;background:none;color:var(--ink-2)}
+.hC .hch button[aria-checked=true]{background:var(--ink);color:#fff}
+.hC .hch svg{display:none}
+.hC .hch b{font:600 16px var(--text)}
+.hC .vts{margin-bottom:22px}
+.hC .bd .big{color:inherit;opacity:.28}
+.hC .bcta{justify-content:center;padding:26px clamp(18px,3.4vw,40px)}
+.hC .hgo{padding:18px 34px;font-size:19px}
+/* Rekenen: B in een volledig scherm, C in een paneel van rechts */
+html.dB.fresh .wzl,html.dC.fresh .wzl{display:none}
+html.dB .wzf .cta,html.dC .wzf .cta{margin-left:auto}
+@media(min-width:761px){
+ html.dB dialog.wz{width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;box-shadow:none}
+ html.dB .wzi{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;height:100dvh}
+ html.dB .wzn{display:none}
+ html.dB .wzpg{display:block;grid-row:2}
+ html.dB .wzh,html.dB .wzb,html.dB .wzf{padding-left:max(24px,calc(50vw - 360px));padding-right:max(24px,calc(50vw - 360px))}
+ html.dB .wzh{padding-top:22px;padding-bottom:18px}
+ html.dB .wzh h2{font-size:28px}
+ html.dB .wzb{padding-top:36px}
+ html.dB .wzf{padding-top:18px;padding-bottom:18px}
+ html.dC dialog.wz{width:min(600px,100vw);height:100dvh;max-height:100dvh;margin:0 0 0 auto;border-radius:0;animation:hslide .28s cubic-bezier(.3,.7,.2,1)}
+ html.dC dialog.wz::backdrop{background:rgba(21,23,26,.35)}
+ html.dC .wzi{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;height:100dvh}
+ html.dC .wzn{display:none}
+ html.dC .wzpg{display:block;grid-row:2}
+}
+@keyframes hslide{from{transform:translateX(40px);opacity:0}}
+@media (prefers-reduced-motion:reduce){html.dC dialog.wz{animation:none}}
+@media(max-width:640px){
+ .hch{grid-template-columns:minmax(0,1fr);gap:8px}
+ .hA{padding-top:26px;padding-bottom:48px}
+ .hA h1{margin-bottom:18px;font-size:30px}
+ .hA .hch button{min-height:0;padding:20px 18px}
+ .hA .hch button::after{top:50%;margin-top:-10px}
+ .hA .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .hA .vt{padding:10px 6px 9px;align-items:center;text-align:center}
+ .hA .vt small{display:none}
+ .hA .vt b{font-size:14px}
+ .hA .vt svg{width:40px;height:20px}
+ .hA .hgo,.hB .hgo,.hC .hgo{width:100%;justify-content:center;padding:18px 20px;font-size:18px}
+ .hB .wrap{min-height:calc(100svh - 58px);justify-content:flex-start;padding-top:36px;padding-bottom:32px}
+ .hsn{grid-template-columns:minmax(0,1fr);gap:12px}
+ .hsn>span{font-size:30px;margin-top:10px}
+ .hsn>span:first-child{margin-top:0}
+ .hpl{grid-column:1}
+ .hB .hch{flex-direction:column}
+ .hB .hch button,.hvt button{padding:12px 16px}
+ .hB .hch b,.hvt b{font-size:20px}
+ .hB .hgo{margin-top:auto;align-self:stretch}
+ .hC{padding-top:20px;padding-bottom:40px}
+ .hC .hct{margin-bottom:16px}
+ .hC h1{font-size:30px}
+ .hC .hch{width:100%}
+ .hC .hch button{flex:1;justify-content:center;padding:10px 6px;text-align:center}
+ .hC .hch b{font-size:15px}
+ .hC .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:16px}
+ .hC .vt{padding:10px 6px 9px;align-items:center;text-align:center}
+ .hC .vt small{display:none}
+ .hC .vt b{font-size:14px}
+ .hC .vt svg{width:40px;height:20px}
+ .hC .bcta{padding:16px 14px}
+}
 </style>
 </head>
 <body>
@@ -1592,6 +1705,7 @@ html.embed .intro{padding-top:20px}
 <main id="app">
 <!-- ===== Calculator ===== -->
 <section class="page" data-page="calc" id="calc">
+ <div class="home" id="home"></div>
  <div class="wrap">
   <div class="intro">
    <h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>
@@ -2522,7 +2636,7 @@ function board(r){
  const d=r.td-r.te,cheap=d>=0,pc=Math.abs(d)/r.td*100,even=pc<0.5,L=r.L,km=r.km,m=modelActive(),bd=band();
  const half=(c,n,t,win)=>`<div class="bd ${c}"><span class="who">${n}${c==='e'&&m?`<em>${mName(m)}</em>`:''}${win?'<em>Voordeligst</em>':''}</span><span class="big"><span data-tw>${eur(t/km,2)}</span><small>per km</small></span><span class="bsub">${eur(t)} per jaar</span>${BX?`<span class="brr">${spanTxt(BX.map(q=>(c==='d'?q.r.td:q.r.te)/q.r.km),n=>eur(n,2),.005)||eur(t/km,2)} per km</span>`:''}</div>`;
  const n=coreSteps().length;
- const inv=`<div class="bcta"><div class="bct"><b>${touched?'Gebaseerd op jouw cijfers':'Voorbeeldcijfers voor een '+T().w}</b></div><a class="cta big" href="/uitgebreid/" data-xgo>Reken uitgebreid met je eigen cijfers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>`;
+ const inv=`<div class="bcta"><div class="bct"><b>${touched?'Gebaseerd op jouw cijfers':'Voorbeeldcijfers voor een '+T().w}</b></div><a class="cta big" href="/uitgebreid/" data-xgo>${isFresh()?'Reken uitgebreid met je eigen cijfers':'Bekijk uitgebreid'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></div>`;
  setH($('board'),half('d',$('dw').value==='h'?'Huidige diesel':'Diesel',r.td,!cheap&&!even)+half('e','Elektrisch',r.te,cheap&&!even)+
   `<div class="bfoot${cheap||even?'':' neg'}"><p>${even?'Diesel en elektrisch kosten ongeveer hetzelfde.':cheap?`Elektrisch is <b>${nf(pc)}% goedkoper</b>: <b data-tw>${eur(d)}</b> per jaar, ${eur(d*L)} in ${L} jaar.`:`Elektrisch is <b>${nf(pc)}% duurder</b>: <b data-tw>${eur(-d)}</b> per jaar, ${eur(-d*L)} in ${L} jaar.`}${bd?`<span class="brg">Bandbreedte <b>${bandTxt(bd)}</b> per jaar</span>`:''}</p>${touched?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-share>${ICON.share}<span>Deel</span></button>${scA?'':`<button class="btn" type="button" data-sca aria-label="Bewaar deze berekening om te vergelijken">${ICON.ab}<span>Vergelijk</span></button>`}<button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div>`+inv);
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
@@ -2792,13 +2906,42 @@ function go(k,focus=true,tab=0){
 function openWz(k){
  const d=$('wz');if(!d.open)d.showModal();go(k||'use');mini();
 }
-function closeWz(show){$('wz').close();if(show){touched=true;render();const b=$(page==='uitgebreid'?'xSum':'board');b.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center'});b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')}mini()}
+function closeWz(show){$('wz').close();if(show){touched=true;if(isFresh())setUsed(true);render();const b=$(page==='uitgebreid'?'xSum':'board');b.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center'});b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')}mini()}
 $('wzX').onclick=()=>closeWz(false);
 $('wzP').onclick=()=>{if(dxOn()===1)return dxGo(0);const st=coreSteps(),i=st.findIndex(s=>s[0]===wzStep);if(i>0)go(st[i-1][0],true,1)};
 $('wzNx').onclick=()=>{if(dxOn()===0)return dxGo(1);const st=coreSteps(),i=st.findIndex(s=>s[0]===wzStep);if(!isOpt(wzStep)&&i<st.length-1)go(st[i+1][0]);else closeWz(true)};
 $('wz').addEventListener('click',e=>{if(e.target===$('wz'))closeWz(false)});
 $('wz').addEventListener('cancel',e=>{if(qtBtn){e.preventDefault();tipClose(true)}else if(!$('mpP').hidden){e.preventDefault();mpOpen(false);$('mpB').focus()}});
 $('wzB').addEventListener('scroll',tipPlace,{passive:true});
+
+/* ===== Startscherm =====
+   Tot iemand het invulvenster heeft afgerond staat op de homepage alleen de keuze, de voertuigsoort en de knop.
+   Daarna toont / de simpele uitkomst en kun je pas wisselen naar uitgebreid. */
+let DESIGN='a',hc=null;
+function isFresh(){return store('sod-used')!=='1'}
+function setUsed(on){store('sod-used',on?'1':null);document.documentElement.classList.toggle('fresh',!on);if(!on)hc=null;homePaint()}
+const HICON={h:ICON.ab,n:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'};
+const HARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+function homeHTML(){
+ const ch=t=>`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${[['h',t[0]],['n',t[1]]].map(([k,x])=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}<b>${x}</b></button>`).join('')}</div>`;
+ const go=`<button class="cta big hgo" type="button" data-start>Reken je eigen voordeel na ${HARR}</button>`;
+ if(DESIGN==='b')return`<div class="hB"><div class="wrap"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hsn"><span>Ik wil</span>${ch(['mijn huidige diesel vervangen','iets nieuws aanschaffen'])}<span>voor een</span><div class="hvt" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" role="radio" data-vt="${k}" aria-checked="${k===vtype}"><b>${q.n.toLowerCase()}</b></button>`).join('')}</div><div class="hpl"${hc==='h'?'':' hidden'}>${plateForm('D')}</div></div>${go}</div></div>`;
+ if(DESIGN==='c'){const L=hc==='h'?'Huidige diesel':hc==='n'?'Nieuwe diesel':'Diesel',ph=`<span class="big">€ –,––<small>per km</small></span>`;
+  return`<div class="wrap hC"><div class="hct"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>${ch(['Diesel vervangen','Nieuw aanschaffen'])}</div>${vcards()}<div class="board"><div class="bd d"><span class="who">${L}</span>${ph}</div><div class="bd e"><span class="who">Elektrisch</span>${ph}</div><div class="bcta">${go}</div></div></div>`}
+ return`<div class="wrap hA"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>${ch(['Huidige diesel vervangen','Nieuw aanschaffen'])}${vcards()}${go}</div>`;
+}
+function homePaint(){
+ if(!isFresh()){$('home').innerHTML='';return}
+ setH($('home'),homeHTML());
+ $('home').querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
+ plPaint();
+}
+function homeDesign(d){DESIGN=d;['a','b','c'].forEach(x=>document.documentElement.classList.toggle('d'+x.toUpperCase(),x===d));homePaint()}
+document.addEventListener('click',e=>{
+ const c=e.target.closest('[data-hc]');if(c){hc=c.dataset.hc;if($('dw').value!==hc){$('dw').value=hc;dieselAuto(true);render()}homePaint();return}
+ if(e.target.closest('[data-start]')){openWz('use');return}
+ if(e.target.closest('#home [data-vt]'))setTimeout(homePaint);
+});
 
 /* ===== Interactie ===== */
 document.addEventListener('click',e=>{
@@ -2814,7 +2957,7 @@ document.addEventListener('click',e=>{
  const tol=e.target.closest('[data-tol]');if(tol){const k=tol.dataset.tol;touched=true;if(tolSel.has(k)){tolSel.delete(k);$('k_'+k).value=0}else tolSel.add(k);render();return}
  const g=e.target.closest('button[data-gr]');if(g){$('gr').value=g.dataset.gr;touched=true;render();return}
  const ad=e.target.closest('[data-add]');if(ad){const k=ad.dataset.add;if(OPTSW[k]&&!ck(OPTSW[k]))$(OPTSW[k]).checked=true;touched=true;render();openWz(k);return}
- const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();navTo('/uitgebreid/');openWz('use');return}
+ const xg=e.target.closest('[data-xgo]');if(xg){e.preventDefault();navTo('/uitgebreid/');if(isFresh())openWz('use');return}
  if(e.target.closest('[data-reset]')){reset();return}
  const j=e.target.closest('[data-jump]');if(j){const t=$(j.dataset.jump);if(t.closest('.faq'))t.classList.add('open');t.scrollIntoView({behavior:reduced()?'auto':'smooth'});return}
  const fh=e.target.closest('.faq section>h2');if(fh){fh.parentNode.classList.toggle('open');fh.setAttribute('aria-expanded',fh.parentNode.classList.contains('open'));return}
@@ -2859,7 +3002,7 @@ addEventListener('scroll',tipPlace,{passive:true});
 addEventListener('resize',()=>tipClose(false));
 
 /* Klein scorebord zodra het grote uit beeld is */
-function mini(){const b=$(page==='uitgebreid'?'xSum':'board').getBoundingClientRect(),show=(page==='calc'||page==='uitgebreid')&&b.bottom<64;$('mini').classList.toggle('show',show);
+function mini(){const b=$(page==='uitgebreid'?'xSum':'board').getBoundingClientRect(),show=(page==='calc'&&!isFresh()||page==='uitgebreid')&&b.bottom<64;$('mini').classList.toggle('show',show);
  const c=document.querySelector('.bcta'),r=c&&c.getBoundingClientRect();$('fcta').hidden=!(c&&page==='calc'&&!$('wz').open&&(r.bottom<64||r.top>innerHeight))}
 addEventListener('scroll',mini,{passive:true});
 
@@ -2893,7 +3036,8 @@ function route(first){
  let r=parseHash();
  if(r)history.replaceState(null,'',pathOf(...r)+location.search);
  else r=parsePath(location.pathname)||['calc',null];
- const [p,g]=r,prevP=page,prevG=gid;
+ let [p,g]=r;const prevP=page,prevG=gid;
+ if(p==='uitgebreid'&&isFresh()){p='calc';history.replaceState(null,'','/'+location.search)}
  page=p;
  if(p!=='calc'&&p!=='uitgebreid'&&$('wz').open)$('wz').close();
  if(p!=='modellen'&&$('mDlg').open)$('mDlg').close();
@@ -3012,7 +3156,7 @@ document.addEventListener('click',e=>{
 const KEY='stekkerofdiesel-v3';
 function save(){try{localStorage.setItem(KEY,JSON.stringify({touched,vtype,v:stateObj(),sr:SR}))}catch(e){}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;if(VT[s.vtype])applyType(s.vtype);srLoad(s.sr);['km'].concat(Object.keys(s.v||{})).forEach(id=>{const e=$(id);if(!e||!(id in s.v))return;if(e.type==='checkbox')e.checked=!!+s.v[id];else setNum(e,s.v[id])});fitRanges();touched=!!s.touched}catch(e){}}
-function reset(){PL.D=PL.E=null;autoPE=autoPD=autoOD=null;document.querySelectorAll('[data-plate] input').forEach(i=>i.value='');document.querySelectorAll(':is(#calc,#wz) input[type=range]').forEach(absRange);document.querySelectorAll(':is(#calc,#wz) input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';$('dw').value=$('nw').value='n';applyType(vtype);touched=false;tolSel.clear();srLoad();render()}
+function reset(){PL.D=PL.E=null;autoPE=autoPD=autoOD=null;document.querySelectorAll('[data-plate] input').forEach(i=>i.value='');document.querySelectorAll(':is(#calc,#wz) input[type=range]').forEach(absRange);document.querySelectorAll(':is(#calc,#wz) input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';$('dw').value=$('nw').value='n';applyType(vtype);touched=false;tolSel.clear();srLoad();render();if(!isFresh()){setUsed(false);scrollTo(0,0)}}
 
 const TW={};
 function tween(key,els,vals,fmts){
@@ -3834,7 +3978,7 @@ gHub();
 document.querySelectorAll('.faq section>h2').forEach(h=>{const n=h.parentNode.querySelectorAll('details').length;h.insertAdjacentHTML('beforeend',` <small>${n} ${n===1?'vraag':'vragen'}</small>`);h.tabIndex=0;h.setAttribute('role','button');h.setAttribute('aria-expanded','false')});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.faq section>h2')){e.preventDefault();e.target.click()}});
 build();applyType('trekker');
-if(!fromURL())load();route(true);
+if(fromURL())store('sod-used','1');else load();homeDesign(DESIGN);setUsed(!isFresh());route(true);
 syncSupabase().then(syncExtra);
 [['D','plk'],['E','plkE']].forEach(([k,id])=>{const n=plNorm($(id).value);if(!n)return;document.querySelectorAll(`[data-plate="${k}"]`).forEach(f=>f.elements.kt.value=plFmt(n));plLookup(k,n,false)});
 </script>
