@@ -2919,7 +2919,7 @@ function hkmPaint(km){
  const r=hAt(km),d=r.td-r.te,el=$('home'),x=el.querySelector('.hx'),mx=+(x&&x.dataset.mx)||Math.max(r.td,r.te);
  const s=(id,h)=>{const e=el.querySelector('#'+id);if(e)e.innerHTML=h};
  const sl=el.querySelector('#hkm');if(sl)sl.style.setProperty('--f',(km-sl.min)/(sl.max-sl.min||1));
- s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',Math.abs(d)<500?'Verschil: diesel en elektrisch kosten ongeveer hetzelfde':`Verschil: <b${d>0?'':' class="d"'}>${eur(Math.abs(d))}</b>`);
+ s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',`Verschil: <b${d<0?' class="d"':''}>${eur(Math.abs(d))}</b>`);
  el.querySelectorAll('[data-bar]').forEach(b=>{const p=Math.min(100,(b.dataset.bar==='d'?r.td:r.te)/mx*100)+'%';if(b.closest('.hkc'))b.style.height=p;else b.style.width=p});
 }
 document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.value)});
