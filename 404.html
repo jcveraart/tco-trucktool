@@ -1766,6 +1766,24 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 .xdf{text-align:right;font-weight:600}.xdf.g{color:var(--volt-ink)}.xdf.a{color:var(--amber-ink)}
 .xdt{font-weight:700}.xdt .xdl{color:var(--ink)}.xdt:hover{background:none}
 .xtip{position:fixed;z-index:60;padding:7px 11px;border-radius:7px;background:var(--ink);color:#fff;font:600 14px var(--text);white-space:nowrap;pointer-events:none;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
+/* Uitgebreid: per maand, per rit, restwaarde en actieradius */
+.xF{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+.nS2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.xt{display:flex;flex-direction:column}
+.xtr{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,minmax(84px,auto));align-items:baseline;gap:14px;padding:9px 0;border-top:1px solid var(--line);font-size:15px;font-variant-numeric:tabular-nums}
+.xtr>:nth-child(n+2){text-align:right}
+.xtr>span:first-child{color:var(--ink-2)}
+.xtr>b{font-weight:500}.xtr>b.xdf{font-weight:600}
+.xth{padding:0 0 8px;border-top:0;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.xth>span:first-child{color:var(--ink-3)}
+.xtt>span:first-child{color:var(--ink)}.xtt>b{font-weight:700}
+.xtr.on{background:var(--soft);box-shadow:-10px 0 0 var(--soft),10px 0 0 var(--soft)}
+.xtr.on>span:first-child{color:var(--ink);font-weight:600}
+.xtr em{margin-left:6px;font:500 11px var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.xt+.nF{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.xrit{margin-bottom:18px}
+.xrg i.w u{background:var(--volt-soft);box-shadow:inset 0 0 0 1px var(--volt-2)}
+.xrv{margin:18px 0 14px;font:600 19px/1.3 var(--text);color:var(--volt-ink)}.xrv.a{color:var(--amber-ink)}
 /* Uitgebreid in dezelfde stijl: secties met lijnen, kopjes als labels */
 [data-page=uitgebreid] .cmain>section{margin:0;padding:24px 0 28px;border-bottom:1px solid var(--line)}
 [data-page=uitgebreid] .cmain>section>h2,[data-page=uitgebreid] .vsh h2,[data-page=uitgebreid] .addt h2{margin:0 0 14px;font:500 12px var(--mono)!important;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
@@ -1782,7 +1800,7 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 [data-page=uitgebreid] :is(.rl,.colh .cm){background:none}
 [data-page=uitgebreid] .rh:hover .rl{background:var(--soft)}
 @media(max-width:900px){
- .nS,.nTop{grid-template-columns:minmax(0,1fr)}
+ .nS,.nTop,.nS2{grid-template-columns:minmax(0,1fr)}
  .nS>.nA{padding:22px 0}
  .nS>.nB{padding:22px 0;border-left:0;border-top:1px solid var(--line)}
  .nTop>.nB{padding-top:20px}
@@ -1803,6 +1821,11 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
  .xdr .xdb{grid-column:1/-1;grid-row:2;margin-top:2px}
  .xdb s{display:none}
  .xtip{font-size:13px;white-space:normal;max-width:calc(100vw - 16px)}
+ .xtr{grid-template-columns:minmax(0,1fr) repeat(3,minmax(64px,auto));gap:8px;font-size:13px}
+ .xth{font-size:9px;align-items:end}
+ .xth>span{white-space:normal;line-height:1.35}
+ .xtr.xrw{grid-template-columns:auto repeat(3,minmax(0,1fr))}
+ .xrv{font-size:17px}
  [data-page=uitgebreid] #unit{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%}
  [data-page=uitgebreid] #unit button{padding:7px 2px;font-size:13px;white-space:nowrap}
  [data-page=uitgebreid] .colh span{font-size:10px!important;letter-spacing:.02em}
@@ -1881,11 +1904,15 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
     </div>
    </section>
 
+   <div id="xEx1"></div>
+
    <section class="an" id="xAn" aria-labelledby="hAn">
     <h2 id="hAn">Terugverdientijd</h2>
     <div id="pbX"></div>
     <div class="pbsw" id="pbS"></div>
    </section>
+
+   <div id="xEx2"></div>
 
    <section class="an" aria-labelledby="hSn">
     <h2 id="hSn">Gevoeligheid</h2>
@@ -3107,19 +3134,19 @@ function rTop(r,x){
  const d=r.td-r.te,cheap=d>=0,even=Math.abs(d)/r.td<.005,L=r.L,q=T(),i=PL.D&&!PL.D.err?PL.D:null,bd=band();
  const pn=i?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):'';
  const back=`<a class="bk" href="/" data-home>${BKI}Terug naar start</a>${x?`<a class="bk" href="/">Simpele resultaten</a>`:''}`;
- return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p>${i?`<span class="rkt"><i>NL</i>${plFmt(i.k)}</span>`:''}</div>
+ return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p></div>
 <div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b>${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · ${eur(Math.abs(d)*L)} in ${L} jaar`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
 }
 /* Ronde getallen voor de schaal boven de balken */
 const niceStep=mx=>{const p=Math.pow(10,Math.floor(Math.log10(mx/4||1))),m=mx/4/p;return(m<=1?1:m<=2?2:m<=5?5:10)*p};
 const eurK=n=>n>=1e6?'€ '+nf(n/1e6,1)+' mln':n>=1e4?'€ '+nf(n/1000)+'k':eur(n);
+/* Schuiven: ze zetten het veld in het invulvenster, render() doet de rest */
+const rsl=(id,lab,fm,pf='r_',rg)=>{const e=$(id),x=+e.value,hk=rg||id==='km'&&HKM[vtype],a=hk?Math.min(hk[0],x):+e.min,b=hk?Math.max(hk[1],x):+e.max;return`<div class="rsl"><label for="${pf}${id}"><span>${lab}</span><b data-r="v_${id}">${fm(x)}</b></label><input id="${pf}${id}" type="range" data-rin="${id}" min="${a}" max="${b}" step="${e.step}" value="${x}" style="--f:${(x-a)/(b-a||1)}"></div>`};
 function rPaint(r){
  const el=$('res');
  const d=r.td-r.te,cheap=d>=0,L=r.L,km=r.km,q=T(),m=modelActive(),mx=Math.max(r.td,r.te);
  const sv=o=>{const z=calcX(o);return z.td-z.te},kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
  const dn=$('dw').value==='h'?'Huidige diesel':'Diesel',en=m?mName(m):'Elektrisch';
- /* Schuiven: ze zetten het veld in het invulvenster, render() doet de rest */
- const rsl=(id,lab,fm)=>{const e=$(id),x=+e.value,hk=id==='km'&&HKM[vtype],a=hk?Math.min(hk[0],x):+e.min,b=hk?Math.max(hk[1],x):+e.max;return`<div class="rsl"><label for="r_${id}"><span>${lab}</span><b data-r="v_${id}">${fm(x)}</b></label><input id="r_${id}" type="range" data-rin="${id}" min="${a}" max="${b}" step="${e.step}" value="${x}" style="--f:${(x-a)/(b-a||1)}"></div>`};
  const facts=`<div class="rf"><span>Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km per jaar'}</b></div><div class="rf"><span>Goedkoper vanaf dieselprijs</span><b>${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b></div>`;
  const lst=sumItems(r.b,L,m).filter((s,j)=>j!==1&&j!==6&&j!==7).map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join('');
  /* Waar zit het verschil: per onderdeel, per jaar of over de afschrijftermijn, met een schaal en het bedrag bij hover */
@@ -3131,17 +3158,55 @@ function rPaint(r){
  const diff=`<div class="xdh"><span></span><span class="xsc">${tks.map(t=>`<em style="left:${t/top*100}%">${eurK(t)}</em>`).join('')}</span><span>${dn} ${pt}</span><span>${en} ${pt}</span><span>Verschil ${pt}</span></div>`+
   rows.map(z=>{const a=r.D[z[0]]*k,b2=r.E[z[0]]*k,df=b2-a;return`<div class="xdr"><span class="xdl">${z[1]}</span><span class="xdb">${grid}${bar('d',dn,z[1],a)}${bar('e',en,z[1],b2)}</span><span class="xdv">${eur(a)}</span><span class="xdv">${eur(b2)}</span><b class="xdf${df<-.5?' g':df>.5?' a':''}">${Math.abs(df)<.5?'gelijk':(df<0?'−':'+')+' '+eur(Math.abs(df))}</b></div>`}).join('')+
   `<div class="xdr xdt"><span class="xdl">Totaal</span><span class="xdb"></span><span class="xdv">${eur(r.td*k)}</span><span class="xdv">${eur(r.te*k)}</span><b class="xdf${cheap?' g':' a'}">${(cheap?'−':'+')+' '+eur(Math.abs(d)*k)}</b></div>`;
+ const cost=`<div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx*100}%"></u></i><b>${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx*100}%"></u></i><b>${eur(r.te)}</b></div><div class="nPk" data-r="pkm"><div><span>Diesel per km</span><b>${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b>${eur(r.te/km,2)}</b></div><div><span>Verschil per km</span><b>${eur(Math.abs(d)/km,2)}</b></div></div>`;
  const h=`<div class="rN">${rTop(r,0)}
-<section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p><div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx*100}%"></u></i><b>${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx*100}%"></u></i><b>${eur(r.te)}</b></div><div class="nPk" data-r="pkm"><div><span>Diesel per km</span><b>${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b>${eur(r.te/km,2)}</b></div><div><span>Verschil per km</span><b>${eur(Math.abs(d)/km,2)}</b></div></div></div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${rsl('km','Kilometers per jaar',x=>nf(x)+' km')}${rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter')}${rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh')}</div></div></section>
+<section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p>${cost}</div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${rsl('km','Kilometers per jaar',x=>nf(x)+' km')}${rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter')}${rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh')}</div></div></section>
 <section class="nS nX"><div class="nXh"><p class="nk">Waar zit het verschil · ${pt}</p>${per}</div><div class="xd" data-r="xd">${diff}</div></section>
 <section class="nS"><div class="nA"><p class="nk">Jouw cijfers</p><div class="nTl" data-r="tiles">${lst}</div></div><div class="nB"><p class="nk">Omslagpunten</p><div class="nF" data-r="facts">${facts}</div></div></section>
 <a class="rhgo" href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></div>`;
  rSet(el,h);
- setH($('resX'),`<div class="rN">${rTop(r,1)}</div>`);
+ /* Uitgebreid: dezelfde kop en kosten, met meer schuiven */
+ const p0=(m&&m.price)||VT[vtype].p.pE,pR=[Math.floor(p0*.6/1000)*1000,Math.ceil(p0*1.4/1000)*1000],pb=payback(r);
+ rSet($('resX'),`<div class="rN">${rTop(r,1)}
+<section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p>${cost}<div class="nF xF" data-r="xfacts">${facts}<div class="rf"><span>Terugverdientijd</span><b>${ym(pb.be)}</b></div></div></div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${rsl('km','Kilometers per jaar',x=>nf(x)+' km','x_')}${rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter','x_')}${rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh','x_')}${rsl('pE','Aanschafprijs elektrisch',x=>eur(x),'x_',pR)}${rsl('rwE','Restwaarde elektrisch',x=>nf(x)+'% na '+L+' jaar','x_')}${rsl('jr','Afschrijftermijn',x=>x+' jaar','x_')}</div></div></section></div>`);
+ const [x1,x2]=xExtra(r,dn,en);rSet($('xEx1'),x1);rSet($('xEx2'),x2);
 }
+/* Uitgebreid: wat een transportondernemer nog meer wil weten. Per maand, per rit, bij een lagere restwaarde en of de dagrit past */
+let RIT=0;
+function xExtra(r,dn,en){
+ const L=r.L,km=r.km,wd=Math.max(1,v('wd')),cheap=r.td>=r.te;
+ const dfc=(df,t)=>`<b class="xdf${df<-t?' g':df>t?' a':''}">${Math.abs(df)<t?'gelijk':(df<0?'−':'+')+' '+eur(Math.abs(df),t<.5?2:0)}</b>`;
+ const tr=(lab,a,b,dec=0,c='')=>`<div class="xtr${c}"><span>${lab}</span><b>${eur(a,dec)}</b><b>${eur(b,dec)}</b>${dfc(b-a,dec?.005:.5)}</div>`;
+ const th=`<div class="xtr xth"><span></span><span>${dn}</span><span>${en}</span><span>Verschil</span></div>`;
+ /* Per maand en per rijdag */
+ const mnd=th+tr('Aanschaf na restwaarde',r.D.afs/12,r.E.afs/12)+tr('Gebruikskosten',(r.td-r.D.afs)/12,(r.te-r.E.afs)/12)+tr('Totale kosten per maand',r.td/12,r.te/12,0,' xtt')+tr('Totale kosten per rijdag',r.td/wd,r.te/wd,0,' xtt');
+ /* Doorberekenen aan je opdrachtgever: per km, per 100 km en per rit */
+ const dag=Math.round(km/wd/10)*10,rit=Math.min(800,Math.max(20,RIT||dag||100));
+ const ritS=`<div class="rsl xrit"><label for="x_rit"><span>Ritlengte</span><b data-r="v_rit">${nf(rit)} km</b></label><input id="x_rit" type="range" data-rit min="20" max="800" step="10" value="${rit}" style="--f:${(rit-20)/780}"></div>`;
+ const pr=th+tr('Per km',r.td/km,r.te/km,2)+tr('Per 100 km',r.td/km*100,r.te/km*100)+tr(`Per rit van ${nf(rit)} km`,r.td/km*rit,r.te/km*rit,0,' xtt');
+ /* Restwaarde: de grootste onzekerheid bij elektrisch. Waar slaat het om? */
+ const pE=v('pE'),rw0=Math.round(v('rwE')),te=p=>calcX({rwE:p}).te,k=(te(0)-te(50))/50;
+ const rwB=k>0?(te(0)-r.td)/k:null;
+ const ps=[...new Set([0,10,20,30,40,50,rw0])].filter(p=>p<=60).sort((a,b)=>a-b);
+ const rwT=`<div class="xtr xth xrw"><span>Restwaarde</span><span>Waarde na ${L} jaar</span><span>${en} per jaar</span><span>Verschil per jaar</span></div>`+ps.map(p=>{const t=p===rw0?r.te:te(p);return`<div class="xtr xrw${p===rw0?' on':''}"><span>${p}%${p===rw0?' <em>nu</em>':''}</span><b>${eur(pE*p/100)}</b><b>${eur(t)}</b>${dfc(t-r.td,.5)}</div>`}).join('');
+ const rwF=`<div class="rf"><span>${en} goedkoper ${rwB!==null&&rwB>0&&rwB<100?'bij een restwaarde vanaf':''}</span><b>${rwB===null||rwB>=100?'Bij geen enkele restwaarde':rwB<=0?'Ook zonder restwaarde':nf(Math.ceil(rwB))+'%'+' <small>na '+L+' jaar</small>'}</b></div>`;
+ /* Actieradius tegenover de gemiddelde dagrit, ook in de winter */
+ const rg=v('acc')/(v('le')/100),wi=rg*.75,day=km/wd,mx=Math.max(rg,day),kwh=day*v('le')/100,kw=vtype==='bestel'?11:40;
+ const rb=(c,lab,n)=>`<span>${lab}</span><i class="${c}"><u style="width:${n/mx*100}%"></u></i><b>± ${nf(Math.round(n/5)*5)} km</b>`;
+ const rgV=day<=wi?'Past ook in de winter zonder laden onderweg':day<=rg?'Past zonder laden onderweg, in de winter krap':'Laden onderweg nodig op een gemiddelde dag';
+ const rgH=`<div class="rcb xrg">${rb('e','Actieradius',rg)}${rb('e w','In de winter',wi)}${rb('d','Gemiddelde dagrit',day)}</div><p class="xrv${day>rg?' a':''}">${rgV}</p><div class="nF"><div class="rf"><span>Laden per rijdag</span><b>± ${nf(Math.round(kwh/5)*5)} kWh <small>± ${nf(Math.max(.5,Math.round(kwh/kw*2)/2),1).replace(',0','')} uur aan een ${kw} kW-lader</small></b></div></div>`;
+ return[`<section class="nS nS2"><div class="nA"><p class="nk">Per maand</p><div class="xt" data-r="mnd">${mnd}</div></div><div class="nB"><p class="nk">Doorberekenen aan je opdrachtgever</p>${ritS}<div class="xt" data-r="rit">${pr}</div></div></section>`,
+  `<section class="nS nS2"><div class="nA"><p class="nk">Als de restwaarde tegenvalt</p><div class="xt" data-r="rw">${rwT}</div><div class="nF" data-r="rwf">${rwF}</div></div><div class="nB"><p class="nk">Actieradius en dagrit</p><div data-r="rg">${rgH}</div></div></section>`];
+}
+document.addEventListener('input',e=>{const t=e.target;if(!t.dataset||t.dataset.rit===undefined)return;RIT=+t.value;t.style.setProperty('--f',(RIT-20)/780);render()});
+document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.rit!==undefined)e.target.blur()});
 /* Tijdens het slepen alleen de cijfers bijwerken, anders verdwijnt de schuif onder je vinger */
+/* Chrome stuurt bij een klik naast de knop al een input voordat de schuif focus heeft, dus onthoud ook de schuif onder de muis of vinger */
+let rHold=null;
+document.addEventListener('pointerdown',e=>{if(e.target.type==='range')rHold=e.target},true);
+['pointerup','pointercancel'].forEach(t=>addEventListener(t,()=>{rHold=null},true));
 function rSet(el,h){
- const a=document.activeElement;
+ const a=rHold&&rHold.isConnected?rHold:document.activeElement;
  if(a&&a.type==='range'&&el.contains(a)){const t=document.createElement('div');t.innerHTML=h;t.querySelectorAll('[data-r]').forEach(n=>{const o=el.querySelector(`[data-r="${n.dataset.r}"]`);if(!o)return;if(o.innerHTML!==n.innerHTML)o.innerHTML=n.innerHTML;o.className=n.className});el._h=null;return}
  setH(el,h);
 }
@@ -3214,7 +3279,7 @@ addEventListener('scroll',tipPlace,{passive:true});
 addEventListener('resize',()=>tipClose(false));
 
 /* Klein scorebord zodra het grote uit beeld is */
-function mini(){const t=page==='uitgebreid'?$('resX'):$('res').querySelector('.nS+.nS')||$('res'),b=t.getBoundingClientRect(),show=(page==='calc'&&!isFresh()||page==='uitgebreid')&&b.bottom<64;$('mini').classList.toggle('show',show);
+function mini(){const w=$(page==='uitgebreid'?'resX':'res'),t=w.querySelector('.nS+.nS')||w,b=t.getBoundingClientRect(),show=(page==='calc'&&!isFresh()||page==='uitgebreid')&&b.bottom<64;$('mini').classList.toggle('show',show);
  const c=document.querySelector('.bcta'),r=c&&c.getBoundingClientRect();$('fcta').hidden=!(c&&page==='calc'&&!$('wz').open&&(r.bottom<64||r.top>innerHeight))}
 addEventListener('scroll',mini,{passive:true});
 
