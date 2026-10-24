@@ -1764,7 +1764,8 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 [data-page=uitgebreid] :is(.vsl,.pbc,.snw .bec,.hmw,.add){background:none!important;box-shadow:none!important;border-radius:0!important}
 [data-page=uitgebreid] .add{display:flex;align-items:center;gap:14px 24px;flex-wrap:wrap}
 [data-page=uitgebreid] .add .addt h2{margin:0}
-.xback{position:static;display:flex;width:max-content;margin:28px auto 8px;box-shadow:none}
+.xback{display:flex;width:max-content;margin:28px auto 8px}
+@media(max-width:640px){.xback{width:auto}}
 [data-page=uitgebreid] :is(.pbt>div:first-child,.pbq>div,.snw .bc2){background:var(--page)!important}
 [data-page=uitgebreid] .pbsw{padding-left:0;padding-right:0;background:none;box-shadow:none;border-top:1px solid var(--line);border-radius:0}
 [data-page=uitgebreid] :is(.rl,.colh .cm){background:none}
