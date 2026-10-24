@@ -1572,63 +1572,123 @@ html.embed .intro{padding-top:20px}
 @keyframes vtgo{0%{transform:translateX(-8px);color:var(--ink-3)}55%{transform:translateX(3px)}100%{transform:none;color:var(--volt)}}
 @media (prefers-reduced-motion:reduce){.vt::after{transition:none}.vt[aria-checked=true] svg{animation:none}}
 /* ===== Startscherm: zolang de calculator nog niet is gebruikt (html.fresh) =====
-   Ontwerp A (html.dA) keuzekaarten + venster, B (html.dB) één zin + volledig scherm, C (html.dC) leeg bord + zijpaneel */
+   A (html.dA) kop + voorbeeld + redenen, B (html.dB) de rekensom, C (html.dC) twee wegen. Rekenen: A venster, B volledig scherm, C zijpaneel. */
 .home{display:none}
 html.fresh .home{display:block}
 html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fcta,html.fresh .mode{display:none!important}
-.home h1{outline:0}
-.hgo{gap:12px}
+.home h1{outline:0;text-wrap:balance}
+.hlead{max-width:34em;margin:0;font-size:19px;line-height:1.5;color:var(--ink-2)}
+.hgo{gap:12px;padding:19px 30px!important;background:var(--volt)!important;color:#fff!important;font-size:19px!important;box-shadow:0 14px 28px -14px rgba(10,143,91,.7)!important}
+.hgo:hover{background:var(--volt-ink)!important}
 .hgo svg{width:22px;height:22px}
-.hch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.hch button{position:relative;display:flex;align-items:center;gap:16px;min-width:0;border:0;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:box-shadow .12s}
-.hch button:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
-.hch button[aria-checked=true]{box-shadow:inset 0 0 0 2px var(--ink)}
-.hch svg{flex:none;width:26px;height:26px;color:var(--ink-3)}
-.hch button[aria-checked=true] svg{color:var(--volt)}
-.hch b{font:600 clamp(19px,2vw,24px)/1.2 var(--text);letter-spacing:-.01em}
-/* A: twee grote keuzekaarten, voertuigsoort eronder, één knop */
-.hA{padding-top:44px;padding-bottom:72px}
-.hA h1{margin:0 0 28px;font:700 clamp(32px,4.2vw,48px)/1.1 var(--text);letter-spacing:-.02em}
-.hA .hch button{padding:34px 28px;min-height:132px}
-.hA .hch button::after{content:"";position:absolute;top:18px;right:18px;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line-2)}
+/* Keuze: twee tabbladen */
+.hch{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.hch button{display:flex;align-items:center;gap:9px;padding:11px 18px;border:0;border-radius:9px;background:none;color:var(--ink-2);font:600 16px var(--text);cursor:pointer}
+.hch button:hover{color:var(--ink)}
+.hch button[aria-checked=true]{background:var(--ink);color:#fff}
+.hch svg{width:18px;height:18px}
+.hpn{display:flex;flex-direction:column;gap:10px;align-self:stretch;min-width:0}
+.hpn[hidden]{display:none}
+/* Kenteken: een echte gele plaat */
+.hplt .plate{display:flex;width:100%;max-width:340px;height:58px;margin:0;padding:0 8px 0 0;border-radius:8px;background:#F4C300;box-shadow:inset 0 0 0 2px #15171A;overflow:hidden}
+.hplt .plate::before{content:"NL";flex:none;display:flex;align-items:flex-end;justify-content:center;width:34px;height:100%;padding-bottom:8px;background:#1F4BA5;color:#fff;font:600 12px var(--text)}
+.hplt .plate input{flex:1;width:0;min-width:0;padding:0 12px;color:#15171A;font:700 26px/1 var(--display);letter-spacing:.08em;text-align:center}
+.hplt .plate input::placeholder{color:rgba(21,23,26,.5);font:600 17px/1 var(--text);letter-spacing:0}
+.hplt .plate:focus-within{box-shadow:inset 0 0 0 2px #15171A,0 0 0 3px var(--volt-2)}
+.hplt .plate.bad{box-shadow:inset 0 0 0 2px var(--amber-ink)}
+.hplt .plate button{width:40px;height:40px;border-radius:7px;background:#15171A}
+.hplt .plate button svg{width:18px;height:18px}
+.hplt .plate.ok button{background:var(--volt);color:#fff}
+.hplt .plate .plo{display:none}
+.hplr{margin:0;font-size:15px;color:var(--ink-2)}
+.hplr:empty{display:none}
+.hplr b{color:var(--ink)}
+/* Voertuigsoort: kleine knoppen met icoon */
+.hvt{display:flex;flex-wrap:wrap;gap:6px}
+.hvt button{display:flex;align-items:center;gap:8px;padding:9px 14px 9px 10px;border:0;border-radius:10px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:600 15px var(--text);cursor:pointer}
+.hvt button svg{width:38px;height:18px;color:var(--ink-3)}
+.hvt button[aria-checked=true]{box-shadow:inset 0 0 0 2px var(--ink)}
+.hvt button[aria-checked=true] svg{color:var(--volt)}
+/* Redenen */
+.hrs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.hrs div{display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:2px solid var(--ink)}
+.hrs small{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--volt-ink)}
+.hrs p{margin:0;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.hrs b{display:block;font:600 21px/1.25 var(--text);color:var(--ink);letter-spacing:-.01em}
+/* A: kop links, voorbeeld rechts, redenen eronder */
+.hA{padding-top:64px;padding-bottom:88px}
+.hAg{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px 64px;align-items:center}
+.hAl{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.hA h1{margin:0;font:700 clamp(38px,5.2vw,66px)/1.02 var(--text);letter-spacing:-.03em}
+.hA h1 em{font-style:normal;color:var(--volt)}
+.hA .hgo{margin-top:4px}
+.hA .hAl>*{width:100%}
+.hA .hAl>.hgo{width:auto}
+.hA .hch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;background:none;box-shadow:none}
+.hA .hch button{position:relative;gap:14px;padding:24px 48px 24px 20px;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font-size:18px;text-align:left}
+.hA .hch button:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
+.hA .hch button[aria-checked=true]{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.hA .hch svg{flex:none;width:22px;height:22px;color:var(--ink-3)}
+.hA .hch button[aria-checked=true] svg{color:var(--volt)}
+.hA .hch button::after{content:"";position:absolute;top:50%;right:16px;width:20px;height:20px;margin-top:-10px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line-2)}
 .hA .hch button[aria-checked=true]::after{background:var(--volt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center/14px no-repeat;box-shadow:none}
-.hA .vts{margin-top:12px}
-.hA .hgo{margin-top:28px;padding:20px 34px;background:var(--volt);color:#fff;font-size:19px}
-.hA .hgo:hover{background:var(--volt-ink);color:#fff}
-/* B: donker vlak met één zin, knop eronder */
+.hA .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.hA .vt{padding:10px 8px 9px;align-items:center;text-align:center}
+.hA .vt small{display:none}
+.hA .vt b{font-size:15px}
+.hA .vt svg{width:44px;height:20px}
+.hx{display:flex;flex-direction:column;gap:18px;padding:28px;border-radius:20px;background:var(--asph);color:var(--on-asph)}
+.hx small{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--on-asph-2)}
+.hxr{display:grid;grid-template-columns:86px minmax(0,1fr) auto;align-items:center;gap:12px;font-size:15px;font-variant-numeric:tabular-nums}
+.hxr i{display:block;height:12px;border-radius:3px;background:var(--amber)}
+.hxr.e i{background:var(--volt-2)}
+.hxr span:last-child{font-weight:600}
+.hxt{padding-top:16px;border-top:1px solid var(--asph-3);font:600 30px/1.15 var(--display)}
+.hxt span{display:block;font:400 15px var(--text);color:var(--on-asph-2)}
+.hA .hrs{margin-top:84px}
+/* B: de rekensom op een donker vlak */
 .hB{background:var(--asph);color:var(--on-asph)}
-.hB .wrap{display:flex;flex-direction:column;justify-content:center;min-height:min(640px,calc(100vh - 66px));padding-top:56px;padding-bottom:64px}
-.hB h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.hsn{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:18px 26px;max-width:980px}
-.hsn>span{font:500 clamp(30px,4vw,52px)/1.1 var(--display);letter-spacing:-.01em;color:var(--on-asph-2)}
-.hsn .hch,.hsn .hvt{display:flex;flex-wrap:wrap;gap:8px}
-.hB .hch button,.hvt button{padding:12px 20px;border-radius:12px;background:var(--asph-2);box-shadow:inset 0 0 0 1px var(--asph-3);color:var(--on-asph)}
-.hB .hch button:hover,.hvt button:hover{box-shadow:inset 0 0 0 1px var(--on-asph-2)}
-.hB .hch button[aria-checked=true],.hvt button[aria-checked=true]{background:var(--on-asph);color:var(--ink);box-shadow:none}
-.hB .hch svg{display:none}
-.hB .hch b,.hvt b{font:600 clamp(20px,2.2vw,28px)/1.2 var(--text);letter-spacing:-.01em}
-.hvt button{border:0;font:inherit;cursor:pointer}
-.hvt b{font-weight:500}
-.hpl{grid-column:2;max-width:340px}
-.hpl .plate{width:100%;height:44px}
-.hpl .plate input{flex:1;width:auto;font-size:16px}
+.hBg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px 72px;align-items:center;padding-top:72px;padding-bottom:80px}
+.hBl{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.hB h1{margin:0;font:600 clamp(40px,5.4vw,68px)/1 var(--display);letter-spacing:-.01em}
+.hB .hlead,.hB .hplr{color:var(--on-asph-2)}
+.hB .hplr b{color:var(--on-asph)}
+.hB .hch{background:var(--asph-2);box-shadow:inset 0 0 0 1px var(--asph-3)}
+.hB .hch button{color:var(--on-asph-2)}
+.hB .hch button[aria-checked=true]{background:var(--on-asph);color:var(--ink)}
+.hB .hvt button{background:var(--asph-2);box-shadow:inset 0 0 0 1px var(--asph-3);color:var(--on-asph)}
+.hB .hvt button[aria-checked=true]{box-shadow:inset 0 0 0 2px var(--on-asph)}
+.hsum{margin:0;font-variant-numeric:tabular-nums}
+.hsum>small{display:block;margin-bottom:14px;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--on-asph-2)}
+.hsr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 20px;padding:14px 0;border-top:1px solid var(--asph-3)}
+.hsr b{font:600 18px var(--text)}
+.hsr span{grid-row:span 2;align-self:center;font:600 24px var(--display)}
+.hsr p{margin:0;font-size:14px;color:var(--on-asph-2)}
+.hsr .up{color:var(--amber)}.hsr .dn{color:var(--volt-2)}
+.hst{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding-top:16px;border-top:2px solid var(--on-asph)}
+.hst b{font:600 18px var(--text)}
+.hst span{font:600 40px/1 var(--display);color:var(--volt-2)}
 html.dB.fresh body:has(#calc:not([hidden])) .foot{margin-top:0}
-.hpl[hidden]{display:none}
-.hB .hgo{align-self:flex-start;margin-top:44px;padding:20px 34px;background:var(--volt);color:#fff;font-size:19px;box-shadow:none}
-.hB .hgo:hover{background:var(--volt-2);color:#fff}
-/* C: het bord zelf, nog leeg, met de keuze erboven en de knop in de groene balk */
-.hC{padding-top:34px;padding-bottom:72px}
-.hC .hct{display:flex;justify-content:space-between;align-items:flex-end;gap:18px 40px;flex-wrap:wrap;margin-bottom:22px}
-.hC h1{margin:0;font:700 clamp(32px,4.2vw,48px)/1.1 var(--text);letter-spacing:-.02em}
-.hC .hch{display:flex;gap:4px;padding:4px;border-radius:12px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
-.hC .hch button{padding:10px 16px;border-radius:9px;box-shadow:none;background:none;color:var(--ink-2)}
-.hC .hch button[aria-checked=true]{background:var(--ink);color:#fff}
-.hC .hch svg{display:none}
-.hC .hch b{font:600 16px var(--text)}
-.hC .vts{margin-bottom:22px}
-.hC .bd .big{color:inherit;opacity:.28}
-.hC .bcta{justify-content:center;padding:26px clamp(18px,3.4vw,40px)}
-.hC .hgo{padding:18px 34px;font-size:19px}
+/* C: twee wegen naast elkaar */
+.hC{padding-top:56px;padding-bottom:88px}
+.hCt{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:40px;text-align:center}
+.hC h1{margin:0;font:700 clamp(36px,4.8vw,60px)/1.05 var(--text);letter-spacing:-.03em}
+.hC .hlead{text-align:center}
+.hCs{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:22px;overflow:hidden;box-shadow:0 40px 70px -50px rgba(0,0,0,.55)}
+.hCs>div{display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:40px clamp(22px,3.6vw,48px) 44px}
+.hCs>div:first-child{background:var(--asph);color:var(--on-asph)}
+.hCs>div:last-child{background:var(--card)}
+.hCs small{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.hCs>div:first-child small{color:var(--amber)}
+.hCs>div:last-child small{color:var(--volt-ink)}
+.hCs h2{margin:0;font:700 clamp(26px,2.8vw,36px)/1.1 var(--text);letter-spacing:-.02em}
+.hCs p{margin:0;max-width:30em;color:var(--ink-2)}
+.hCs>div:first-child p,.hCs>div:first-child .hplr{color:var(--on-asph-2)}
+.hCs>div:first-child .hplr b{color:var(--on-asph)}
+.hCs .hgo{margin-top:auto}
+.hCs .hpn{margin-bottom:8px}
+.hof{position:absolute;left:50%;top:50%;display:grid;place-items:center;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:var(--volt);color:#fff;font:600 17px var(--display);box-shadow:0 0 0 6px var(--page)}
+.hC .hrs{margin-top:72px}
 /* Rekenen: B in een volledig scherm, C in een paneel van rechts */
 html.dB.fresh .wzl,html.dC.fresh .wzl{display:none}
 html.dB .wzf .cta,html.dC .wzf .cta{margin-left:auto}
@@ -1650,39 +1710,50 @@ html.dB .wzf .cta,html.dC .wzf .cta{margin-left:auto}
 }
 @keyframes hslide{from{transform:translateX(40px);opacity:0}}
 @media (prefers-reduced-motion:reduce){html.dC dialog.wz{animation:none}}
+@media(max-width:960px){
+ .hAg,.hBg{grid-template-columns:minmax(0,1fr)}
+ .hrs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:640px){
- .hch{grid-template-columns:minmax(0,1fr);gap:8px}
- .hA{padding-top:26px;padding-bottom:48px}
- .hA h1{margin-bottom:18px;font-size:30px}
- .hA .hch button{min-height:0;padding:20px 18px}
- .hA .hch button::after{top:50%;margin-top:-10px}
- .hA .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
- .hA .vt{padding:10px 6px 9px;align-items:center;text-align:center}
- .hA .vt small{display:none}
+ .hlead{font-size:17px}
+ .hgo{width:100%;justify-content:center;padding:18px 20px!important;font-size:18px!important}
+ .hch{display:flex;width:100%}
+ .hch button{flex:1;justify-content:center;padding:11px 8px;font-size:15px}
+ .hch svg{display:none}
+ .hA .hch{grid-template-columns:minmax(0,1fr);gap:8px}
+ .hA .hch button{padding:18px 48px 18px 16px;font-size:18px}
+ .hA .hch svg{display:block}
+ .hA .hch button{justify-content:flex-start}
+ .hA .hAl>.hgo{width:100%}
+ .hA .hx{display:none}
  .hA .vt b{font-size:14px}
  .hA .vt svg{width:40px;height:20px}
- .hA .hgo,.hB .hgo,.hC .hgo{width:100%;justify-content:center;padding:18px 20px;font-size:18px}
- .hB .wrap{min-height:calc(100svh - 58px);justify-content:flex-start;padding-top:36px;padding-bottom:32px}
- .hsn{grid-template-columns:minmax(0,1fr);gap:12px}
- .hsn>span{font-size:30px;margin-top:10px}
- .hsn>span:first-child{margin-top:0}
- .hpl{grid-column:1}
- .hB .hch{flex-direction:column}
- .hB .hch button,.hvt button{padding:12px 16px}
- .hB .hch b,.hvt b{font-size:20px}
- .hB .hgo{margin-top:auto;align-self:stretch}
- .hC{padding-top:20px;padding-bottom:40px}
- .hC .hct{margin-bottom:16px}
- .hC h1{font-size:30px}
- .hC .hch{width:100%}
- .hC .hch button{flex:1;justify-content:center;padding:10px 6px;text-align:center}
- .hC .hch b{font-size:15px}
- .hC .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:16px}
- .hC .vt{padding:10px 6px 9px;align-items:center;text-align:center}
- .hC .vt small{display:none}
- .hC .vt b{font-size:14px}
- .hC .vt svg{width:40px;height:20px}
- .hC .bcta{padding:16px 14px}
+ .hA .vts{gap:6px}
+ .fin{padding-top:24px;gap:14px}
+ .fin nav{display:flex;flex-wrap:wrap;gap:2px 18px}
+ .fin nav a{padding:6px 0;font-size:14px}
+ .fdis{margin-top:10px;padding:12px 0 20px;font-size:12px}
+ .hplt .plate{max-width:none}
+ .hvt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hrs{grid-template-columns:minmax(0,1fr);gap:20px}
+ .hA{padding-top:32px;padding-bottom:48px}
+ .hA h1{font-size:38px}
+ .hAl{gap:20px}
+ .hx{padding:20px}
+ .hxr{grid-template-columns:76px minmax(0,1fr) auto}
+ .hA .hrs{margin-top:48px}
+ .hBg{gap:40px;padding-top:36px;padding-bottom:44px}
+ .hB h1{font-size:42px}
+ .hsr b{font-size:16px}.hsr span{font-size:20px}
+ .hst span{font-size:32px}
+ .hC{padding-top:28px;padding-bottom:48px}
+ .hCt{align-items:flex-start;margin-bottom:24px;text-align:left}
+ .hC .hlead{text-align:left}
+ .hC h1{font-size:36px}
+ .hCs{grid-template-columns:minmax(0,1fr);border-radius:16px}
+ .hCs>div{padding:28px 18px 24px}
+ .hof{top:auto;bottom:auto;display:none}
+ .hC .hrs{margin-top:44px}
 }
 </style>
 </head>
@@ -2915,31 +2986,51 @@ $('wz').addEventListener('cancel',e=>{if(qtBtn){e.preventDefault();tipClose(true
 $('wzB').addEventListener('scroll',tipPlace,{passive:true});
 
 /* ===== Startscherm =====
-   Tot iemand het invulvenster heeft afgerond staat op de homepage alleen de keuze, de voertuigsoort en de knop.
-   Daarna toont / de simpele uitkomst en kun je pas wisselen naar uitgebreid. */
+   Tot iemand het invulvenster heeft afgerond staat op de homepage de keuze (diesel vervangen of nieuw), het kenteken,
+   waarom overstappen kan lonen en één knop. Daarna toont / de simpele uitkomst en kun je pas wisselen naar uitgebreid. */
 let DESIGN='a',hc=null;
 function isFresh(){return store('sod-used')!=='1'}
 function setUsed(on){store('sod-used',on?'1':null);document.documentElement.classList.toggle('fresh',!on);if(!on)hc=null;homePaint()}
 const HICON={h:ICON.ab,n:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'};
 const HARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+const HRS=[
+ ['Energie','Laden is goedkoper dan tanken','Stroom kost per kilometer minder dan diesel, zeker als je op je eigen terrein laadt.'],
+ ['Heffing','Tot vijf keer minder heffing','Sinds 1 juli 2026 betalen vrachtwagens heffing per kilometer. Elektrisch geldt het laagste tarief.'],
+ ['Subsidie','De meerprijs krimpt','AanZET vergoedt een deel van de meerprijs. Met ERE\'s verdien je daarnaast aan elke kWh die je laadt.'],
+ ['Stad','De stad blijft open','Zero-emissiezones worden strenger. Je kenteken laat zien tot wanneer je diesel er nog in mag.']];
+const HPOST=[['afs','Aanschaf','Hogere prijs, minus subsidie en restwaarde'],['en','Energie','Laden is goedkoper dan tanken'],['ond','Onderhoud','Minder bewegende delen, minder slijtage'],['ver','Verzekering','Hogere waarde, hogere premie'],['hef','Vrachtwagenheffing','Het laagste tarief voor nul uitstoot']];
 function homeHTML(){
- const ch=t=>`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${[['h',t[0]],['n',t[1]]].map(([k,x])=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}<b>${x}</b></button>`).join('')}</div>`;
- const go=`<button class="cta big hgo" type="button" data-start>Reken je eigen voordeel na ${HARR}</button>`;
- if(DESIGN==='b')return`<div class="hB"><div class="wrap"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hsn"><span>Ik wil</span>${ch(['mijn huidige diesel vervangen','iets nieuws aanschaffen'])}<span>voor een</span><div class="hvt" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" role="radio" data-vt="${k}" aria-checked="${k===vtype}"><b>${q.n.toLowerCase()}</b></button>`).join('')}</div><div class="hpl"${hc==='h'?'':' hidden'}>${plateForm('D')}</div></div>${go}</div></div>`;
- if(DESIGN==='c'){const L=hc==='h'?'Huidige diesel':hc==='n'?'Nieuwe diesel':'Diesel',ph=`<span class="big">€ –,––<small>per km</small></span>`;
-  return`<div class="wrap hC"><div class="hct"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>${ch(['Diesel vervangen','Nieuw aanschaffen'])}</div>${vcards()}<div class="board"><div class="bd d"><span class="who">${L}</span>${ph}</div><div class="bd e"><span class="who">Elektrisch</span>${ph}</div><div class="bcta">${go}</div></div></div>`}
- return`<div class="wrap hA"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>${ch(['Huidige diesel vervangen','Nieuw aanschaffen'])}${vcards()}${go}</div>`;
+ const r=calc(),d=r.td-r.te,ex=`Voorbeeld · ${T().w} · ${nf(r.km)} km per jaar`;
+ const ch=t=>`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${[['h',t[0]],['n',t[1]]].map(([k,x])=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}${x}</button>`).join('')}</div>`;
+ const go=(t,k)=>`<button class="cta big hgo" type="button" data-start="${k||''}">${t||'Reken je eigen voordeel na'} ${HARR}</button>`;
+ const plt=`<div class="hplt">${plateForm('D').replace('Kenteken (optioneel)','Jouw kenteken')}</div><p class="hplr" data-hpl></p>`;
+ const vts=`<div class="hvt" role="radiogroup" aria-label="Voertuig">${Object.entries(VT).map(([k,q])=>`<button type="button" role="radio" data-vt="${k}" aria-checked="${k===vtype}">${VICON[k]}${q.n}</button>`).join('')}</div>`;
+ const pn=`<div class="hpn"${hc==='h'?'':' hidden'}>${plt}</div><div class="hpn"${hc==='n'?'':' hidden'}>${vts}</div>`;
+ const rs=`<div class="hrs">${HRS.map(x=>`<div><small>${x[0]}</small><b>${x[1]}</b><p>${x[2]}</p></div>`).join('')}</div>`;
+ if(DESIGN==='b'){
+  const rows=HPOST.filter(p=>r.D[p[0]]||r.E[p[0]]).map(p=>{const x=r.E[p[0]]-r.D[p[0]];return`<div class="hsr"><b>${p[1]}</b><span class="${x>0?'up':'dn'}">${x>0?'+':'−'} ${eur(Math.abs(x)).replace('€ ','€ ')}</span><p>${p[2]}</p></div>`}).join('');
+  return`<div class="hB"><div class="wrap hBg"><div class="hBl"><h1 tabindex="-1">De rekensom van overstappen</h1><p class="hlead">Elektrisch is duurder in aanschaf en goedkoper in gebruik. Wat er onder de streep overblijft, verschilt per bedrijf.</p>${ch(['Ik heb een diesel','Ik koop iets nieuws'])}${pn}${go()}</div>
+<div class="hsum"><small>${ex}</small>${rows}<div class="hst"><b>${d>=0?'Voordeel':'Nadeel'} per jaar</b><span>${eur(Math.abs(d))}</span></div></div></div></div>`}
+ if(DESIGN==='c')return`<div class="wrap hC"><div class="hCt"><h1 tabindex="-1">Stekker of diesel</h1><p class="hlead">Elektrisch rijden is duurder in aanschaf en goedkoper per kilometer. Reken uit wat dat voor jouw bedrijf betekent.</p></div>
+<div class="hCs"><div><small>Vervangen</small><h2>Ik heb een diesel</h2><p>Vul je kenteken in. Je ziet welk voertuig het is en tot wanneer hij de zero-emissiezone in mag.</p><div class="hpn">${plt}</div>${go('Reken vervangen door','h')}</div>
+<div><small>Nieuw</small><h2>Ik koop iets nieuws</h2><p>Vergelijk een nieuwe diesel met een elektrische, voor jouw kilometers.</p><div class="hpn">${vts}</div>${go('Vergelijk nieuw','n')}</div><span class="hof" aria-hidden="true">of</span></div>${rs}</div>`;
+ const mx=Math.max(r.td,r.te),bar=(c,n,v)=>`<div class="hxr ${c}"><span>${n}</span><i style="width:${(v/mx*100).toFixed(1)}%"></i><span>${eur(v)}</span></div>`;
+ return`<div class="wrap hA"><div class="hAg"><div class="hAl"><h1 tabindex="-1">Duurder in aanschaf.<br><em>Goedkoper per kilometer.</em></h1><p class="hlead">Reken in een paar minuten uit of elektrisch rijden voor jouw bedrijf loont. Onafhankelijk en met je eigen cijfers.</p>${ch(['Ik heb een diesel','Ik koop iets nieuws'])}${vcards()}<div class="hpn"${hc==='h'?'':' hidden'}>${plt}</div>${go()}</div>
+<aside class="hx" aria-label="Voorbeeld"><small>${ex}</small>${bar('d','Diesel',r.td)}${bar('e','Elektrisch',r.te)}<div class="hxt">${eur(Math.abs(d))} per jaar ${d>=0?'goedkoper':'duurder'}<span>Over ${r.L} jaar ${eur(Math.abs(d*r.L))}, met voorbeeldcijfers</span></div></aside></div>${rs}</div>`;
 }
+let hPaint=false;
 function homePaint(){
  if(!isFresh()){$('home').innerHTML='';return}
- setH($('home'),homeHTML());
- $('home').querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
- plPaint();
+ hPaint=true;setH($('home'),homeHTML());plPaint();
+ const i=PL.D;$('home').querySelectorAll('[data-plate="D"]').forEach(f=>{if(i&&i.k)f.elements.kt.value=plFmt(i.k)});
+ $('home').querySelectorAll('[data-hpl]').forEach(p=>{p.innerHTML=!i?'':i.err?i.err:[`<b>${plName(i)}</b>`,i.first&&i.first.getFullYear(),zeTxt(i)&&'zero-emissiezone: '+zeTxt(i).toLowerCase()].filter(Boolean).join(' · ')});
+ hPaint=false;
 }
+{const f=plLookup;plLookup=async(...a)=>{const x=await f(...a);if(isFresh()){if(PL.D&&!PL.D.err)hc='h';homePaint()}return x}}
 function homeDesign(d){DESIGN=d;['a','b','c'].forEach(x=>document.documentElement.classList.toggle('d'+x.toUpperCase(),x===d));homePaint()}
 document.addEventListener('click',e=>{
  const c=e.target.closest('[data-hc]');if(c){hc=c.dataset.hc;if($('dw').value!==hc){$('dw').value=hc;dieselAuto(true);render()}homePaint();return}
- if(e.target.closest('[data-start]')){openWz('use');return}
+ const st=e.target.closest('[data-start]');if(st){const k=st.dataset.start;if(k){hc=k;if($('dw').value!==k){$('dw').value=k;dieselAuto(true);render()}}openWz('use');return}
  if(e.target.closest('#home [data-vt]'))setTimeout(homePaint);
 });
 
