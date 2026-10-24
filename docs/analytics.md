@@ -30,6 +30,16 @@ Rapportages staan als views in het schema `analytics` (niet via de API bereikbaa
 
 Opruimen na 25 maanden: `select analytics.opruimen();` (of plannen met pg_cron, zie migratie).
 
+## Berekeningen (`public.calc_runs`)
+
+Elke berekening wordt volledig opgeslagen (`<script id="berekeningen">` in `index.html`): na het afronden van het invulvenster (`trigger = invulvenster`) en na elke aanpassing zodra het 4 seconden stil is (`trigger = aanpassing`, alleen als er iets veranderd is).
+
+- `invoer`: alle velden van de calculator, `gewijzigd`: welke afwijken van de standaard, `voertuig`: soort, model, huidig/nieuw, tol, bandbreedtes en RDW-gegevens, `uitkomst`: totalen per jaar en km, alle kostenposten, terugverdientijd, goedkoper-vanaf-km.
+- `reeks` + `nr`: alle berekeningen binnen één paginabezoek (willekeurig ID, alleen in het geheugen, niets op het apparaat).
+- Ook zonder toestemming, maar dan zonder `visitor_id`/`session_id` (de database dwingt dat af). Met toestemming staan die erbij.
+- Het kenteken (`plk`, `plkE`) gaat nooit mee; de database weigert rijen waar het in staat.
+- Bekijken: `select * from analytics.calculaties;` of de tabel `calc_runs` in de Table editor. Migratie: `supabase/migrations/20261024210000_calc_runs.sql`.
+
 ## Events
 
 | Event | Props |
