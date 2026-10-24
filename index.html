@@ -1583,11 +1583,11 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hgo:hover{background:var(--volt-ink)!important}
 .hgo svg{width:22px;height:22px}
 .hAg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:stretch}
-.hAl,.hx{display:flex;flex-direction:column;gap:14px;min-height:clamp(300px,calc(100vh - 400px),370px);padding:26px;border-radius:20px}
+.hAl,.hx{display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px}
 .hAl{justify-content:space-between;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
 /* Keuze */
 .hch{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
-.hch button{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 14px;padding:15px 52px 15px 18px;border:0;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:box-shadow .12s}
+.hch button{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 14px;padding:17px 52px 17px 18px;border:0;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:box-shadow .12s}
 .hch button:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
 .hch button[aria-checked=true]{box-shadow:inset 0 0 0 2px var(--ink)}
 .hch svg{grid-row:span 2;width:24px;height:24px;color:var(--ink-3)}
@@ -1617,18 +1617,20 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hA .vt svg{width:44px;height:20px}
 .hA .vt::after{height:2px;background:var(--ink)}
 /* Rechts: voorbeeld met kilometerschuif, de inhoud verdeeld over de hoogte */
-.hx{justify-content:space-between;background:var(--asph);color:var(--on-asph)}
-.hxh{margin:0;font:600 clamp(28px,2.7vw,36px)/1.1 var(--display);letter-spacing:-.01em;text-wrap:balance}
+.hx{justify-content:flex-start;background:var(--asph);color:var(--on-asph)}
+.hks,.hxv{margin-top:auto}
+.hxh{margin:0;font:600 clamp(24px,2.2vw,30px)/1.12 var(--display);letter-spacing:-.01em;text-wrap:balance}
 .hxh b{color:var(--volt-2);font-weight:600}
 .hxl{margin:0;font-size:15px;color:var(--on-asph-2)}
 .hxl:empty{display:none}
-.hxv{margin:0;font-size:18px;line-height:1.4}
+.hxv{margin-bottom:0;font-size:18px;line-height:1.4}
 .hxv b{color:var(--volt-2)}
 .hxv b.d{color:var(--amber)}
 .hks{display:flex;flex-direction:column;gap:4px}
-.hks label{font-size:17px}
-.hks label b{font:600 22px var(--display)}
-.hkr{--fill:var(--volt-2);--track:var(--asph-3);--thumb:var(--asph);height:34px!important;margin:0!important}
+.hks label{font-size:15px;color:var(--on-asph-2)}
+.hks label b{color:var(--on-asph);font:600 19px var(--display)}
+.hkr{--fill:var(--volt-2);--track:var(--asph-3);--thumb:var(--asph);height:28px!important;margin:0!important}
+.hks+.hkw{margin-top:-6px}
 .hkw{display:flex;flex-direction:column;gap:10px}
 .hkh{margin:0;font-size:14px;color:var(--on-asph-2)}
 .hkb{display:grid;grid-template-columns:80px minmax(0,1fr) 92px;align-items:center;gap:10px 12px;font-size:15px;font-variant-numeric:tabular-nums}
@@ -1638,9 +1640,9 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hkb b{text-align:right;font-weight:600}
 /* Versie 2: staande balken */
 .hkc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.hkc>div{display:flex;flex-direction:column;align-items:flex-start;gap:6px;font-variant-numeric:tabular-nums}
-.hkc b{font:600 22px var(--display)}
-.hkc i{position:relative;display:block;width:100%;height:70px;border-radius:6px;background:var(--asph-2)}
+.hkc>div{display:grid;grid-template-columns:auto auto;justify-content:space-between;align-items:baseline;gap:6px 10px;font-variant-numeric:tabular-nums}
+.hkc b{font:600 19px var(--display)}
+.hkc i{grid-column:1/-1;position:relative;display:block;width:100%;height:40px;border-radius:6px;background:var(--asph-2)}
 .hkc u{position:absolute;left:0;right:0;bottom:0;display:block;border-radius:6px;background:var(--amber);transition:height .15s}
 .hkc .e u{background:var(--volt-2)}
 .hkc span{font-size:15px;color:var(--on-asph-2)}
@@ -1663,11 +1665,11 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
  .hA .vts{gap:6px}
  .hA .vt b{font-size:14px}
  .hA .vt svg{width:40px;height:20px}
- .hxh{font-size:24px}
- .hks label{font-size:15px}.hks label b{font-size:19px}
+ .hxh{font-size:22px}
+ .hks label{font-size:14px}.hks label b{font-size:17px}
  .hkb{grid-template-columns:70px minmax(0,1fr) 78px;gap:8px 10px;font-size:14px}
  .hxv{font-size:16px}
- .hkc i{height:64px}.hkc b{font-size:18px}
+ .hkc i{height:40px}.hkc b{font-size:17px}
  .fin{padding-top:24px;gap:14px}
  .fin nav{display:flex;flex-wrap:wrap;gap:2px 18px}
  .fin nav a{padding:6px 0;font-size:14px}
@@ -2934,7 +2936,7 @@ function homeHTML(){
  const k=Math.min(k1,Math.max(k0,v('km'))),st=[5000,2500,2000,1000].find(x=>(k1-k0)%x===0&&(k1-k0)/x>=10)||1000;
  const sld=`<div class="hks"><label for="hkm">Bij <b id="hkV">${nf(k)}</b> km per jaar</label><input id="hkm" class="hkr" type="range" min="${k0}" max="${k1}" step="${st}" value="${k}"></div>`;
  const bars=`<div class="hkw"><p class="hkh">Totale kosten per jaar</p>`+(DESIGN==='b'
-  ?`<div class="hkc"><div><b id="hkD"></b><i><u data-bar="d"></u></i><span>Diesel</span></div><div class="e"><b id="hkE"></b><i><u data-bar="e"></u></i><span>Elektrisch</span></div></div>`
+  ?`<div class="hkc"><div><span>Diesel</span><b id="hkD"></b><i><u data-bar="d"></u></i></div><div class="e"><span>Elektrisch</span><b id="hkE"></b><i><u data-bar="e"></u></i></div></div>`
   :`<div class="hkb"><span>Diesel</span><i><u data-bar="d"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u data-bar="e"></u></i><b id="hkE"></b></div>`)+'</div>';
  return`<div class="wrap hA h${DESIGN}"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hAg"><div class="hAl">${ch}${hc==='h'?plt:''}${vcards()}</div><aside class="hx" data-mx="${Math.round(mx)}" aria-label="Voorbeeldberekening voor een ${T().w}">${tot}${sld}${bars}<p class="hxv" id="hkT"></p></aside></div><button class="cta big hgo" type="button" data-start>Reken het uit voor mijn bedrijf ${HARR}</button></div>`;
 }
