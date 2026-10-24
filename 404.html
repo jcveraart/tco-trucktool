@@ -1992,6 +1992,58 @@ html:is(.r-g,.r-h) body:has(#calc:not([hidden])) .bkw{display:none}
  #res .rbk .big small{flex-basis:auto;white-space:normal;font-size:12px;line-height:1.3}
  .rhp .rcn div:last-child{grid-column:auto}
 }
+/* ===== Ronde 3: I tot en met M, rustigere varianten op H ===== */
+html:is(.r-i,.r-j,.r-k,.r-l,.r-m) body:has(#calc:not([hidden])) .bkw{display:none}
+.rhgo{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:6;align-self:center;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:12px;background:var(--ink);color:#fff;text-decoration:none;font:700 17px var(--text);box-shadow:0 16px 34px -16px rgba(0,0,0,.55)}
+.rhgo:hover{background:#000;color:#fff}
+.rhgo svg{width:19px;height:19px}
+/* Licht vlak in plaats van donker */
+.rH.lt .rhp{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.rH.lt .rhb .rck{color:var(--ink-3)}
+.rH.lt .rcn{background:var(--line)}
+.rH.lt .rcn div{background:var(--soft)}
+.rH.lt .rcn span{color:var(--ink-3)}
+.rH.lt .rhs{border-color:var(--line)}
+#res .rH.lt .rhs .rsl label{color:var(--ink-2)}
+#res .rH.lt .rhs .rsl label b{color:var(--ink)}
+#res .rH.lt .rhs .rsl input{--fill:var(--ink);--track:var(--line);--thumb:#fff}
+.rH.lt .rhh,.rH.rHj .rhh{background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.rH.lt .rhh .rch b,.rH.rHj .rhh .rch b{color:var(--volt-ink)}
+/* I: licht. Alleen de balken en het bedrag in kleur */
+.rH.rHi .rhh{background:none;box-shadow:none;padding-left:6px}
+/* J: het donkere vlak blijft, de rest is wit */
+.rH.rHj .rhh .rch b{color:var(--ink)}
+.rH.rHj .rhgo{background:var(--volt)}.rH.rHj .rhgo:hover{background:var(--volt-ink)}
+/* K: zwart-wit. Diesel grijs, elektrisch zwart, de knop is het enige groen */
+.rH.rHk .rcb u{background:var(--line-2)!important}.rH.rHk .rcb i.e u{background:var(--ink)!important}
+.rH.rHk .rhh .rch b{color:var(--ink)}
+.rH.rHk .rsum .st span i{display:none!important}
+.rH.rHk .rhgo{background:var(--volt)}.rH.rHk .rhgo:hover{background:var(--volt-ink)}
+/* L: geen kaders, alleen lijnen */
+.rH.rHl .rhv,.rH.rHl .rhh,.rH.rHl .rhp{background:none;box-shadow:none;border-radius:0}
+.rH.rHl .rht{padding-bottom:18px;border-bottom:1px solid var(--line)}
+.rH.rHl .rhv{padding-left:0}
+.rH.rHl .rhh{border-left:1px solid var(--line)}
+.rH.rHl .rhp{padding:8px 0 22px;border-bottom:1px solid var(--line)}
+.rH.rHl .rsum{background:var(--line);box-shadow:none}
+.rH.rHl .rsum .st{background:var(--page)}
+.rH.rHl .rsum .st:hover{background:var(--card)}
+.rH.rHl .rfs{background:var(--line)!important;box-shadow:none!important}
+.rH.rHl .rfs .rf{background:var(--page)!important}
+/* M: één vlak bovenaan, de knop over de hele breedte zoals op het startscherm */
+.rH.rHm .rht{gap:0;border-radius:18px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.rH.rHm .rhv,.rH.rHm .rhh{background:none;box-shadow:none;border-radius:0}
+.rH.rHm .rhh{border-left:1px solid var(--line)}
+.rH.rHm .rhgo{align-self:stretch;justify-content:center;padding:20px 30px;border-radius:14px;background:var(--volt);font-size:20px;box-shadow:0 10px 24px -14px rgba(10,143,91,.8)}
+.rH.rHm .rhgo:hover{background:var(--volt-ink)}
+@media(max-width:900px){
+ .rH.rHl .rhh{border-left:0;padding-left:0}
+ .rH.rHm .rhh{border-left:0;border-top:1px solid var(--line)}
+}
+@media(max-width:640px){
+ .rhgo{align-self:stretch;justify-content:center;padding:15px 18px;font-size:16px}
+ .rH.rHm .rhgo{position:sticky;padding:16px 18px;font-size:17px}
+}
 </style>
 </head>
 <body>
@@ -3277,7 +3329,7 @@ document.addEventListener('click',e=>{
 /* ===== Resultaat na het invulvenster: vijf ontwerpen (html.r-a … r-e) =====
    Het voertuig is al gekozen op het startscherm, dus hier staat het alleen als naam. A houdt het oude scorebord, B tot en met E tekenen alles in #res. */
 var RD='a';
-function rDesign(d){RD=d;const c=document.documentElement.classList;'abcdefgh'.split('').forEach(k=>c.toggle('r-'+k,k===d));render();mini()}
+function rDesign(d){RD=d;const c=document.documentElement.classList;'abcdefghijklm'.split('').forEach(k=>c.toggle('r-'+k,k===d));render();mini()}
 document.documentElement.classList.add("r-"+RD);
 /* Terug naar het startscherm, met alles wat je al had ingevuld */
 function goHome(){const k=$('dw').value;setUsed(false);hc=k;navTo('/');homePaint();scrollTo(0,0)}
@@ -3340,12 +3392,12 @@ function rPaint(r){
  if(RD==='g')h=`<div class="rG"><div class="rgt"><a class="bk" href="/" data-home>${BKI}Start</a><div class="rveh">${vh}<span>${q.sub}</span>${pl}</div><nav class="rgsw" aria-label="Resultaten"><a href="/" aria-current="page">Simpel</a><a href="/uitgebreid/" data-xgo>Uitgebreid ${HARR}</a></nav></div>
 <div class="rgp"><div class="rgm"><div class="rgh">${per}</div><div class="rbc" data-r="cols">${col2('d',dn,r.td)}${col2('e',en,r.te)}</div>${vrd}</div><aside class="rgw"><p class="rek">Wat als</p>${sKm}${sDp}${sSp}<div class="rfs" data-r="facts">${facts}</div></aside></div>
 <div class="sum rsum" data-r="tiles">${tilesX}</div></div>`;
- if(RD==='h'){const mx2=Math.max(r.td,r.te);
-  h=`<div class="rH"><div class="rht"><div class="rhv"><a class="bk" href="/" data-home>${BKI}Terug naar start</a><div class="rveh">${vh}</div><p>${[q.sub,pn].filter(Boolean).join(' · ')}</p>${pl}</div>
+ if('hijklm'.includes(RD)){const mx2=Math.max(r.td,r.te),x8=RD!=='h';
+  h=`<div class="rH${x8?' rH'+RD+('ikl'.includes(RD)?' lt':'')+(RD==='m'?' lt':''):''}"><div class="rht"><div class="rhv"><a class="bk" href="/" data-home>${BKI}Terug naar start</a><div class="rveh">${vh}</div><p>${[q.sub,pn].filter(Boolean).join(' · ')}</p>${pl}</div>
 <div class="rhh${win==='d'?' neg':''}" data-r="head"><p class="rch">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b>${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="rck">in totale kosten per jaar${even?'':`, ${eur(Math.abs(d)*L)} in ${L} jaar`}</p>${brg}</div></div>
-<div class="rhp"><div class="rhb"><p class="rck">Totale kosten per jaar</p><div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx2*100}%"></u></i><b>${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx2*100}%"></u></i><b>${eur(r.te)}</b></div><div class="rcn" data-r="pkm"><div><span>Diesel per km</span><b>${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b>${eur(r.te/km,2)}</b></div></div>${acts}</div><div class="rhs">${sKm}${sDp}${sSp}</div></div>
+<div class="rhp"><div class="rhb"><p class="rck">Totale kosten per jaar</p><div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx2*100}%"></u></i><b>${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx2*100}%"></u></i><b>${eur(r.te)}</b></div><div class="rcn" data-r="pkm"><div><span>Diesel per km</span><b>${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b>${eur(r.te/km,2)}</b></div></div>${x8?'':acts}</div><div class="rhs">${sKm}${sDp}${sSp}</div></div>
 <div class="rhg"><div class="sum rsum" data-r="tiles">${tilesX}</div><div class="rfs" data-r="facts">${facts}</div></div>
-<nav class="rhsw" aria-label="Resultaten"><a href="/" aria-current="page">Simpele resultaten</a><a href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></nav></div>`}
+${x8?`<a class="rhgo" href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a>`:`<nav class="rhsw" aria-label="Resultaten"><a href="/" aria-current="page">Simpele resultaten</a><a href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></nav>`}</div>`}
  rSet(el,h);
 }
 /* Tijdens het slepen alleen de cijfers bijwerken, anders verdwijnt de schuif onder je vinger */
