@@ -1661,10 +1661,10 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
  .hAl{gap:10px;padding:0;background:none;box-shadow:none}
  .hx{gap:14px;padding:18px}
  .hch{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .hch button{grid-template-columns:minmax(0,1fr);padding:14px 34px 14px 14px}
+ .hch button{grid-template-columns:minmax(0,1fr);padding:11px 32px 11px 12px}
  .hAl,.hx{min-height:0}
  .hch svg,.hch span{display:none}
- .hch b{font-size:15px;white-space:nowrap}
+ .hch b{font-size:14px;line-height:1.25;text-wrap:balance}
  .hch button::after{right:12px;width:18px;height:18px;margin-top:-9px}
  .hch button[aria-checked=true]::after{background-size:12px}
  .hplt .plate{height:52px}
@@ -3097,7 +3097,7 @@ function homeHTML(){
  const tot=d1>500?`<p class="hxh">Elektrisch tot <b>${eur(d1)}</b> per jaar goedkoper</p>`:`<p class="hxh">Bij weinig kilometers wint diesel vaak nog</p>`;
  const plt=`<div class="hplt">${plateForm('D').replace('Kenteken (optioneel)','Kenteken van je diesel')}</div><p class="hplr" data-hpl></p>`;
  const opt=(k,t,s)=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}<b>${t}</b><span>${s}</span></button>`;
- const ch=`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${opt('h','Ik heb een diesel','Doorrijden of nu vervangen?')}${opt('n','Ik koop nieuw','Diesel of elektrisch?')}</div>`;
+ const ch=`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${opt('h','Huidige diesel vervangen','Doorrijden of nu vervangen?')}${opt('n','Nieuwe bedrijfsauto kopen','Diesel of elektrisch?')}</div>`;
  const k=Math.min(k1,Math.max(k0,v('km'))),st=[5000,2500,2000,1000].find(x=>(k1-k0)%x===0&&(k1-k0)/x>=10)||1000;
  const sld=`<div class="hks"><label for="hkm">Bij <b id="hkV">${nf(k)}</b> km per jaar</label><input id="hkm" class="hkr" type="range" min="${k0}" max="${k1}" step="${st}" value="${k}"></div>`;
  const bars=`<div class="hkw"><p class="hkh">Totale kosten per jaar</p>`+`<div class="hkb"><span>Diesel</span><i><u data-bar="d"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u data-bar="e"></u></i><b id="hkE"></b></div>`+'</div>';
