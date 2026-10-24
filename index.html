@@ -1572,24 +1572,24 @@ html.embed .intro{padding-top:20px}
 @keyframes vtgo{0%{transform:translateX(-8px);color:var(--ink-3)}55%{transform:translateX(3px)}100%{transform:none;color:var(--volt)}}
 @media (prefers-reduced-motion:reduce){.vt::after{transition:none}.vt[aria-checked=true] svg{animation:none}}
 /* ===== Startscherm: zolang de calculator nog niet is gebruikt (html.fresh) =====
-   Twee even hoge vlakken: links je situatie en de knop, rechts een voorbeeldberekening.
-   Varianten rechts: A rekenblad, B kilometerschuif, C omslagpunt, D twee kanten, E voorproef van de uitkomst. */
+   Twee even hoge vlakken (links je situatie, rechts een voorbeeld met kilometerschuif) en één knop over de hele breedte.
+   Varianten rechts: A balken, B groot getal, C per km, D over de afschrijftermijn, E als A met een regel naast de titel. */
 .home{display:none}
 html.fresh .home{display:block}
 html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fcta,html.fresh .mode{display:none!important}
-.hA{display:flex;flex-direction:column;gap:28px;padding-top:48px;padding-bottom:96px}
-.hA h1{margin:0;outline:0;font:700 clamp(36px,4.4vw,58px)/1.05 var(--text);letter-spacing:-.03em;text-wrap:balance}
-.hgo{justify-content:center;gap:12px;padding:19px 30px!important;background:var(--volt)!important;color:#fff!important;font-size:19px!important;box-shadow:none!important}
+.hA{display:flex;flex-direction:column;gap:20px;padding-top:36px;padding-bottom:72px}
+.hhd{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 32px;flex-wrap:wrap}
+.hA h1{margin:0;outline:0;font:700 clamp(34px,4vw,52px)/1.05 var(--text);letter-spacing:-.03em;text-wrap:balance}
+.hsd{margin:0 0 6px;max-width:24em;font-size:17px;line-height:1.45;color:var(--ink-2);text-align:right}
+.hgo{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5;width:100%;justify-content:center;gap:12px;padding:20px 30px!important;border-radius:14px!important;background:var(--volt)!important;color:#fff!important;font-size:20px!important;box-shadow:0 10px 24px -14px rgba(10,143,91,.8)!important}
 .hgo:hover{background:var(--volt-ink)!important}
 .hgo svg{width:22px;height:22px}
-.hAg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:stretch}
-.hAl,.hx{display:flex;flex-direction:column;gap:18px;min-height:540px;padding:32px;border-radius:20px}
+.hAg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:stretch}
+.hAl,.hx{display:flex;flex-direction:column;gap:14px;min-height:clamp(300px,calc(100vh - 400px),370px);padding:26px;border-radius:20px}
 .hAl{background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
-.hAl .hgo{margin-top:auto}
-.hin{margin:0;font-size:18px;line-height:1.5;color:var(--ink-2);text-wrap:pretty}
 /* Keuze */
 .hch{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
-.hch button{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 14px;padding:16px 52px 16px 18px;border:0;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:box-shadow .12s}
+.hch button{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 14px;padding:15px 52px 15px 18px;border:0;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:box-shadow .12s}
 .hch button:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
 .hch button[aria-checked=true]{box-shadow:inset 0 0 0 2px var(--ink)}
 .hch svg{grid-row:span 2;width:24px;height:24px;color:var(--ink-3)}
@@ -1599,96 +1599,82 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hch button::after{content:"";position:absolute;top:50%;right:18px;width:22px;height:22px;margin-top:-11px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line-2)}
 .hch button[aria-checked=true]::after{background:var(--volt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center/14px no-repeat;box-shadow:none}
 /* Kenteken in de huisstijl */
-.hplt .plate{display:flex;width:100%;height:58px;margin:0;padding:0 8px 0 0;border-radius:10px;background:var(--card);box-shadow:inset 0 0 0 2px var(--ink);overflow:hidden}
-.hplt .plate::before{content:"NL";flex:none;display:flex;align-items:flex-end;justify-content:center;width:34px;height:100%;padding-bottom:9px;background:var(--volt);color:#fff;font:600 12px var(--text)}
+.hplt .plate{display:flex;width:100%;height:56px;margin:0;padding:0 8px 0 0;border-radius:10px;background:var(--card);box-shadow:inset 0 0 0 2px var(--ink);overflow:hidden}
+.hplt .plate::before{content:"NL";flex:none;display:flex;align-items:flex-end;justify-content:center;width:34px;height:100%;padding-bottom:9px;background:var(--ink);color:#fff;font:600 12px var(--text)}
 .hplt .plate input{flex:1;width:0;min-width:0;padding:0 14px;color:var(--ink);font:600 26px/1 var(--display);letter-spacing:.1em;text-align:left}
 .hplt .plate input::placeholder{color:var(--ink-3);font:500 17px/1 var(--text);letter-spacing:0}
 .hplt .plate:focus-within{box-shadow:inset 0 0 0 2px var(--volt)}
 .hplt .plate.bad{box-shadow:inset 0 0 0 2px var(--amber-ink)}
-.hplt .plate button{width:42px;height:42px;border-radius:8px;background:var(--ink)}
+.hplt .plate button{width:40px;height:40px;border-radius:8px;background:var(--ink)}
 .hplt .plate button svg{width:18px;height:18px}
 .hplt .plate.ok button{background:var(--volt);color:#fff}
 .hplt .plate .plo{display:none}
-.hplr{margin:-8px 0 0;font-size:15px;color:var(--ink-2)}
+.hplr{margin:-6px 0 0;font-size:15px;color:var(--ink-2)}
 .hplr:empty{display:none}
 .hplr b{color:var(--ink)}
-.hA .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.hA .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:auto}
 .hA .vt{padding:10px 6px 9px;align-items:center;text-align:center}
 .hA .vt small{display:none}
 .hA .vt b{font-size:15px}
 .hA .vt svg{width:44px;height:20px}
-/* Rechts: het voorbeeld */
-.hx{background:var(--asph);color:var(--on-asph)}
-.hxh{margin:0;font:600 clamp(30px,3vw,40px)/1.1 var(--display);letter-spacing:-.01em;text-wrap:balance}
+/* Rechts: voorbeeld met kilometerschuif, de inhoud verdeeld over de hoogte */
+.hx{justify-content:space-between;background:var(--asph);color:var(--on-asph)}
+.hxh{margin:0;font:600 clamp(28px,2.7vw,36px)/1.1 var(--display);letter-spacing:-.01em;text-wrap:balance}
 .hxh b{color:var(--volt-2);font-weight:600}
-.hxl{margin:0;font-size:14px;color:var(--on-asph-2)}
-.hxv{margin:0;font-size:18px;line-height:1.45}
+.hxl{margin:0;font-size:15px;color:var(--on-asph-2)}
+.hxl:empty{display:none}
+.hxv{margin:0;font-size:18px;line-height:1.4}
 .hxv b{color:var(--volt-2)}
-.hx>.hxl:last-child{margin-top:auto}
-/* A: rekenblad */
-.hxs{width:100%;margin-top:auto;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:16px}
-.hxs th,.hxs td{padding:11px 0;border-bottom:1px solid var(--asph-3);text-align:right;font-weight:400}
-.hxs th:first-child{text-align:left;color:var(--on-asph-2)}
-.hxs thead th{padding-top:0;font-size:14px;color:var(--on-asph-2)}
-.hxs tfoot th,.hxs tfoot td{border-bottom:0;padding-top:14px;font-weight:600;color:var(--on-asph)}
-.hxs tfoot td:last-child{color:var(--volt-2)}
-.hxs td{padding-left:16px}
-/* B: kilometerschuif */
-.hks{display:flex;flex-direction:column;gap:6px;margin-top:auto}
-.hks label{font-size:18px}
-.hks label b{font:600 24px var(--display)}
-.hkr{--fill:var(--volt-2);--track:var(--asph-3);--thumb:var(--asph);height:36px!important;margin:0!important}
-.hkb{display:grid;grid-template-columns:80px minmax(0,1fr) 92px;align-items:center;gap:12px;font-size:15px;font-variant-numeric:tabular-nums}
+.hks{display:flex;flex-direction:column;gap:4px}
+.hks label{font-size:17px}
+.hks label b{font:600 22px var(--display)}
+.hkr{--fill:var(--volt-2);--track:var(--asph-3);--thumb:var(--asph);height:34px!important;margin:0!important}
+.hkb{display:grid;grid-template-columns:80px minmax(0,1fr) 92px;align-items:center;gap:10px 12px;font-size:15px;font-variant-numeric:tabular-nums}
 .hkb i{display:block;height:12px}
 .hkb u{display:block;height:100%;border-radius:3px;background:var(--amber);transition:width .15s}
 .hkb .e u{background:var(--volt-2)}
 .hkb b{text-align:right;font-weight:600}
-/* C: omslagpunt */
-.hch2{display:block;width:100%;height:auto;margin-top:auto}
-.hch2 line{stroke-width:4;stroke-linecap:round}
-.hch2 .z{stroke:var(--asph-3);stroke-width:1.5;stroke-dasharray:4 5}
-.hch2 .n{stroke:var(--amber)}.hch2 .p{stroke:var(--volt-2)}
-.hch2 .bp{fill:var(--asph);stroke:var(--on-asph);stroke-width:3}
-.hch2 .ep{fill:var(--volt-2)}
-.hch2 text{fill:var(--on-asph-2);font:500 13px var(--text)}
-/* D: twee kanten */
-.hdr{display:grid;gap:2px;padding:16px 18px;border-radius:12px;background:var(--asph-2);box-shadow:inset 3px 0 0 var(--asph-3)}
-.hdr:first-of-type{margin-top:auto}
-.hdr.e{box-shadow:inset 3px 0 0 var(--volt-2)}.hdr.d{box-shadow:inset 3px 0 0 var(--amber)}
-.hdr small{font-size:14px;color:var(--on-asph-2)}
-.hdr b{font:600 22px var(--display)}
-.hdr p{margin:0;font-size:16px}
-.hdr.e p b{color:var(--volt-2)}.hdr.d p b{color:var(--amber)}
-/* E: voorproef van de uitkomst */
-.hpv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:14px;overflow:hidden;background:var(--card);color:var(--ink)}
-.hpv>div{display:flex;flex-direction:column;gap:2px;padding:18px 20px}
-.hpv>.d{background:var(--asph-2);color:var(--on-asph)}
-.hpv>.e{align-items:flex-end}
-.hpv small{font-size:14px;color:var(--ink-3)}.hpv>.d small{color:var(--on-asph-2)}
-.hpv b{font:600 40px/1.05 var(--display)}
-.hpv span{font-size:14px;color:var(--ink-3)}.hpv>.d span{color:var(--on-asph-2)}
-.hpv p{grid-column:1/-1;margin:0;padding:14px 20px;background:var(--soft);font-size:16px}
-.hpv p b{color:var(--volt-ink)}
-.hE .hx .hxh{margin-top:auto}
-.hE .hx .hgo{margin-top:6px}
-@media(max-width:960px){.hAg{grid-template-columns:minmax(0,1fr)}.hAl,.hx{min-height:0}}
+/* B en D: één groot getal */
+.hbg{display:flex;flex-direction:column;gap:2px}
+.hbg b{font:600 clamp(48px,5.4vw,72px)/1 var(--display);letter-spacing:-.02em;color:var(--volt-2);font-variant-numeric:tabular-nums}
+.hbg[data-win=d] b{color:var(--amber)}
+.hbg span{font-size:18px;color:var(--on-asph-2)}
+.hb .hbg b{font-size:clamp(64px,7vw,100px)}
+/* C: per km naast elkaar */
+.hpk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;border-radius:12px;overflow:hidden;background:var(--asph-3)}
+.hpk div{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:var(--asph-2)}
+.hpk small{font-size:14px;color:var(--on-asph-2)}
+.hpk small::before{content:"";display:inline-block;width:9px;height:9px;margin-right:8px;border-radius:2px;background:var(--amber)}
+.hpk .e small::before{background:var(--volt-2)}
+.hpk b{font:600 38px/1.05 var(--display);font-variant-numeric:tabular-nums}
+.hpk span{font-size:14px;color:var(--on-asph-2)}
+.hpk[data-win=e] .e b{color:var(--volt-2)}.hpk[data-win=d] .d b{color:var(--amber)}
+@media(max-width:960px){.hAg{grid-template-columns:minmax(0,1fr)}.hsd{text-align:left}}
 @media(max-width:640px){
- .hA{gap:20px;padding-top:28px;padding-bottom:48px}
- .hA h1{font-size:34px}
- .hgo{width:100%;padding:18px 20px!important;font-size:18px!important}
- .hAl{gap:14px;padding:0;background:none;box-shadow:none}
- .hx{gap:16px;padding:22px 20px}
- .hin{font-size:16px}
- .hch button{padding:15px 50px 15px 16px}
- .hplt .plate{height:54px}
+ .hA{gap:14px;padding-top:20px;padding-bottom:28px}
+ .hA h1{font-size:30px}
+ .hsd{font-size:15px;margin:0}
+ .hgo{padding:17px 20px!important;font-size:18px!important}
+ .hAg{gap:14px}
+ .hAl{gap:10px;padding:0;background:none;box-shadow:none}
+ .hx{gap:14px;padding:18px}
+ .hch{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .hch button{grid-template-columns:minmax(0,1fr);padding:14px 34px 14px 14px}
+ .hAl,.hx{min-height:0}
+ .hch svg,.hch span{display:none}
+ .hch b{font-size:15px;white-space:nowrap}
+ .hch button::after{right:12px;width:18px;height:18px;margin-top:-9px}
+ .hch button[aria-checked=true]::after{background-size:12px}
+ .hplt .plate{height:52px}
  .hA .vts{gap:6px}
  .hA .vt b{font-size:14px}
  .hA .vt svg{width:40px;height:20px}
- .hxh{font-size:28px}
- .hkb{grid-template-columns:70px minmax(0,1fr) 82px;font-size:14px}
- .hpv b{font-size:28px}
- .hpv>div{padding:14px}
- .hpv p{padding:12px 14px;font-size:15px}
+ .hxh{font-size:24px}
+ .hks label{font-size:15px}.hks label b{font-size:19px}
+ .hkb{display:none}
+ .hxv{font-size:16px}
+ .hbg b{font-size:44px}.hbg span{font-size:16px}
+ .hpk b{font-size:28px}.hpk div{padding:12px}
  .fin{padding-top:24px;gap:14px}
  .fin nav{display:flex;flex-wrap:wrap;gap:2px 18px}
  .fin nav a{padding:6px 0;font-size:14px}
@@ -2934,47 +2920,36 @@ const HICON={h:ICON.ab,n:'<svg viewBox="0 0 24 24" fill="none" stroke="currentCo
 const HARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 /* Voorbeeldberekening bij een ander aantal kilometers; het deel met heffing schaalt mee */
 const hAt=km=>{const f=v('km')?v('kmH')/v('km'):0;return calc({km,kmH:km*f})};
-const hDif=km=>{const r=hAt(km);return r.td-r.te};
 const hVerd=(d,b)=>Math.abs(d)<500?'Diesel en elektrisch kosten ongeveer hetzelfde':`${d>0?'Elektrisch':'Diesel'} ${b?'<b>':''}${eur(Math.abs(d))}${b?'</b>':''} per jaar goedkoper`;
 function hkmPaint(km){
- const r=hAt(km),d=r.td-r.te,mx=Math.max(r.td,r.te),el=$('home');
+ const r=hAt(km),d=r.td-r.te,mx=Math.max(r.td,r.te),el=$('home'),even=Math.abs(d)<500;
  const s=(id,h)=>{const e=el.querySelector('#'+id);if(e)e.innerHTML=h};
  const sl=el.querySelector('#hkm');if(sl)sl.style.setProperty('--f',(km-sl.min)/(sl.max-sl.min||1));
  s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',hVerd(d,1));
+ s('hkS',even?'± € 0':eur(Math.abs(d)));s('hkW',even?'Ongeveer even duur':`per jaar goedkoper met ${d>0?'elektrisch':'diesel'}`);
+ s('hkPd',eur(r.td/r.km,2));s('hkPe',eur(r.te/r.km,2));
+ s('hkL',even?'± € 0':eur(Math.abs(d)*r.L));s('hkLW',even?'Over '+r.L+' jaar ongeveer gelijk':`in ${r.L} jaar goedkoper met ${d>0?'elektrisch':'diesel'}`);
+ el.querySelectorAll('[data-win]').forEach(x=>x.dataset.win=even?'':d>0?'e':'d');
  const bd=el.querySelector('#hkBd'),be=el.querySelector('#hkBe');if(bd){bd.style.width=(r.td/mx*100)+'%';be.style.width=(r.te/mx*100)+'%'}
 }
 document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.value)});
 function homeHTML(){
- const q=T().q||[v('km')],k0=q[0],k1=q[q.length-1],r1=hAt(k1),d1=r1.td-r1.te,w=T().w;
+ const q=T().q||[v('km')],k0=q[0],k1=q[q.length-1],r1=hAt(k1),d1=r1.td-r1.te;
  const tot=d1>500?`<p class="hxh">Tot <b>${eur(d1)}</b> per jaar goedkoper</p>`:`<p class="hxh">Bij weinig kilometers wint diesel vaak nog</p>`;
- const go=t=>`<button class="cta big hgo" type="button" data-start>${t||'Reken het uit voor mijn bedrijf'} ${HARR}</button>`;
  const plt=`<div class="hplt">${plateForm('D').replace('Kenteken (optioneel)','Kenteken van je diesel')}</div><p class="hplr" data-hpl></p>`;
  const opt=(k,t,s)=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}<b>${t}</b><span>${s}</span></button>`;
  const ch=`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${opt('h','Ik heb een diesel','Doorrijden of nu vervangen?')}${opt('n','Ik koop nieuw','Diesel of elektrisch?')}</div>`;
- const intro=`<p class="hin">Vul je eigen kilometers, prijzen en subsidie in. Je ziet direct wat diesel en elektrisch jouw bedrijf kosten, per kilometer en per jaar.</p>`;
- const left=(cta=true)=>`<div class="hAl">${intro}${ch}${hc==='h'?plt:''}${vcards()}${cta?go():''}</div>`;
- const h1='<h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>';
- const wrap=(right,cta)=>`<div class="wrap hA hB2 h${DESIGN}">${h1}<div class="hAg">${left(cta)}<aside class="hx" aria-label="Voorbeeldberekening">${right}</aside></div></div>`;
- const ex=km=>`<p class="hxl">Voorbeeld: ${w}, ${nf(km)} km per jaar</p>`;
- if(DESIGN==='b'){
-  const k=Math.min(k1,Math.max(k0,v('km'))),st=Math.max(1000,Math.round((k1-k0)/20/1000)*1000);
-  return wrap(`${tot}<div class="hks"><label for="hkm">Bij <b id="hkV">${nf(k)}</b> km per jaar</label><input id="hkm" class="hkr" type="range" min="${k0}" max="${k1}" step="${st}" value="${k}"></div>
-<div class="hkb"><span>Diesel</span><i><u id="hkBd"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u id="hkBe"></u></i><b id="hkE"></b></div><p class="hxv" id="hkT"></p>`)}
- if(DESIGN==='c'){
-  const x0=Math.max(5000,Math.round(k0/2/5000)*5000),a=hDif(x0),b=hDif(k1),sl=(b-a)/(k1-x0),be=sl>0?x0-a/sl:null;
-  const W=480,H=210,P=[14,36,26,8],lo=Math.min(0,a,b),hi=Math.max(0,a,b),sx=x=>P[3]+(x-x0)/(k1-x0)*(W-P[1]-P[3]),sy=y=>P[0]+(hi-y)/(hi-lo||1)*(H-P[0]-P[2]);
-  const inR=be!==null&&be>x0&&be<k1,mid=inR?be:(a>0?x0:k1);
-  const seg=(xa,xb,c)=>`<line x1="${sx(xa)}" y1="${sy(a+sl*(xa-x0))}" x2="${sx(xb)}" y2="${sy(a+sl*(xb-x0))}" class="${c}"/>`;
-  const svg=`<svg viewBox="0 0 ${W} ${H}" class="hch2" role="img" aria-label="Voordeel per jaar bij meer kilometers"><line x1="${P[3]}" x2="${W-P[1]}" y1="${sy(0)}" y2="${sy(0)}" class="z"/>${inR?seg(x0,be,'n')+seg(be,k1,'p'):seg(x0,k1,a>0?'p':'n')}${inR?`<circle cx="${sx(be)}" cy="${sy(0)}" r="6" class="bp"/><text x="${sx(be)}" y="${sy(0)+22}" text-anchor="middle">${nf(Math.round(be/1000)*1000)} km</text>`:''}<circle cx="${sx(k1)}" cy="${sy(b)}" r="5" class="ep"/><text x="${P[3]}" y="${H-4}">${nf(x0)} km</text><text x="${W-P[1]}" y="${H-4}" text-anchor="end">${nf(k1)} km</text></svg>`;
-  return wrap(`${tot}${svg}<p class="hxv">${inR?`Vanaf <b>${nf(Math.round(be/1000)*1000)} km</b> per jaar is elektrisch goedkoper.`:hVerd(b,1)+` bij ${nf(k1)} km.`}</p><p class="hxl">Voorbeeld: ${w}, voordeel per jaar bij meer kilometers</p>`)}
- if(DESIGN==='d'){
-  const row=(t,km)=>{const d=hDif(km);return`<div class="hdr ${d>500?'e':d<-500?'d':''}"><small>${t}</small><b>${nf(km)} km per jaar</b><p>${hVerd(d,1)}</p></div>`};
-  return wrap(`${tot}${row('Weinig kilometers',k0)}${row('Veel kilometers',k1)}<p class="hxv">Waar jouw bedrijf uitkomt, hangt af van je eigen ritten en prijzen.</p><p class="hxl">Voorbeeld: ${w}</p>`)}
- if(DESIGN==='e'){
-  const r=hAt(v('km')),d=r.td-r.te,half=(c,n,t)=>`<div class="${c}"><small>${n}</small><b>${eur(t/r.km,2)}</b><span>per km</span></div>`;
-  return wrap(`<p class="hxl">Zo ziet jouw uitkomst eruit</p><div class="hpv">${half('d',hc==='h'?'Diesel houden':'Diesel',r.td)}${half('e','Elektrisch',r.te)}<p>${hVerd(d,1)}</p></div>${tot}${ex(k1)}${go()}`,false)}
- const rows=CAT.filter(c=>r1.D[c[0]]||r1.E[c[0]]).map(c=>`<tr><th scope="row">${({afs:"Aanschaf",en:"Energie",ond:"Onderhoud",ver:"Verzekering",hef:"Heffing"})[c[0]]}</th><td>${eur(r1.D[c[0]])}</td><td>${eur(r1.E[c[0]])}</td></tr>`).join('');
- return wrap(`${tot}<table class="hxs"><thead><tr><th></th><th scope="col">Diesel</th><th scope="col">Elektrisch</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><th scope="row">Per jaar</th><td>${eur(r1.td)}</td><td>${eur(r1.te)}</td></tr></tfoot></table>${ex(k1)}`);
+ const k=Math.min(k1,Math.max(k0,v('km'))),st=Math.max(1000,Math.round((k1-k0)/20/1000)*1000);
+ const sld=`<div class="hks"><label for="hkm">Bij <b id="hkV">${nf(k)}</b> km per jaar</label><input id="hkm" class="hkr" type="range" min="${k0}" max="${k1}" step="${st}" value="${k}" aria-label="Kilometers per jaar"></div>`;
+ const bars=`<div class="hkb"><span>Diesel</span><i><u id="hkBd"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u id="hkBe"></u></i><b id="hkE"></b></div>`;
+ const right={
+  a:`${tot}${sld}${bars}<p class="hxv" id="hkT"></p>`,
+  b:`${sld}<div class="hbg" data-win><b id="hkS"></b><span id="hkW"></span></div><p class="hxl">${d1>500?`Tot ${eur(d1)} per jaar bij ${nf(k1)} km`:''}</p>`,
+  c:`${tot}<div class="hpk" data-win><div class="d"><small>Diesel</small><b id="hkPd"></b><span>per km</span></div><div class="e"><small>Elektrisch</small><b id="hkPe"></b><span>per km</span></div></div>${sld}<p class="hxv" id="hkT"></p>`,
+  d:`${tot}${sld}<div class="hbg" data-win><b id="hkL"></b><span id="hkLW"></span></div><p class="hxv" id="hkT"></p>`,
+  e:`${tot}${sld}${bars}<p class="hxv" id="hkT"></p>`}[DESIGN]||'';
+ const side=DESIGN==='e'?'<p class="hsd">Rekentool voor diesel en elektrisch, met je eigen cijfers.</p>':'';
+ return`<div class="wrap hA h${DESIGN}"><div class="hhd"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>${side}</div><div class="hAg"><div class="hAl">${ch}${hc==='h'?plt:''}${vcards()}</div><aside class="hx" aria-label="Voorbeeldberekening voor een ${T().w}">${right}</aside></div><button class="cta big hgo" type="button" data-start>Reken het uit voor mijn bedrijf ${HARR}</button></div>`;
 }
 let hPaint=false;
 function homePaint(){
