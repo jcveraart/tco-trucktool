@@ -1564,6 +1564,13 @@ html.embed .intro{padding-top:20px}
 #calc .story .sum{margin-top:0}
 #sumRs{display:block;margin:10px 0 0 auto;font-size:14px;font-weight:500;color:var(--ink-3)}
 #sumRs[hidden]{display:none}
+/* Voertuig kiezen: het icoon rijdt kort naar voren en kleurt groen, onderaan laadt een groene balk vol */
+.vt{position:relative;overflow:hidden}
+.vt::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--volt);transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.vt[aria-checked=true]::after{transform:scaleX(1)}
+.vt[aria-checked=true] svg{animation:vtgo .6s cubic-bezier(.3,.7,.2,1)}
+@keyframes vtgo{0%{transform:translateX(-8px);color:var(--ink-3)}55%{transform:translateX(3px)}100%{transform:none;color:var(--volt)}}
+@media (prefers-reduced-motion:reduce){.vt::after{transition:none}.vt[aria-checked=true] svg{animation:none}}
 </style>
 </head>
 <body>
