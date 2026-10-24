@@ -2923,8 +2923,10 @@ function hkmPaint(km){
  el.querySelectorAll('[data-bar]').forEach(b=>{const p=Math.min(100,(b.dataset.bar==='d'?r.td:r.te)/mx*100)+'%';if(b.closest('.hkc'))b.style.height=p;else b.style.width=p});
 }
 document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.value)});
+/* Bereik van de voorbeeldschuif per voertuig (km per jaar) */
+const HKM={trekker:[40000,150000],bakwagen:[20000,120000],bestel:[15000,100000],bus:[40000,150000]};
 function homeHTML(){
- const q=T().q||[v('km')],k0=q[0],k1=q[q.length-1],r1=hAt(k1),d1=r1.td-r1.te,mx=Math.max(r1.td,r1.te);
+ const [k0,k1]=HKM[vtype]||[15000,150000],r1=hAt(k1),d1=r1.td-r1.te,mx=Math.max(r1.td,r1.te);
  const tot=d1>500?`<p class="hxh">Elektrisch tot <b>${eur(d1)}</b> per jaar goedkoper</p>`:`<p class="hxh">Bij weinig kilometers wint diesel vaak nog</p>`;
  const plt=`<div class="hplt">${plateForm('D').replace('Kenteken (optioneel)','Kenteken van je diesel')}</div><p class="hplr" data-hpl></p>`;
  const opt=(k,t,s)=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}<b>${t}</b><span>${s}</span></button>`;
