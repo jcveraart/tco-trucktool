@@ -1624,6 +1624,7 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hxl:empty{display:none}
 .hxv{margin:0;font-size:18px;line-height:1.4}
 .hxv b{color:var(--volt-2)}
+.hxv b.d{color:var(--amber)}
 .hks{display:flex;flex-direction:column;gap:4px}
 .hks label{font-size:17px}
 .hks label b{font:600 22px var(--display)}
@@ -2918,7 +2919,7 @@ function hkmPaint(km){
  const r=hAt(km),d=r.td-r.te,el=$('home'),x=el.querySelector('.hx'),mx=+(x&&x.dataset.mx)||Math.max(r.td,r.te);
  const s=(id,h)=>{const e=el.querySelector('#'+id);if(e)e.innerHTML=h};
  const sl=el.querySelector('#hkm');if(sl)sl.style.setProperty('--f',(km-sl.min)/(sl.max-sl.min||1));
- s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',Math.abs(d)<500?'Verschil: diesel en elektrisch kosten ongeveer hetzelfde':`Verschil: <b>${eur(Math.abs(d))}</b> per jaar in het voordeel van ${d>0?'elektrisch':'diesel'}`);
+ s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',Math.abs(d)<500?'Verschil: diesel en elektrisch kosten ongeveer hetzelfde':`Verschil: <b${d>0?'':' class="d"'}>${eur(Math.abs(d))}</b>`);
  el.querySelectorAll('[data-bar]').forEach(b=>{const p=Math.min(100,(b.dataset.bar==='d'?r.td:r.te)/mx*100)+'%';if(b.closest('.hkc'))b.style.height=p;else b.style.width=p});
 }
 document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.value)});
@@ -2928,7 +2929,7 @@ function homeHTML(){
  const plt=`<div class="hplt">${plateForm('D').replace('Kenteken (optioneel)','Kenteken van je diesel')}</div><p class="hplr" data-hpl></p>`;
  const opt=(k,t,s)=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}<b>${t}</b><span>${s}</span></button>`;
  const ch=`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${opt('h','Ik heb een diesel','Doorrijden of nu vervangen?')}${opt('n','Ik koop nieuw','Diesel of elektrisch?')}</div>`;
- const k=Math.min(k1,Math.max(k0,v('km'))),st=Math.max(1000,Math.round((k1-k0)/20/1000)*1000);
+ const k=Math.min(k1,Math.max(k0,v('km'))),st=[5000,2500,2000,1000].find(x=>(k1-k0)%x===0&&(k1-k0)/x>=10)||1000;
  const sld=`<div class="hks"><label for="hkm">Bij <b id="hkV">${nf(k)}</b> km per jaar</label><input id="hkm" class="hkr" type="range" min="${k0}" max="${k1}" step="${st}" value="${k}"></div>`;
  const bars=`<div class="hkw"><p class="hkh">Totale kosten per jaar</p>`+(DESIGN==='b'
   ?`<div class="hkc"><div><b id="hkD"></b><i><u data-bar="d"></u></i><span>Diesel</span></div><div class="e"><b id="hkE"></b><i><u data-bar="e"></u></i><span>Elektrisch</span></div></div>`
