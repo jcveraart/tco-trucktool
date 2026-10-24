@@ -1,0 +1,38 @@
+name: SEO-pagina's bijwerken
+
+# Maakt na elke wijziging aan index.html de losse pagina's per route en sitemap.xml opnieuw (scripts/seo.mjs).
+on:
+  push:
+    branches: [main]
+    paths: [index.html, scripts/seo.mjs]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: seo
+  cancel-in-progress: false
+
+jobs:
+  pagina:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/seo.mjs
+      - name: Commit als er iets veranderd is
+        run: |
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "SEO-pagina's bijwerken"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+        env:
+          GH_TOKEN: ${{ github.token }}
