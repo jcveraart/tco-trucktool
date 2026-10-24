@@ -1616,36 +1616,37 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hrs p{margin:0;font-size:16px;line-height:1.5;color:var(--ink-2)}
 .hrs b{display:block;font:600 21px/1.25 var(--text);color:var(--ink);letter-spacing:-.01em}
 /* A: kop links, voorbeeld rechts, redenen eronder */
-.hA{padding-top:64px;padding-bottom:88px}
-.hAg{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px 64px;align-items:center}
-.hAl{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
-.hA h1{margin:0;font:700 clamp(38px,5.2vw,66px)/1.02 var(--text);letter-spacing:-.03em}
+.hA{display:flex;flex-direction:column;gap:36px;padding-top:52px;padding-bottom:88px}
+.hA h1{margin:0;font:700 clamp(38px,4.6vw,62px)/1.04 var(--text);letter-spacing:-.03em}
 .hA h1 em{font-style:normal;color:var(--volt)}
-.hA .hgo{margin-top:4px}
-.hA .hAl>*{width:100%}
-.hA .hAl>.hgo{width:auto}
+.hAg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:stretch}
+.hAl{display:flex;flex-direction:column;gap:16px;padding:28px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
 .hA .hch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;background:none;box-shadow:none}
-.hA .hch button{position:relative;gap:14px;padding:24px 48px 24px 20px;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font-size:18px;text-align:left}
+.hA .hch button{position:relative;gap:12px;padding:20px 44px 20px 18px;border-radius:14px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font-size:17px;text-align:left}
 .hA .hch button:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
 .hA .hch button[aria-checked=true]{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
 .hA .hch svg{flex:none;width:22px;height:22px;color:var(--ink-3)}
 .hA .hch button[aria-checked=true] svg{color:var(--volt)}
-.hA .hch button::after{content:"";position:absolute;top:50%;right:16px;width:20px;height:20px;margin-top:-10px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.hA .hch button::after{content:"";position:absolute;top:50%;right:14px;width:20px;height:20px;margin-top:-10px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line-2)}
 .hA .hch button[aria-checked=true]::after{background:var(--volt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center/14px no-repeat;box-shadow:none}
-.hA .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.hA .vt{padding:10px 8px 9px;align-items:center;text-align:center}
+.hA .vts{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.hA .vt{padding:10px 6px 9px;align-items:center;text-align:center}
 .hA .vt small{display:none}
 .hA .vt b{font-size:15px}
 .hA .vt svg{width:44px;height:20px}
-.hx{display:flex;flex-direction:column;gap:18px;padding:28px;border-radius:20px;background:var(--asph);color:var(--on-asph)}
+.hA .hplt .plate{max-width:none;height:62px}
+.hA .hplr{margin-top:-6px}
+.hx{display:flex;flex-direction:column;gap:16px;padding:28px;border-radius:20px;background:var(--asph);color:var(--on-asph)}
 .hx small{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--on-asph-2)}
 .hxr{display:grid;grid-template-columns:86px minmax(0,1fr) auto;align-items:center;gap:12px;font-size:15px;font-variant-numeric:tabular-nums}
 .hxr i{display:block;height:12px;border-radius:3px;background:var(--amber)}
 .hxr.e i{background:var(--volt-2)}
 .hxr span:last-child{font-weight:600}
 .hxt{padding-top:16px;border-top:1px solid var(--asph-3);font:600 30px/1.15 var(--display)}
-.hxt span{display:block;font:400 15px var(--text);color:var(--on-asph-2)}
-.hA .hrs{margin-top:84px}
+.hx .hgo{margin-top:auto;justify-content:center;box-shadow:none!important}
+.hA .hrs small{display:none}
+.hA .hrs b{font-size:19px}
+
 /* B: de rekensom op een donker vlak */
 .hB{background:var(--asph);color:var(--on-asph)}
 .hBg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px 72px;align-items:center;padding-top:72px;padding-bottom:80px}
@@ -1721,11 +1722,12 @@ html.dB .wzf .cta,html.dC .wzf .cta{margin-left:auto}
  .hch button{flex:1;justify-content:center;padding:11px 8px;font-size:15px}
  .hch svg{display:none}
  .hA .hch{grid-template-columns:minmax(0,1fr);gap:8px}
- .hA .hch button{padding:18px 48px 18px 16px;font-size:18px}
+ .hA .hch button{padding:18px 48px 18px 16px;font-size:18px;justify-content:flex-start}
  .hA .hch svg{display:block}
- .hA .hch button{justify-content:flex-start}
- .hA .hAl>.hgo{width:100%}
- .hA .hx{display:none}
+ .hAl{padding:0;background:none;box-shadow:none;gap:12px}
+ .hA .hplt .plate{height:56px}
+ .hxt{font-size:26px}
+ .hAg{gap:20px}
  .hA .vt b{font-size:14px}
  .hA .vt svg{width:40px;height:20px}
  .hA .vts{gap:6px}
@@ -1736,12 +1738,10 @@ html.dB .wzf .cta,html.dC .wzf .cta{margin-left:auto}
  .hplt .plate{max-width:none}
  .hvt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
  .hrs{grid-template-columns:minmax(0,1fr);gap:20px}
- .hA{padding-top:32px;padding-bottom:48px}
+ .hA{gap:22px;padding-top:28px;padding-bottom:48px}
  .hA h1{font-size:38px}
- .hAl{gap:20px}
  .hx{padding:20px}
  .hxr{grid-template-columns:76px minmax(0,1fr) auto}
- .hA .hrs{margin-top:48px}
  .hBg{gap:40px;padding-top:36px;padding-bottom:44px}
  .hB h1{font-size:42px}
  .hsr b{font-size:16px}.hsr span{font-size:20px}
@@ -2994,13 +2994,13 @@ function setUsed(on){store('sod-used',on?'1':null);document.documentElement.clas
 const HICON={h:ICON.ab,n:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'};
 const HARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 const HRS=[
- ['Energie','Laden is goedkoper dan tanken','Stroom kost per kilometer minder dan diesel, zeker als je op je eigen terrein laadt.'],
- ['Heffing','Tot vijf keer minder heffing','Sinds 1 juli 2026 betalen vrachtwagens heffing per kilometer. Elektrisch geldt het laagste tarief.'],
- ['Subsidie','De meerprijs krimpt','AanZET vergoedt een deel van de meerprijs. Met ERE\'s verdien je daarnaast aan elke kWh die je laadt.'],
- ['Stad','De stad blijft open','Zero-emissiezones worden strenger. Je kenteken laat zien tot wanneer je diesel er nog in mag.']];
+ ['Energie','Laden kost minder','Vooral op eigen terrein.'],
+ ['Heffing','Tot 5× minder heffing','In de vrachtwagenheffing.'],
+ ['Subsidie','De meerprijs krimpt','Met AanZET en ERE\'s.'],
+ ['Stad','De stad blijft open','Ook in zero-emissiezones.']];
 const HPOST=[['afs','Aanschaf','Hogere prijs, minus subsidie en restwaarde'],['en','Energie','Laden is goedkoper dan tanken'],['ond','Onderhoud','Minder bewegende delen, minder slijtage'],['ver','Verzekering','Hogere waarde, hogere premie'],['hef','Vrachtwagenheffing','Het laagste tarief voor nul uitstoot']];
 function homeHTML(){
- const r=calc(),d=r.td-r.te,ex=`Voorbeeld · ${T().w} · ${nf(r.km)} km per jaar`;
+ const r=calc(),d=r.td-r.te,ex=`Voorbeeld · ${T().w} · ${nf(r.km)} km/jaar`;
  const ch=t=>`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${[['h',t[0]],['n',t[1]]].map(([k,x])=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}${x}</button>`).join('')}</div>`;
  const go=(t,k)=>`<button class="cta big hgo" type="button" data-start="${k||''}">${t||'Reken je eigen voordeel na'} ${HARR}</button>`;
  const plt=`<div class="hplt">${plateForm('D').replace('Kenteken (optioneel)','Jouw kenteken')}</div><p class="hplr" data-hpl></p>`;
@@ -3015,17 +3015,19 @@ function homeHTML(){
 <div class="hCs"><div><small>Vervangen</small><h2>Ik heb een diesel</h2><p>Vul je kenteken in. Je ziet welk voertuig het is en tot wanneer hij de zero-emissiezone in mag.</p><div class="hpn">${plt}</div>${go('Reken vervangen door','h')}</div>
 <div><small>Nieuw</small><h2>Ik koop iets nieuws</h2><p>Vergelijk een nieuwe diesel met een elektrische, voor jouw kilometers.</p><div class="hpn">${vts}</div>${go('Vergelijk nieuw','n')}</div><span class="hof" aria-hidden="true">of</span></div>${rs}</div>`;
  const mx=Math.max(r.td,r.te),bar=(c,n,v)=>`<div class="hxr ${c}"><span>${n}</span><i style="width:${(v/mx*100).toFixed(1)}%"></i><span>${eur(v)}</span></div>`;
- return`<div class="wrap hA"><div class="hAg"><div class="hAl"><h1 tabindex="-1">Duurder in aanschaf.<br><em>Goedkoper per kilometer.</em></h1><p class="hlead">Reken in een paar minuten uit of elektrisch rijden voor jouw bedrijf loont. Onafhankelijk en met je eigen cijfers.</p>${ch(['Ik heb een diesel','Ik koop iets nieuws'])}${vcards()}<div class="hpn"${hc==='h'?'':' hidden'}>${plt}</div>${go()}</div>
-<aside class="hx" aria-label="Voorbeeld"><small>${ex}</small>${bar('d','Diesel',r.td)}${bar('e','Elektrisch',r.te)}<div class="hxt">${eur(Math.abs(d))} per jaar ${d>=0?'goedkoper':'duurder'}<span>Over ${r.L} jaar ${eur(Math.abs(d*r.L))}, met voorbeeldcijfers</span></div></aside></div>${rs}</div>`;
+ return`<div class="wrap hA"><h1 tabindex="-1">Duurder in aanschaf.<br><em>Goedkoper per kilometer.</em></h1><div class="hAg"><div class="hAl">${ch(['Ik heb een diesel','Ik koop nieuw'])}${vcards()}${plt}</div>
+<aside class="hx" aria-label="Voorbeeld"><small>${ex}</small>${bar('d','Diesel',r.td)}${bar('e','Elektrisch',r.te)}<div class="hxt">${eur(Math.abs(d))} per jaar ${d>=0?'goedkoper':'duurder'}</div>${go()}</aside></div>${rs}</div>`;
 }
 let hPaint=false;
 function homePaint(){
  if(!isFresh()){$('home').innerHTML='';return}
  hPaint=true;setH($('home'),homeHTML());plPaint();
+ $('home').querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
  const i=PL.D;$('home').querySelectorAll('[data-plate="D"]').forEach(f=>{if(i&&i.k)f.elements.kt.value=plFmt(i.k)});
  $('home').querySelectorAll('[data-hpl]').forEach(p=>{p.innerHTML=!i?'':i.err?i.err:[`<b>${plName(i)}</b>`,i.first&&i.first.getFullYear(),zeTxt(i)&&'zero-emissiezone: '+zeTxt(i).toLowerCase()].filter(Boolean).join(' · ')});
  hPaint=false;
 }
+{const f=render;render=function(){f.apply(this,arguments);if(!hPaint&&isFresh()&&!$('wz').open)homePaint()}}
 {const f=plLookup;plLookup=async(...a)=>{const x=await f(...a);if(isFresh()){if(PL.D&&!PL.D.err)hc='h';homePaint()}return x}}
 function homeDesign(d){DESIGN=d;['a','b','c'].forEach(x=>document.documentElement.classList.toggle('d'+x.toUpperCase(),x===d));homePaint()}
 document.addEventListener('click',e=>{
