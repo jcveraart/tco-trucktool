@@ -1572,8 +1572,7 @@ html.embed .intro{padding-top:20px}
 @keyframes vtgo{0%{transform:translateX(-8px);color:var(--ink-3)}55%{transform:translateX(3px)}100%{transform:none;color:var(--volt)}}
 @media (prefers-reduced-motion:reduce){.vt::after{transition:none}.vt[aria-checked=true] svg{animation:none}}
 /* ===== Startscherm: zolang de calculator nog niet is gebruikt (html.fresh) =====
-   Twee even hoge vlakken (links je situatie, rechts een voorbeeld met kilometerschuif) en één knop over de hele breedte.
-   Versie 1 (html.dA) liggende balken, versie 2 (html.dB) staande balken. */
+   Twee even hoge vlakken (links je situatie, rechts een voorbeeld met kilometerschuif) en één knop over de hele breedte. */
 .home{display:none}
 html.fresh .home{display:block}
 html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fcta,html.fresh .mode{display:none!important}
@@ -1637,14 +1636,6 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hkb u{display:block;height:100%;border-radius:3px;background:var(--amber);transition:width .15s}
 .hkb .e u{background:var(--volt-2)}
 .hkb b{text-align:right;font-weight:600}
-/* Versie 2: staande balken */
-.hkc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.hkc>div{display:grid;grid-template-columns:auto auto;justify-content:space-between;align-items:baseline;gap:6px 10px;font-variant-numeric:tabular-nums}
-.hkc b{font:600 19px var(--display)}
-.hkc i{grid-column:1/-1;position:relative;display:block;width:100%;height:40px;border-radius:6px;background:var(--asph-2)}
-.hkc u{position:absolute;left:0;right:0;bottom:0;display:block;border-radius:6px;background:var(--amber);transition:height .15s}
-.hkc .e u{background:var(--volt-2)}
-.hkc span{font-size:15px;color:var(--on-asph-2)}
 @media(max-width:960px){.hAg{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:640px){
  .hA{gap:14px;padding-top:20px;padding-bottom:28px}
@@ -1668,7 +1659,6 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
  .hks label{font-size:14px}.hks label b{font-size:17px}
  .hkb{grid-template-columns:70px minmax(0,1fr) 78px;gap:8px 10px;font-size:14px}
  .hxv{font-size:16px}
- .hkc i{height:40px}.hkc b{font-size:17px}
  .fin{padding-top:24px;gap:14px}
  .fin nav{display:flex;flex-wrap:wrap;gap:2px 18px}
  .fin nav a{padding:6px 0;font-size:14px}
@@ -2907,21 +2897,20 @@ $('wzB').addEventListener('scroll',tipPlace,{passive:true});
 /* ===== Startscherm =====
    Tot iemand het invulvenster heeft afgerond staat op de homepage de keuze (diesel vervangen of nieuw), het kenteken,
    waarom overstappen kan lonen en één knop. Daarna toont / de simpele uitkomst en kun je pas wisselen naar uitgebreid. */
-let DESIGN='a',hc=null;
+let hc=null;
 function isFresh(){return store('sod-used')!=='1'}
 function setUsed(on){store('sod-used',on?'1':null);document.documentElement.classList.toggle('fresh',!on);if(!on)hc=null;homePaint()}
 const HICON={h:ICON.ab,n:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'};
 const HARR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 /* Voorbeeldberekening bij een ander aantal kilometers; het deel met heffing schaalt mee */
 const hAt=km=>{const f=v('km')?v('kmH')/v('km'):0;return calc({km,kmH:km*f})};
-const hVerd=(d,b)=>Math.abs(d)<500?'Diesel en elektrisch kosten ongeveer hetzelfde':`${d>0?'Elektrisch':'Diesel'} ${b?'<b>':''}${eur(Math.abs(d))}${b?'</b>':''} per jaar goedkoper`;
 /* Balken op een vaste schaal (de duurste bij de meeste kilometers), zodat ze allebei meegroeien met de schuif */
 function hkmPaint(km){
  const r=hAt(km),d=r.td-r.te,el=$('home'),x=el.querySelector('.hx'),mx=+(x&&x.dataset.mx)||Math.max(r.td,r.te);
  const s=(id,h)=>{const e=el.querySelector('#'+id);if(e)e.innerHTML=h};
  const sl=el.querySelector('#hkm');if(sl)sl.style.setProperty('--f',(km-sl.min)/(sl.max-sl.min||1));
  s('hkV',nf(km));s('hkD',eur(r.td));s('hkE',eur(r.te));s('hkT',`Verschil: <b${d<0?' class="d"':''}>${eur(Math.abs(d))}</b>`);
- el.querySelectorAll('[data-bar]').forEach(b=>{const p=Math.min(100,(b.dataset.bar==='d'?r.td:r.te)/mx*100)+'%';if(b.closest('.hkc'))b.style.height=p;else b.style.width=p});
+ el.querySelectorAll('[data-bar]').forEach(b=>{const p=Math.min(100,(b.dataset.bar==='d'?r.td:r.te)/mx*100)+'%';b.style.width=p});
 }
 document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.value)});
 /* Bereik van de voorbeeldschuif per voertuig (km per jaar) */
@@ -2934,10 +2923,8 @@ function homeHTML(){
  const ch=`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${opt('h','Ik heb een diesel','Doorrijden of nu vervangen?')}${opt('n','Ik koop nieuw','Diesel of elektrisch?')}</div>`;
  const k=Math.min(k1,Math.max(k0,v('km'))),st=[5000,2500,2000,1000].find(x=>(k1-k0)%x===0&&(k1-k0)/x>=10)||1000;
  const sld=`<div class="hks"><label for="hkm">Bij <b id="hkV">${nf(k)}</b> km per jaar</label><input id="hkm" class="hkr" type="range" min="${k0}" max="${k1}" step="${st}" value="${k}"></div>`;
- const bars=`<div class="hkw"><p class="hkh">Totale kosten per jaar</p>`+(DESIGN==='b'
-  ?`<div class="hkc"><div><span>Diesel</span><b id="hkD"></b><i><u data-bar="d"></u></i></div><div class="e"><span>Elektrisch</span><b id="hkE"></b><i><u data-bar="e"></u></i></div></div>`
-  :`<div class="hkb"><span>Diesel</span><i><u data-bar="d"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u data-bar="e"></u></i><b id="hkE"></b></div>`)+'</div>';
- return`<div class="wrap hA h${DESIGN}"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hAg"><div class="hAl">${ch}${hc==='h'?plt:''}${vcards()}</div><aside class="hx" data-mx="${Math.round(mx)}" aria-label="Voorbeeldberekening voor een ${T().w}">${tot}${sld}${bars}<p class="hxv" id="hkT"></p></aside></div><button class="cta big hgo" type="button" data-start>Ga naar de calculator ${HARR}</button></div>`;
+ const bars=`<div class="hkw"><p class="hkh">Totale kosten per jaar</p>`+`<div class="hkb"><span>Diesel</span><i><u data-bar="d"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u data-bar="e"></u></i><b id="hkE"></b></div>`+'</div>';
+ return`<div class="wrap hA"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hAg"><div class="hAl">${ch}${hc==='h'?plt:''}${vcards()}</div><aside class="hx" data-mx="${Math.round(mx)}" aria-label="Voorbeeldberekening voor een ${T().w}">${tot}${sld}${bars}<p class="hxv" id="hkT"></p></aside></div><button class="cta big hgo" type="button" data-start>Ga naar de calculator ${HARR}</button></div>`;
 }
 let hPaint=false;
 function homePaint(){
@@ -2951,7 +2938,6 @@ function homePaint(){
 }
 {const f=render;render=function(){f.apply(this,arguments);if(!hPaint&&isFresh()&&!$('wz').open)homePaint()}}
 {const f=plLookup;plLookup=async(...a)=>{const x=await f(...a);if(isFresh()){if(PL.D&&!PL.D.err)hc='h';homePaint()}return x}}
-function homeDesign(d){DESIGN=d;['a','b'].forEach(x=>document.documentElement.classList.toggle('d'+x.toUpperCase(),x===d));homePaint()}
 document.addEventListener('click',e=>{
  const c=e.target.closest('[data-hc]');if(c){hc=c.dataset.hc;if($('dw').value!==hc){$('dw').value=hc;dieselAuto(true);render()}homePaint();return}
  const st=e.target.closest('[data-start]');if(st){const k=st.dataset.start;if(k){hc=k;if($('dw').value!==k){$('dw').value=k;dieselAuto(true);render()}}openWz('use');return}
@@ -3993,7 +3979,7 @@ gHub();
 document.querySelectorAll('.faq section>h2').forEach(h=>{const n=h.parentNode.querySelectorAll('details').length;h.insertAdjacentHTML('beforeend',` <small>${n} ${n===1?'vraag':'vragen'}</small>`);h.tabIndex=0;h.setAttribute('role','button');h.setAttribute('aria-expanded','false')});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.faq section>h2')){e.preventDefault();e.target.click()}});
 build();applyType('trekker');
-if(fromURL())store('sod-used','1');else load();homeDesign(DESIGN);setUsed(!isFresh());route(true);
+if(fromURL())store('sod-used','1');else load();setUsed(!isFresh());route(true);
 syncSupabase().then(syncExtra);
 [['D','plk'],['E','plkE']].forEach(([k,id])=>{const n=plNorm($(id).value);if(!n)return;document.querySelectorAll(`[data-plate="${k}"]`).forEach(f=>f.elements.kt.value=plFmt(n));plLookup(k,n,false)});
 </script>
