@@ -1889,12 +1889,117 @@ html.fresh body:has(#calc:not([hidden])) .bkw{display:none}
  .rell{grid-template-columns:minmax(0,1fr)}
  .rex{padding:18px}.rex b{font-size:18px}.rex small{font-size:13px}
 }
+/* ===== Ronde 2: F, G en H (varianten op B) ===== */
+.bkh{display:none}
+html.r-f .bkw{display:none}
+html.r-f:not(.fresh) .bkh,html.r-f.fresh body:has(#calc[hidden]) .bkh{display:inline-flex;align-items:center;gap:6px;margin-right:auto;padding:6px 12px 6px 9px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--asph-3);color:var(--on-asph-2);text-decoration:none;font:600 14px var(--text)}
+html.r-f .bkh:hover{color:var(--on-asph);box-shadow:inset 0 0 0 1px var(--on-asph-2)}
+html.r-f .bkh svg{width:15px;height:15px}
+html.r-f:not(.fresh) .brand,html.r-f.fresh body:has(#calc[hidden]) .brand{margin-right:14px}
+html:is(.r-g,.r-h) body:has(#calc:not([hidden])) .bkw{display:none}
+#res .rsl{display:flex;flex-direction:column;gap:2px;min-width:0}
+#res .rsl label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:15px;color:var(--ink-2)}
+#res .rsl label b{color:var(--ink);font:600 19px var(--display);font-variant-numeric:tabular-nums}
+#res .rsl input{--fill:var(--volt);--track:var(--line);--thumb:#fff;margin:0}
+#res .rper button{white-space:nowrap}
+:is(.rF,.rG,.rH) .rsum{grid-auto-flow:row!important;grid-template-rows:none!important;grid-template-columns:repeat(5,minmax(0,1fr))!important}
+
+/* F: tabbladen rechtsboven, naast het voertuig */
+.rF{padding:22px 0 10px}
+.rft{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 24px;flex-wrap:wrap}
+.rft .rveh{padding-bottom:14px}
+.rF .rbt{padding:0}
+.rF .rbp{border-top-right-radius:0}
+.rfc{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:14px 30px;padding:0 4px 4px}
+
+/* G: losse schakelaar, wat-als schuiven naast de uitkomst */
+.rG{display:flex;flex-direction:column;gap:18px;padding:20px 0 10px}
+.rgt{display:flex;align-items:center;gap:12px 18px;flex-wrap:wrap}
+.rgt .bk{padding:7px 12px 7px 9px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line-2)}
+.rgt .bk:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.rgt .rveh{margin-right:auto}
+.rgsw{display:inline-flex;padding:5px;border-radius:999px;background:var(--ink);box-shadow:0 10px 24px -14px rgba(0,0,0,.6)}
+.rgsw a{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;color:var(--on-asph-2);text-decoration:none;font:700 16px var(--text)}
+.rgsw a[aria-current]{background:#fff;color:var(--ink)}
+.rgsw a:not([aria-current]){color:#fff}
+.rgsw a:not([aria-current]):hover{background:var(--volt)}
+.rgsw svg{width:17px;height:17px}
+.rgp{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:stretch}
+.rgm{display:flex;flex-direction:column;gap:16px;padding:24px;border-radius:20px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 40px 70px -50px rgba(0,0,0,.45)}
+.rgh{display:flex;justify-content:flex-end}
+.rgw{display:flex;flex-direction:column;gap:18px;padding:22px;border-radius:20px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.rgw .rek{margin:0}
+.rgw .rfs{margin-top:auto;grid-template-columns:minmax(0,1fr)!important}
+.rG .rsum,.rF .rsum{margin:0}
+
+/* H: uitspraak rechtsboven, donker vlak met schuiven, losse schakelaar onderaan */
+.rH{display:flex;flex-direction:column;gap:18px;padding:20px 0 10px}
+.rht{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:20px;align-items:stretch}
+.rhv{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:20px 22px;border-radius:18px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.rhv .bk{margin-bottom:4px}
+.rhv p{margin:0;color:var(--ink-2);font-size:15px}
+.rhh{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:20px 26px;border-radius:18px;background:var(--volt-soft)}
+.rhh.neg{background:#FBEBD3}
+.rhh .rch{margin:0;font:600 clamp(30px,3.4vw,46px)/1.1 var(--text);letter-spacing:-.015em}
+.rhh .rch b{color:var(--volt-ink)}.rhh.neg .rch b{color:var(--amber-ink)}
+.rhh .rck{margin:0;font-size:17px;color:var(--ink-2)}
+.rhp{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:30px;padding:26px 28px;border-radius:20px;background:var(--asph);color:var(--on-asph)}
+.rhb{display:flex;flex-direction:column;gap:16px}
+.rhb .rck{margin:0;font-size:15px;color:var(--on-asph-2)}
+.rhp .rcn{grid-template-columns:repeat(2,minmax(0,1fr))}
+.rhp .btn{background:var(--asph-2);color:var(--on-asph);box-shadow:inset 0 0 0 1px var(--asph-3)}
+.rhp .btn:hover{box-shadow:inset 0 0 0 1px var(--on-asph-2)}
+.rhs{display:flex;flex-direction:column;justify-content:center;gap:20px;padding-left:28px;border-left:1px solid var(--asph-3)}
+#res .rhs .rsl label{color:var(--on-asph-2)}#res .rhs .rsl label b{color:var(--on-asph)}
+#res .rhs .rsl input{--fill:var(--volt-2);--track:var(--asph-3);--thumb:var(--asph)}
+.rhg{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.rH .rsum{margin:0}
+.rhsw{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:6;align-self:center;display:inline-flex;padding:5px;border-radius:14px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 16px 34px -14px rgba(0,0,0,.45)}
+.rhsw a{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;text-decoration:none;color:var(--ink);font:700 17px var(--text)}
+.rhsw a[aria-current]{background:var(--ink);color:#fff}
+.rhsw a:not([aria-current]){background:var(--volt);color:#fff;margin-left:5px}
+.rhsw a:not([aria-current]):hover{background:var(--volt-ink)}
+.rhsw svg{width:18px;height:18px}
+
+@media(max-width:900px){
+ .rgp,.rht,.rhp,.rhg{grid-template-columns:minmax(0,1fr)}
+ .rhs{padding:20px 0 0;border-left:0;border-top:1px solid var(--asph-3)}
+ :is(.rF,.rG,.rH) .rsum{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:640px){
+ html.r-f:not(.fresh) .bkh{padding:5px 10px 5px 7px;font-size:13px}
+ html.r-f:not(.fresh) .brand{margin-right:8px;font-size:17px}
+ .rF{padding-top:14px}
+ .rft{gap:10px}.rft .rveh{padding-bottom:0}
+ .rF .rbt{width:100%}
+ .rF .rbp{border-radius:0 0 16px 16px}
+ .rfc{grid-template-columns:minmax(0,1fr);gap:12px}
+ .rper{display:grid!important;grid-template-columns:repeat(3,1fr)}
+ .rG{padding-top:12px;gap:14px}
+ .rgt{gap:10px}
+ .rgt .rveh{width:100%;order:2}
+ .rgsw{order:3;width:100%;display:grid;grid-template-columns:1fr 1fr}
+ .rgsw a{justify-content:center;padding:9px 10px;font-size:15px}
+ .rgm,.rgw{padding:14px;gap:14px}
+ .rgh{justify-content:stretch}.rgh .rper{width:100%}
+ :is(.rF,.rG,.rH) .rsum{grid-template-columns:minmax(0,1fr)!important}
+ .rH{padding-top:12px;gap:14px}
+ .rhv,.rhh{padding:16px}
+ .rhh .rch{font-size:28px}.rhh .rck{font-size:15px}
+ .rhp{padding:18px;gap:18px}
+ .rhsw{align-self:stretch;display:grid;grid-template-columns:1fr 1fr}
+ .rhsw a{justify-content:center;padding:11px 6px;font-size:14px}
+ #res .rbk .big{flex-direction:column;align-items:flex-start;gap:2px}
+ #res .rbk .big small{flex-basis:auto;white-space:normal;font-size:12px;line-height:1.3}
+ .rhp .rcn div:last-child{grid-column:auto}
+}
 </style>
 </head>
 <body>
 <header class="top">
  <div class="wrap topin">
   <a class="brand" href="/" aria-label="Stekker of Diesel, naar de calculator"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of Diesel</a>
+  <a class="bkh" href="/" data-home><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>Start</a>
   <button class="mnu" id="mnu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav id="nav" aria-label="Hoofdmenu">
    <a href="/" data-nav="calc">Calculator</a>
@@ -3173,7 +3278,7 @@ document.addEventListener('click',e=>{
 /* ===== Resultaat na het invulvenster: vijf ontwerpen (html.r-a … r-e) =====
    Het voertuig is al gekozen op het startscherm, dus hier staat het alleen als naam. A houdt het oude scorebord, B tot en met E tekenen alles in #res. */
 var RD='a';
-function rDesign(d){RD=d;const c=document.documentElement.classList;'abcde'.split('').forEach(k=>c.toggle('r-'+k,k===d));render();mini()}
+function rDesign(d){RD=d;const c=document.documentElement.classList;'abcdefgh'.split('').forEach(k=>c.toggle('r-'+k,k===d));render();mini()}
 document.documentElement.classList.add("r-"+RD);
 /* Terug naar het startscherm, met alles wat je al had ingevuld */
 function goHome(){const k=$('dw').value;setUsed(false);hc=k;navTo('/');homePaint();scrollTo(0,0)}
@@ -3222,8 +3327,38 @@ function rPaint(r){
 <div class="rev${win==='d'?' neg':''}"><p>${verb}${even?'':' in totale kosten per jaar'}</p>${brg}${acts}</div></div>
 <div class="reg"><div class="rel"><p class="rek">Jouw cijfers</p><div class="rell">${tiles}</div></div><div class="rel"><p class="rek">Omslagpunten</p><div class="rfs">${facts}</div></div></div>
 <a class="rex" href="/uitgebreid/" data-xgo><span><b>Uitgebreide resultaten</b><small>Kosten per onderdeel · Terugverdientijd · Extra kosten</small></span>${HARR}</a></div>`}
+ const BKI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>';
+ /* Schuiven in de uitkomst: ze zetten het veld in het invulvenster, render() doet de rest */
+ const rsl=(id,lab,fm)=>{const e=$(id),x=+e.value,hk=id==='km'&&HKM[vtype],a=hk?Math.min(hk[0],x):+e.min,b=hk?Math.max(hk[1],x):+e.max;return`<div class="rsl"><label for="r_${id}"><span>${lab}</span><b data-r="v_${id}">${fm(x)}</b></label><input id="r_${id}" type="range" data-rin="${id}" min="${a}" max="${b}" step="${e.step}" value="${x}" style="--f:${(x-a)/(b-a||1)}"></div>`};
+ const sKm=rsl('km','Kilometers per jaar',x=>nf(x)+' km'),sDp=rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter'),sSp=rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh');
+ const tilesX=sumItems(r.b,L,m).filter((s,j)=>j!==1&&j!==6&&j!==7).map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join('');
+ const P={km:[1/km,2,'per km'],jr:[1,0,'totale kosten per jaar'],tot:[L,0,`totale kosten in ${L} jaar`]},cap=t=>t[0].toUpperCase()+t.slice(1);
+ const col2=(c,n,t,p=P[RP])=>`<div class="rbk ${c}${win===c?' win':''}"><p class="rwho"><i></i>${n}${win===c?'<em>Voordeligst</em>':''}</p><p class="big">${eur(t*p[0],p[1])}<small>${p[2]}</small></p><dl>${Object.entries(P).filter(z=>z[0]!==RP).map(z=>`<div><dt>${cap(z[1][2])}</dt><dd>${eur(t*z[1][0],z[1][1])}</dd></div>`).join('')}</dl></div>`;
+ const per=`<div class="seg sm rper" role="group" aria-label="Weergave">${[['km','Per km'],['jr','Per jaar'],['tot',`In ${L} jaar`]].map(z=>`<button type="button" data-rper="${z[0]}" aria-pressed="${z[0]===RP}">${z[1]}</button>`).join('')}</div>`;
+ const vrd=`<div class="rbv${win==='d'?' neg':''}" data-r="verd"><p>${verb}${even?'':' in totale kosten per jaar'}</p>${brg}${acts}</div>`;
+ if(RD==='f')h=`<div class="rF"><div class="rft"><div class="rveh">${vh}<span>${q.sub}</span>${pl}</div><div class="rbt"><a href="/" aria-current="page">Simpel resultaat</a><a href="/uitgebreid/" data-xgo>Uitgebreid resultaat ${HARR}</a></div></div>
+<div class="rbp"><div class="rfc">${sKm}${per}</div><div class="rbc" data-r="cols">${col2('d',dn,r.td)}${col2('e',en,r.te)}</div>${vrd}<div class="sum rsum" data-r="tiles">${tilesX}</div><div class="rfs" data-r="facts">${facts}</div></div></div>`;
+ if(RD==='g')h=`<div class="rG"><div class="rgt"><a class="bk" href="/" data-home>${BKI}Start</a><div class="rveh">${vh}<span>${q.sub}</span>${pl}</div><nav class="rgsw" aria-label="Resultaten"><a href="/" aria-current="page">Simpel</a><a href="/uitgebreid/" data-xgo>Uitgebreid ${HARR}</a></nav></div>
+<div class="rgp"><div class="rgm"><div class="rgh">${per}</div><div class="rbc" data-r="cols">${col2('d',dn,r.td)}${col2('e',en,r.te)}</div>${vrd}</div><aside class="rgw"><p class="rek">Wat als</p>${sKm}${sDp}${sSp}<div class="rfs" data-r="facts">${facts}</div></aside></div>
+<div class="sum rsum" data-r="tiles">${tilesX}</div></div>`;
+ if(RD==='h'){const mx2=Math.max(r.td,r.te);
+  h=`<div class="rH"><div class="rht"><div class="rhv"><a class="bk" href="/" data-home>${BKI}Terug naar start</a><div class="rveh">${vh}</div><p>${[q.sub,pn].filter(Boolean).join(' · ')}</p>${pl}</div>
+<div class="rhh${win==='d'?' neg':''}" data-r="head"><p class="rch">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b>${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="rck">in totale kosten per jaar${even?'':`, ${eur(Math.abs(d)*L)} in ${L} jaar`}</p>${brg}</div></div>
+<div class="rhp"><div class="rhb"><p class="rck">Totale kosten per jaar</p><div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx2*100}%"></u></i><b>${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx2*100}%"></u></i><b>${eur(r.te)}</b></div><div class="rcn" data-r="pkm"><div><span>Diesel per km</span><b>${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b>${eur(r.te/km,2)}</b></div></div>${acts}</div><div class="rhs">${sKm}${sDp}${sSp}</div></div>
+<div class="rhg"><div class="sum rsum" data-r="tiles">${tilesX}</div><div class="rfs" data-r="facts">${facts}</div></div>
+<nav class="rhsw" aria-label="Resultaten"><a href="/" aria-current="page">Simpele resultaten</a><a href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></nav></div>`}
+ rSet(el,h);
+}
+/* Tijdens het slepen alleen de cijfers bijwerken, anders verdwijnt de schuif onder je vinger */
+function rSet(el,h){
+ const a=document.activeElement;
+ if(a&&a.type==="range"&&el.contains(a)){const t=document.createElement('div');t.innerHTML=h;t.querySelectorAll('[data-r]').forEach(n=>{const o=el.querySelector(`[data-r="${n.dataset.r}"]`);if(!o)return;if(o.innerHTML!==n.innerHTML)o.innerHTML=n.innerHTML;o.className=n.className});el._h=null;return}
  setH(el,h);
 }
+var RP='jr';
+document.addEventListener('input',e=>{const r=e.target;if(!r.dataset||!r.dataset.rin)return;const o=$(r.dataset.rin);o.value=r.value;r.style.setProperty('--f',(r.value-r.min)/(r.max-r.min||1));o.dispatchEvent(new Event('input',{bubbles:true}))});
+document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.rin)e.target.blur()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rper]');if(b){RP=b.dataset.rper;render()}});
 
 /* ===== Interactie ===== */
 document.addEventListener('click',e=>{
