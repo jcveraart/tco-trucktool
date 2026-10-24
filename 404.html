@@ -74,8 +74,15 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .topin{display:flex;align-items:center;gap:20px;height:64px}
 .brand{display:inline-flex;align-items:center;gap:10px;margin-right:auto;color:var(--ink);text-decoration:none;font:700 20px/1 var(--text);letter-spacing:-.01em}
 .brand:hover{color:var(--ink)}
-.bmark{display:inline-flex;width:22px;height:22px;border-radius:6px;overflow:hidden}
-.bmark i{flex:1}.bmark i:first-child{background:var(--asph)}.bmark i:last-child{background:var(--volt)}
+/* Logo: schakelaar, klik op de knop zet hem op diesel */
+.bmark{--bm:var(--volt);display:block;flex:none;width:38px;height:20px;overflow:visible}
+html.sod-d .bmark{--bm:#E8890C}
+.bt,.bb{fill:var(--bm);transition:fill .3s}
+.bp{fill:var(--bm);opacity:0;transition:fill .3s,opacity .2s}.bp .bh{fill:none;stroke:var(--bm);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+.bb{transition:fill .3s,opacity .2s}html.sod-d .bb{opacity:0}html.sod-d .bp{opacity:1}
+.bk{transition:transform .45s cubic-bezier(.5,1.55,.5,1)}html.sod-d .bk{transform:translateX(-28px)}
+.top .bmark,.foot .bmark{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.bt,.bb,.bp,.bp .bh,.bk{transition:none}}
 #nav{display:flex;gap:4px}
 #nav a{color:var(--ink-2);text-decoration:none;font:600 16px var(--text);padding:8px 13px;border-radius:8px}
 #nav a:hover{color:var(--ink);background:rgba(21,23,26,.06)}
@@ -777,8 +784,6 @@ body{font-size:16px}
 .top{border-bottom:3px solid var(--volt)}
 .brand{color:#fff;font-weight:600;letter-spacing:0}
 .brand:hover{color:#fff}
-.bmark{border-radius:2px}
-.top .bmark i:first-child,.foot .bmark i:first-child{background:var(--on-asph)}
 #nav a{color:var(--on-asph-2);border-radius:0;padding:8px 12px;font-weight:500}
 #nav a:hover{color:#fff;background:none}
 #nav a[aria-current=page]{color:#fff;background:none;box-shadow:inset 0 -2px 0 var(--volt)}
@@ -1089,7 +1094,7 @@ html.embed .intro{padding-top:20px}
 .rpt .num{font-family:var(--display);font-variant-numeric:tabular-nums}
 .rph{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1.5px solid var(--ink)}
 .rph .brand{display:flex;align-items:center;gap:8px;font:700 15px var(--text);color:var(--ink);text-decoration:none}
-.rph .bmark{width:18px;height:18px;border-radius:2px}
+.rph .bmark{width:34px;height:18px}
 .rph>span:last-child{font:500 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .rpk{display:block;margin:26px 0 4px;font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
 .rpt h1{font:600 28px/1.15 var(--text);letter-spacing:-.01em}
@@ -1602,7 +1607,8 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hplt .plate:focus-within{box-shadow:inset 0 0 0 3px var(--ink)}
 .hplt .plate button{width:40px;height:40px;border-radius:8px;background:var(--ink)}
 .hplt .plate button svg{width:18px;height:18px}
-.hplt .plate.ok button{background:var(--volt);color:#fff}
+.hplt .plate.ok button{background:var(--ink);color:#fff}
+.hplt .plate.ok .pok{display:none}.hplt .plate.ok .pgo{display:block}
 .hplt .plate .plo{display:none}
 .hplr{margin:-6px 0 0;font-size:15px;color:var(--ink-2)}
 .hplr:empty{display:none}
@@ -1794,7 +1800,7 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 <body>
 <header class="top">
  <div class="wrap topin">
-  <a class="brand" href="/" aria-label="Stekker of Diesel, naar de calculator"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of Diesel</a>
+  <a class="brand" href="/" aria-label="Stekker of Diesel, naar de calculator"><svg class="bmark" viewBox="2 16 60 32" aria-hidden="true"><rect class="bt" x="2" y="16" width="60" height="32" rx="16"/><g transform="translate(46 32)"><g class="bk"><circle r="11" fill="#fff"/><path class="bb" d="M1.6 -7.5L-4.2 1.6H-0.2L-1.6 7.5L4.2 -1.6H0.2Z"/><g class="bp" transform="scale(1.15)"><path d="M-5.8 6V-4.6A1.6 1.6 0 0 1 -4.2 -6.2H0.2A1.6 1.6 0 0 1 1.8 -4.6V6Z"/><rect x="-4.3" y="-4.7" width="4.6" height="3.4" rx=".6" fill="#fff"/><rect x="-7" y="5" width="10" height="2" rx="1"/><path class="bh" d="M1.8 -1.6H3.2A1 1 0 0 1 4.2 -0.6V3.4A1.1 1.1 0 0 0 6.4 3.4V-2.6L4.4 -4.8"/></g></g></g></svg>Stekker of Diesel</a>
   <button class="mnu" id="mnu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav id="nav" aria-label="Hoofdmenu">
    <a href="/" data-nav="calc">Calculator</a>
@@ -2288,7 +2294,7 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
  <div class="wrap">
   <div class="phead"><h1 tabindex="-1">Privacybeleid</h1></div>
   <div class="prose">
-   <p>Stekker of Diesel (stekkerofdiesel.nl) is een gratis rekentool. Hieronder lees je welke gegevens daarbij worden verwerkt en waarom. Laatst bijgewerkt op 23 oktober 2026.</p>
+   <p>Stekker of Diesel (stekkerofdiesel.nl) is een gratis rekentool. Hieronder lees je welke gegevens daarbij worden verwerkt en waarom. Laatst bijgewerkt op 24 oktober 2026.</p>
    <h2>Wat we niet vragen</h2>
    <p>Voor de calculator hoef je geen account aan te maken en vragen we geen naam, e-mailadres of andere persoonsgegevens.</p>
    <h2>Vlootanalyse aanvragen</h2>
@@ -2298,14 +2304,16 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
    <h2>Prijsalarm en verkoopprijs melden</h2>
    <p>Voor een prijsalarm bewaren we je e-mailadres, het soort voertuig en je maximale prijs, zodat we je kunnen mailen bij een passend aanbod. In elke mail staat een link om je af te melden; daarna verwijderen we je gegevens. Een gemelde verkoopprijs bewaren we zonder naam, e-mailadres of kenteken en gebruiken we alleen voor de restwaarde-index.</p>
    <h2>Kenteken</h2>
-   <p>Vul je een kenteken in, dan haalt je browser de openbare voertuiggegevens rechtstreeks op bij de RDW. Wij slaan het kenteken alleen op in je eigen browser, zodat je verder kunt waar je was.</p>
+   <p>Vul je een kenteken in, dan haalt je browser de openbare voertuiggegevens rechtstreeks op bij de RDW. Wij slaan het kenteken alleen op in je eigen browser, zodat je verder kunt waar je was. Bij je berekening bewaren we alleen het soort voertuig, merk, model, bouwjaar, gewicht en euroklasse, nooit het kenteken zelf.</p>
+   <h2>Je berekeningen</h2>
+   <p>Om de calculator te verbeteren bewaren we elke berekening die je maakt: alles wat je invult of aanpast, het gekozen voertuig en de uitkomst, met het soort apparaat, de schermbreedte en de site waar je vandaan kwam. Zonder je toestemming voor statistieken bewaren we die anoniem, zonder bezoekersnummer en zonder iets op je apparaat op te slaan. Met je toestemming staat je bezoekersnummer erbij. De berekeningen staan in onze eigen database bij Supabase en worden na 25 maanden verwijderd.</p>
    <h2>Je keuze over cookies</h2>
    <p>Bij je eerste bezoek vragen we of we cookies en vergelijkbare technieken mogen gebruiken voor statistieken en voor advertenties op maat. Je kunt beide los aan- of uitzetten. Je keuze bewaren we twaalf maanden in je browser. Via Cookies onderaan elke pagina pas je hem aan of trek je hem in.</p>
    <h2>Statistieken, alleen met je toestemming</h2>
    <p>Om de calculator te verbeteren meten we hoe de site wordt gebruikt: welke pagina's je bekijkt, op welke knoppen je klikt, welke stappen je invult, welke modellen je bekijkt en welke uitkomst de berekening geeft, inclusief de rekeninstellingen. Daarnaast het soort apparaat, de schermbreedte, de taal van je browser, de site waar je vandaan kwam en eventuele campagnecodes in de link.</p>
    <p>Om bezoeken van elkaar te onderscheiden plaatsen we een willekeurig bezoekersnummer in de lokale opslag van je browser. Dat nummer zegt niets over wie je bent en we koppelen het niet aan andere gegevens. We slaan geen IP-adres op. De gegevens staan in onze eigen database bij Supabase en worden na 25 maanden verwijderd. We gebruiken ze ook om varianten van de site met elkaar te vergelijken (A/B-tests): dan zie je bijvoorbeeld een andere tekst op een knop dan een andere bezoeker.</p>
    <p>Mogelijk gebruiken we daarnaast Google Analytics, eveneens alleen met je toestemming voor statistieken. Google plaatst dan cookies die met _ga beginnen.</p>
-   <p>Geef je geen toestemming, dan tellen we alleen dat een pagina is bekeken, met de site waar je vandaan kwam en of het een mobiel apparaat is. Zonder bezoekersnummer en zonder iets op je apparaat op te slaan. Trek je je toestemming in, dan verwijderen we het bezoekersnummer uit je browser.</p>
+   <p>Geef je geen toestemming, dan tellen we alleen dat een pagina is bekeken, met de site waar je vandaan kwam en of het een mobiel apparaat is, en bewaren we je berekeningen anoniem. Zonder bezoekersnummer en zonder iets op je apparaat op te slaan. Trek je je toestemming in, dan verwijderen we het bezoekersnummer uit je browser.</p>
    <h2>Advertenties</h2>
    <p>Om de site gratis te houden tonen we advertenties via Google AdSense. Met je toestemming voor advertenties op maat mogen Google en zijn partners cookies gebruiken om advertenties af te stemmen op eerdere bezoeken aan deze en andere sites. Zonder die toestemming toont Google alleen advertenties die niet op jou zijn afgestemd. We geven je keuze door via Google Consent Mode. Meer over hoe Google gegevens gebruikt lees je op <a href="https://policies.google.com/technologies/partner-sites?hl=nl" target="_blank" rel="noopener">policies.google.com</a>.</p>
    <h2>Wat in je eigen browser blijft</h2>
@@ -2334,7 +2342,7 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 <footer class="foot">
  <div class="wrap">
   <div class="fin">
-   <div><a class="brand" href="/"><span class="bmark" aria-hidden="true"><i></i><i></i></span>Stekker of Diesel</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische bedrijfsvoertuigen.</p></div>
+   <div><a class="brand" href="/"><svg class="bmark" viewBox="2 16 60 32" aria-hidden="true"><rect class="bt" x="2" y="16" width="60" height="32" rx="16"/><g transform="translate(46 32)"><g class="bk"><circle r="11" fill="#fff"/><path class="bb" d="M1.6 -7.5L-4.2 1.6H-0.2L-1.6 7.5L4.2 -1.6H0.2Z"/><g class="bp" transform="scale(1.15)"><path d="M-5.8 6V-4.6A1.6 1.6 0 0 1 -4.2 -6.2H0.2A1.6 1.6 0 0 1 1.8 -4.6V6Z"/><rect x="-4.3" y="-4.7" width="4.6" height="3.4" rx=".6" fill="#fff"/><rect x="-7" y="5" width="10" height="2" rx="1"/><path class="bh" d="M1.8 -1.6H3.2A1 1 0 0 1 4.2 -0.6V3.4A1.1 1.1 0 0 0 6.4 3.4V-2.6L4.4 -4.8"/></g></g></g></svg>Stekker of Diesel</a><p>Onafhankelijke kostenvergelijking van diesel- en elektrische bedrijfsvoertuigen.</p></div>
    <nav aria-label="Voettekst"><a href="/">Calculator</a><a href="/modellen/">Modellen</a><a href="/overstapgids/">Overstapgids</a><a href="/nieuws/">Nieuws</a><a href="/vlootanalyse/" data-fleet="footer">Vlootanalyse</a><a href="/restwaarde/">Restwaarde</a><a href="/over-ons/">Over ons</a></nav>
   </div>
   <div class="fdis">© Stekker of Diesel · Rekenvoorbeeld, geen financieel of fiscaal advies. Controleer subsidies en tarieven altijd bij RVO en de Belastingdienst. · <a href="/privacy/">Privacy</a> · <button class="fck" type="button" data-cookies>Cookies</button></div>
@@ -3217,6 +3225,8 @@ function parseHash(){let h='';try{h=decodeURIComponent(location.hash.slice(1))}c
  if(h.startsWith('gids/'))return['gids',h.slice(5)];return h&&h in PAGES?[PAGES[h],null]:null}
 const routeKey=()=>page==='gids'?'gids/'+gid:{calc:'calc',faq:'faq',over:'over-ons',vloot:'vlootanalyse'}[page]||page;
 function navTo(url){history.pushState(null,'',url);route(false)}
+/* Grapje: klik op de schakelaar in het logo en hij springt naar diesel */
+document.addEventListener('click',e=>{if(!e.target.closest('.top .bmark,.foot .bmark'))return;e.preventDefault();e.stopPropagation();const d=document.documentElement.classList.toggle('sod-d');track('logo_toggle',{diesel:d})},true);
 function setMeta(p,g){
  const r=SEO.routes[p==='gids'?'gids/'+g:p]||{},u='https://stekkerofdiesel.nl'+pathOf(p,g);
  document.title=r.title||BRAND;
@@ -3311,7 +3321,7 @@ function rptHTML(){
  const gen=[['Voertuig',T().n+(truck&&vtype==='bakwagen'?' · '+clsOf():'')],m&&['Model',mName(m)],['Kilometers per jaar',nf(km)+' km'],truck&&['Waarvan met kilometerheffing',nf(b.kmH)+' km'],['Rijdagen per jaar',nf(v('wd'))],['Afschrijftermijn',L+' jaar'],['Subsidie',b.sub>0?`${regLabel()} · ${eur(b.sub)}`:regLabel()],ck('aERE')&&['ERE-opbrengst',fv('ere')],['Bruikbare accu',fv('acc')],['Actieradius',`± ${nf(Math.round(range/5)*5)} km`]].filter(Boolean);
  const pair=[[$('dw').value==='h'?'Waarde nu / aanschaf':'Aanschafprijs',eur(v('pD')),eur(v('pE'))+(used?' · gebruikt':'')],['Restwaarde',v('rw')+'%',v('rwE')+'%'],['Verbruik per 100 km',nf(v('ld'),1)+' l',nf(v('le'),1)+' kWh'],['Energieprijs',eur(v('dp'),2)+' per l',eur(spNet(v),2)+' per kWh'],['Onderhoud per km',eur(v('oD'),2),eur(v('oE'),2)],['Verzekering per jaar',eur(v('vD')),eur(v('vE'))],truck&&['Heffing per km',eur(v('tD'),3),eur(v('tE'),3)]].filter(Boolean);
  const ext=[on.fin&&['Financiering',`${nf(v('xfs'))}% geleend tegen ${nf(v('xri'),1)}%, eigen geld ${nf(v('xre'),1)}%`],on.lad&&['Laadpaal',`${eur(v('xl0'))} investering, ${eur(v('xla'))} aansluiting${x.spr>0?`, ${eur(x.spr)} SPRILA`:''}`],on.tij&&['Laden onderweg',`${nf(v('xos'))}% tegen ${eur(v('xop'),2)} per kWh`],on.zon&&['Zonnepanelen',`${nf(v('xzk'))} kWp, ${nf(v('xzs'))}% voor je voertuigen`],on.tol&&['Tol buitenland',TOL.filter(c=>v('k_'+c[0])>0).map(c=>`${c[1]} ${nf(v('k_'+c[0]))} km`).join(', ')],bd&&['Bandbreedte',Object.keys(SR).map(id=>`${SENS[id][0]} ± ${nf(SR[id][2]||Math.round(SR[id][1]/v(id)*100))}%`).join(', ')]].filter(Boolean);
- const head=`<div class="rph"><span class="brand"><span class="bmark"><i></i><i></i></span>Stekker of Diesel</span><span>${date}</span></div>`;
+ const head=`<div class="rph"><span class="brand"><svg class="bmark" viewBox="2 16 60 32" aria-hidden="true"><rect class="bt" x="2" y="16" width="60" height="32" rx="16"/><g transform="translate(46 32)"><g class="bk"><circle r="11" fill="#fff"/><path class="bb" d="M1.6 -7.5L-4.2 1.6H-0.2L-1.6 7.5L4.2 -1.6H0.2Z"/><g class="bp" transform="scale(1.15)"><path d="M-5.8 6V-4.6A1.6 1.6 0 0 1 -4.2 -6.2H0.2A1.6 1.6 0 0 1 1.8 -4.6V6Z"/><rect x="-4.3" y="-4.7" width="4.6" height="3.4" rx=".6" fill="#fff"/><rect x="-7" y="5" width="10" height="2" rx="1"/><path class="bh" d="M1.8 -1.6H3.2A1 1 0 0 1 4.2 -0.6V3.4A1.1 1.1 0 0 0 6.4 3.4V-2.6L4.4 -4.8"/></g></g></g></svg>Stekker of Diesel</span><span>${date}</span></div>`;
  return head+
  `<span class="rpk">Kostenvergelijking</span><h1>${m?mName(m):'Elektrische '+T().w} tegen ${dN.toLowerCase()}</h1><p class="rpm">${nf(km)} km per jaar · ${L} jaar · ${b.sub>0?regLabel()+' '+eur(b.sub):'zonder subsidie'}</p>`+
  `<div class="rpv"><div class="w${cheap||even?'':' neg'}"><small>${even?'Ongeveer gelijk':cheap?'Elektrisch goedkoper':'Elektrisch duurder'}</small><strong class="num">${eur(Math.abs(d))}</strong><span>per jaar · ${eur(Math.abs(d)*L)} in ${L} jaar${even?'':` · ${nf(pc)}%`}</span>${bd?`<span>Bandbreedte ${bandTxt(bd)}</span>`:''}</div>`+
@@ -4196,7 +4206,7 @@ syncSupabase().then(syncExtra);
   if(!show){track('wizard_close',{step:wzStep,seen:seen.size});return}
   const r=calcX(),d=r.td-r.te,m=modelActive();
   track('wizard_complete',{vt:vtype,km:r.km,jr:r.L,diff_year:Math.round(d),pct:Math.round(d/r.td*1000)/10,cheaper:d>=0?'e':'d',
-   model:m?m.id:null,reg:reg(),opts:optSteps().filter(s=>optOn(s[0])).map(s=>s[0]).join(','),seen:seen.size,inputs:stateObj()});
+   model:m?m.id:null,reg:reg(),opts:optSteps().filter(s=>optOn(s[0])).map(s=>s[0]).join(','),seen:seen.size,inputs:(({plk,plkE,...o})=>o)(stateObj())});
  });
  wrap('modelApply',id=>track('model_apply',{id,from:page}));
  wrap('reset',()=>track('reset',{vt:vtype}));
@@ -4226,6 +4236,50 @@ syncSupabase().then(syncExtra);
 
  /* Fouten in de pagina, maximaal vijf per bezoek */
  let errs=0;addEventListener('error',e=>{if(errs++<5)track('js_error',{m:String(e.message).slice(0,200),src:String(e.filename||'').split('/').pop().slice(0,60),line:e.lineno})});
+})();
+</script>
+<script id="berekeningen">
+/* ===== Elke berekening opslaan (tabel calc_runs in Supabase, zie docs/analytics.md) =====
+   Na het invulvenster en na elke aanpassing (als het 4 seconden stil is) gaan alle invoer, het voertuig en de uitkomst naar Supabase.
+   Zonder toestemming voor statistieken zonder bezoekers- en sessie-ID. Het kenteken zelf (plk, plkE) gaat nooit mee, alleen de RDW-gegevens. */
+(()=>{
+ const reeks=uuid(),PLK=['plk','plkE'];let nr=0,last='',tmr=0;
+ const rnd=(x,d=0)=>typeof x==='number'&&isFinite(x)?Math.round(x*10**d)/10**d:x;
+ const cats=o=>Object.fromEntries(Object.entries(o).filter(e=>typeof e[1]==='number').map(([k,x])=>[k,rnd(x)]));
+ function invoer(){
+  const o={};document.querySelectorAll(':is(#calc,#wz) input[id],:is(#calc,#wz) select[id]').forEach(e=>{
+   if(e.classList.contains('slin')||e.name==='kt'||PLK.includes(e.id))return;
+   o[e.id]=e.type==='checkbox'?e.checked:(e.type==='range'||e.type==='number')&&e.value!==''?+e.value:e.value;
+  });return o;
+ }
+ const kt=i=>i&&!i.err?{vt:i.vt,eu:i.eu,merk:i.merk,model:i.model,jaar:i.first?i.first.getFullYear():null,massa:i.mass,combinatie:i.combo,euro:i.euro,elektrisch:i.el,verbruik:i.lpk,catalogusprijs:i.cat}:null;
+ function snap(trigger){
+  const r=calcX(),pb=payback(r),m=modelActive(),bd=band(),kb=kmBreak(),d=r.td-r.te;
+  return{
+   client_ts:new Date().toISOString(),consent:statOK()?'stat':'anon',visitor_id:statOK()?vid:null,session_id:statOK()?sid:null,
+   reeks,nr:++nr,trigger,modus:page==='uitgebreid'?'uitgebreid':'simpel',vt:vtype,model_id:m?m.id:null,km:rnd(r.km),jaren:rnd(r.L),
+   goedkoper:Math.abs(d)/r.td<.005?'gelijk':d>0?'e':'d',verschil_jaar:rnd(d),
+   invoer:invoer(),gewijzigd:Object.keys(stateObj()).filter(k=>!PLK.includes(k)),
+   voertuig:{soort:T().w,model:m?mName(m):null,diesel:$('dw').value==='h'?'huidig':'nieuw',elektrisch:$('nw').value==='n'?'nieuw':'gebruikt',
+    kenteken_diesel:kt(PL.D),kenteken_elektrisch:kt(PL.E),tol:[...tolSel],bandbreedte:Object.fromEntries(Object.entries(SR).map(([k,x])=>[k,x.map(y=>rnd(y,2))]))},
+   uitkomst:{diesel_jaar:rnd(r.td),elektrisch_jaar:rnd(r.te),diesel_km:rnd(r.td/r.km,3),elektrisch_km:rnd(r.te/r.km,3),pct:rnd(d/r.td*100,1),
+    diesel:cats(r.D),elektrisch:cats(r.E),terugverdien_jaar:pb.be===null?null:rnd(pb.be,2),meerprijs:rnd(pb.gap),besparing_gebruik_jaar:rnd(pb.sv),
+    goedkoper_vanaf_km:kb===null?null:rnd(kb),bandbreedte_jaar:bd?bd.map(y=>rnd(y)):null,co2_ton:rnd(r.co2d-r.co2e,1)},
+   bron:{ref:LAND.ref,utm_source:LAND.utm_source||null,mobile:LAND.mobile,vw:LAND.vw}
+  };
+ }
+ function save(trigger){
+  clearTimeout(tmr);tmr=0;
+  if((page!=='calc'&&page!=='uitgebreid')||!touched||$('wz').open)return;
+  let row;try{row=snap(trigger)}catch(e){return}
+  const key=JSON.stringify([row.modus,row.vt,row.invoer,row.voertuig]);if(key===last)return;last=key;
+  try{fetch(SB_URL+'/rest/v1/calc_runs',{method:'POST',keepalive:true,headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(row)}).catch(()=>{})}catch(e){}
+ }
+ const o=window.render,c=window.closeWz;
+ window.render=function(...a){const x=o.apply(this,a);clearTimeout(tmr);tmr=setTimeout(()=>save('aanpassing'),4000);return x};
+ window.closeWz=function(show,...a){const x=c.call(this,show,...a);if(show)save('invulvenster');return x};
+ addEventListener('pagehide',()=>{if(tmr)save('aanpassing')});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&tmr)save('aanpassing')});
 })();
 </script>
 <div class="rpt" id="rpt" aria-hidden="true"></div>
