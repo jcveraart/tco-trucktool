@@ -3203,7 +3203,7 @@ addEventListener('scroll',tipPlace,{passive:true});
 addEventListener('resize',()=>tipClose(false));
 
 /* Klein scorebord zodra het grote uit beeld is */
-function mini(){const b=$(page==='uitgebreid'?'resX':'res').getBoundingClientRect(),show=(page==='calc'&&!isFresh()||page==='uitgebreid')&&b.bottom<64;$('mini').classList.toggle('show',show);
+function mini(){const t=page==='uitgebreid'?$('resX'):$('res').querySelector('.nS+.nS')||$('res'),b=t.getBoundingClientRect(),show=(page==='calc'&&!isFresh()||page==='uitgebreid')&&b.bottom<64;$('mini').classList.toggle('show',show);
  const c=document.querySelector('.bcta'),r=c&&c.getBoundingClientRect();$('fcta').hidden=!(c&&page==='calc'&&!$('wz').open&&(r.bottom<64||r.top>innerHeight))}
 addEventListener('scroll',mini,{passive:true});
 
