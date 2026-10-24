@@ -2938,7 +2938,7 @@ function homeHTML(){
  const bars=`<div class="hkw"><p class="hkh">Totale kosten per jaar</p>`+(DESIGN==='b'
   ?`<div class="hkc"><div><span>Diesel</span><b id="hkD"></b><i><u data-bar="d"></u></i></div><div class="e"><span>Elektrisch</span><b id="hkE"></b><i><u data-bar="e"></u></i></div></div>`
   :`<div class="hkb"><span>Diesel</span><i><u data-bar="d"></u></i><b id="hkD"></b><span>Elektrisch</span><i class="e"><u data-bar="e"></u></i><b id="hkE"></b></div>`)+'</div>';
- return`<div class="wrap hA h${DESIGN}"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hAg"><div class="hAl">${ch}${hc==='h'?plt:''}${vcards()}</div><aside class="hx" data-mx="${Math.round(mx)}" aria-label="Voorbeeldberekening voor een ${T().w}">${tot}${sld}${bars}<p class="hxv" id="hkT"></p></aside></div><button class="cta big hgo" type="button" data-start>Reken het uit voor mijn bedrijf ${HARR}</button></div>`;
+ return`<div class="wrap hA h${DESIGN}"><h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1><div class="hAg"><div class="hAl">${ch}${hc==='h'?plt:''}${vcards()}</div><aside class="hx" data-mx="${Math.round(mx)}" aria-label="Voorbeeldberekening voor een ${T().w}">${tot}${sld}${bars}<p class="hxv" id="hkT"></p></aside></div><button class="cta big hgo" type="button" data-start>Ga naar de calculator ${HARR}</button></div>`;
 }
 let hPaint=false;
 function homePaint(){
