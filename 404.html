@@ -3505,11 +3505,11 @@ function rPaint(r){
 <section class="nS nX"><div class="nXh"><p class="nk">Waar zit het verschil · ${pt}</p>${per}</div><div class="xd" data-r="xd">${diff}</div></section>
 <section class="nS"><div class="nA"><p class="nk">Jouw cijfers</p><div class="nTl" data-r="tiles">${lst}</div></div><div class="nB"><p class="nk">Omslagpunten</p><div class="nF" data-r="facts">${facts}</div></div></section>
 <a class="rhgo" href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></div>`;
- rSet(el,h);
+ rSet(el,h);twIntro(el);
  /* Uitgebreid: dezelfde kop en kosten, met meer schuiven */
  const p0=(m&&m.price)||VT[vtype].p.pE,pR=[Math.floor(p0*.6/1000)*1000,Math.ceil(p0*1.4/1000)*1000],pb=payback(r);
  rSet($('resX'),`<div class="rN">${rTop(r,1)}
-<section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p>${cost}<div class="nF xF" data-r="xfacts">${facts}<div class="rf"><span>Terugverdientijd</span><b>${ym(pb.be)}</b></div></div></div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${rsl('km','Kilometers per jaar',x=>nf(x)+' km','x_')}${rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter','x_')}${rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh','x_')}${rsl('pE','Aanschafprijs elektrisch',x=>eur(x),'x_',pR)}${rsl('rwE','Restwaarde elektrisch',x=>nf(x)+'% na '+L+' jaar','x_')}${rsl('jr','Afschrijftermijn',x=>x+' jaar','x_')}</div></div></section></div>`);
+<section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p>${cost}<div class="nF xF" data-r="xfacts">${facts}<div class="rf"><span>Terugverdientijd</span><b>${ym(pb.be)}</b></div></div></div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${rsl('km','Kilometers per jaar',x=>nf(x)+' km','x_')}${rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter','x_')}${rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh','x_')}${rsl('pE','Aanschafprijs elektrisch',x=>eur(x),'x_',pR)}${rsl('rwE','Restwaarde elektrisch',x=>nf(x)+'% na '+L+' jaar','x_')}${rsl('jr','Afschrijftermijn',x=>x+' jaar','x_')}</div></div></section></div>`);twIntro($('resX'));
  const [x1,x2]=xExtra(r,dn,en);rSet($('xEx1'),x1);rSet($('xEx2'),x2);
 }
 /* Maandlasten: een annuïteitenlening over de afschrijftermijn op het geleende deel van de aanschafprijs, plus de gebruikskosten per maand */
@@ -3584,13 +3584,15 @@ function twSet(el,put){
  el.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{const o=old[n.dataset.tw];if(o!=null&&o!==n.textContent)twText(n,n.textContent,o)});
 }
 function rSet(el,h){twSet(el,()=>rSet0(el,h))}
-/* Eerste keer in beeld: bedragen tellen op vanaf 0. Per bedrag één keer per bezoek. */
+/* Eerste keer in beeld: bedragen tellen op vanaf 0. Per bedrag en per pagina één keer per bezoek; niet zolang er een venster (zoals de stappen) open staat. */
 const TWI=new Set();let twIO=null;
 function twIntro(root){
  if(!root||reduced()||!('IntersectionObserver' in window))return;
- twIO=twIO||new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const n=e.target,k=n.dataset.tw;twIO.unobserve(n);if(TWI.has(k)||!n.isConnected)return;TWI.add(k);const B=twNum(n.textContent);if(B&&B.v)twText(n,n.textContent,B.a+nf(0,B.d)+B.b,1100)}),{threshold:.6});
- root.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{if(!TWI.has(n.dataset.tw))twIO.observe(n)});
+ twIO=twIO||new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const n=e.target,k=n._twk;if(document.querySelector('dialog[open]'))return;twIO.unobserve(n);if(TWI.has(k)||!n.isConnected)return;TWI.add(k);const B=twNum(n.textContent);if(B&&B.v)twText(n,n.textContent,B.a+nf(0,B.d)+B.b,1100)}),{threshold:.6});
+ root.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{n._twk=root.id+':'+n.dataset.tw;if(!TWI.has(n._twk)){twIO.unobserve(n);twIO.observe(n)}});
 }
+/* Sluit een venster, kijk dan opnieuw welke bedragen in beeld zijn */
+document.addEventListener('close',()=>setTimeout(()=>['home','uv','res','resX'].forEach(id=>twIntro($(id))),50),true);
 function rSet0(el,h){
  const a=rHold&&rHold.isConnected?rHold:document.activeElement;
  if(a&&a.type==='range'&&el.contains(a)){const t=document.createElement('div');t.innerHTML=h;t.querySelectorAll('[data-r]').forEach(n=>{const o=el.querySelector(`[data-r="${n.dataset.r}"]`);if(!o)return;if(o.innerHTML!==n.innerHTML)o.innerHTML=n.innerHTML;o.className=n.className});el._h=null;return}
