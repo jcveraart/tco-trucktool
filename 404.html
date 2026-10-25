@@ -3316,7 +3316,7 @@ document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.
 const HKM={trekker:[40000,150000],bakwagen:[20000,120000],bestel:[15000,100000],bus:[40000,150000]};
 function homeHTML(){
  const [k0,k1]=HKM[vtype]||[15000,150000],r1=hAt(k1),d1=r1.td-r1.te,mx=Math.max(r1.td,r1.te);
- const tot=d1>500?`<p class="hxh">Elektrisch tot <b>${eur(d1)}</b> per jaar goedkoper</p>`:`<p class="hxh">Bij weinig kilometers wint diesel vaak nog</p>`;
+ const tot=d1>500?`<p class="hxh">Elektrisch tot <b data-tw="hx">${eur(d1)}</b> per jaar goedkoper</p>`:`<p class="hxh">Bij weinig kilometers wint diesel vaak nog</p>`;
  const plt=`<div class="hplt">${plateForm('D').replace('Kenteken (optioneel)','Kenteken van je diesel')}</div><p class="hplr" data-hpl></p>`;
  const opt=(k,t,s)=>`<button type="button" role="radio" data-hc="${k}" aria-checked="${hc===k}">${HICON[k]}<b>${t}</b><span>${s}</span></button>`;
  const ch=`<div class="hch" role="radiogroup" aria-label="Jouw situatie">${opt('h','Huidige diesel vervangen','Doorrijden of nu vervangen?')}${opt('n','Nieuwe bedrijfsauto kopen','Diesel of elektrisch?')}</div>`;
@@ -3328,7 +3328,7 @@ function homeHTML(){
 let hPaint=false;
 function homePaint(){
  if(!isFresh()){$('home').innerHTML='';return}
- hPaint=true;setH($('home'),homeHTML());plPaint();
+ hPaint=true;twSet($('home'),()=>setH($('home'),homeHTML()));plPaint();
  $('home').querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
  if($('hkm'))hkmPaint(+$('hkm').value);
  const i=PL.D;$('home').querySelectorAll('[data-plate="D"]').forEach(f=>{if(i&&i.k)f.elements.kt.value=plFmt(i.k)});
@@ -3350,7 +3350,7 @@ let uvCat=null,uvTab='kost';
 const UVEN=document.documentElement.lang==='en',uL=(nl,en)=>UVEN?en:nl;
 const UVC=[['afs',uL('Aanschaf','Purchase')],['en',uL('Energie','Energy')],['ond',uL('Onderhoud','Maintenance')],['ver',uL('Verzekering','Insurance')],['hef',uL('Heffing','Road charge')]];
 const uvKm=()=>{const s=$('hkm');return s?+s.value:v('km')};
-const uvDiff=(d,e)=>{const x=d-e;return`<small${x<0?' class="d"':''}>${x<0?'+':'−'}${eur(Math.abs(x))}</small>`};
+const uvDiff=(d,e,k)=>{const x=d-e;return`<small${x<0?' class="d"':''} data-tw="c-${k}">${x<0?'+':'−'}${eur(Math.abs(x))}</small>`};
 function uvUit(k,r){
  const g=v;return{
   afs:uL(`${eur(g('pD'))} voor de diesel en ${eur(g('pE'))} voor elektrisch${r.sub?`, min ${eur(r.sub)} subsidie`:''}, min de restwaarde, verdeeld over ${r.L} jaar.`,`${eur(g('pD'))} for the diesel and ${eur(g('pE'))} for electric${r.sub?`, minus ${eur(r.sub)} in grants`:''}, minus the residual value, spread over ${r.L} years.`),
@@ -3362,11 +3362,11 @@ function uvUit(k,r){
 function uvKost(r){
  const cs=UVC.filter(c=>r.D[c[0]]||r.E[c[0]]),mx=Math.max(r.td,r.te),dd=c=>r.D[c[0]]-r.E[c[0]];
  if(!cs.some(c=>c[0]===uvCat))uvCat=cs.reduce((a,c)=>Math.abs(dd(c))>Math.abs(dd(a))?c:a)[0];
- const bar=(x,cl,t,tot)=>`<div class="uvb ${cl}"><span>${t}</span><div class="uvt">${cs.map(c=>`<i data-uvc="${c[0]}" title="${c[1]}"${c[0]===uvCat?' class="on"':''} style="width:${Math.max(0,x[c[0]])/mx*100}%"></i>`).join('')}</div><b>${eur(tot)}</b></div>`;
+ const bar=(x,cl,t,tot)=>`<div class="uvb ${cl}"><span>${t}</span><div class="uvt">${cs.map(c=>`<i data-uvc="${c[0]}" title="${c[1]}"${c[0]===uvCat?' class="on"':''} style="width:${Math.max(0,x[c[0]])/mx*100}%"></i>`).join('')}</div><b data-tw="t-${cl}">${eur(tot)}</b></div>`;
  const d=r.td-r.te;
- $('uvKh').innerHTML=UVEN?`${d>=0?`Electric <b>${eur(d)}</b> cheaper`:`Diesel <b class="d">${eur(-d)}</b> cheaper`} per year at ${nf(r.km)} km`:`${d>=0?`Elektrisch <b>${eur(d)}</b> goedkoper`:`Diesel <b class="d">${eur(-d)}</b> goedkoper`} per jaar bij ${nf(r.km)} km`;
- $('uvK').innerHTML=bar(r.D,'dz','Diesel',r.td)+bar(r.E,'el',uL('Elektrisch','Electric'),r.te)+
-  `<div class="uvc">${cs.map(c=>`<button type="button" data-uvc="${c[0]}" aria-pressed="${c[0]===uvCat}"><span>${c[1]}</span>${uvDiff(r.D[c[0]],r.E[c[0]])}</button>`).join('')}</div><p class="uvx">${uvUit(uvCat,r)}</p>`;
+ twSet($('uvKh'),()=>$('uvKh').innerHTML=UVEN?`${d>=0?`Electric <b data-tw="kh">${eur(d)}</b> cheaper`:`Diesel <b class="d" data-tw="kh">${eur(-d)}</b> cheaper`} per year at ${nf(r.km)} km`:`${d>=0?`Elektrisch <b data-tw="kh">${eur(d)}</b> goedkoper`:`Diesel <b class="d" data-tw="kh">${eur(-d)}</b> goedkoper`} per jaar bij ${nf(r.km)} km`);
+ twSet($('uvK'),()=>$('uvK').innerHTML=bar(r.D,'dz','Diesel',r.td)+bar(r.E,'el',uL('Elektrisch','Electric'),r.te)+
+  `<div class="uvc">${cs.map(c=>`<button type="button" data-uvc="${c[0]}" aria-pressed="${c[0]===uvCat}"><span>${c[1]}</span>${uvDiff(r.D[c[0]],r.E[c[0]],c[0])}</button>`).join('')}</div><p class="uvx">${uvUit(uvCat,r)}</p>`);
 }
 /* Verschil per jaar (diesel min elektrisch) over het kilometerbereik van het voertuig, met het omslagpunt */
 function uvOmslag(){
@@ -3578,11 +3578,12 @@ function twText(el,to,from){
  const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);if(k<1){el.textContent=B.a+nf(A.v+(B.v-A.v)*e,B.d)+B.b;el._twr=requestAnimationFrame(step)}else el.textContent=to};
  el._twr=requestAnimationFrame(step);
 }
-function rSet(el,h){
+function twSet(el,put){
  const old={};el.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>old[n.dataset.tw]=n.textContent);
- rSet0(el,h);
+ put();
  el.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{const o=old[n.dataset.tw];if(o!=null&&o!==n.textContent)twText(n,n.textContent,o)});
 }
+function rSet(el,h){twSet(el,()=>rSet0(el,h))}
 function rSet0(el,h){
  const a=rHold&&rHold.isConnected?rHold:document.activeElement;
  if(a&&a.type==='range'&&el.contains(a)){const t=document.createElement('div');t.innerHTML=h;t.querySelectorAll('[data-r]').forEach(n=>{const o=el.querySelector(`[data-r="${n.dataset.r}"]`);if(!o)return;if(o.innerHTML!==n.innerHTML)o.innerHTML=n.innerHTML;o.className=n.className});el._h=null;return}
