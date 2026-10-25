@@ -1958,9 +1958,8 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 html[lang=en] [data-page=uitgebreid] .pbt>div:first-child::before{content:"Payback period"}
 @media(max-width:760px){.lang{margin-left:4px;gap:0}.lang button{padding:8px 4px}.topin>.mnu{margin-left:auto}.topin>.brand{min-width:0}}
 @media print{.lang{display:none}}
-/* Uitgebreid: maandlasten in de opmaak van Alle kosten op de startpagina, met de schuiven voor de lening onder de kop */
+/* Uitgebreid: maandlasten in de opmaak van Alle kosten op de startpagina */
 .mlS{border-top:0;border-bottom:1px solid var(--line)}
-.mlS .mlsl{margin-top:22px;gap:16px}
 .mlS .uvt i{min-width:0}
 </style>
 </head>
@@ -3484,7 +3483,7 @@ function xExtra(r,dn,en){
   ver:uL(`Het bedrag per jaar gedeeld door twaalf: ${eur(g('vD'))} tegenover ${eur(g('vE'))} per jaar.`,`The annual amount divided by twelve: ${eur(g('vD'))} against ${eur(g('vE'))} a year.`),
   hef:uL(`${nf(r.kmH)} km per jaar met vrachtwagenheffing: ${eur(g('tD'),3)} tegenover ${eur(g('tE'),3)} per km.`,`${nf(r.kmH)} km a year with the Dutch truck charge: ${eur(g('tD'),3)} against ${eur(g('tE'),3)} per km.`)}[mlCat];
  const mlh=Math.abs(dM)<1?uL('Diesel en elektrisch kosten per maand hetzelfde','Diesel and electric cost the same per month'):dM>0?uL(`Elektrisch <b>${eur(dM)}</b> goedkoper per maand bij ${nf(ri,1)}% rente`,`Electric <b>${eur(dM)}</b> cheaper per month at ${nf(ri,1)}% interest`):uL(`Diesel <b class="d">${eur(-dM)}</b> goedkoper per maand bij ${nf(ri,1)}% rente`,`Diesel <b class="d">${eur(-dM)}</b> cheaper per month at ${nf(ri,1)}% interest`);
- const mlSec=`<section class="uvS mlS" data-no-translate><header><h2>${uL('Wat gaat er per maand de deur uit','Monthly outgoings')}</h2><p data-r="mlh">${mlh}</p><div class="nSl mlsl">${rsl('xri',uL('Rente','Interest rate'),x=>nf(x,1)+'%','m_')}${rsl('xfs',uL('Geleend deel','Financed share'),x=>nf(x)+'%','m_')}</div></header>
+ const mlSec=`<section class="uvS mlS" data-no-translate><header><h2>${uL('Wat gaat er per maand de deur uit','Monthly outgoings')}</h2><p data-r="mlh">${mlh}</p></header>
 <div><div data-r="mlb">${mbar(ml.d,'dz',dn)}${mbar(ml.e,'el',en)}</div><div class="uvc" data-r="mlc">${mc.map(c=>`<button type="button" data-mlc="${c[0]}" aria-pressed="${c[0]===mlCat}"><span>${c[1]}</span>${uvDiff(ml.d[c[0]],ml.e[c[0]])}</button>`).join('')}</div><p class="uvx" data-r="mlx">${mlx}</p></div></section>`;
  return[mlSec+`<section class="nS nS2"><div class="nA"><p class="nk">Per maand</p><div class="xt" data-r="mnd">${mnd}</div></div><div class="nB"><p class="nk">Doorberekenen aan je opdrachtgever</p>${ritS}<div class="xt" data-r="rit">${pr}</div></div></section>`,
   `<section class="nS nS2"><div class="nA"><p class="nk">Als de restwaarde tegenvalt</p><div class="xt" data-r="rw">${rwT}</div><div class="nF" data-r="rwf">${rwF}</div></div><div class="nB"><p class="nk">Actieradius en dagrit</p><div data-r="rg">${rgH}</div></div></section>`];
