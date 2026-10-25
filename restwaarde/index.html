@@ -1841,6 +1841,9 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 [data-page=uitgebreid] .hm{font:500 15px var(--text);font-variant-numeric:tabular-nums}
 [data-page=uitgebreid] .hm th{font:500 14px var(--text);color:var(--ink-2)}
 [data-page=uitgebreid] .hm tr:first-child th{font:500 11px var(--mono);letter-spacing:.06em;color:var(--ink-3)}
+/* Sectietitels op Simpel en Uitgebreid: vet en in gewone schrijfwijze, als echte titel */
+:is(.nk,[data-page=uitgebreid] .cmain>section>h2,[data-page=uitgebreid] .vsh h2,[data-page=uitgebreid] .addt h2){margin:0 0 16px!important;font:700 22px/1.2 var(--text)!important;letter-spacing:-.01em!important;text-transform:none!important;color:var(--ink)!important}
+.nXh .nk{margin:0!important}
 </style>
 </head>
 <body>
