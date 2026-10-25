@@ -2026,11 +2026,13 @@ html{touch-action:manipulation}
 .nBk .bk[data-home]:hover{background:#000;color:#fff}
 .nBk .bk[data-home] svg{width:15px;height:15px}
 @media(max-width:640px){.nBk .bk[data-home]{padding:7px 12px;font-size:13px}}
-/* Resultaat, linker blok: het gekozen voertuig midden in het blok; Terug naar start blijft linksboven */
+/* Resultaat, linker blok: het gekozen voertuig halverwege tussen linksboven en het midden van het blok; Terug naar start iets naar links */
+.rvw{display:flex;flex-direction:column;gap:8px}
 @media(min-width:641px){
- .nTop>.nA .rveh{align-self:center;margin-top:auto}
- .nTop>.nA .nSub{align-self:center;text-align:center;margin-bottom:auto}
  .nTop>.nA{padding-right:28px}
+ .nTop>.nA .rvw{flex:1;align-self:stretch;display:grid;grid-template-columns:1fr auto 3fr;grid-template-rows:1fr auto 3fr;gap:0}
+ .nTop>.nA .rvw>div{grid-area:2/2;display:flex;flex-direction:column;align-items:center;gap:8px}
+ .nTop>.nA .nBk{margin-left:-14px}
 }
 </style>
 </head>
@@ -3484,7 +3486,7 @@ function rTop(r,x){
  const d=r.td-r.te,cheap=d>=0,even=Math.abs(d)/r.td<.005,L=r.L,q=T(),i=PL.D&&!PL.D.err?PL.D:null,bd=band();
  const pn=i?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):'';
  const back=`<a class="bk" href="/" data-home>${BKI}Terug naar start</a>${x?`<a class="bk" href="/">Simpele resultaten</a>`:''}`;
- return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p></div>
+ return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rvw"><div><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p></div></div></div>
 <div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · <span data-tw="hl">${eur(Math.abs(d)*L)}</span> in ${L} jaar`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
 }
 /* Ronde getallen voor de schaal boven de balken */
