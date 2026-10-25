@@ -1689,6 +1689,102 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
  .fin nav a{padding:6px 0;font-size:14px}
  .fdis{margin-top:10px;padding:12px 0 20px;font-size:12px}
 }
+/* ===== Onder het startscherm: korte uitleg die meebeweegt met het gekozen voertuig ===== */
+.uv{display:none}
+html.fresh .uv{display:block;padding-bottom:64px}
+.uvS{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:20px 48px;padding:44px 0;border-top:1px solid var(--line)}
+.uvS>header h2{margin:0;font:700 26px/1.15 var(--text);letter-spacing:-.015em;text-wrap:balance}
+.uvS>header p{margin:10px 0 0;font:600 19px/1.3 var(--display);color:var(--ink)}
+.uvS>header p b{color:var(--volt-ink);font-weight:600}
+.uvS>header p b.d{color:var(--amber-ink)}
+html[data-uvv="1"] .uvS:is([data-s=omslag],[data-s=tijd]),html[data-uvv="2"] .uvS[data-s=kost]{display:none}
+/* Alle kosten */
+.uvb{display:grid;grid-template-columns:84px minmax(0,1fr) 96px;align-items:center;gap:12px;font-size:15px;font-variant-numeric:tabular-nums}
+.uvb+.uvb{margin-top:10px}
+.uvb>b{text-align:right;font-weight:600}
+.uvt{display:flex;gap:2px;height:28px}
+.uvt i{display:block;height:100%;background:var(--line);transition:width .2s,background .15s;cursor:pointer}
+.uvt i:first-child{border-radius:4px 0 0 4px}.uvt i:last-child{border-radius:0 4px 4px 0}
+.uvt i:hover{background:var(--line-2)}
+.uvb.dz .uvt i.on{background:var(--amber)}
+.uvb.el .uvt i.on{background:var(--volt-2)}
+.uvc{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px}
+.uvc button{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:8px 12px;border:0;border-radius:10px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font:600 15px var(--text);cursor:pointer;text-align:left}
+.uvc button:hover{box-shadow:inset 0 0 0 1px var(--line-2)}
+.uvc button[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--ink)}
+.uvc small{font:500 13px var(--mono);color:var(--volt-ink);font-variant-numeric:tabular-nums}
+.uvc small.d{color:var(--amber-ink)}
+.uvx{min-height:3em;margin:14px 0 0;max-width:640px;color:var(--ink-2);font-size:16px;line-height:1.5}
+/* Omslagpunt */
+.uvo svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}
+.uvo .ax{stroke:var(--line-2);stroke-width:1}
+.uvo .zr{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 4}
+.uvo .ln{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.uvo .up{fill:var(--volt-2);opacity:.22}.uvo .dn{fill:var(--amber);opacity:.28}
+.uvo .be{stroke:var(--ink);stroke-width:1.5}
+.uvo text{font:500 12px var(--mono);fill:var(--ink-3)}
+.uvo .cur{fill:var(--card);stroke:var(--ink);stroke-width:2.5}
+.uvo .gd{stroke:var(--ink-3);stroke-width:1}
+.uvr{margin:0 0 12px;font-size:16px;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.uvr b{color:var(--ink)}
+/* Wat er verandert */
+.uvy{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:0 18px;margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none}
+.uvy li{position:relative;padding-top:26px}
+.uvy li::before{content:"";position:absolute;left:0;right:-18px;top:6px;height:2px;background:var(--line)}
+.uvy li::after{content:"";position:absolute;left:0;top:1px;width:12px;height:12px;border-radius:50%;background:var(--page);box-shadow:inset 0 0 0 2px var(--ink-3)}
+.uvy li.past::before{background:var(--volt)}
+.uvy li.past::after{background:var(--volt);box-shadow:none}
+.uvy li.now::before{background:linear-gradient(90deg,var(--volt) 0 30%,var(--line) 30%)}
+.uvy time{display:block;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.uvy b{display:block;margin:4px 0 4px;font:600 17px/1.25 var(--text)}
+.uvy span{display:block;font-size:15px;line-height:1.45;color:var(--ink-2)}
+.uvy a{color:inherit}
+/* Onafhankelijk */
+.uvl{display:grid;grid-template-columns:auto minmax(0,1fr) auto;margin:0}
+.uvl>div{display:contents}
+.uvl dt,.uvl dd{margin:0;padding:12px 0;border-bottom:1px solid var(--line)}
+.uvl dt{padding-right:24px;color:var(--ink-2)}
+.uvl dd{font-weight:600;font-variant-numeric:tabular-nums}
+.uvl dd+dd{padding-left:16px;font:500 13px var(--mono);color:var(--ink-3);text-align:right;align-self:stretch;display:flex;align-items:center;justify-content:flex-end}
+.uvl a{color:var(--ink-3)}.uvl a:hover{color:var(--ink)}
+.uvn{margin:14px 0 0;font-size:15px;color:var(--ink-3)}
+.uvn a{color:var(--ink-2)}
+/* Vragen */
+.uvS .faq h3{margin:0}
+.uvS .faq summary{padding-top:14px}
+.uvS .faq details:first-child summary{padding-top:0}
+.uvS .faq details p a{color:var(--ink)}
+.uvend{display:flex;justify-content:flex-start;padding-top:8px}
+.uvend .cta{padding:15px 22px;border-radius:10px;background:var(--volt);font-size:17px}
+.uvend .cta:hover{background:var(--volt-ink)}
+.uvend .cta svg{width:18px;height:18px}
+/* Tabbladen (versie 3) */
+.uvtab{display:none}
+html[data-uvv="3"] .uvtab{display:flex;gap:4px;padding:40px 0 0;border-top:1px solid var(--line)}
+.uvtab button{padding:9px 14px;border:0;border-radius:999px;background:none;color:var(--ink-2);font:600 16px var(--text);cursor:pointer}
+.uvtab button:hover{color:var(--ink)}
+.uvtab button[aria-selected=true]{background:var(--ink);color:#fff}
+html[data-uvv="3"] .uvS:not([data-s=faq]){display:none;border-top:0;padding-top:28px}
+html[data-uvv="3"] .uvS.act{display:grid}
+html[data-uvv="3"] .uvS:not([data-s=faq])>header h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+html[data-uvv="3"] .uvS:not([data-s=faq])>header p{margin-top:0;font-size:24px}
+@media(max-width:960px){.uvS{grid-template-columns:minmax(0,1fr);gap:18px}}
+@media(max-width:640px){
+ html.fresh .uv{padding-bottom:40px}
+ .uvS{padding:32px 0}
+ .uvS>header h2{font-size:22px}
+ .uvS>header p{font-size:17px}
+ .uvb{grid-template-columns:70px minmax(0,1fr) 80px;gap:8px;font-size:14px}
+ .uvt{height:22px}
+ .uvc{gap:6px}.uvc button{padding:7px 10px;font-size:14px}
+ .uvy{grid-auto-columns:72%;margin-right:-16px;padding-right:16px}
+ .uvl{grid-template-columns:minmax(0,1fr) auto}
+ .uvl dd+dd{display:none}
+ .uvtab{overflow-x:auto;margin-right:-16px;scrollbar-width:none}
+ .uvtab button{flex:none;font-size:15px;padding:8px 12px}
+ html[data-uvv="3"] .uvS:not([data-s=faq])>header p{font-size:20px}
+ .uvend .cta{width:100%;justify-content:center}
+}
 /* ===== Resultaat na het invulvenster (Simpel) en de kop van Uitgebreid =====
    Twee kolommen met alleen lijnen. Het oude scorebord blijft voor de rekenlogica, maar staat niet meer in beeld. */
 #calc>.wrap:has(>.intro),#board,#story,#ins,#fcta,[data-page=uitgebreid] .wrap:has(>.intro){display:none!important}
@@ -1885,6 +1981,21 @@ html[lang=en] [data-page=uitgebreid] .pbt>div:first-child::before{content:"Payba
 <!-- ===== Calculator ===== -->
 <section class="page" data-page="calc" id="calc">
  <div class="home" id="home"></div>
+ <div class="wrap home uv" id="uv">
+  <div class="uvtab" role="tablist" aria-label="Uitleg"><button type="button" role="tab" data-uvt="kost" aria-selected="true">Alle kosten</button><button type="button" role="tab" data-uvt="omslag" aria-selected="false">Omslagpunt</button><button type="button" role="tab" data-uvt="tijd" aria-selected="false">Wat er verandert</button><button type="button" role="tab" data-uvt="onaf" aria-selected="false">Onafhankelijk</button></div>
+  <section class="uvS" data-s="kost"><header><h2>Alle kosten, niet alleen brandstof</h2><p id="uvKh"></p></header><div id="uvK"></div></section>
+  <section class="uvS" data-s="omslag"><header><h2>Waar diesel nog wint</h2><p id="uvOh"></p></header><div class="uvo" id="uvO"></div></section>
+  <section class="uvS" data-s="tijd"><header><h2>Wat er verandert</h2><p id="uvTh"></p></header><div id="uvT"></div></section>
+  <section class="uvS" data-s="onaf"><header><h2>Onafhankelijk</h2><p>Geen dealer, geen leasemaatschappij, geen account.</p></header><div><dl class="uvl" id="uvL"></dl><p class="uvn">Stand oktober 2026. Alles pas je aan in de calculator. <a href="/over-ons/">Zo rekenen we</a></p></div></section>
+  <section class="uvS" data-s="faq"><header><h2>Veelgestelde vragen</h2></header><div class="faq">
+   <details><summary>Is een elektrische vrachtwagen goedkoper dan een diesel?</summary><p>Over de hele looptijd vaak wel, vooral bij veel kilometers. Een elektrische trekker of bakwagen is duurder in aanschaf, maar goedkoper in energie, onderhoud en vrachtwagenheffing. Of dat voor jou opweegt, hangt af van je kilometers, je stroomprijs en de subsidie.</p></details>
+   <details><summary>Is een elektrische bestelbus goedkoper dan diesel?</summary><p>Bij gemiddeld gebruik liggen ze dicht bij elkaar, en bij weinig kilometers wint diesel vaak nog. Een bestelbus betaalt geen vrachtwagenheffing, dus het verschil komt vooral uit energie en onderhoud. Rijd je de stad in, kijk dan ook naar de <a href="/overstapgids/zero-emissiezones/">zero-emissiezones</a>.</p></details>
+   <details><summary>Wat is TCO?</summary><p>Total cost of ownership: alle kosten van een voertuig over de tijd dat je het hebt. Dus de aanschaf min subsidie en restwaarde, plus energie, onderhoud, verzekering en heffing. Alleen de brandstofprijs vergelijken geeft een vertekend beeld.</p></details>
+   <details><summary>Welke subsidie is er voor een elektrische vrachtwagen?</summary><p>Voor trekkers en bakwagens is er AanZET, of anders de MIA. Voor een laadpaal kan SPRILA gelden. Bedragen en voorwaarden staan bij <a href="/overstapgids/subsidies/">Subsidies en regelingen</a>.</p></details>
+   <details><summary>Past elektrisch bij mijn ritten?</summary><p>Dat hangt af van je langste dagrit, waar je kunt laden en hoeveel vermogen je aansluiting heeft. Check het bij <a href="/overstapgids/actieradius/">Actieradius</a> en <a href="/overstapgids/netcongestie/">Netcongestie</a>.</p></details>
+  </div></section>
+  <div class="uvend"><button class="cta" type="button" data-start>Ga naar de calculator <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>
+ </div>
  <div class="wrap">
   <div class="intro">
    <h1 tabindex="-1">Vind jouw ideale bedrijfsauto</h1>
@@ -3151,6 +3262,95 @@ document.addEventListener('click',e=>{
  const c=e.target.closest('[data-hc]');if(c){hc=c.dataset.hc;if($('dw').value!==hc){$('dw').value=hc;dieselAuto(true);render()}homePaint();return}
  const st=e.target.closest('[data-start]');if(st){const hk=$('hkm');if(hk&&+hk.value!==v('km')){$('km').value=hk.value;$('km').dispatchEvent(new Event('input',{bubbles:true}));touched=true;render()}const k=st.dataset.start;if(k){hc=k;if($('dw').value!==k){$('dw').value=k;dieselAuto(true);render()}}openWz('use');return}
  if(e.target.closest('#home [data-vt]'))setTimeout(homePaint);
+});
+
+/* ===== Onder het startscherm =====
+   Korte uitleg die meebeweegt met het voertuig en de kilometers van het startscherm: alle kostenposten, het omslagpunt,
+   wat er verandert en waar we mee rekenen. UVV kiest de indeling: 1 kort, 2 omslagpunt en tijdlijn, 3 tabbladen. */
+let UVV='1',uvCat=null,uvTab='kost';
+const UVC=[['afs','Aanschaf'],['en','Energie'],['ond','Onderhoud'],['ver','Verzekering'],['hef','Heffing']];
+const uvKm=()=>{const s=$('hkm');return s?+s.value:v('km')};
+const uvDiff=(d,e)=>{const x=d-e;return`<small${x<0?' class="d"':''}>${x<0?'+':'−'}${eur(Math.abs(x))}</small>`};
+function uvUit(k,r){
+ const g=v;return{
+  afs:`${eur(g('pD'))} voor de diesel en ${eur(g('pE'))} voor elektrisch${r.sub?`, min ${eur(r.sub)} subsidie`:''}, min de restwaarde, verdeeld over ${r.L} jaar.`,
+  en:`${nf(r.km)} km per jaar: ${nf(g('ld'),1)} liter per 100 km à ${eur(g('dp'),2)} tegenover ${nf(g('le'))} kWh à ${eur(g('sp'),2)}${r.ereV?', min de ERE-opbrengst':''}.`,
+  ond:`${eur(g('oD'),2)} tegenover ${eur(g('oE'),2)} per km. Een elektromotor heeft geen olie, filters of koppeling.`,
+  ver:`Een vast bedrag per jaar: ${eur(g('vD'))} tegenover ${eur(g('vE'))}. Elektrisch is duurder te verzekeren door de hogere nieuwwaarde.`,
+  hef:`${nf(r.kmH)} km met vrachtwagenheffing: ${eur(g('tD'),3)} tegenover ${eur(g('tE'),3)} per km.`}[k];
+}
+function uvKost(r){
+ const cs=UVC.filter(c=>r.D[c[0]]||r.E[c[0]]),mx=Math.max(r.td,r.te),dd=c=>r.D[c[0]]-r.E[c[0]];
+ if(!cs.some(c=>c[0]===uvCat))uvCat=cs.reduce((a,c)=>Math.abs(dd(c))>Math.abs(dd(a))?c:a)[0];
+ const bar=(x,cl,t,tot)=>`<div class="uvb ${cl}"><span>${t}</span><div class="uvt">${cs.map(c=>`<i data-uvc="${c[0]}" title="${c[1]}"${c[0]===uvCat?' class="on"':''} style="width:${Math.max(0,x[c[0]])/mx*100}%"></i>`).join('')}</div><b>${eur(tot)}</b></div>`;
+ const d=r.td-r.te;
+ $('uvKh').innerHTML=`${d>=0?`Elektrisch <b>${eur(d)}</b> goedkoper`:`Diesel <b class="d">${eur(-d)}</b> goedkoper`} per jaar bij ${nf(r.km)} km`;
+ $('uvK').innerHTML=bar(r.D,'dz','Diesel',r.td)+bar(r.E,'el','Elektrisch',r.te)+
+  `<div class="uvc">${cs.map(c=>`<button type="button" data-uvc="${c[0]}" aria-pressed="${c[0]===uvCat}"><span>${c[1]}</span>${uvDiff(r.D[c[0]],r.E[c[0]])}</button>`).join('')}</div><p class="uvx">${uvUit(uvCat,r)}</p>`;
+}
+/* Verschil per jaar (diesel min elektrisch) over het kilometerbereik van het voertuig, met het omslagpunt */
+function uvOmslag(){
+ const [k0,k1]=RNG[vtype].km,N=48,P=[];
+ for(let i=0;i<=N;i++){const km=k0+(k1-k0)*i/N,r=hAt(km);P.push([km,r.td-r.te])}
+ let be=null;for(let i=1;i<P.length;i++){const[a,da]=P[i-1],[b,db]=P[i];if((da<0)!==(db<0)){be=a+(b-a)*(-da)/(db-da);break}}
+ const lo=Math.min(0,...P.map(p=>p[1])),hi=Math.max(0,...P.map(p=>p[1])),W=Math.max(300,Math.round($('uvO').clientWidth)||640),H=W<500?200:230,L=4,R=W-4,T0=14,B=H-30;
+ const X=km=>L+(km-k0)/(k1-k0)*(R-L),Y=d=>T0+(hi-d)/((hi-lo)||1)*(B-T0),y0=Y(0);
+ const pts=P.map(p=>`${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(' '),area=`M${X(k0)},${y0} L${pts.replace(/ /g,' L')} L${X(k1)},${y0}Z`;
+ const up=P.every(p=>p[1]>=0),dn=P.every(p=>p[1]<0),rk=x=>nf(Math.round(x/1000)*1000);
+ $('uvOh').innerHTML=be?(P[0][1]<0?`Elektrisch wint vanaf <b>${rk(be)}</b> km per jaar`:`Diesel wint vanaf <b class="d">${rk(be)}</b> km per jaar`):up?`Elektrisch wint vanaf <b>${rk(k0)}</b> km per jaar`:`Diesel wint tot <b class="d">${rk(k1)}</b> km per jaar`;
+ const tk=[k0,(k0+k1)/2,k1].map((k,i)=>`<text x="${X(k)}" y="${H-8}" text-anchor="${['start','middle','end'][i]}">${nf(Math.round(k/1000))}k</text>`).join('');
+ $('uvO').innerHTML=`<p class="uvr" id="uvOr"></p><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Verschil in kosten per jaar tussen diesel en elektrisch bij ${nf(k0)} tot ${nf(k1)} km per jaar">
+<defs><clipPath id="uvU"><rect x="0" y="0" width="${W}" height="${y0}"/></clipPath><clipPath id="uvD"><rect x="0" y="${y0}" width="${W}" height="${H}"/></clipPath></defs>
+<path class="up" d="${area}" clip-path="url(#uvU)"/><path class="dn" d="${area}" clip-path="url(#uvD)"/>
+<line class="zr" x1="${L}" x2="${R}" y1="${y0}" y2="${y0}"/><text x="${R}" y="${y0-6}" text-anchor="end">€ 0</text>
+<polyline class="ln" points="${pts}"/>${be?`<line class="be" x1="${X(be)}" x2="${X(be)}" y1="${T0}" y2="${B}"/>`:''}
+<line class="ax" x1="${L}" x2="${R}" y1="${B}" y2="${B}"/>${tk}
+<line class="gd" id="uvOg" y1="${T0}" y2="${B}"/><circle class="cur" id="uvOc" r="6"/></svg>`;
+ const svg=$('uvO').querySelector('svg'),at=km=>{km=Math.min(k1,Math.max(k0,km));const d=hAt(km),x=d.td-d.te;
+  $('uvOc').setAttribute('cx',X(km));$('uvOc').setAttribute('cy',Y(x));$('uvOg').setAttribute('x1',X(km));$('uvOg').setAttribute('x2',X(km));
+  $('uvOr').innerHTML=`Bij <b>${nf(Math.round(km/1000)*1000)} km</b>: ${Math.abs(x)<200?'ongeveer gelijk':x>0?`elektrisch <b>${eur(x)}</b> per jaar goedkoper`:`diesel <b>${eur(-x)}</b> per jaar goedkoper`}`};
+ at(uvKm());
+ const mv=e=>{const b=svg.getBoundingClientRect();at(k0+((e.clientX-b.left)/b.width*W-L)/(R-L)*(k1-k0))};
+ svg.addEventListener('pointermove',mv);svg.addEventListener('pointerdown',mv);svg.addEventListener('pointerleave',()=>at(uvKm()));
+}
+/* Wat er verandert, gefilterd op voertuig: t vrachtwagens, b bestelbussen, a iedereen */
+const UVY=[
+ ['2026-07-01','1 juli 2026','Vrachtwagenheffing','Elke kilometer op Nederlandse wegen kost een diesel nu flink meer dan elektrisch.','t','/overstapgids/heffing/'],
+ ['2027-01-01','1 januari 2027','Euro 5 de zones uit','Bestelauto\'s met Euro 5 of lager mogen niet meer in de zero-emissiezones.','b','/overstapgids/zero-emissiezones/'],
+ ['2027-01-01','2027','Dieselaccijns','Het kabinet wil de korting verlengen. De Kamer stemt op 12 november.','a','/nieuws/'],
+ ['2028-01-01','1 januari 2028','ETS2 op diesel','CO₂-prijs op brandstof, ongeveer 13 cent per liter.','a','/nieuws/'],
+ ['2028-01-01','1 januari 2028','Euro 6 de zones uit','Voor bestelauto\'s van vóór 2025. Mogelijk pas in 2029.','b','/overstapgids/zero-emissiezones/'],
+ ['2028-01-01','1 januari 2028','Oudere Euro VI de zones uit','Bakwagens met Euro VI van 2017 tot en met 2019.','k','/overstapgids/zero-emissiezones/'],
+ ['2030-01-01','1 januari 2030','Alle diesels de zones uit','Ook nieuwere Euro VI-vrachtwagens mogen de zones dan niet meer in.','t','/overstapgids/zero-emissiezones/']];
+function uvTijd(){
+ const g=vtype==='bestel'?'b':vtype==='bus'?'':'t',now=new Date(),it=UVY.filter(x=>x[4]==='a'||x[4]===g||(x[4]==='k'&&vtype==='bakwagen'));
+ const nx=it.findIndex(x=>new Date(x[0])>now);
+ $('uvTh').textContent=`${it.length} veranderingen tot 2030`;
+ $('uvT').innerHTML=`<ol class="uvy">${it.map((x,i)=>`<li class="${i<nx-1||nx<0?'past':i===nx-1?'past now':''}"><time datetime="${x[0]}">${x[1]}</time><b><a href="${x[5]}">${x[2]}</a></b><span>${x[3]}</span></li>`).join('')}</ol>`;
+}
+function uvOnaf(r){
+ const q=T(),row=(t,w,s)=>`<div><dt>${t}</dt><dd>${w}</dd><dd>${s||''}</dd></div>`,ln=(h,t)=>`<a href="${h}"${h[0]==='/'?'':' target="_blank" rel="noopener"'}>${t}</a>`;
+ $('uvL').innerHTML=[
+  row('Dieselprijs',`${eur(v('dp'),2)} per liter`,ln('https://opendata.cbs.nl/#/CBS/nl/dataset/80416ned/table','CBS')),
+  row('Stroomprijs',`${eur(v('sp'),2)} per kWh`,'eigen terrein'),
+  q.truck&&row('Vrachtwagenheffing',`${eur(v('tD'),3)} / ${eur(v('tE'),3)} per km`,ln('https://zoek.officielebekendmakingen.nl/stcrt-2026-18058.pdf','Staatscourant')),
+  r.sub&&row('Subsidie',eur(r.sub),ln('https://www.rvo.nl/subsidies-financiering/aanzet','RVO')),
+  row('Restwaarde',`${nf(v('rw'))}% / ${nf(v('rwE'))}% na ${r.L} jaar`,ln('/restwaarde/','marktprijzen')),
+  row('Prijzen elektrisch',`${eur(v('pE'))}`,ln('/modellen/','modellen'))].filter(Boolean).join('');
+}
+function uvPaint(){
+ if(!isFresh()||!$('uvK'))return;
+ document.documentElement.dataset.uvv=UVV;
+ const r=hAt(uvKm());uvKost(r);uvOmslag();uvTijd();uvOnaf(r);
+ document.querySelectorAll('[data-uvt]').forEach(b=>b.setAttribute('aria-selected',b.dataset.uvt===uvTab));
+ document.querySelectorAll('.uvS').forEach(s=>s.classList.toggle('act',s.dataset.s===uvTab));
+}
+{const f=homePaint;homePaint=function(){f.apply(this,arguments);uvPaint()}}
+addEventListener('resize',()=>{if(isFresh()&&$('uvO'))uvOmslag()});
+document.addEventListener('input',e=>{if(e.target.id==='hkm'){const r=hAt(+e.target.value);uvKost(r);uvOnaf(r);const s=$('uvO')&&$('uvO').querySelector('svg');if(s)s.dispatchEvent(new Event('pointerleave'))}});
+document.addEventListener('click',e=>{
+ const c=e.target.closest('[data-uvc]');if(c){uvCat=c.dataset.uvc;uvKost(hAt(uvKm()));return}
+ const t=e.target.closest('[data-uvt]');if(t){uvTab=t.dataset.uvt;uvPaint()}
 });
 
 /* ===== Resultaat na het invulvenster =====
