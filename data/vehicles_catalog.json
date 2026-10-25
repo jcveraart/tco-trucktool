@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-21",
+  "version": "2026-10-25",
   "categories": [
     {
       "id": "trekker",
@@ -16,11 +16,11 @@
         "diesel_price": 2.03,
         "electricity_price": 0.25,
         "ere_yield": 0.1,
-        "diesel_consumption_l_per_100km": 30.0,
-        "electric_consumption_kwh_per_100km": 115.0,
-        "battery_kwh": 540.0,
-        "insurance_diesel_annual": 7000.0,
-        "insurance_electric_annual": 9500.0,
+        "diesel_consumption_l_per_100km": 30,
+        "electric_consumption_kwh_per_100km": 115,
+        "battery_kwh": 540,
+        "insurance_diesel_annual": 7000,
+        "insurance_electric_annual": 9500,
         "maintenance_diesel_per_km": 0.12,
         "maintenance_electric_per_km": 0.08,
         "toll_diesel_per_km": 0.201,
@@ -42,11 +42,11 @@
         "diesel_price": 2.03,
         "electricity_price": 0.25,
         "ere_yield": 0.1,
-        "diesel_consumption_l_per_100km": 25.0,
-        "electric_consumption_kwh_per_100km": 100.0,
-        "battery_kwh": 300.0,
-        "insurance_diesel_annual": 4500.0,
-        "insurance_electric_annual": 6500.0,
+        "diesel_consumption_l_per_100km": 25,
+        "electric_consumption_kwh_per_100km": 100,
+        "battery_kwh": 300,
+        "insurance_diesel_annual": 4500,
+        "insurance_electric_annual": 6500,
         "maintenance_diesel_per_km": 0.1,
         "maintenance_electric_per_km": 0.06,
         "toll_diesel_per_km": 0.182,
@@ -68,15 +68,15 @@
         "diesel_price": 2.03,
         "electricity_price": 0.25,
         "ere_yield": 0.1,
-        "diesel_consumption_l_per_100km": 9.0,
-        "electric_consumption_kwh_per_100km": 25.0,
-        "battery_kwh": 70.0,
-        "insurance_diesel_annual": 2000.0,
-        "insurance_electric_annual": 2500.0,
+        "diesel_consumption_l_per_100km": 9,
+        "electric_consumption_kwh_per_100km": 25,
+        "battery_kwh": 70,
+        "insurance_diesel_annual": 2000,
+        "insurance_electric_annual": 2500,
         "maintenance_diesel_per_km": 0.06,
         "maintenance_electric_per_km": 0.04,
-        "toll_diesel_per_km": 0.0,
-        "toll_electric_per_km": 0.0
+        "toll_diesel_per_km": 0,
+        "toll_electric_per_km": 0
       }
     },
     {
@@ -94,15 +94,15 @@
         "diesel_price": 2.03,
         "electricity_price": 0.25,
         "ere_yield": 0.1,
-        "diesel_consumption_l_per_100km": 32.0,
-        "electric_consumption_kwh_per_100km": 120.0,
-        "battery_kwh": 450.0,
-        "insurance_diesel_annual": 8000.0,
-        "insurance_electric_annual": 10000.0,
+        "diesel_consumption_l_per_100km": 32,
+        "electric_consumption_kwh_per_100km": 120,
+        "battery_kwh": 450,
+        "insurance_diesel_annual": 8000,
+        "insurance_electric_annual": 10000,
         "maintenance_diesel_per_km": 0.2,
         "maintenance_electric_per_km": 0.14,
-        "toll_diesel_per_km": 0.0,
-        "toll_electric_per_km": 0.0
+        "toll_diesel_per_km": 0,
+        "toll_electric_per_km": 0
       }
     }
   ],
@@ -169,7 +169,7 @@
       "id": "de",
       "country": "D",
       "name": "Duitsland",
-      "rate_electric": 0.0,
+      "rate_electric": 0,
       "rate_diesel": 0.348,
       "notes": "Elektrisch vooralsnog vrijgesteld van Lkw-Maut"
     },
@@ -215,8 +215,7 @@
       "u": 600,
       "rt": "tot 500",
       "checked": "2026-10-21",
-      "consumption": 103,
-      "id": "mercedes-benz-eactros-600"
+      "consumption": 103
     },
     {
       "c": "trekker",
@@ -233,8 +232,7 @@
         "https://www.tesla.com/en_GB/semi"
       ],
       "consumption": 100,
-      "checked": "2026-10-21",
-      "id": "tesla-semi-europa"
+      "checked": "2026-10-21"
     },
     {
       "c": "trekker",
@@ -255,8 +253,7 @@
       "pDs": [
         "autozeitung.de",
         "https://www.autozeitung.de/volvo-fh-2024-preis-motoren-207714.html"
-      ],
-      "id": "volvo-fh-aero-electric"
+      ]
     },
     {
       "c": "trekker",
@@ -274,13 +271,14 @@
       "s": [
         "electrive",
         "https://www.electrive.com/2025/09/22/daf-begins-series-production-of-xd-and-xf-electric-electric-trucks"
-      ],
-      "id": "daf-xf-electric"
+      ]
     },
     {
       "c": "trekker",
       "b": "MAN",
       "m": "eTGX (nieuwe generatie 2027)",
+      "fam": "eTGX",
+      "vl": "Nieuwe generatie",
       "r": 660,
       "st": "komt",
       "n": "Nieuwe generatie, getoond op de IAA in september 2026. De 4×2-trekker heeft zes accupakketten: 552 kWh geïnstalleerd en 528 kWh bruikbaar, voor tot 660 km bij 20 °C, 60% belading en snelweginzet. De 6×2 met een zevende pakket haalt tot 720 km. Verkoopstart gepland voor april 2027, productie vanaf zomer 2027.",
@@ -292,8 +290,7 @@
       ],
       "rt": "tot 660",
       "y": 2027,
-      "checked": "2026-10-21",
-      "id": "man-etgx-nieuwe-generatie-2027"
+      "checked": "2026-10-21"
     },
     {
       "c": "trekker",
@@ -310,13 +307,14 @@
       ],
       "rt": "tot 515",
       "dc": 375,
-      "checked": "2026-10-21",
-      "id": "scania-r-serie-elektrisch"
+      "checked": "2026-10-21"
     },
     {
       "c": "trekker",
       "b": "Renault Trucks",
       "m": "E-Tech T 780",
+      "fam": "E-Tech T",
+      "vl": "780 kWh · 6×2",
       "g": 780,
       "r": 660,
       "rt": "tot 660",
@@ -330,12 +328,11 @@
       "ue": 741,
       "derived": "afgeleid uit 95% van 780 kWh; maximaal gebruiksvenster",
       "dc": 350,
-      "checked": "2026-10-21",
-      "id": "renault-trucks-e-tech-t-780"
+      "checked": "2026-10-21"
     },
     {
       "c": "trekker",
-      "b": "Iveco",
+      "b": "IVECO",
       "m": "S-eWay",
       "g": 603,
       "r": 600,
@@ -349,8 +346,7 @@
       "ue": 585,
       "derived": "afgeleid uit 97% van 603 kWh, afgerond",
       "rt": "tot 600",
-      "checked": "2026-10-21",
-      "id": "iveco-s-eway"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -374,8 +370,7 @@
         "boerse-online.de",
         "https://www.boerse-online.de/dpa-afx/roundup-mercedes-startet-serienproduktion-von-e-lkw-128851.html"
       ],
-      "pt": "reported",
-      "id": "mercedes-benz-eactros-300-400"
+      "pt": "reported"
     },
     {
       "c": "bakwagen",
@@ -393,8 +388,7 @@
       "s": [
         "DAF",
         "https://dealers.daf.com/-/media/files/document-library/infosheets/electric/daf-xd-electric-infosheet-xde-en-556205.pdf"
-      ],
-      "id": "daf-xd-electric"
+      ]
     },
     {
       "c": "bakwagen",
@@ -412,8 +406,7 @@
       "s": [
         "DAF",
         "https://www.daf.co.uk/-/media/files/document-library/infosheets/electric/daf-xb-electric-infosheet-xbe-en-556205.pdf"
-      ],
-      "id": "daf-xb-electric"
+      ]
     },
     {
       "c": "bakwagen",
@@ -432,8 +425,7 @@
       "u": 460,
       "dc": 350,
       "vc": "n3",
-      "checked": "2026-10-21",
-      "id": "volvo-fm-electric"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -450,8 +442,7 @@
         "https://www.electrive.com/2024/09/04/man-adds-12-tonne-model-to-its-electric-truck-portfolio"
       ],
       "vc": "n2",
-      "gvw": 12000,
-      "id": "man-etgl"
+      "gvw": 12000
     },
     {
       "c": "bakwagen",
@@ -465,8 +456,7 @@
       "s": [
         "Renault Trucks",
         "https://www.renault-trucks.de/sites/default/files/2024-09/Renault%20Trucks%20E-TECH%20D16%20MED%20P4x2_0.pdf"
-      ],
-      "id": "renault-trucks-e-tech-d-16-t"
+      ]
     },
     {
       "c": "bestel",
@@ -489,8 +479,7 @@
         "wensink.nl",
         "https://www.wensink.nl/p/mercedes-benz-esprinter-314-l2-h2-rwd-pro-81kwh-55986781"
       ],
-      "pt": "reported",
-      "id": "mercedes-benz-esprinter"
+      "pt": "reported"
     },
     {
       "c": "bestel",
@@ -514,8 +503,7 @@
         "fordmediacenter.nl",
         "https://fordmediacenter.nl/ford-e-transit-met-extra-grote-actieradius-nu-te-bestellen-vanaf-e-59-995/"
       ],
-      "pt": "list",
-      "id": "ford-e-transit"
+      "pt": "list"
     },
     {
       "c": "bestel",
@@ -533,13 +521,12 @@
       ],
       "gvw": 3500,
       "checked": "2026-10-21",
-      "price": 45900,
+      "price": 50900,
       "ps": [
-        "anwb.nl",
-        "https://www.anwb.nl/zakelijk/elektrisch-rijden/elektrische-bestelautos/renault-master-e-tech"
+        "Renault Nederland",
+        "https://cdn.group.renault.com/ren/nl/brochures-en-prijslijsten/prijslijsten/master-etech-electric-prijslijst.pdf"
       ],
-      "pt": "reported",
-      "id": "renault-master-e-tech"
+      "pt": "Vanafprijs voor advance gesloten bestel L2H2 T35 87 kWh 140 pk. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2026. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -567,7 +554,11 @@
         "https://www.fiat.nl/content/dam/fiat2023/nl/professional/prijslijsten/ducato/prijslijst-fiat-ducato-my26-per-1-april-2026.pdf"
       ],
       "ld": 9.9,
-      "id": "fiat-e-ducato"
+      "pt": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh (97,8 kWh bruikbaar). Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Fiat Professional Nederland",
+        "https://www.fiat.nl/content/dam/fiat2023/nl/professional/prijslijsten/e-ducato/Prijslijst_eDucato_12_januari_2026.pdf"
+      ]
     },
     {
       "c": "bus",
@@ -583,8 +574,7 @@
       "s": [
         "Mercedes-Benz Bus",
         "https://www.mercedes-benz-bus.com/en_DE/models/ecitaro.html"
-      ],
-      "id": "mercedes-benz-ecitaro"
+      ]
     },
     {
       "c": "bus",
@@ -606,8 +596,7 @@
         "electrive.net",
         "https://www.electrive.net/2026/06/09/kiel-bestellt-28-e-gelenkbusse-bei-daimler-buses/"
       ],
-      "pt": "reported",
-      "id": "mercedes-benz-ecitaro-g"
+      "pt": "reported"
     },
     {
       "c": "bus",
@@ -621,8 +610,7 @@
       "s": [
         "electrive",
         "https://www.electrive.net/2025/03/21/transdev-bestellt-42-elektrobusse-bei-vdl/"
-      ],
-      "id": "vdl-citea-le-122"
+      ]
     },
     {
       "c": "bus",
@@ -635,8 +623,7 @@
       "s": [
         "electrive",
         "https://www.electrive.com/2026/02/26/three-battery-electric-yutong-coaches-deployed-in-austria/"
-      ],
-      "id": "yutong-t12e-touringcar"
+      ]
     },
     {
       "c": "bestel",
@@ -659,8 +646,7 @@
         "wassinkautogroep.nl",
         "https://www.wassinkautogroep.nl/content/uploads/2024/11/Prijslijst-citroen-e-berlingo-van-per-1-januari-2026.pdf"
       ],
-      "pt": "list",
-      "id": "citroen-e-berlingo-van"
+      "pt": "list"
     },
     {
       "c": "bestel",
@@ -680,11 +666,10 @@
       "checked": "2026-10-21",
       "price": 43400,
       "ps": [
-        "citroen.nl",
-        "https://www.citroen.nl/content/dam/citroen/netherlands/b2b/local-content/brochures-prijslijsten/model/jumpy/17042026-Prijzen-en-specificaties-e-Jumpy.pdf"
+        "Citroën Nederland",
+        "https://www.citroen.nl/content/dam/citroen/netherlands/b2b/local-content/brochures-prijslijsten/model/jumpy/12012026-Prijzen-en-specificaties-e-Jumpy.pdf"
       ],
-      "pt": "list",
-      "id": "citroen-e-jumpy-comfort-range"
+      "pt": "Vanafprijs voor gesloten bestel L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -702,7 +687,12 @@
         "https://www.peugeot.nl/showroom/peugeot-partner/elektrisch.html"
       ],
       "checked": "2026-10-21",
-      "id": "peugeot-e-partner"
+      "price": 27795,
+      "pt": "Vanafprijs voor gesloten bestel L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 1 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Peugeot-prijslijst via Haaima (dealer)",
+        "https://www.haaima.nl/media/uikihcaa/peugeot-e-partner-prijslijst.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -720,7 +710,12 @@
         "https://www.peugeot.nl/showroom/peugeot-expert/faq.html"
       ],
       "checked": "2026-10-21",
-      "id": "peugeot-e-expert-75-kwh"
+      "price": 43400,
+      "pt": "Vanafprijs voor gesloten bestel L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 14 mei 2025. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Peugeot-prijslijst via Haaima (dealer)",
+        "https://www.haaima.nl/media/y0ul0z5b/prijslijst-peugeot-e-expert.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -738,19 +733,18 @@
         "https://www.opel.nl/bedrijfswagens/combo-modellen/nieuwe-combo-electric/overzicht.html"
       ],
       "checked": "2026-10-21",
-      "price": 27800,
+      "price": 27795,
       "ps": [
-        "opel.nl",
-        "https://www.opel.nl/bedrijfswagens/combo-modellen/nieuwe-combo-electric/overzicht.html"
+        "Opel Nederland",
+        "https://www.opel.nl/content/dam/opel/netherlands/vehicles/combo-e/pdf/GP26-1706PM-Prijslijst-Opel-Combo-Cargo-Electric.pdf"
       ],
-      "pt": "list",
+      "pt": "Vanafprijs voor Advance L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: september 2026. Gecontroleerd op 23 oktober 2026.",
       "pD": 20400,
       "pDm": "Opel Combo Cargo diesel",
       "pDs": [
         "opel.nl",
         "https://www.opel.nl/bedrijfswagens/combo-modellen/nieuwe-combo/overzicht.html"
-      ],
-      "id": "opel-combo-cargo-electric"
+      ]
     },
     {
       "c": "bestel",
@@ -768,7 +762,12 @@
         "https://www.opel.nl/elektrisch-rijden/elektrische-bedrijfswagens.html"
       ],
       "checked": "2026-10-21",
-      "id": "opel-vivaro-electric-75-kwh"
+      "price": 43400,
+      "pt": "Vanafprijs voor gesloten bestel L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Opel-prijslijst via Haaima (dealer)",
+        "https://www.haaima.nl/media/bajntekd/vivaro-electric.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -786,7 +785,12 @@
         "https://www.fiat.nl/professional/modellen/e-doblo"
       ],
       "checked": "2026-10-21",
-      "id": "fiat-e-doblo"
+      "price": 27795,
+      "pt": "Vanafprijs voor L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Fiat Professional Nederland",
+        "https://www.fiat.nl/professional/modellen/e-doblo/prijslijst"
+      ]
     },
     {
       "c": "bestel",
@@ -804,7 +808,12 @@
         "https://www.fiat.nl/professional/modellen/e-scudo/features"
       ],
       "checked": "2026-10-21",
-      "id": "fiat-e-scudo-75-kwh"
+      "price": 43400,
+      "pt": "Vanafprijs voor Easy Pro L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Fiat Professional Nederland",
+        "https://www.fiat.nl/professional/modellen/e-scudo/prijslijst"
+      ]
     },
     {
       "c": "bestel",
@@ -822,13 +831,12 @@
         "https://www.toyota.nl/modellen/proace-city"
       ],
       "checked": "2026-10-21",
-      "price": 27900,
+      "price": 27945,
       "ps": [
-        "toyota.nl",
-        "https://www.toyota.nl/modellen/proace-city/prijzen-en-acties"
+        "Toyota Nederland",
+        "https://datablob.toyota.nl/data/brochures/Proace-City-Electric-brochure.pdf"
       ],
-      "pt": "list",
-      "id": "toyota-proace-city-electric"
+      "pt": "Vanafprijs voor Comfort L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -846,7 +854,12 @@
         "https://www.toyota.nl/modellen/proace"
       ],
       "checked": "2026-10-21",
-      "id": "toyota-proace-electric-75-kwh"
+      "price": 43050,
+      "pt": "Vanafprijs voor Comfort Worker L2 Extra Range 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Toyota Nederland",
+        "https://datablob.toyota.nl/data/brochures/Proace-Worker-Electric-brochure.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -870,8 +883,7 @@
         "https://cdn.group.renault.com/ren/nl/brochures-en-prijslijsten/prijslijsten/kangoo-etech-electric-prijslijst.pdf"
       ],
       "pt": "list",
-      "consumption": 19,
-      "id": "renault-kangoo-van-e-tech-electric"
+      "consumption": 19
     },
     {
       "c": "bestel",
@@ -894,8 +906,7 @@
         "https://www.stam.nl/nissan/modellen/nissan-townstar/prijzen/"
       ],
       "pt": "reported",
-      "consumption": 18.6,
-      "id": "nissan-townstar-ev-van"
+      "consumption": 18.6
     },
     {
       "c": "bestel",
@@ -918,8 +929,7 @@
         "laadpunt.nl",
         "https://www.laadpunt.nl/laadpaal-kennisbank/elektrische-bestelwagens/"
       ],
-      "pt": "reported",
-      "id": "mercedes-benz-ecitan"
+      "pt": "reported"
     },
     {
       "c": "bestel",
@@ -936,13 +946,12 @@
         "https://fordmediacenter.nl/meer-kilometers-minder-wachttijd-ford-e-transit-custom-geeft-jouw-werkdag-een-upgrade/"
       ],
       "checked": "2026-10-21",
-      "price": 44400,
+      "price": 44390,
       "ps": [
-        "hedinautomotive.nl",
-        "https://www.hedinautomotive.nl/ford/modellen/e-transit-custom"
+        "Ford Nederland",
+        "https://www.ford.nl/content/dam/guxeu/nl/documents/pricelists/commercial-vehicles/PL-ford_e_transit_custom.pdf"
       ],
-      "pt": "reported",
-      "id": "ford-e-transit-custom"
+      "pt": "Vanafprijs voor Trend L1H1 320 71 kWh 136 pk RWD. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 24 september 2026. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -959,13 +968,12 @@
         "https://fordmediacenter.nl/ford-e-transit-courier-krijgt-grotere-batterij-meer-actieradius-verbeterde-connectiviteit-en-inzetbaarheid/"
       ],
       "checked": "2026-10-21",
-      "price": 28400,
+      "price": 28410,
       "ps": [
-        "anwb.nl",
-        "https://www.anwb.nl/zakelijk/elektrisch-rijden/elektrische-bestelautos/ford-e-transit-courier"
+        "Ford Nederland",
+        "https://fordmediacenter.nl/ford-e-transit-courier-krijgt-grotere-batterij-meer-actieradius-verbeterde-connectiviteit-en-inzetbaarheid/"
       ],
-      "pt": "list",
-      "id": "ford-e-transit-courier"
+      "pt": "Vanafprijs voor Trend met vergroot accupakket 46 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 2026, fabrikantbericht. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -982,14 +990,13 @@
         "https://www.vwbedrijfswagens.nl/nl/modellen/id-buzz-cargo.html"
       ],
       "checked": "2026-10-21",
-      "price": 40000,
+      "price": 43690,
       "ps": [
-        "vwbedrijfswagens.nl",
+        "Volkswagen Bedrijfswagens Nederland",
         "https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/prijslijsten-en-brochures/id--buzz-cargo/Prijslijst-ID-Buzz-Cargo.pdf"
       ],
-      "pt": "list",
-      "consumption": 19.9,
-      "id": "volkswagen-id-buzz-cargo"
+      "pt": "Vanafprijs voor Economy Limited Edition 79 kWh 286 pk RWD. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 2 april 2026. Gecontroleerd op 23 oktober 2026.",
+      "consumption": 19.9
     },
     {
       "c": "bestel",
@@ -1006,13 +1013,12 @@
         "https://www.vwbedrijfswagens.nl/nl/modellen/e-transporter.html"
       ],
       "checked": "2026-10-21",
-      "price": 47000,
+      "price": 43990,
       "ps": [
-        "autoblog.nl",
-        "https://www.autoblog.nl/nieuws/dit-kost-de-volkswagen-e-transporter-in-nederland-6978674"
+        "Volkswagen Bedrijfswagens Nederland",
+        "https://nieuws.vwbedrijfswagens.nl/betere-specificaties-voor-e-transporter-en-e-caravelle/"
       ],
-      "pt": "list",
-      "id": "volkswagen-e-transporter"
+      "pt": "Vanafprijs voor bestelwagen met 70,9 kWh netto-accu. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 8 januari 2026, fabrikantbericht. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -1029,8 +1035,7 @@
         "Renault Nederland",
         "https://bedrijfswagens.renault.nl/trafic-van/trafic-e-tech-electric.html"
       ],
-      "checked": "2026-10-21",
-      "id": "renault-trafic-van-e-tech-nieuwe-generatie"
+      "checked": "2026-10-21"
     },
     {
       "c": "bestel",
@@ -1047,13 +1052,12 @@
         "https://www.opel.nl/bedrijfswagens/movano-modellen/nieuwe-movano-electric/overzicht.html"
       ],
       "checked": "2026-10-21",
-      "price": 51000,
+      "price": 53700,
       "ps": [
-        "opel.nl",
-        "https://www.opel.nl/bedrijfswagens/movano-modellen/nieuwe-movano-electric/brochure-prijslijst.html"
+        "Opel Nederland",
+        "https://www.opel.nl/content/dam/opel/netherlands/vehicles/nieuwe-movano/pdf/07082026-Prijslijst-Movano-Electric.pdf"
       ],
-      "pt": "list",
-      "id": "opel-movano-electric"
+      "pt": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 1 augustus 2026. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -1072,11 +1076,10 @@
       "checked": "2026-10-21",
       "price": 53700,
       "ps": [
-        "peugeot.nl",
-        "https://www.peugeot.nl/showroom/peugeot-boxer.html"
+        "Peugeot-prijslijst via Haaima (dealer)",
+        "https://www.haaima.nl/media/kh5pkjvg/peugeot-e-boxer.pdf"
       ],
-      "pt": "list",
-      "id": "peugeot-e-boxer"
+      "pt": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -1093,7 +1096,12 @@
         "https://www.citroen.nl/modellen/bedrijfswagens/e-jumper.html"
       ],
       "checked": "2026-10-21",
-      "id": "citroen-e-jumper"
+      "price": 53700,
+      "pt": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 1 augustus 2026. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Citroën Nederland",
+        "https://www.citroen.nl/content/dam/citroen/netherlands/b2b/local-content/brochures-prijslijsten/model/e-jumper/01082026-Prijzen-en-specificaties-e-Jumper.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -1110,7 +1118,12 @@
         "https://www.toyota.nl/modellen/proace-max"
       ],
       "checked": "2026-10-21",
-      "id": "toyota-proace-max-electric"
+      "price": 53000,
+      "pt": "Vanafprijs voor Comfort 3,5t Heavy L3H2 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Toyota Nederland",
+        "https://datablob.toyota.nl/data/brochures/Proace-Max-Electric_brochure.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -1126,8 +1139,7 @@
         "IVECO Nederland",
         "https://info.iveco.nl/hubfs/Brochure%20IVECO%20eDaily.pdf?hsLang=nl-nl"
       ],
-      "checked": "2026-10-21",
-      "id": "iveco-edaily"
+      "checked": "2026-10-21"
     },
     {
       "c": "bestel",
@@ -1143,7 +1155,12 @@
         "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-3-v3.pdf"
       ],
       "checked": "2026-10-21",
-      "id": "maxus-edeliver-3"
+      "price": 29950,
+      "pt": "Vanafprijs voor L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2025. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Maxus Nederland",
+        "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-3-v3.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -1159,7 +1176,12 @@
         "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-5-v2.pdf"
       ],
       "checked": "2026-10-21",
-      "id": "maxus-edeliver-5"
+      "price": 34750,
+      "pt": "Vanafprijs voor L1H1 64 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2025. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Maxus Nederland",
+        "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-5-v2.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -1175,7 +1197,12 @@
         "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-7-v7.pdf"
       ],
       "checked": "2026-10-21",
-      "id": "maxus-edeliver-7"
+      "price": 42590,
+      "pt": "Vanafprijs voor L1 88 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2025. Gecontroleerd op 23 oktober 2026.",
+      "ps": [
+        "Maxus Nederland",
+        "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-7-v7.pdf"
+      ]
     },
     {
       "c": "bestel",
@@ -1191,13 +1218,12 @@
         "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-9-v4.pdf"
       ],
       "checked": "2026-10-21",
-      "price": 45000,
+      "price": 46950,
       "ps": [
-        "maxusdealer.nl",
-        "https://maxusdealer.nl/maxus-elektrische-bedrijfswagens/edeliver-9"
+        "Maxus Nederland",
+        "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-9-v4.pdf"
       ],
-      "pt": "reported",
-      "id": "maxus-edeliver-9"
+      "pt": "Vanafprijs voor L2H2 88 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: juni 2025. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bakwagen",
@@ -1213,8 +1239,7 @@
         "Volvo Trucks",
         "https://www.volvotrucks.com/en-en/trucks/electric/volvo-fl-electric.html"
       ],
-      "checked": "2026-10-21",
-      "id": "volvo-fl-electric"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -1231,8 +1256,7 @@
         "Volvo Trucks",
         "https://www.volvotrucks.com/en-en/trucks/electric/volvo-fe-electric.html"
       ],
-      "checked": "2026-10-21",
-      "id": "volvo-fe-electric"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -1249,8 +1273,7 @@
         "Volvo Trucks",
         "https://www.volvotrucks.com/en-en/trucks/electric/volvo-fm-low-entry.html"
       ],
-      "checked": "2026-10-21",
-      "id": "volvo-fm-low-entry"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -1268,8 +1291,7 @@
         "Volvo Trucks",
         "https://www.volvotrucks.com/en-en/trucks/electric/volvo-fmx-electric.html"
       ],
-      "checked": "2026-10-21",
-      "id": "volvo-fmx-electric"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -1288,8 +1310,7 @@
         "https://www.fuso-trucks.com/wp-content/uploads/sites/2/2024/05/eCanter_Technical-Datasheets_2024_EN_855T.pdf"
       ],
       "checked": "2026-10-21",
-      "gvw": 8550,
-      "id": "fuso-ecanter-9c18e-l"
+      "gvw": 8550
     },
     {
       "c": "bakwagen",
@@ -1307,8 +1328,7 @@
         "MAN Truck & Bus",
         "https://www.man.eu/uk/en/truck/all-models/the-man-tgm-and-man-tgl/the-man-etgm/overview.html"
       ],
-      "checked": "2026-10-21",
-      "id": "man-etgm-4-accupakketten"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -1326,8 +1346,7 @@
         "MAN Truck & Bus",
         "https://www.man.eu/uk/en/truck/all-models/the-man-tgs/the-man-etgs/overview.html"
       ],
-      "checked": "2026-10-21",
-      "id": "man-etgs-4-2-chassis"
+      "checked": "2026-10-21"
     },
     {
       "c": "bakwagen",
@@ -1344,8 +1363,7 @@
         "Renault Trucks",
         "https://www.renault-trucks.at/press-release/renault-trucks-e-tech-d-wide-erste-praxiseinsatze"
       ],
-      "checked": "2026-10-21",
-      "id": "renault-trucks-e-tech-d-wide-375"
+      "checked": "2026-10-21"
     },
     {
       "c": "bus",
@@ -1362,8 +1380,7 @@
         "Solaris Bus & Coach",
         "https://www.solarisbus.com/en/urbino-12-electric-with-modular-drive"
       ],
-      "checked": "2026-10-21",
-      "id": "solaris-urbino-12-electric-modulair"
+      "checked": "2026-10-21"
     },
     {
       "c": "bus",
@@ -1380,8 +1397,7 @@
         "Solaris Bus & Coach",
         "https://www.solarisbus.com/en/urbino-18-electric"
       ],
-      "checked": "2026-10-21",
-      "id": "solaris-urbino-18-electric-modulair"
+      "checked": "2026-10-21"
     },
     {
       "c": "bus",
@@ -1398,8 +1414,7 @@
         "MAN brochure Lion’s City E",
         "https://www.man.eu/content/dam/man/countries/doc/bw-master/bus/eventassets-1/Brochure-MAN-Lions-City-E-IT.pdf/_jcr_content/renditions/original./Brochure-MAN-Lions-City-E-IT.pdf"
       ],
-      "checked": "2026-10-21",
-      "id": "man-lion-s-city-10-e"
+      "checked": "2026-10-21"
     },
     {
       "c": "bus",
@@ -1416,8 +1431,7 @@
         "MAN brochure Lion’s City E",
         "https://www.man.eu/content/dam/man/countries/doc/bw-master/bus/eventassets-1/Brochure-MAN-Lions-City-E-IT.pdf/_jcr_content/renditions/original./Brochure-MAN-Lions-City-E-IT.pdf"
       ],
-      "checked": "2026-10-21",
-      "id": "man-lion-s-city-12-e"
+      "checked": "2026-10-21"
     },
     {
       "c": "bus",
@@ -1434,8 +1448,7 @@
         "MAN technische gegevens",
         "https://media.man.eu/is/content/MAN/man_lions_city_datenblatt_18-E_ENpdf"
       ],
-      "checked": "2026-10-21",
-      "id": "man-lion-s-city-18-e"
+      "checked": "2026-10-21"
     },
     {
       "c": "bus",
@@ -1456,8 +1469,7 @@
         "truckandbusbuilder.com",
         "https://truckandbusbuilder.com/article/2024/02/25/belgian-transport-operator-orders-92-byd-electric-buses"
       ],
-      "pt": "order",
-      "id": "byd-ebus-b12-b"
+      "pt": "order"
     },
     {
       "c": "bus",
@@ -1472,13 +1484,14 @@
         "Karsan",
         "https://www.karsan.com/en/electric-bus/e-ata-12"
       ],
-      "checked": "2026-10-21",
-      "id": "karsan-e-ata-12"
+      "checked": "2026-10-21"
     },
     {
       "c": "trekker",
       "b": "MAN",
       "m": "eTGX (huidige generatie)",
+      "fam": "eTGX",
+      "vl": "Huidige generatie",
       "a": 480,
       "r": 570,
       "rt": "tot 570",
@@ -1490,13 +1503,14 @@
         "MAN Truck & Bus",
         "https://www.man.eu/uk/en/truck/all-models/the-man-tgx/the-man-etgx/overview.html"
       ],
-      "checked": "2026-10-21",
-      "id": "man-etgx-huidige-generatie"
+      "checked": "2026-10-21"
     },
     {
       "c": "trekker",
       "b": "Renault Trucks",
       "m": "E-Tech T 540",
+      "fam": "E-Tech T",
+      "vl": "540 kWh · 4×2",
       "a": 540,
       "r": 450,
       "rt": "tot 450",
@@ -1507,13 +1521,14 @@
         "Renault Trucks",
         "https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"
       ],
-      "checked": "2026-10-21",
-      "id": "renault-trucks-e-tech-t-540"
+      "checked": "2026-10-21"
     },
     {
       "c": "trekker",
       "b": "Renault Trucks",
       "m": "E-Tech T 585",
+      "fam": "E-Tech T",
+      "vl": "585 kWh · 6×2 e-as",
       "a": 585,
       "r": 500,
       "rt": "tot 500",
@@ -1524,8 +1539,7 @@
         "Renault Trucks",
         "https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"
       ],
-      "checked": "2026-10-21",
-      "id": "renault-trucks-e-tech-t-585"
+      "checked": "2026-10-21"
     }
   ]
 }

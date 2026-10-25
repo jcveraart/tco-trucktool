@@ -1,0 +1,169 @@
+{
+  "checked_at": "2026-10-23",
+  "currency": "EUR",
+  "vat": "excluded",
+  "policy": "New-vehicle NL prices only, matching battery configuration. No estimates, lease payments, used prices, fleet contract averages or subsidies used as list prices.",
+  "prices": [
+    {
+      "id": "opel-combo-cargo-electric",
+      "indicative_price_eur": 27795,
+      "indicative_price_text": "Vanafprijs voor Advance L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: september 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Opel Nederland",
+      "price_source_url": "https://www.opel.nl/content/dam/opel/netherlands/vehicles/combo-e/pdf/GP26-1706PM-Prijslijst-Opel-Combo-Cargo-Electric.pdf"
+    },
+    {
+      "id": "opel-vivaro-electric-75-kwh",
+      "indicative_price_eur": 43400,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Opel-prijslijst via Haaima (dealer)",
+      "price_source_url": "https://www.haaima.nl/media/bajntekd/vivaro-electric.pdf"
+    },
+    {
+      "id": "opel-movano-electric",
+      "indicative_price_eur": 53700,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 1 augustus 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Opel Nederland",
+      "price_source_url": "https://www.opel.nl/content/dam/opel/netherlands/vehicles/nieuwe-movano/pdf/07082026-Prijslijst-Movano-Electric.pdf"
+    },
+    {
+      "id": "fiat-e-doblo",
+      "indicative_price_eur": 27795,
+      "indicative_price_text": "Vanafprijs voor L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Fiat Professional Nederland",
+      "price_source_url": "https://www.fiat.nl/professional/modellen/e-doblo/prijslijst"
+    },
+    {
+      "id": "fiat-e-scudo-75-kwh",
+      "indicative_price_eur": 43400,
+      "indicative_price_text": "Vanafprijs voor Easy Pro L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Fiat Professional Nederland",
+      "price_source_url": "https://www.fiat.nl/professional/modellen/e-scudo/prijslijst"
+    },
+    {
+      "id": "fiat-e-ducato",
+      "indicative_price_eur": 53700,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh (97,8 kWh bruikbaar). Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Fiat Professional Nederland",
+      "price_source_url": "https://www.fiat.nl/content/dam/fiat2023/nl/professional/prijslijsten/e-ducato/Prijslijst_eDucato_12_januari_2026.pdf"
+    },
+    {
+      "id": "peugeot-e-partner",
+      "indicative_price_eur": 27795,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 1 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Peugeot-prijslijst via Haaima (dealer)",
+      "price_source_url": "https://www.haaima.nl/media/uikihcaa/peugeot-e-partner-prijslijst.pdf"
+    },
+    {
+      "id": "peugeot-e-expert-75-kwh",
+      "indicative_price_eur": 43400,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 14 mei 2025. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Peugeot-prijslijst via Haaima (dealer)",
+      "price_source_url": "https://www.haaima.nl/media/y0ul0z5b/prijslijst-peugeot-e-expert.pdf"
+    },
+    {
+      "id": "peugeot-e-boxer",
+      "indicative_price_eur": 53700,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Peugeot-prijslijst via Haaima (dealer)",
+      "price_source_url": "https://www.haaima.nl/media/kh5pkjvg/peugeot-e-boxer.pdf"
+    },
+    {
+      "id": "citroen-e-jumpy-comfort-range",
+      "indicative_price_eur": 43400,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L2 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 12 januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Citroën Nederland",
+      "price_source_url": "https://www.citroen.nl/content/dam/citroen/netherlands/b2b/local-content/brochures-prijslijsten/model/jumpy/12012026-Prijzen-en-specificaties-e-Jumpy.pdf"
+    },
+    {
+      "id": "citroen-e-jumper",
+      "indicative_price_eur": 53700,
+      "indicative_price_text": "Vanafprijs voor gesloten bestel L3H2 3,5 ton 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 1 augustus 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Citroën Nederland",
+      "price_source_url": "https://www.citroen.nl/content/dam/citroen/netherlands/b2b/local-content/brochures-prijslijsten/model/e-jumper/01082026-Prijzen-en-specificaties-e-Jumper.pdf"
+    },
+    {
+      "id": "toyota-proace-city-electric",
+      "indicative_price_eur": 27945,
+      "indicative_price_text": "Vanafprijs voor Comfort L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Toyota Nederland",
+      "price_source_url": "https://datablob.toyota.nl/data/brochures/Proace-City-Electric-brochure.pdf"
+    },
+    {
+      "id": "toyota-proace-electric-75-kwh",
+      "indicative_price_eur": 43050,
+      "indicative_price_text": "Vanafprijs voor Comfort Worker L2 Extra Range 75 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Toyota Nederland",
+      "price_source_url": "https://datablob.toyota.nl/data/brochures/Proace-Worker-Electric-brochure.pdf"
+    },
+    {
+      "id": "toyota-proace-max-electric",
+      "indicative_price_eur": 53000,
+      "indicative_price_text": "Vanafprijs voor Comfort 3,5t Heavy L3H2 110 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: actuele online prijslijst. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Toyota Nederland",
+      "price_source_url": "https://datablob.toyota.nl/data/brochures/Proace-Max-Electric_brochure.pdf"
+    },
+    {
+      "id": "maxus-edeliver-3",
+      "indicative_price_eur": 29950,
+      "indicative_price_text": "Vanafprijs voor L1 50 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2025. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Maxus Nederland",
+      "price_source_url": "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-3-v3.pdf"
+    },
+    {
+      "id": "maxus-edeliver-5",
+      "indicative_price_eur": 34750,
+      "indicative_price_text": "Vanafprijs voor L1H1 64 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2025. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Maxus Nederland",
+      "price_source_url": "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-5-v2.pdf"
+    },
+    {
+      "id": "maxus-edeliver-7",
+      "indicative_price_eur": 42590,
+      "indicative_price_text": "Vanafprijs voor L1 88 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2025. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Maxus Nederland",
+      "price_source_url": "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-7-v7.pdf"
+    },
+    {
+      "id": "maxus-edeliver-9",
+      "indicative_price_eur": 46950,
+      "indicative_price_text": "Vanafprijs voor L2H2 88 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: juni 2025. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Maxus Nederland",
+      "price_source_url": "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-9-v4.pdf"
+    },
+    {
+      "id": "ford-e-transit-custom",
+      "indicative_price_eur": 44390,
+      "indicative_price_text": "Vanafprijs voor Trend L1H1 320 71 kWh 136 pk RWD. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 24 september 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Ford Nederland",
+      "price_source_url": "https://www.ford.nl/content/dam/guxeu/nl/documents/pricelists/commercial-vehicles/PL-ford_e_transit_custom.pdf"
+    },
+    {
+      "id": "ford-e-transit-courier",
+      "indicative_price_eur": 28410,
+      "indicative_price_text": "Vanafprijs voor Trend met vergroot accupakket 46 kWh. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 2026, fabrikantbericht. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Ford Nederland",
+      "price_source_url": "https://fordmediacenter.nl/ford-e-transit-courier-krijgt-grotere-batterij-meer-actieradius-verbeterde-connectiviteit-en-inzetbaarheid/"
+    },
+    {
+      "id": "renault-master-e-tech",
+      "indicative_price_eur": 50900,
+      "indicative_price_text": "Vanafprijs voor advance gesloten bestel L2H2 T35 87 kWh 140 pk. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: januari 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Renault Nederland",
+      "price_source_url": "https://cdn.group.renault.com/ren/nl/brochures-en-prijslijsten/prijslijsten/master-etech-electric-prijslijst.pdf"
+    },
+    {
+      "id": "volkswagen-id-buzz-cargo",
+      "indicative_price_eur": 43690,
+      "indicative_price_text": "Vanafprijs voor Economy Limited Edition 79 kWh 286 pk RWD. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 2 april 2026. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Volkswagen Bedrijfswagens Nederland",
+      "price_source_url": "https://www.vwbedrijfswagens.nl/idhub/content/dam/onehub_nfz/importers/nl/downloads/prijslijsten-en-brochures/id--buzz-cargo/Prijslijst-ID-Buzz-Cargo.pdf"
+    },
+    {
+      "id": "volkswagen-e-transporter",
+      "indicative_price_eur": 43990,
+      "indicative_price_text": "Vanafprijs voor bestelwagen met 70,9 kWh netto-accu. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 8 januari 2026, fabrikantbericht. Gecontroleerd op 23 oktober 2026.",
+      "price_source_name": "Volkswagen Bedrijfswagens Nederland",
+      "price_source_url": "https://nieuws.vwbedrijfswagens.nl/betere-specificaties-voor-e-transporter-en-e-caravelle/"
+    }
+  ]
+}

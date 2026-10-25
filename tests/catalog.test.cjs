@@ -10,7 +10,7 @@ const fields = script.slice(script.indexOf('const FIELDS='), script.indexOf('con
 const formatters = script.slice(script.indexOf('const $=id=>'), script.indexOf('const reduced='));
 const records = script.slice(script.indexOf('const MODELS=['), script.indexOf('let mCat='));
 const functions = script.slice(script.indexOf('const mU='), script.indexOf('const mStat='));
-const catalog = vm.runInNewContext(`${fields}\nconst F={};FIELDS.forEach(f=>F[f[0]]=f);\n${formatters}\n${records}\n${functions}\n({MODELS,F,mU,mAcc,mEnergy,mCapText,mAssumption,mRange})`);
+const catalog = vm.runInNewContext(`${fields}\nconst F={};FIELDS.forEach(f=>F[f[0]]=f);\n${formatters}\n${records}\n${functions}\n({MODELS,F,mU,mAcc,mEnergy,mCapText,mAssumption,mRange})`,{document:{documentElement:{lang:"nl"}}});
 const { MODELS, F, mU, mAcc, mEnergy, mCapText, mAssumption, mRange } = catalog;
 
 test('the complete single-file application has valid JavaScript', () => {
@@ -88,3 +88,4 @@ test('uncertainty, cycles and future availability remain explicit', () => {
   assert.equal(fuso.vc, 'n2');
   assert.ok(fuso.gvw < 10000);
 });
+
