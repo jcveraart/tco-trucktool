@@ -2028,7 +2028,7 @@ dialog.pdfd::backdrop{background:rgba(21,23,26,.5)}
 <section class="page" data-page="calc" id="calc">
  <div class="home" id="home"></div>
  <div class="wrap home uv" id="uv" data-no-translate>
-  <section class="uvS uvI" data-s="idee"><header><h2>Wat Stekker of Diesel doet</h2></header><div><p>Wie een trekker, bakwagen, bestelbus of bus vervangt, staat voor de vraag: elektrisch of toch weer diesel? Stekker of Diesel rekent het uit met jouw kilometers, en telt alle kosten mee over de hele looptijd.</p><p>Gratis, zonder account en zonder verkooppraatje. Soms wint elektrisch, soms diesel.</p></div></section>
+  <section class="uvS uvI" data-s="idee"><header><h2>Wat Stekker of Diesel doet</h2></header><div><p>Wie een trekker, bakwagen, bestelbus of bus vervangt, staat voor de vraag: elektrisch of toch weer diesel? Stekker of Diesel rekent het uit met jouw kilometers, en telt alle kosten mee over de hele looptijd.</p><p>Gratis, zonder account en zonder verkooppraatje.</p></div></section>
   <div class="uvtab" role="tablist" aria-label="Uitleg"><button type="button" role="tab" data-uvt="kost" aria-selected="true">Alle kosten</button><button type="button" role="tab" data-uvt="omslag" aria-selected="false">Omslagpunt</button><button type="button" role="tab" data-uvt="tijd" aria-selected="false">Wat er verandert</button><button type="button" role="tab" data-uvt="onaf" aria-selected="false">Onafhankelijk</button></div>
   <section class="uvS uvP" data-s="kost"><header><h2>Alle kosten, niet alleen brandstof</h2><p id="uvKh"></p></header><div id="uvK"></div></section>
   <section class="uvS uvP" data-s="omslag"><header><h2>Waar diesel nog wint</h2><p id="uvOh"></p></header><div class="uvo" id="uvO"></div></section>
@@ -3414,7 +3414,7 @@ function uvEn(){
  if(!UVEN||!$('uv'))return;
  const set=(q,h)=>{const e=$('uv').querySelector(q);if(e)e.innerHTML=h};
  set('[data-s=idee]>header h2','What Stekker of Diesel does');
- set('[data-s=idee]>div','<p>Replacing a tractor unit, rigid truck, van or bus raises one question: electric, or diesel again? Stekker of Diesel works it out with your mileage and counts every cost over the whole period you own the vehicle.</p><p>Free, no account and no sales pitch. Sometimes electric wins, sometimes diesel.</p>');
+ set('[data-s=idee]>div','<p>Replacing a tractor unit, rigid truck, van or bus raises one question: electric, or diesel again? Stekker of Diesel works it out with your mileage and counts every cost over the whole period you own the vehicle.</p><p>Free, no account and no sales pitch.</p>');
  ['All costs','Break-even','What is changing','Independent'].forEach((t,i)=>{const b=$('uv').querySelectorAll('[data-uvt]')[i];if(b)b.textContent=t});
  set('[data-s=kost]>header h2','All costs, not just fuel');set('[data-s=omslag]>header h2','Where diesel still wins');set('[data-s=tijd]>header h2','What is changing');
  set('[data-s=onaf]>header h2','Independent');set('[data-s=onaf]>header p','No dealer, no leasing company, no account.');
