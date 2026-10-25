@@ -3329,7 +3329,7 @@ function homeHTML(){
 let hPaint=false;
 function homePaint(){
  if(!isFresh()){$('home').innerHTML='';return}
- hPaint=true;twSet($('home'),()=>setH($('home'),homeHTML()));plPaint();
+ hPaint=true;twSet($('home'),()=>setH($('home'),homeHTML()));twIntro($('home'));plPaint();
  $('home').querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
  if($('hkm'))hkmPaint(+$('hkm').value);
  const i=PL.D;$('home').querySelectorAll('[data-plate="D"]').forEach(f=>{if(i&&i.k)f.elements.kt.value=plFmt(i.k)});
@@ -3448,7 +3448,7 @@ function uvEn(){
 uvEn();
 function uvPaint(){
  if(!isFresh()||!$('uvK'))return;
- const r=hAt(uvKm());uvKost(r);uvOmslag();uvTijd();uvOnaf(r);
+ const r=hAt(uvKm());uvKost(r);uvOmslag();uvTijd();uvOnaf(r);twIntro($('uv'));
  document.querySelectorAll('[data-uvt]').forEach(b=>b.setAttribute('aria-selected',b.dataset.uvt===uvTab));
  document.querySelectorAll('.uvS').forEach(s=>s.classList.toggle('act',s.dataset.s===uvTab));
 }
@@ -3572,10 +3572,10 @@ document.addEventListener('pointerdown',e=>{if(e.target.type==='range')rHold=e.t
 ['pointerup','pointercancel'].forEach(t=>addEventListener(t,()=>{rHold=null},true));
 /* Bedragen tellen mee: een bedrag met data-tw="naam" rolt van de oude naar de nieuwe waarde in plaats van te verspringen */
 function twNum(t){t=String(t);const en=document.documentElement.lang==='en',th=en?',':'.',dc=en?'.':',',m=t.match(en?/\d[\d,]*(?:\.\d+)?/:/\d[\d.]*(?:,\d+)?/);if(!m)return null;return{v:parseFloat(m[0].split(th).join('').replace(dc,'.')),d:(m[0].split(dc)[1]||'').length,a:t.slice(0,m.index),b:t.slice(m.index+m[0].length)}}
-function twText(el,to,from){
+function twText(el,to,from,D=550){
  cancelAnimationFrame(el._twr);const A=twNum(from??el.textContent),B=twNum(to);
  if(!A||!B||A.d!==B.d||A.a!==B.a||A.b!==B.b||A.v===B.v||reduced()){el.textContent=to;return}
- el.textContent=from??el.textContent;const t0=performance.now(),D=550;
+ el.textContent=from??el.textContent;const t0=performance.now();
  const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);if(k<1){el.textContent=B.a+nf(A.v+(B.v-A.v)*e,B.d)+B.b;el._twr=requestAnimationFrame(step)}else el.textContent=to};
  el._twr=requestAnimationFrame(step);
 }
@@ -3585,6 +3585,13 @@ function twSet(el,put){
  el.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{const o=old[n.dataset.tw];if(o!=null&&o!==n.textContent)twText(n,n.textContent,o)});
 }
 function rSet(el,h){twSet(el,()=>rSet0(el,h))}
+/* Eerste keer in beeld: bedragen tellen op vanaf 0. Per bedrag één keer per bezoek. */
+const TWI=new Set();let twIO=null;
+function twIntro(root){
+ if(!root||reduced()||!('IntersectionObserver' in window))return;
+ twIO=twIO||new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const n=e.target,k=n.dataset.tw;twIO.unobserve(n);if(TWI.has(k)||!n.isConnected)return;TWI.add(k);const B=twNum(n.textContent);if(B&&B.v)twText(n,n.textContent,B.a+nf(0,B.d)+B.b,1100)}),{threshold:.6});
+ root.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{if(!TWI.has(n.dataset.tw))twIO.observe(n)});
+}
 function rSet0(el,h){
  const a=rHold&&rHold.isConnected?rHold:document.activeElement;
  if(a&&a.type==='range'&&el.contains(a)){const t=document.createElement('div');t.innerHTML=h;t.querySelectorAll('[data-r]').forEach(n=>{const o=el.querySelector(`[data-r="${n.dataset.r}"]`);if(!o)return;if(o.innerHTML!==n.innerHTML)o.innerHTML=n.innerHTML;o.className=n.className});el._h=null;return}
