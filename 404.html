@@ -2035,7 +2035,7 @@ html{touch-action:manipulation}
 .nTop .acts{gap:8px}
 .nTop .acts .btn{padding:10px 16px;font-size:15px;gap:8px;border-radius:9px}
 .nTop .acts .btn svg{width:17px;height:17px}
-@media(min-width:641px){.nTop .acts{gap:12px}.nTop .acts .btn{padding:13px 24px;font-size:18px;gap:10px;border-radius:10px}.nTop .acts .btn svg{width:21px;height:21px}}
+@media(min-width:641px){.nTop .acts{gap:14px}.nTop .acts .btn{padding:16px 30px;font-size:20px;gap:12px;border-radius:12px}.nTop .acts .btn svg{width:24px;height:24px}}
 </style>
 </head>
 <body>
@@ -3487,7 +3487,7 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-home]')){e.prev
 function rTop(r,x){
  const d=r.td-r.te,cheap=d>=0,even=Math.abs(d)/r.td<.005,L=r.L,q=T(),i=PL.D&&!PL.D.err?PL.D:null,bd=band();
  const pn=i?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):'';
- const back=`<a class="bk" href="/" data-home>${BKI}Terug naar start</a>${x?`<a class="bk" href="/">Simpele resultaten</a>`:''}`;
+ const back=`<a class="bk" href="/" data-home>${BKI}Terug naar start</a>`;
  return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rvw"><div><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p></div></div></div>
 <div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · <span data-tw="hl">${eur(Math.abs(d)*L)}</span> in ${L} jaar`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
 }
