@@ -2016,6 +2016,11 @@ dialog.pdfd::backdrop{background:rgba(21,23,26,.5)}
 }
 /* Snel tikken op Vorige/Volgende (en andere knoppen) zoomt niet meer in; knijpen om te zoomen blijft werken */
 html{touch-action:manipulation}
+/* Knoppen met een pijl: bij hover of toetsenbordfocus schuift de pijl een stukje op en veert terug (vooruit naar rechts, terug naar links) */
+:is(a,button) svg:has(>path[d="M4 12h15M13 6l6 6-6 6"]),:is(a,button) svg:has(>path[d="M20 12H5M11 6l-6 6 6 6"]){transition:transform .25s cubic-bezier(.3,.7,.2,1.4)}
+@media(hover:hover){:is(a,button):not(.plate button):hover svg:has(>path[d="M4 12h15M13 6l6 6-6 6"]){transform:translateX(5px)}:is(a,button):hover svg:has(>path[d="M20 12H5M11 6l-6 6 6 6"]){transform:translateX(-5px)}}
+:is(a,button):not(.plate button):focus-visible svg:has(>path[d="M4 12h15M13 6l6 6-6 6"]){transform:translateX(5px)}:is(a,button):focus-visible svg:has(>path[d="M20 12H5M11 6l-6 6 6 6"]){transform:translateX(-5px)}
+@media(prefers-reduced-motion:reduce){:is(a,button) svg{transition:none!important}}
 </style>
 </head>
 <body>
