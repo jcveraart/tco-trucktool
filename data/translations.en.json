@@ -1164,5 +1164,16 @@
   "jaar betaal je": "years you pay",
   "Nieuwe generatie, getoond op de IAA in september 2026. De 4×2-trekker heeft zes accupakketten: 552 kWh geïnstalleerd en 528 kWh bruikbaar, voor tot 660 km bij 20 °C, 60% belading en snelweginzet. De 6×2 met een zevende pakket haalt tot 720 km. Verkoopstart gepland voor april 2027, productie vanaf zomer 2027.": "New generation shown at IAA in September 2026. The 4×2 tractor unit has six battery packs: 552 kWh installed and 528 kWh usable, offering up to 660 km at 20 °C, 60% load and motorway operation. The 6×2 with a seventh pack reaches up to 720 km. Sales are planned to start in April 2027, with production from summer 2027.",
   "6×2-trekker met 780 kWh en maximaal 660 km volgens Renault Trucks. De fabrikant noemt een gebruiksvenster tot 95%; de hier afgeleide 741 kWh is dus een indicatieve maximale bruikbare energie, geen afzonderlijk gepubliceerde netto capaciteit. CCS tot 350 kW en MCS tot 720 kW.": "6×2 tractor unit with 780 kWh and up to 660 km according to Renault Trucks. The manufacturer states a usable window of up to 95%; the derived 741 kWh is therefore an indicative maximum usable energy figure, not a separately published net capacity. CCS up to 350 kW and MCS up to 720 kW.",
-  "Zwaar distributiechassis met zes accupakketten en 480 kWh bruikbaar. MAN noemt maximaal 600 km voor een solovoertuig in distributie (0,8 kWh per km) en 400 km met aanhanger op de snelweg. De vaak genoemde 800 km per dag haal je alleen met tussentijds laden.": "Heavy distribution chassis with six battery packs and 480 kWh usable. MAN quotes up to 600 km for a solo distribution vehicle (0.8 kWh/km) and 400 km with a trailer on motorways. The widely quoted 800 km per day requires charging between trips."
+  "Zwaar distributiechassis met zes accupakketten en 480 kWh bruikbaar. MAN noemt maximaal 600 km voor een solovoertuig in distributie (0,8 kWh per km) en 400 km met aanhanger op de snelweg. De vaak genoemde 800 km per dag haal je alleen met tussentijds laden.": "Heavy distribution chassis with six battery packs and 480 kWh usable. MAN quotes up to 600 km for a solo distribution vehicle (0.8 kWh/km) and 400 km with a trailer on motorways. The widely quoted 800 km per day requires charging between trips.",
+  "Verschil": "Difference",
+  "Verschil:": "Difference:",
+  "EN": "EN",
+  "NL": "NL",
+  "vanaf": "from",
+  "Europa": "Europe",
+  "nieuwe generatie": "next generation",
+  "R-serie elektrisch": "R-series Electric",
+  "S-serie elektrisch": "S-series Electric",
+  "P-serie elektrisch": "P-series Electric",
+  "L-serie elektrisch": "L-series Electric"
 }

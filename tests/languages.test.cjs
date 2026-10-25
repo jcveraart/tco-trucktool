@@ -17,7 +17,7 @@ test('both language number formats preserve calculation precision',()=>{
  assert.equal(nf('nl')(.25,2),'0,25');assert.equal(nf('en')(.25,2),'0.25');
 });
 test('brand names and Dutch source copy are preserved',()=>{
- const nl=translator('nl');for(const s of ['Stekker of Diesel','Volvo FH Aero Electric','IVECO S-eWay'])assert.equal(en(s),s);
+ const nl=translator('nl');for(const s of ['Stekker of Diesel','Volvo FH Aero Electric','IVECO S-eWay','EN','NL'])assert.equal(en(s),s);
  for(const s of Object.keys(D))assert.equal(nl(s),s);
 });
 test('dynamic outputs read as English with interpolated values intact',()=>{
