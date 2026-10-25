@@ -1957,26 +1957,10 @@ body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])
 html[lang=en] [data-page=uitgebreid] .pbt>div:first-child::before{content:"Payback period"}
 @media(max-width:760px){.lang{margin-left:4px;gap:0}.lang button{padding:8px 4px}.topin>.mnu{margin-left:auto}.topin>.brand{min-width:0}}
 @media print{.lang{display:none}}
-/* Uitgebreid: maandlasten in de stijl van het startscherm. Donker vlak links, de lening en de extra rente rechts */
-.mlS>.nk{margin-bottom:16px!important}
-.mlg{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:28px;align-items:start}
-.mlx .hxh b{color:var(--volt-2);font-weight:600}.mlx .hxh b.d{color:var(--amber)}
-.mls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 28px}
-.mls label{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.mlx .hkw{margin-top:4px}
-.mlb i{display:flex;gap:2px;height:12px}
-.mlb u{height:100%;min-width:0;border-radius:3px;cursor:default;transition:width .15s,filter .12s}
-.mlb u:hover{filter:brightness(1.12)}
-.mlb u.mlL{background:var(--on-asph-2);opacity:.75}
-.mlb i u.mlG{background:var(--amber)}.mlb i.e u.mlG{background:var(--volt-2)}
-.mlb b{font-weight:600}
-.mlk{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;padding:0;list-style:none;font-size:13px;color:var(--on-asph-2)}
-.mlk i{display:inline-block;width:14px;height:8px;margin-right:7px;border-radius:2px;vertical-align:1px}
-.mlk .mlL{background:var(--on-asph-2);opacity:.75}.mlk .mlG{background:linear-gradient(90deg,var(--amber) 50%,var(--volt-2) 50%)}
-.mlx .hxv{margin-top:2px}.mlx .hxv b{color:var(--volt-2)}.mlx .hxv b.d{color:var(--amber)}
-.mln{margin:14px 0 0;font-size:14px;color:var(--ink-3)}
-@media(max-width:900px){.mlg{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:640px){.mls{grid-template-columns:minmax(0,1fr)}.mlb{grid-template-columns:70px minmax(0,1fr) 78px}.mlx .hxv{font-size:16px}}
+/* Uitgebreid: maandlasten in de opmaak van Alle kosten op de startpagina, met de schuiven voor de lening onder de kop */
+.mlS{border-top:0;border-bottom:1px solid var(--line)}
+.mlS .mlsl{margin-top:22px;gap:16px}
+.mlS .uvt i{min-width:0}
 </style>
 </head>
 <body>
@@ -3462,7 +3446,8 @@ function mLast(r){
  return{cats,d:one(r.D,v('pD')),e:one(r.E,v('pE'))};
 }
 /* Uitgebreid: wat een transportondernemer nog meer wil weten. Per maand, per rit, bij een lagere restwaarde en of de dagrit past */
-let RIT=0;
+let RIT=0,mlCat='lening';
+document.addEventListener('click',e=>{const c=e.target.closest('[data-mlc]');if(c){mlCat=c.dataset.mlc;render()}});
 function xExtra(r,dn,en){
  const L=r.L,km=r.km,wd=Math.max(1,v('wd')),cheap=r.td>=r.te;
  const dfc=(df,t)=>`<b class="xdf${df<-t?' g':df>t?' a':''}">${Math.abs(df)<t?'gelijk':(df<0?'−':'+')+' '+eur(Math.abs(df),t<.5?2:0)}</b>`;
@@ -3485,21 +3470,21 @@ function xExtra(r,dn,en){
  const rb=(c,lab,n)=>`<span>${lab}</span><i class="${c}"><u style="width:${n/mx*100}%"></u></i><b>± ${nf(Math.round(n/5)*5)} km</b>`;
  const rgV=day<=wi?'Past ook in de winter zonder laden onderweg':day<=rg?'Past zonder laden onderweg, in de winter krap':'Laden onderweg nodig op een gemiddelde dag';
  const rgH=`<div class="rcb xrg">${rb('e','Actieradius',rg)}${rb('e w','In de winter',wi)}${rb('d','Gemiddelde dagrit',day)}</div><p class="xrv${day>rg?' a':''}">${rgV}</p><div class="nF"><div class="rf"><span>Laden per rijdag</span><b>± ${nf(Math.round(kwh/5)*5)} kWh <small>± ${nf(Math.max(.5,Math.round(kwh/kw*2)/2),1).replace(',0','')} uur aan een ${kw} kW-lader</small></b></div></div>`;
- /* Wat gaat er per maand de deur uit, in de stijl van het startscherm: donker vlak met kop, schuiven en twee balken.
-    Elke balk is lening (licht) plus gebruikskosten (oranje of groen), op één schaal voor diesel en elektrisch. */
- const ml=mLast(r),mx2=Math.max(ml.d.tot,ml.e.tot),dM=ml.d.tot-ml.e.tot;
- const seg=(k,val,lab,n)=>`<u class="${k}" style="width:${val/mx2*100}%" data-tip2="${lab} · ${n}: ${eur(val)} per maand"></u>`;
- const mrow=(c,n,o)=>`<span>${n}</span><i class="${c}">${seg('mlL',o.lening,'Lening',n)}${seg('mlG',o.gk,'Gebruikskosten',n)}</i><b>${eur(o.tot)}</b>`;
- const msl=(id,lab,fm)=>{const e=$(id),x=+e.value;return`<div class="hks"><label for="m_${id}">${lab} <b data-r="v_${id}">${fm(x)}</b></label><input id="m_${id}" class="hkr" type="range" data-rin="${id}" min="${e.min}" max="${e.max}" step="${e.step}" value="${x}" style="--f:${(x-e.min)/(e.max-e.min||1)}"></div>`};
- const sg=(n,good)=>`<b class="${good?'':'d'}">${n>=0?'+':'−'} ${eur(Math.abs(n))}</b>`;
- const mlSec=`<section class="nS nX mlS"><p class="nk">Wat gaat er per maand de deur uit</p><div class="mlg">
-<div class="hx mlx"><p class="hxh" data-r="mlh">${Math.abs(dM)<1?'Diesel en elektrisch kosten per maand hetzelfde':`<span>Elektrisch</span> <b class="${dM>0?'':'d'}">${eur(Math.abs(dM))}</b> <span>${dM>0?'per maand goedkoper':'per maand duurder'}</span>`}</p>
-<div class="mls">${msl('xri','Rente',x=>nf(x,1)+'%')}${msl('xfs','Geleend deel',x=>nf(x)+'%')}</div>
-<div class="hkw"><p class="hkh">Per maand, lening en gebruikskosten</p><div class="hkb mlb" data-r="mlb">${mrow('d',dn,ml.d)}${mrow('e',en,ml.e)}</div></div>
-<ul class="mlk"><li><i class="mlL"></i>Lening, aflossing en rente</li><li><i class="mlG"></i>Gebruikskosten</li></ul>
-<p class="hxv" data-r="mlv"><span>Lening</span> ${sg(ml.e.lening-ml.d.lening,ml.e.lening<=ml.d.lening)} · <span>gebruikskosten</span> ${sg(ml.e.gk-ml.d.gk,ml.e.gk<=ml.d.gk)}</p></div>
-<div class="nF mlf" data-r="mlf"><div class="rf"><span>Lening elektrisch</span><b>${eur(ml.e.lening)} <small>per maand</small></b></div><div class="rf"><span>Lening diesel</span><b>${eur(ml.d.lening)} <small>per maand</small></b></div><div class="rf"><span>Rente in ${L} jaar, extra voor elektrisch</span><b>${eur((ml.e.lening-ml.d.lening)*L*12-(ml.e.P-ml.d.P))}</b></div><p class="mln">Lening van ${eur(ml.e.P)} voor elektrisch en ${eur(ml.d.P)} voor diesel, afgelost in ${L} jaar. Het eigen deel en de subsidie zitten niet in de maandbedragen.</p></div>
-</div></section>`;
+ /* Wat gaat er per maand de deur uit, in dezelfde opmaak als Alle kosten op de startpagina:
+    kop links, rechts balken per onderdeel waarvan het gekozen onderdeel kleurt, knoppen met het verschil en een korte uitleg */
+ const ml=mLast(r),mx2=Math.max(ml.d.tot,ml.e.tot),dM=ml.d.tot-ml.e.tot,ri=v('xri'),mc=[['lening',uL('Lening','Loan')],...ml.cats.map(z=>[z[0],{en:uL('Energie','Energy'),ond:uL('Onderhoud','Maintenance'),ver:uL('Verzekering','Insurance'),hef:uL('Heffing','Road charge')}[z[0]]||z[1]])];
+ if(!mc.some(c=>c[0]===mlCat))mlCat='lening';
+ const mbar=(o,cl,t)=>`<div class="uvb ${cl}"><span>${t}</span><div class="uvt">${mc.map(c=>`<i data-mlc="${c[0]}" title="${c[1]}"${c[0]===mlCat?' class="on"':''} style="width:${Math.max(0,o[c[0]])/mx2*100}%"></i>`).join('')}</div><b>${eur(o.tot)}</b></div>`;
+ const xr=(ml.e.lening-ml.d.lening)*L*12-(ml.e.P-ml.d.P),g=v;
+ const mlx={
+  lening:uL(`${eur(ml.e.P)} geleend voor elektrisch en ${eur(ml.d.P)} voor diesel, tegen ${nf(ri,1)}% rente in ${L} jaar: ${eur(ml.e.lening)} tegenover ${eur(ml.d.lening)} per maand. Daarvan is ${eur(xr/L/12)} per maand extra rente. Het eigen deel en de subsidie zitten er niet in.`,`${eur(ml.e.P)} borrowed for electric and ${eur(ml.d.P)} for diesel, at ${nf(ri,1)}% interest over ${L} years: ${eur(ml.e.lening)} against ${eur(ml.d.lening)} a month. Of that, ${eur(xr/L/12)} a month is extra interest. Your own contribution and the grant are not included.`),
+  en:uL(`${nf(r.km)} km per jaar: ${eur(ml.d.en)} per maand aan diesel tegenover ${eur(ml.e.en)} aan stroom${r.ereV?', na de ERE-opbrengst':''}.`,`${nf(r.km)} km a year: ${eur(ml.d.en)} a month on diesel against ${eur(ml.e.en)} on electricity${r.ereV?', after ERE income':''}.`),
+  ond:uL(`${eur(g('oD'),2)} tegenover ${eur(g('oE'),2)} per km. Een elektromotor heeft geen olie, filters of koppeling.`,`${eur(g('oD'),2)} against ${eur(g('oE'),2)} per km. An electric motor has no oil, filters or clutch.`),
+  ver:uL(`Het bedrag per jaar gedeeld door twaalf: ${eur(g('vD'))} tegenover ${eur(g('vE'))} per jaar.`,`The annual amount divided by twelve: ${eur(g('vD'))} against ${eur(g('vE'))} a year.`),
+  hef:uL(`${nf(r.kmH)} km per jaar met vrachtwagenheffing: ${eur(g('tD'),3)} tegenover ${eur(g('tE'),3)} per km.`,`${nf(r.kmH)} km a year with the Dutch truck charge: ${eur(g('tD'),3)} against ${eur(g('tE'),3)} per km.`)}[mlCat];
+ const mlh=Math.abs(dM)<1?uL('Diesel en elektrisch kosten per maand hetzelfde','Diesel and electric cost the same per month'):dM>0?uL(`Elektrisch <b>${eur(dM)}</b> goedkoper per maand bij ${nf(ri,1)}% rente`,`Electric <b>${eur(dM)}</b> cheaper per month at ${nf(ri,1)}% interest`):uL(`Diesel <b class="d">${eur(-dM)}</b> goedkoper per maand bij ${nf(ri,1)}% rente`,`Diesel <b class="d">${eur(-dM)}</b> cheaper per month at ${nf(ri,1)}% interest`);
+ const mlSec=`<section class="uvS mlS" data-no-translate><header><h2>${uL('Wat gaat er per maand de deur uit','Monthly outgoings')}</h2><p data-r="mlh">${mlh}</p><div class="nSl mlsl">${rsl('xri',uL('Rente','Interest rate'),x=>nf(x,1)+'%','m_')}${rsl('xfs',uL('Geleend deel','Financed share'),x=>nf(x)+'%','m_')}</div></header>
+<div><div data-r="mlb">${mbar(ml.d,'dz',dn)}${mbar(ml.e,'el',en)}</div><div class="uvc" data-r="mlc">${mc.map(c=>`<button type="button" data-mlc="${c[0]}" aria-pressed="${c[0]===mlCat}"><span>${c[1]}</span>${uvDiff(ml.d[c[0]],ml.e[c[0]])}</button>`).join('')}</div><p class="uvx" data-r="mlx">${mlx}</p></div></section>`;
  return[mlSec+`<section class="nS nS2"><div class="nA"><p class="nk">Per maand</p><div class="xt" data-r="mnd">${mnd}</div></div><div class="nB"><p class="nk">Doorberekenen aan je opdrachtgever</p>${ritS}<div class="xt" data-r="rit">${pr}</div></div></section>`,
   `<section class="nS nS2"><div class="nA"><p class="nk">Als de restwaarde tegenvalt</p><div class="xt" data-r="rw">${rwT}</div><div class="nF" data-r="rwf">${rwF}</div></div><div class="nB"><p class="nk">Actieradius en dagrit</p><div data-r="rg">${rgH}</div></div></section>`];
 }
