@@ -2008,6 +2008,14 @@ dialog.pdfd::backdrop{background:rgba(21,23,26,.5)}
 .nwu .plate button,.nwu .plate button:hover,.nwu .plate.ok button{width:32px;height:32px;border-radius:8px;background:var(--ink);color:#fff}
 .nwu .plate button svg{width:16px;height:16px}
 .nwu .plate.ok .pok{display:none}.nwu .plate.ok .pgo{display:block}
+/* Kostenbalk op mobiel: diesel en elektrisch gespiegeld gelijk, naam boven, bedrag met per km eronder op één regel, gecentreerd */
+@media(max-width:640px){
+ .mini .md,.mini .me{flex-direction:column;justify-content:center;align-items:center;gap:3px;padding:6px 8px;font:600 12px/1 var(--text);letter-spacing:.02em}
+ .mini .md .mv,.mini .me .mv{order:1;flex-direction:row;align-items:baseline;gap:4px}
+ .mini .mv small{font-size:11px}
+}
+/* Snel tikken op Vorige/Volgende (en andere knoppen) zoomt niet meer in; knijpen om te zoomen blijft werken */
+html{touch-action:manipulation}
 </style>
 </head>
 <body>
