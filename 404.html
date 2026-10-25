@@ -2036,6 +2036,9 @@ html{touch-action:manipulation}
 .nTop .acts .btn{padding:10px 16px;font-size:15px;gap:8px;border-radius:9px}
 .nTop .acts .btn svg{width:17px;height:17px}
 @media(min-width:641px){.nTop .acts{gap:10px}.nTop .acts .btn{padding:12px 20px;font-size:16px;gap:9px;border-radius:10px}.nTop .acts .btn svg{width:19px;height:19px}}
+/* Wat kost het per maand: bedragen bij de onderdelen in dezelfde letter als Doorberekenen aan je opdrachtgever */
+.mlS .uvc small{font:600 15px var(--text);font-variant-numeric:tabular-nums}
+@media(max-width:640px){.mlS .uvc small{font-size:13px}}
 </style>
 </head>
 <body>
@@ -3366,7 +3369,7 @@ let uvCat=null,uvTab='kost';
 const UVEN=document.documentElement.lang==='en',uL=(nl,en)=>UVEN?en:nl;
 const UVC=[['afs',uL('Aanschaf','Purchase')],['en',uL('Energie','Energy')],['ond',uL('Onderhoud','Maintenance')],['ver',uL('Verzekering','Insurance')],['hef',uL('Heffing','Road charge')]];
 const uvKm=()=>{const s=$('hkm');return s?+s.value:v('km')};
-const uvDiff=(d,e,k)=>{const x=d-e;return`<small${x<0?' class="d"':''} data-tw="c-${k}">${x<0?'+':'−'}${eur(Math.abs(x))}</small>`};
+const uvDiff=(d,e,k,sp)=>{const x=d-e;return`<small${x<0?' class="d"':''} data-tw="c-${k}">${x<0?'+':'−'}${sp?' ':''}${eur(Math.abs(x))}</small>`};
 function uvUit(k,r){
  const g=v;return{
   afs:uL(`<span data-tw="u-gpD">${eur(g('pD'))}</span> voor de diesel en <span data-tw="u-gpE">${eur(g('pE'))}</span> voor elektrisch${r.sub?`, min <span data-tw="u-rsub">${eur(r.sub)}</span> subsidie`:''}, min de restwaarde, verdeeld over ${r.L} jaar.`,`<span data-tw="u-gpD">${eur(g('pD'))}</span> for the diesel and <span data-tw="u-gpE">${eur(g('pE'))}</span> for electric${r.sub?`, minus <span data-tw="u-rsub">${eur(r.sub)}</span> in grants`:''}, minus the residual value, spread over ${r.L} years.`),
@@ -3574,7 +3577,7 @@ function xExtra(r,dn,en){
   hef:uL(`${nf(r.kmH)} km per jaar met vrachtwagenheffing: ${eur(g('tD'),3)} tegenover ${eur(g('tE'),3)} per km.`,`${nf(r.kmH)} km a year with the Dutch truck charge: ${eur(g('tD'),3)} against ${eur(g('tE'),3)} per km.`)}[mlCat];
  const mlh=Math.abs(dM)<1?uL('Diesel en elektrisch kosten per maand hetzelfde','Diesel and electric cost the same per month'):dM>0?uL(`Elektrisch <b>${eur(dM)}</b> goedkoper per maand bij ${nf(ri,1)}% rente`,`Electric <b>${eur(dM)}</b> cheaper per month at ${nf(ri,1)}% interest`):uL(`Diesel <b class="d">${eur(-dM)}</b> goedkoper per maand bij ${nf(ri,1)}% rente`,`Diesel <b class="d">${eur(-dM)}</b> cheaper per month at ${nf(ri,1)}% interest`);
  const mlSec=`<section class="uvS mlS" data-no-translate><header><h2>${uL('Wat kost het per maand','What it costs per month')}</h2><p data-r="mlh">${mlh}</p></header>
-<div><div data-r="mlb">${mbar(ml.d,'dz',dn)}${mbar(ml.e,'el',en)}</div><div class="uvc" data-r="mlc">${mc.map(c=>`<button type="button" data-mlc="${c[0]}" aria-pressed="${c[0]===mlCat}"><span>${c[1]}</span>${uvDiff(ml.d[c[0]],ml.e[c[0]])}</button>`).join('')}</div><p class="uvx" data-r="mlx">${mlx}</p></div></section>`;
+<div><div data-r="mlb">${mbar(ml.d,'dz',dn)}${mbar(ml.e,'el',en)}</div><div class="uvc" data-r="mlc">${mc.map(c=>`<button type="button" data-mlc="${c[0]}" aria-pressed="${c[0]===mlCat}"><span>${c[1]}</span>${uvDiff(ml.d[c[0]],ml.e[c[0]],'m'+c[0],1)}</button>`).join('')}</div><p class="uvx" data-r="mlx">${mlx}</p></div></section>`;
  return[mlSec+`<section class="nS nS2"><div class="nA"><p class="nk">Per maand</p><div class="xt" data-r="mnd">${mnd}</div></div><div class="nB"><p class="nk">Doorberekenen aan je opdrachtgever</p>${ritS}<div class="xt" data-r="rit">${pr}</div></div></section>`,
   `<section class="nS nS2"><div class="nA"><p class="nk">Als de restwaarde tegenvalt</p><div class="xt" data-r="rw">${rwT}</div><div class="nF" data-r="rwf">${rwF}</div></div><div class="nB"><p class="nk">Actieradius en dagrit</p><div data-r="rg">${rgH}</div></div></section>`];
 }
