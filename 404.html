@@ -2003,6 +2003,10 @@ dialog.pdfd::backdrop{background:rgba(21,23,26,.5)}
 .pdfd small{font-size:13px;color:var(--ink-3)}.pdfd small a{color:var(--ink-2)}
 .pdfd .wzx{position:absolute;top:16px;right:16px}
 @media print{.pdfd{display:none!important}}
+/* Kentekenknop in de stappen net als op de startpagina: zwart met pijl, ook na een gevonden kenteken */
+.nwu .plate button,.nwu .plate button:hover,.nwu .plate.ok button{width:32px;height:32px;border-radius:8px;background:var(--ink);color:#fff}
+.nwu .plate button svg{width:16px;height:16px}
+.nwu .plate.ok .pok{display:none}.nwu .plate.ok .pgo{display:block}
 </style>
 </head>
 <body>
@@ -5376,7 +5380,8 @@ $('mDlg').addEventListener('close',mPaint);
    Gebruikt elektrisch: vult leeftijd en model in. */
 const RDW='https://opendata.rdw.nl/resource/';
 const plNorm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
-const plFmt=k=>k.replace(/([A-Z])(?=\d)|(\d)(?=[A-Z])/g,'$1$2-');
+/* Streepjes volgens de Nederlandse sidecodes: bij elke wissel tussen letters en cijfers, en een blok van vier gelijke soorten in tweeën (AB-12-34, 12-AB-CD) */
+const plFmt=k=>{const g=k.match(/[A-Z]+|\d+/g)||[];return k.length===6?g.flatMap(x=>x.length===4?[x.slice(0,2),x.slice(2)]:[x]).join('-'):g.join('-')};
 const plCheck='<svg class="pok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>';
 const plArrow='<svg class="pgo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 const plateForm=k=>`<form class="plate" data-plate="${k}" novalidate><input name="kt" maxlength="9" placeholder="${k==='E'?'Kenteken':'Kenteken (optioneel)'}" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="search" aria-label="${k==='E'?'Kenteken van het gebruikte elektrische voertuig':'Kenteken van je huidige diesel'}"><span class="plo" aria-live="polite"></span><button type="submit" aria-label="Zoek kenteken">${plArrow}${plCheck}</button></form>`;
@@ -5457,7 +5462,8 @@ async function plLookup(kind,k,apply){
  render();if(page==='gids')gShow(gid);
  if(apply)track('plate_lookup',{kind,vt:i.vt,year:i.first?i.first.getFullYear():null,euro:i.euro||null});
 }
-document.addEventListener('input',e=>{const f=e.target.closest('[data-plate]');if(!f||e.target.name!=='kt')return;f.classList.remove('ok','bad');const o=f.querySelector('.plo');if(o)o.textContent=''});
+document.addEventListener('input',e=>{const f=e.target.closest('[data-plate]');if(!f||e.target.name!=='kt')return;const v=e.target.value;if(!v.includes('-')&&plNorm(v).length===6&&e.target.selectionStart===v.length)e.target.value=plFmt(plNorm(v));f.classList.remove('ok','bad');const o=f.querySelector('.plo');if(o)o.textContent=''});
+document.addEventListener('focusout',e=>{if(e.target.name!=='kt'||!e.target.closest('[data-plate]'))return;const v=e.target.value;if(!v.includes('-')&&plNorm(v).length===6)e.target.value=plFmt(plNorm(v))});
 document.addEventListener('submit',e=>{const f=e.target.closest('[data-plate]');if(!f)return;e.preventDefault();const k=plNorm(f.elements.kt.value);f.elements.kt.value=k?plFmt(k):'';plLookup(f.dataset.plate,k,true)});
 /* Gebruikt elektrisch: eerlijke prijs uit de waardecurve, restwaarde aan het eind van de looptijd */
 const newPriceE=()=>{const m=modelActive();return m&&m.price?m.price:VT[vtype].p.pE};
