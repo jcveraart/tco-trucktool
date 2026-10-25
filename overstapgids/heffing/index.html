@@ -2021,6 +2021,11 @@ html{touch-action:manipulation}
 @media(hover:hover){:is(a,button):not(.plate button):hover svg:has(>path[d="M4 12h15M13 6l6 6-6 6"]){transform:translateX(5px)}:is(a,button):hover svg:has(>path[d="M20 12H5M11 6l-6 6 6 6"]){transform:translateX(-5px)}}
 :is(a,button):not(.plate button):focus-visible svg:has(>path[d="M4 12h15M13 6l6 6-6 6"]){transform:translateX(5px)}:is(a,button):focus-visible svg:has(>path[d="M20 12H5M11 6l-6 6 6 6"]){transform:translateX(-5px)}
 @media(prefers-reduced-motion:reduce){:is(a,button) svg{transition:none!important}}
+/* Terug naar start: zelfde plek en klein, maar in de stijl van de knop Uitgebreide resultaten (zwart, wit, ronde hoeken, schaduw, pijl die opschuift) */
+.nBk .bk[data-home]{padding:8px 14px;border-radius:9px;background:var(--ink);color:#fff;font:700 14px var(--text);box-shadow:0 10px 22px -12px rgba(0,0,0,.55)}
+.nBk .bk[data-home]:hover{background:#000;color:#fff}
+.nBk .bk[data-home] svg{width:15px;height:15px}
+@media(max-width:640px){.nBk .bk[data-home]{padding:7px 12px;font-size:13px}}
 </style>
 </head>
 <body>
