@@ -3030,7 +3030,7 @@ function sumItems(b,L,mActive){const dm=c=>`<i class="${c}" aria-hidden="true"><
 function simpleTiles(){
  const sv=o=>{const q=calcX(o);return q.td-q.te},kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
  setH($('ins'),
-  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b></div>`+
+  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b data-tw="fk">${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b></div>`+
   `<div class="in"><span class="slb">Goedkoper vanaf dieselprijs</span><b>${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b></div>`);
 }
 function insights(r){
@@ -3040,7 +3040,7 @@ function insights(r){
   raR=spanTxt(BX.map(q=>v('acc')/((q.o.le??v('le'))/100)),n=>nf(Math.round(n/5)*5)+' km',5)}
  const kb=kmBreak(),range=v('acc')/(v('le')/100),day=v('km')/Math.max(1,v('wd')),over=day>range;
  setH($('ins'),
-  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b><small>${kb===0?'':'per jaar'}</small>${kbR?rr(kbR):''}</div>`+
+  `<div class="in"><span class="slb">Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b data-tw="fk">${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km'}</b><small>${kb===0?'':'per jaar'}</small>${kbR?rr(kbR):''}</div>`+
   `<div class="in"><span class="slb">Actieradius ${tipBtn('i-range')}</span><b>± ${nf(Math.round(range/5)*5)} km</b><i class="rbar${over?' over':''}" aria-hidden="true"><i style="width:${Math.min(100,day/range*100)}%"></i></i><small class="${over?'warn':''}">Dagrit ± ${nf(Math.round(day/5)*5)} km${over?' · laden onderweg nodig':''}</small>${raR?rr(raR):''}</div>`);
 }
 const units=()=>[['km','Per km'],['mnd','Per maand'],['jr','Per jaar'],['tot',`In ${calcX().L} jaar`]].map(u=>`<button type="button" data-u="${u[0]}" aria-pressed="${u[0]===unit}">${u[1]}</button>`).join('');
@@ -3354,11 +3354,11 @@ const uvKm=()=>{const s=$('hkm');return s?+s.value:v('km')};
 const uvDiff=(d,e,k)=>{const x=d-e;return`<small${x<0?' class="d"':''} data-tw="c-${k}">${x<0?'+':'−'}${eur(Math.abs(x))}</small>`};
 function uvUit(k,r){
  const g=v;return{
-  afs:uL(`${eur(g('pD'))} voor de diesel en ${eur(g('pE'))} voor elektrisch${r.sub?`, min ${eur(r.sub)} subsidie`:''}, min de restwaarde, verdeeld over ${r.L} jaar.`,`${eur(g('pD'))} for the diesel and ${eur(g('pE'))} for electric${r.sub?`, minus ${eur(r.sub)} in grants`:''}, minus the residual value, spread over ${r.L} years.`),
-  en:uL(`${nf(r.km)} km per jaar: ${nf(g('ld'),1)} liter per 100 km à ${eur(g('dp'),2)} tegenover ${nf(g('le'))} kWh à ${eur(g('sp'),2)}${r.ereV?', min de ERE-opbrengst':''}.`,`${nf(r.km)} km a year: ${nf(g('ld'),1)} litres per 100 km at ${eur(g('dp'),2)} against ${nf(g('le'))} kWh at ${eur(g('sp'),2)}${r.ereV?', minus ERE income':''}.`),
-  ond:uL(`${eur(g('oD'),2)} tegenover ${eur(g('oE'),2)} per km. Een elektromotor heeft geen olie, filters of koppeling.`,`${eur(g('oD'),2)} against ${eur(g('oE'),2)} per km. An electric motor has no oil, filters or clutch.`),
-  ver:uL(`Een vast bedrag per jaar: ${eur(g('vD'))} tegenover ${eur(g('vE'))}. Elektrisch is duurder te verzekeren door de hogere nieuwwaarde.`,`A fixed amount per year: ${eur(g('vD'))} against ${eur(g('vE'))}. Electric costs more to insure because of its higher value.`),
-  hef:uL(`${nf(r.kmH)} km met vrachtwagenheffing: ${eur(g('tD'),3)} tegenover ${eur(g('tE'),3)} per km.`,`${nf(r.kmH)} km with the Dutch truck charge: ${eur(g('tD'),3)} against ${eur(g('tE'),3)} per km.`)}[k];
+  afs:uL(`<span data-tw="u-gpD">${eur(g('pD'))}</span> voor de diesel en <span data-tw="u-gpE">${eur(g('pE'))}</span> voor elektrisch${r.sub?`, min <span data-tw="u-rsub">${eur(r.sub)}</span> subsidie`:''}, min de restwaarde, verdeeld over ${r.L} jaar.`,`<span data-tw="u-gpD">${eur(g('pD'))}</span> for the diesel and <span data-tw="u-gpE">${eur(g('pE'))}</span> for electric${r.sub?`, minus <span data-tw="u-rsub">${eur(r.sub)}</span> in grants`:''}, minus the residual value, spread over ${r.L} years.`),
+  en:uL(`${nf(r.km)} km per jaar: ${nf(g('ld'),1)} liter per 100 km à <span data-tw="u-gdp2">${eur(g('dp'),2)}</span> tegenover ${nf(g('le'))} kWh à <span data-tw="u-gsp2">${eur(g('sp'),2)}</span>${r.ereV?', min de ERE-opbrengst':''}.`,`${nf(r.km)} km a year: ${nf(g('ld'),1)} litres per 100 km at <span data-tw="u-gdp2">${eur(g('dp'),2)}</span> against ${nf(g('le'))} kWh at <span data-tw="u-gsp2">${eur(g('sp'),2)}</span>${r.ereV?', minus ERE income':''}.`),
+  ond:uL(`<span data-tw="u-goD2">${eur(g('oD'),2)}</span> tegenover <span data-tw="u-goE2">${eur(g('oE'),2)}</span> per km. Een elektromotor heeft geen olie, filters of koppeling.`,`<span data-tw="u-goD2">${eur(g('oD'),2)}</span> against <span data-tw="u-goE2">${eur(g('oE'),2)}</span> per km. An electric motor has no oil, filters or clutch.`),
+  ver:uL(`Een vast bedrag per jaar: <span data-tw="u-gvD">${eur(g('vD'))}</span> tegenover <span data-tw="u-gvE">${eur(g('vE'))}</span>. Elektrisch is duurder te verzekeren door de hogere nieuwwaarde.`,`A fixed amount per year: <span data-tw="u-gvD">${eur(g('vD'))}</span> against <span data-tw="u-gvE">${eur(g('vE'))}</span>. Electric costs more to insure because of its higher value.`),
+  hef:uL(`${nf(r.kmH)} km met vrachtwagenheffing: <span data-tw="u-gtD3">${eur(g('tD'),3)}</span> tegenover <span data-tw="u-gtE3">${eur(g('tE'),3)}</span> per km.`,`${nf(r.kmH)} km with the Dutch truck charge: <span data-tw="u-gtD3">${eur(g('tD'),3)}</span> against <span data-tw="u-gtE3">${eur(g('tE'),3)}</span> per km.`)}[k];
 }
 function uvKost(r){
  const cs=UVC.filter(c=>r.D[c[0]]||r.E[c[0]]),mx=Math.max(r.td,r.te),dd=c=>r.D[c[0]]-r.E[c[0]];
@@ -3474,7 +3474,7 @@ function rTop(r,x){
  const pn=i?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):'';
  const back=`<a class="bk" href="/" data-home>${BKI}Terug naar start</a>${x?`<a class="bk" href="/">Simpele resultaten</a>`:''}`;
  return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p></div>
-<div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · ${eur(Math.abs(d)*L)} in ${L} jaar`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
+<div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · <span data-tw="hl">${eur(Math.abs(d)*L)}</span> in ${L} jaar`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
 }
 /* Ronde getallen voor de schaal boven de balken */
 const niceStep=mx=>{const p=Math.pow(10,Math.floor(Math.log10(mx/4||1))),m=mx/4/p;return(m<=1?1:m<=2?2:m<=5?5:10)*p};
@@ -3489,7 +3489,7 @@ function rPaint(r){
  const d=r.td-r.te,cheap=d>=0,L=r.L,km=r.km,q=T(),m=modelActive(),mx=rScale(r);
  const sv=o=>{const z=calcX(o);return z.td-z.te},kb=kmBreak(),dp0=v('dp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,dpB=sD>0?Math.max(0,dp0-s0/sD):null;
  const dn=$('dw').value==='h'?'Huidige diesel':'Diesel',en=m?mName(m):'Elektrisch';
- const facts=`<div class="rf"><span>Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b>${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km per jaar'}</b></div><div class="rf"><span>Goedkoper vanaf dieselprijs</span><b>${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b></div>`;
+ const facts=`<div class="rf"><span>Elektrisch goedkoper vanaf ${tipBtn('i-km')}</span><b data-tw="fk">${kb===0?'Elke afstand':kb===null?'Boven 400.000 km':nf(Math.ceil(kb/1000)*1000)+' km per jaar'}</b></div><div class="rf"><span>Goedkoper vanaf dieselprijs</span><b data-tw="fp">${dpB===null?'—':dpB<=0?'Altijd':eur(dpB,2)+' <small>per liter</small>'}</b></div>`;
  const lst=sumItems(r.b,L,m).filter((s,j)=>j!==1&&j!==6&&j!==7).map(s=>`<button type="button" class="st" data-step="${s[0]}"><span>${s[1]}</span><b>${s[2]}</b>${ICON.pen}</button>`).join('');
  /* Waar zit het verschil: per onderdeel, per jaar of over de afschrijftermijn, met een schaal en het bedrag bij hover */
  const k=RP==='tot'?L:1,pt=RP==='tot'?`in ${L} jaar`:'per jaar',rows=ROWS.filter(z=>q.truck||z[0]!=='hef');
@@ -3498,8 +3498,8 @@ function rPaint(r){
  const bar=(c,n,lab,val)=>`<i class="${c}" style="width:${Math.max(0,val)/top*100}%" data-tip2="${lab} · ${n}: ${eur(val)} ${pt}"></i>`;
  const per=`<div class="seg sm rper" role="group" aria-label="Periode">${[['jr','Per jaar'],['tot',`In ${L} jaar`]].map(z=>`<button type="button" data-rper="${z[0]}" aria-pressed="${z[0]===RP}">${z[1]}</button>`).join('')}</div>`;
  const diff=`<div class="xdh"><span></span><span class="xsc">${tks.map(t=>`<em style="left:${t/top*100}%">${eurK(t)}</em>`).join('')}</span><span>${dn} ${pt}</span><span>${en} ${pt}</span><span>Verschil ${pt}</span></div>`+
-  rows.map(z=>{const a=r.D[z[0]]*k,b2=r.E[z[0]]*k,df=b2-a;return`<div class="xdr"><span class="xdl">${z[1]}</span><span class="xdb">${grid}${bar('d',dn,z[1],a)}${bar('e',en,z[1],b2)}</span><span class="xdv">${eur(a)}</span><span class="xdv">${eur(b2)}</span><b class="xdf${df<-.5?' g':df>.5?' a':''}">${Math.abs(df)<.5?'gelijk':(df<0?'−':'+')+' '+eur(Math.abs(df))}</b></div>`}).join('')+
-  `<div class="xdr xdt"><span class="xdl">Totaal</span><span class="xdb"></span><span class="xdv">${eur(r.td*k)}</span><span class="xdv">${eur(r.te*k)}</span><b class="xdf${cheap?' g':' a'}">${(cheap?'−':'+')+' '+eur(Math.abs(d)*k)}</b></div>`;
+  rows.map(z=>{const a=r.D[z[0]]*k,b2=r.E[z[0]]*k,df=b2-a;return`<div class="xdr"><span class="xdl">${z[1]}</span><span class="xdb">${grid}${bar('d',dn,z[1],a)}${bar('e',en,z[1],b2)}</span><span class="xdv" data-tw="xd-${z[0]}">${eur(a)}</span><span class="xdv" data-tw="xe-${z[0]}">${eur(b2)}</span><b data-tw="xf-${z[0]}" class="xdf${df<-.5?' g':df>.5?' a':''}">${Math.abs(df)<.5?'gelijk':(df<0?'−':'+')+' '+eur(Math.abs(df))}</b></div>`}).join('')+
+  `<div class="xdr xdt"><span class="xdl">Totaal</span><span class="xdb"></span><span class="xdv" data-tw="xd-t">${eur(r.td*k)}</span><span class="xdv" data-tw="xe-t">${eur(r.te*k)}</span><b data-tw="xf-t" class="xdf${cheap?' g':' a'}">${(cheap?'−':'+')+' '+eur(Math.abs(d)*k)}</b></div>`;
  const cost=`<div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx*100}%"></u></i><b data-tw="td">${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx*100}%"></u></i><b data-tw="te">${eur(r.te)}</b></div><div class="nPk" data-r="pkm"><div><span>Diesel per km</span><b data-tw="pd">${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b data-tw="pe">${eur(r.te/km,2)}</b></div><div><span>Verschil per km</span><b data-tw="pv">${eur(Math.abs(d)/km,2)}</b></div></div>`;
  const h=`<div class="rN">${rTop(r,0)}
 <section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p>${cost}</div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${rsl('km','Kilometers per jaar',x=>nf(x)+' km')}${rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter')}${rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh')}</div></div></section>
