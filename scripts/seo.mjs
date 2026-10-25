@@ -37,8 +37,8 @@ function sectionOf(html, k) {
   return a[0];
 }
 
-function faqItems(html) {
-  return [...sectionOf(html, 'faq').matchAll(/<details><summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g)]
+function faqItems(html, k = 'faq') {
+  return [...sectionOf(html, k).matchAll(/<details><summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g)]
     .map(m => ({ '@type': 'Question', name: text(m[1]), acceptedAnswer: { '@type': 'Answer', text: text(m[2]) } }));
 }
 
@@ -50,7 +50,7 @@ function jsonld(k, r, mod) {
   const g = [
     { '@type': 'Organization', '@id': SITE + '/#org', name: BRAND, url: SITE + '/', logo: SITE + '/apple-touch-icon.png' },
     { '@type': 'WebSite', '@id': SITE + '/#website', url: SITE + '/', name: BRAND, inLanguage: 'nl-NL', publisher: org },
-    { '@type': k === 'faq' ? ['WebPage', 'FAQPage'] : 'WebPage', '@id': url, url, name: r.title, description: r.desc, inLanguage: 'nl-NL', isPartOf: { '@id': SITE + '/#website' }, dateModified: mod, primaryImageOfPage: SITE + '/og.png', ...(crumbs.length > 1 ? { breadcrumb: { '@id': url + '#kruimel' } } : {}), ...(k === 'faq' ? { mainEntity: faqItems(src) } : {}) }
+    { '@type': k === 'faq' || k === 'calc' ? ['WebPage', 'FAQPage'] : 'WebPage', '@id': url, url, name: r.title, description: r.desc, inLanguage: 'nl-NL', isPartOf: { '@id': SITE + '/#website' }, dateModified: mod, primaryImageOfPage: SITE + '/og.png', ...(crumbs.length > 1 ? { breadcrumb: { '@id': url + '#kruimel' } } : {}), ...(k === 'faq' || k === 'calc' ? { mainEntity: faqItems(src, k) } : {}) }
   ];
   if (crumbs.length > 1) g.push({ '@type': 'BreadcrumbList', '@id': url + '#kruimel', itemListElement: crumbs.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item })) });
   if (k === 'calc' || k === 'uitgebreid') g.push({ '@type': 'WebApplication', name: 'TCO-calculator elektrisch of diesel', url, applicationCategory: 'BusinessApplication', operatingSystem: 'Web', inLanguage: 'nl-NL', isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }, publisher: org, description: r.desc });
