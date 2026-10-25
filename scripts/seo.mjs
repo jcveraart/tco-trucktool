@@ -5,8 +5,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://stekkerofdiesel.nl';
 const BRAND = 'Stekker of Diesel';
 const PATHS = { calc: '/', uitgebreid: '/uitgebreid/', modellen: '/modellen/', faq: '/overstapgids/', nieuws: '/nieuws/', over: '/over-ons/', privacy: '/privacy/', vloot: '/vlootanalyse/', restwaarde: '/restwaarde/' };
@@ -104,3 +105,4 @@ for (const k of Object.keys(routes)) {
 fs.writeFileSync(path.join(ROOT, '404.html'), page('calc', calcMod, true));
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
 console.log(`${urls.length} pagina's, sitemap en 404.html geschreven`);
+
