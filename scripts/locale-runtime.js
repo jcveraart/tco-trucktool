@@ -11,6 +11,7 @@
    [/^Past op een kleinverbruikaansluiting van (.+)\. Tel daar op wat je pand al gebruikt\. Moet je daarvoor verzwaren, dan komt ook die aanvraag in een congestiegebied op de wachtlijst\.$/,'Fits a small-business connection of $1. Add your building’s existing demand. If this requires an upgrade in a congested area, the application will join the waiting list.'],
    [/^Je hebt een grootverbruikaansluiting nodig, en in een congestiegebied kom je op de wachtlijst\.(.*)$/,'You need a large-business connection. In a congested area, you will join the waiting list.$1'],
    [/^Je dagrit past, met (.+) km over\.$/,'Your daily route fits, with $1 km to spare.'],
+   [/^Geschat bij (.+) km per jaar en (\d+) jaar$/,'Estimated for $1 km a year over $2 years'],
    [/^Je komt (.+) km tekort\. Laad onderweg zo'n (.+) kWh: ongeveer (.+) aan een snellader van 350 kW\.$/,'You are $1 km short. Add about $2 kWh en route: roughly $3 at a 350 kW fast charger.'],
    [/^Met slim laden rekenen we met (.+) per kWh minder: het verschil tussen de goedkope uren en het daggemiddelde op de stroombeurs\.$/,'Smart charging assumes $1 less per kWh: the difference between low-price hours and the daily wholesale average.'],
    [/^Over (.+) jaar betaal je (.+) rente(.*)\. Exclusief btw, onderhoud en verzekering\.$/,'Over $1 years you pay $2 in interest$3. Excludes VAT, maintenance and insurance.'],
