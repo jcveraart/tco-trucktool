@@ -3431,7 +3431,7 @@ function board(r){
  const vals=[r.td/km,r.te/km],fm=[n=>eur(n,2),n=>eur(n,2)];if(!even){vals.push(Math.abs(d));fm.push(n=>eur(n))}
  tween('bd',$('board').querySelectorAll('[data-tw]'),vals,fm);
  setH($('xSum'),`<p><span><i class="d"></i>Diesel <b>${eur(r.td/km,2)}</b> per km</span><span><i class="e"></i>Elektrisch <b>${eur(r.te/km,2)}</b> per km</span><span class="${cheap||even?'good':'bad'}">${even?'Ongeveer gelijk':`Elektrisch ${nf(pc)}% ${cheap?'goedkoper':'duurder'}: <b>${eur(Math.abs(d))}</b> ${cheap?'lagere':'hogere'} totale kosten per jaar`}</span></p><span class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></span>`);
- twText($('mD'),eur(r.td/km,2));twText($('mE'),eur(r.te/km,2));$('mM').textContent=even?'≈':(cheap?'−':'+')+nf(pc)+'%';
+ $('mD').textContent=eur(r.td/km,2);$('mE').textContent=eur(r.te/km,2);$('mM').textContent=even?'≈':(cheap?'−':'+')+nf(pc)+'%';
 }
 function sumItems(b,L,mActive){const dm=c=>`<i class="${c}" aria-hidden="true"></i>`,lD=lsOn('D'),lE=lsOn('E'),pm=s=>`${eur(Math.round(lpNow(s)/10)*10)} per maand`;
  /* Bij leasen: looptijd in plaats van afschrijving, en de leaseprijs in plaats van de aanschafprijs */
@@ -4033,10 +4033,12 @@ function twText(el,to,from,D=550){
  const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);if(k<1){el.textContent=B.a+nf(A.v+(B.v-A.v)*e,B.d)+B.b;el._twr=requestAnimationFrame(step)}else el.textContent=to};
  el._twr=requestAnimationFrame(step);
 }
+/* Alleen "Elektrisch tot € … per jaar goedkoper" op de startpagina telt door; alle andere bedragen staan direct goed. */
+const TWQ='[data-tw="hx"]';
 function twSet(el,put){
- const old={};el.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>old[n.dataset.tw]=n.textContent);
+ const old={};el.querySelectorAll(TWQ).forEach(n=>old[n.dataset.tw]=n.textContent);
  put();
- el.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{const o=old[n.dataset.tw];if(o!=null&&o!==n.textContent)twText(n,n.textContent,o)});
+ el.querySelectorAll(TWQ).forEach(n=>{const o=old[n.dataset.tw];if(o!=null&&o!==n.textContent)twText(n,n.textContent,o)});
 }
 function rSet(el,h){twSet(el,()=>rSet0(el,h))}
 /* Eerste keer in beeld: bedragen tellen op vanaf 0. Per bedrag en per pagina één keer per bezoek; niet zolang er een venster (zoals de stappen) open staat. */
@@ -4044,7 +4046,7 @@ const TWI=new Set();let twIO=null;
 function twIntro(root){
  if(!root||reduced()||!('IntersectionObserver' in window))return;
  twIO=twIO||new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const n=e.target,k=n._twk;if(document.querySelector('dialog[open]'))return;twIO.unobserve(n);if(TWI.has(k)||!n.isConnected)return;TWI.add(k);const B=twNum(n.textContent);if(B&&B.v)twText(n,n.textContent,B.a+nf(0,B.d)+B.b,1100)}),{threshold:.6});
- root.querySelectorAll('[data-tw]:not([data-tw=""])').forEach(n=>{n._twk=root.id+':'+n.dataset.tw;if(!TWI.has(n._twk)){twIO.unobserve(n);twIO.observe(n)}});
+ root.querySelectorAll(TWQ).forEach(n=>{n._twk=root.id+':'+n.dataset.tw;if(!TWI.has(n._twk)){twIO.unobserve(n);twIO.observe(n)}});
 }
 /* Sluit een venster, kijk dan opnieuw welke bedragen in beeld zijn */
 document.addEventListener('close',()=>setTimeout(()=>['home','uv','res','resX'].forEach(id=>twIntro($(id))),50),true);
@@ -4327,17 +4329,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify({touched,vtype,v:sta
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(!s)return;if(VT[s.vtype])applyType(s.vtype);srLoad(s.sr);['km'].concat(Object.keys(s.v||{})).forEach(id=>{const e=$(id);if(!e||!(id in s.v))return;if(e.type==='checkbox')e.checked=!!+s.v[id];else setNum(e,s.v[id])});fitRanges();touched=!!s.touched}catch(e){}}
 function reset(){PL.D=PL.E=null;finAuto=false;autoPE=autoPD=autoOD=null;document.querySelectorAll('[data-plate] input').forEach(i=>i.value='');document.querySelectorAll(':is(#calc,#wz) input[type=range]').forEach(absRange);document.querySelectorAll(':is(#calc,#wz) input[id]').forEach(e=>{if(e.classList.contains('slin'))return;if(e.type==='checkbox')e.checked=e.defaultChecked;else e.value=e.defaultValue});$('gr').value='1';$('cls').value='N3';$('dw').value=$('nw').value='n';['lsD','lsE','lqD','lqE'].forEach(id=>$(id).value='0');applyType(vtype);touched=false;tolSel.clear();srLoad();render();if(!isFresh()){setUsed(false);scrollTo(0,0)}}
 
-const TW={};
-function tween(key,els,vals,fmts){
- const t=TW[key]||(TW[key]={cur:null,raf:0});
- cancelAnimationFrame(t.raf);
- const from=t.cur&&t.cur.length===vals.length?t.cur:vals;
- const paint=cur=>els.forEach((el,i)=>{el.textContent=fmts[i](cur[i])});
- if(reduced()){t.cur=vals;paint(vals);return}
- const t0=performance.now(),D=450;
- const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);t.cur=vals.map((n,i)=>from[i]+(n-from[i])*e);paint(t.cur);if(k<1)t.raf=requestAnimationFrame(step)};
- step(t0);t.raf=requestAnimationFrame(step);
-}
+function tween(key,els,vals,fmts){els.forEach((el,i)=>{el.textContent=fmts[i](vals[i])})}
 function fillRanges(){document.querySelectorAll('input[type=range]').forEach(r=>{const a=+r.min,b=+r.max;r.style.setProperty('--f',b>a?(r.value-a)/(b-a):0)})}
 /* ===== Modellen: g bruto, u bruikbaar, ue afgeleid, a capaciteit waarvan bruto/netto onbekend; r bereik, rc meetcyclus; dc/mcs laadvermogen (kW); checked broncontrole; fam modelfamilie en vl naam van de uitvoering binnen die familie. ===== */
 const MCAT=[['all','Alle'],['trekker','Trekker'],['bakwagen','Bakwagen'],['bestel','Bestelbus'],['bus','Bus']];
