@@ -525,7 +525,7 @@
   "We rekenen met het gemiddelde verschil op de stroombeurs over de afgelopen dertig dagen.": "We use the average difference in wholesale electricity prices over the past 30 days.",
   "Een kWp aan panelen levert in Nederland gemiddeld zo'n 900 kWh per jaar. Het deel dat in je voertuigen gaat, kost je ongeveer € 0,06 per kWh in plaats van je stroomprijs.": "In the Netherlands, 1 kWp of solar capacity produces about 900 kWh per year on average. Electricity used directly by your vehicles is estimated at €0.06/kWh rather than your grid price.",
   "Zon en laden vallen niet altijd samen. Laad je vooral 's nachts, dan gaat er zonder buurtbatterij minder direct in je voertuig.": "Solar production and charging do not always coincide. If you charge overnight, less solar power reaches the vehicle directly without battery storage.",
-  "Met je huidige diesel rekenen we vanaf de waarde nu, niet vanaf de nieuwprijs. De restwaarde is wat er aan het eind van de afschrijftermijn van die waarde over is, en het onderhoud stijgt met de leeftijd.": "For an existing diesel, we start with its current value rather than its original new price. Residual value is the share of that current value remaining at the end of the period. Maintenance rises with age.",
+  "Met je huidige diesel rekenen we vanaf de waarde nu, niet vanaf de nieuwprijs. De restwaarde is wat er aan het eind van de afschrijftermijn van die waarde over is. Het onderhoud stijgt met de leeftijd en de verzekering daalt mee met de waarde.": "For an existing diesel, we start with its current value rather than its original new price. Residual value is the share of that current value remaining at the end of the period. Maintenance rises with age and insurance falls with value.",
   "Vul je het kenteken in, dan nemen we de leeftijd en de waarde daarvan over.": "Enter its registration number to load age and estimated current value.",
   "De tweedehandsmarkt voor elektrische bedrijfsvoertuigen is nog jong. De conditie van de accu bepaalt een groot deel van de waarde.": "The used electric commercial vehicle market is still developing. Battery condition accounts for much of resale value.",
   "Onder de schuif zie je hoeveel capaciteit de accu aan het eind van je afschrijftermijn ongeveer nog heeft.": "The estimate below the slider shows battery capacity remaining at the end of your depreciation period.",
@@ -1301,5 +1301,6 @@
   "alleen diesel": "diesel only",
   "Rijd je ook op tolwegen in het buitenland, tel die kilometers hier mee. Bij Tol buitenland geef je aan welk deel daarvan buiten Nederland ligt; dat deel rekenen we tegen het tarief van dat land.": "If you also drive on toll roads abroad, include those kilometres here. Under Foreign tolls, enter the share driven outside the Netherlands; that share is charged at the rate of that country.",
   "voorbeeldcijfers": "example figures",
-  "verbruik naar gewicht": "consumption by weight class"
+  "verbruik naar gewicht": "consumption by weight class",
+  "Bij een gebruikte elektrische verlagen we de accu met de geschatte slijtage over de jaren die hij al gereden heeft.": "For a used electric vehicle, we reduce the battery by the estimated wear over the years it has already been in service."
 }
