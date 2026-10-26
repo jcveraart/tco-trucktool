@@ -1,19 +1,9 @@
 # Website languages
 
-The website supports Dutch (default) and English. The small NL / EN header control retains the calculation, model selection and current route. Explicit `?lang=nl` or `?lang=en` overrides the locally saved preference. Shared calculation links include the selected language.
+Dutch is served on the existing paths; English has its own URLs under `/en/`. For example, `/modellen/bestelbussen/` and `/en/models/vans/` are language counterparts. The URL controls the language so search engines and visitors receive consistent content. Old `?lang=en` and `?lang=nl` calculation links remain compatible through a state-preserving browser redirect.
 
-Reviewed English copy lives in `data/translations.en.json`. Dutch copy remains beside its existing interface or data definition in `index.html`. Model names, brands, input values, code snippets and source URLs are preserved. Both languages use the same calculation and Dutch regulatory assumptions; English is a language option, not a change of country.
+The compact NL / EN links carry the current calculation when clicked normally and work as ordinary language links without JavaScript. Model names, brands, entered values and source URLs are preserved. English still uses Dutch market and regulatory assumptions, euros and kilometres.
 
-Number formatting follows the language: Dutch `42.000` and `0,25`, English `42,000` and `0.25`. Editable calculator values are parsed accordingly. Amounts remain in euros and distances in kilometres.
+English copy lives in `data/translations.en.json`. New static page metadata has both languages in the `seo` JSON block in `index.html`. The `scripts/locale-runtime.js` runtime translates dynamic calculator content. `scripts/seo-render.cjs` uses the same translation function and app renderers to build initial HTML. Already translated text is recorded before hydration to prevent double translation.
 
-After changing English copy or `scripts/locale-runtime.js`, run:
-
-```
-node scripts/i18n.cjs
-node --test tests/*.test.cjs
-node scripts/seo.mjs
-```
-
-The existing SEO workflow regenerates all direct-entry pages from `index.html`. Keep the embedded dictionary in sync before committing. New or changed interface copy needs an English entry, including help text, error states and dynamic sentences. Put interpolated sentence patterns in the locale runtime. Do not translate model identifiers or canonical Supabase column names.
-
-Vehicle price evidence is recorded separately in `data/vehicle_prices.json` and its numbered SQL migration. Prices refer to matching battery versions, exclude VAT, and retain original source and verification dates. A price on request is preferable to inventing a list price.
+After changing copy, run `node scripts/i18n.cjs`, `node scripts/seo.mjs` and `node --test tests/*.test.cjs`. See [SEO and publishing](seo.md) for the full workflow. Keep the source dictionary, embedded dictionary and generated language pages in sync.
