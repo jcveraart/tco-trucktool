@@ -2052,6 +2052,13 @@ html{touch-action:manipulation}
 [data-page=uitgebreid] .bc2>b{font:600 20px/1.3 var(--text);font-variant-numeric:tabular-nums}
 [data-page=uitgebreid] .trk .tk s{font:500 11px var(--text);font-variant-numeric:tabular-nums}
 #sum .st b,.nTl .st b{font-weight:400}
+/* Samenhang: elke pagina dezelfde kopletter, dezelfde kaarthoeken en dezelfde groene tekstlinks */
+.ga h1{font-weight:600;letter-spacing:-.015em}
+:is(.prose,.ga,.tli,.uvS>header,.faq) h2,.gfh{font-weight:600;letter-spacing:-.01em}
+@media(min-width:641px){.ga h1{font-size:clamp(32px,4.2vw,48px)}:is(.prose,.ga) h2,.gfh,.uvS>header h2{font-size:24px}.tli h2{font-size:22px}}
+.rwi,.disc,.embc code{border-radius:6px}
+.disc{box-shadow:0 0 0 1px var(--line)}
+.uv p a,.uv .faq a{color:var(--volt-ink);text-decoration-color:currentColor}
 /* Interactie: alles wat je kunt aanklikken reageert zacht. Kleuren lopen in .15s over, knoppen en kaarten komen bij hover 1–2 px omhoog
    en zakken bij indrukken even in. Alleen kleur, schaduw en een kleine verschuiving: de opmaak zelf blijft staan.
    Beweging alleen met een muis (hover:hover) en niet bij prefers-reduced-motion; indrukken werkt ook op telefoon. */
