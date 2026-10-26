@@ -21,6 +21,7 @@ test('brand names and Dutch source copy are preserved',()=>{
  for(const s of Object.keys(D))assert.equal(nl(s),s);
 });
 test('dynamic outputs read as English with interpolated values intact',()=>{
+ assert.equal(en('Wat als'),'What if');assert.equal(en('Omslagpunten'),'Break-even points');assert.equal(en('Periode'),'Period');
  assert.equal(en('Je dagrit past, met 120 km over.'),'Your daily route fits, with 120 km to spare.');
  assert.equal(en('Over 6 jaar betaal je € 5,000 rente, en aan het eind € 2,000 slottermijn. Exclusief btw, onderhoud en verzekering.'),'Over 6 years you pay € 5,000 in interest, plus a € 2,000 final payment. Excludes VAT, maintenance and insurance.');
  assert.equal(en('capaciteit na 6 jaar · actieradius ± 400 km in plaats van 500 km'),'capacity after 6 years · range about 400 km instead of 500 km');
@@ -32,3 +33,4 @@ test('all fallback model descriptions and verified price notes have reviewed Eng
  const prices=JSON.parse(fs.readFileSync(path.join(root,'data/vehicle_prices.json'),'utf8')).prices;
  for(const p of prices){assert.ok(D[p.indicative_price_text]);assert.equal(models.find(m=>(m.b+' '+m.m).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')===p.id).price,p.indicative_price_eur);}
 });
+

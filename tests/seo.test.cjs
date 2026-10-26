@@ -18,6 +18,8 @@ test('category pages contain the actual model cards before JavaScript and matchi
  for(const r of Object.values(routes).filter(r=>r.category))for(const l of ['nl','en']){const p=l==='en'?r.enPath:r.path,h=read(p),visible=h.match(/<section class="page" data-page="modellen">([\s\S]*?)\n<\/section>/)[1],n=(visible.match(/<article class="mc/g)||[]).length;assert.ok(n>=8,p);const json=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);assert.equal(json['@graph'].find(x=>x['@type']==='CollectionPage').mainEntity.numberOfItems,n);assert.ok(visible.includes(l==='en'?r.en.name:r.name));assert.ok(visible.includes(l==='en'?r.en.advice:r.advice),p+' initial advice');}
 });
 test('first paint contains the homepage, local fonts and no unused advertising download',()=>{
+ const explainer=read('/en/').match(/<div class="wrap home uv"[\s\S]*?<div class="wrap">/)[0];
+ assert.match(explainer,/What Stekker of Diesel does/);assert.match(explainer,/Free, no account and no sales pitch/);assert.match(explainer,/Is an electric truck cheaper than a diesel/);assert.match(explainer,/href="\/en\/switching-guide\/zero-emission-zones\/"/);assert.doesNotMatch(explainer,/Wie een trekker|Gratis, zonder|Wat er verandert|Bij gemiddeld gebruik|Voor trekkers|Dat hangt af/);
  assert.match(source,/<html[^>]*class="fresh"/);assert.match(source,/<div class="home" id="home"><div class="wrap hA">/);assert.match(read('/en/'),/Find the right vehicle for your business/);assert.doesNotMatch(source,/<(?:link|script)[^>]*(?:fonts\.googleapis\.com|fonts\.gstatic\.com|pagead2\.googlesyndication\.com)/);
  for(const m of source.matchAll(/url\((\/assets\/fonts\/[^)]+)\)/g))assert.ok(fs.existsSync(path.join(ROOT,m[1])),m[1]);
 });
