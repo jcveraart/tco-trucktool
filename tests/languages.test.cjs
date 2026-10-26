@@ -4,9 +4,11 @@ const D=JSON.parse(fs.readFileSync(path.join(root,'data/translations.en.json'),'
 const runtime=fs.readFileSync(path.join(root,'scripts/locale-runtime.js'),'utf8');
 function translator(lang){const c={document:{documentElement:{lang}},window:{},SOD_EN:D};vm.runInNewContext(runtime.slice(0,runtime.indexOf(' const seen='))+'})();',c);return c.window.sodText;}
 const en=translator('en');
-test('all executable inline scripts compile and reviewed translations are embedded',()=>{
+test('all executable inline scripts compile and English pages load the reviewed dictionary',()=>{
  for(const m of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){if(/type="application\//.test(m[1]))continue;assert.doesNotThrow(()=>new vm.Script(m[2]));}
- const embedded=html.match(/const SOD_EN=([^\n]+);\n/)[1];assert.deepEqual(JSON.parse(embedded),D);
+ assert.match(html,/const SOD_EN=window\.SOD_EN\|\|\{\};\n/);assert.doesNotMatch(html,/i18n\.en\.js/);
+ const file=fs.readFileSync(path.join(root,'assets/i18n.en.js'),'utf8'),c={window:{}};vm.runInNewContext(file,c);assert.deepEqual(JSON.parse(JSON.stringify(c.window.SOD_EN)),D);
+ for(const p of ['en/index.html','en/models/index.html','en/detailed-calculation/index.html']){const h=fs.readFileSync(path.join(root,p),'utf8');assert.ok(h.indexOf('<script src="/assets/i18n.en.js?v=')>-1&&h.indexOf('<script src="/assets/i18n.en.js?v=')<h.indexOf('<script id="sod-i18n">'),p);}
  assert.ok(html.includes(runtime));assert.doesNotMatch(html,/sbp_[a-f0-9]{20}/);
 });
 test('both language number formats preserve calculation precision',()=>{

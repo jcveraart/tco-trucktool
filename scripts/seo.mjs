@@ -8,6 +8,9 @@ import render from './seo-render.cjs';
 const ROOT=path.join(path.dirname(fileURLToPath(import.meta.url)),'..'),SITE='https://stekkerofdiesel.nl',BRAND='Stekker of Diesel';
 const src=fs.readFileSync(path.join(ROOT,'index.html'),'utf8'),{routes}=JSON.parse(src.match(/<script type="application\/json" id="seo">([\s\S]*?)<\/script>/)[1]);
 const dictionary=JSON.parse(fs.readFileSync(path.join(ROOT,'data/translations.en.json'),'utf8')),runtime=fs.readFileSync(path.join(ROOT,'scripts/locale-runtime.js'),'utf8');
+// English pages load the dictionary as a separate, cacheable file, so Dutch pages stay small.
+const enDict='window.SOD_EN='+JSON.stringify(dictionary).replace(/</g,'\\u003c')+';\n',enDictSrc='/assets/i18n.en.js?v='+crypto.createHash('sha1').update(enDict).digest('hex').slice(0,10);
+fs.writeFileSync(path.join(ROOT,'assets/i18n.en.js'),enDict);
 const translate=render.makeTranslator(dictionary,runtime),esc=render.esc,today=process.env.SOD_BUILD_DATE||new Date().toISOString().slice(0,10),cards={nl:render.modelRenderer(src,'nl'),en:render.modelRenderer(src,'en')};
 const previous={};try{for(const m of fs.readFileSync(path.join(ROOT,'sitemap.xml'),'utf8').matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod><!-- ([0-9a-f]+) -->/g))previous[m[1]]={date:m[2],hash:m[3]};}catch{}
 const url=(r,l)=>SITE+(l==='en'?r.enPath:r.path),type=(k,r)=>r.page||(k.startsWith('gids/')?'gids':k);
@@ -33,6 +36,7 @@ function body(k,r,l){const p=type(k,r);let h=src.replace(/<section class="page" 
  h=h.replace('<html lang="nl"','<html lang="'+l+'"'+(l==='en'?' data-static-lang="en"':''));
  h=h.replace(/<html\b[^>]*>/,tag=>/\bclass=/.test(tag)?tag:tag.replace('>',' class="fresh">'));
  if(l==='en'){const a=h.indexOf('<body>')+6,b=h.lastIndexOf('</body>');h=h.slice(0,a)+render.translateHTML(h.slice(a,b),translate,routes)+h.slice(b);}
+ if(l==='en'){if(!h.includes('<script id="sod-i18n">'))throw Error('Missing language script');h=h.replace('<script id="sod-i18n">',()=>'<script src="'+enDictSrc+'"></script>\n<script id="sod-i18n">');h=h.replace('<!--seo-->',()=>'<link rel="preload" href="'+enDictSrc+'" as="script">\n<!--seo-->');}
  h=h.replace(/<a\b[^>]*\bdata-lang="(nl|en)"[^>]*>/g,(tag,x)=>tag.replace(/href="[^"]*"/,'href="'+(x==='en'?r.enPath:r.path)+'"').replace(/\saria-current="page"/g,'').replace(/>$/,x===l?' aria-current="page">':'>'));
  return{html:h,models};}
 const entries=[];

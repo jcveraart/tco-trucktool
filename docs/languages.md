@@ -6,4 +6,4 @@ The compact NL / EN links carry the current calculation when clicked normally an
 
 English copy lives in `data/translations.en.json`. New static page metadata has both languages in the `seo` JSON block in `index.html`. The `scripts/locale-runtime.js` runtime translates dynamic calculator content. `scripts/seo-render.cjs` uses the same translation function and app renderers to build initial HTML. Already translated text is recorded before hydration to prevent double translation.
 
-After changing copy, run `node scripts/i18n.cjs`, `node scripts/seo.mjs` and `node --test tests/*.test.cjs`. See [SEO and publishing](seo.md) for the full workflow. Keep the source dictionary, embedded dictionary and generated language pages in sync.
+After changing copy, run `node scripts/i18n.cjs`, `node scripts/seo.mjs` and `node --test tests/*.test.cjs`. See [SEO and publishing](seo.md) for the full workflow. Dutch pages do not carry the English dictionary: `scripts/seo.mjs` writes it to `assets/i18n.en.js` and adds that script only to the English pages, before the language runtime. Keep the source dictionary, that file and the generated language pages in sync.
