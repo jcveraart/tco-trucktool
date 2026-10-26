@@ -1219,5 +1219,13 @@
   "Welke subsidie is er voor een elektrische vrachtwagen?": "Which grants are there for an electric truck?",
   "Voor trekkers en bakwagens is er AanZET, of anders de MIA. Voor een laadpaal kan SPRILA gelden. Bedragen en voorwaarden staan bij": "Tractor units and rigid trucks can get AanZET, or otherwise the MIA. SPRILA may apply to a charger. Amounts and conditions are under",
   "Past elektrisch bij mijn ritten?": "Does electric suit my routes?",
-  "Dat hangt af van je langste dagrit, waar je kunt laden en hoeveel vermogen je aansluiting heeft. Check het bij": "That depends on your longest daily route, where you can charge and how much power your grid connection has. Check it under"
+  "Dat hangt af van je langste dagrit, waar je kunt laden en hoeveel vermogen je aansluiting heeft. Check het bij": "That depends on your longest daily route, where you can charge and how much power your grid connection has. Check it under",
+  "Jouw privacykeuze": "Your privacy choices",
+  "Stekker of Diesel gebruikt noodzakelijke opslag voor de calculator. Met jouw toestemming meten we gebruik met een bezoekersnummer en tonen we advertenties op maat.": "Stekker of Diesel uses essential storage for the calculator. With your permission, we measure usage with a visitor ID and show personalised ads.",
+  "Anonieme paginatellingen en berekeningen bewaren we zonder bezoekersnummer. Je wijzigt je keuze altijd via Cookies onderaan de pagina.": "We store anonymous page counts and calculations without a visitor ID. You can change your choice at any time using Cookies in the footer.",
+  "Lees ons privacybeleid": "Read our privacy policy",
+  "Alleen noodzakelijk": "Reject optional cookies",
+  "Alles accepteren": "Accept all",
+  "Instellingen": "Settings",
+  "De lettertypen worden vanaf onze eigen website geladen. Voor actuele voertuiggegevens maakt je browser verbinding met Supabase. GitHub Pages host de website en bewaart IP-adressen in serverlogs voor beveiliging. Ook Supabase ontvangt je IP-adres bij een verbinding. Deze technische verwerking staat los van onze bezoekersstatistieken: daarin slaan wij geen IP-adressen op.": "Fonts are served from our own website. Your browser connects to Supabase for current vehicle data. GitHub Pages hosts the website and stores IP addresses in server logs for security. Supabase also receives your IP address when your browser connects. This technical processing is separate from our visitor analytics, where we do not store IP addresses."
 }
