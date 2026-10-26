@@ -42,7 +42,7 @@ Opruimen na 25 maanden: `select analytics.opruimen();` (of plannen met pg_cron, 
 
 Elke berekening wordt volledig opgeslagen (`<script id="berekeningen">` in `index.html`): na het afronden van het invulvenster (`trigger = invulvenster`) en na elke aanpassing zodra het 4 seconden stil is (`trigger = aanpassing`, alleen als er iets veranderd is).
 
-- `invoer`: alle velden van de calculator, `gewijzigd`: welke afwijken van de standaard, `voertuig`: soort, model, huidig/nieuw, tol, bandbreedtes en RDW-gegevens, `uitkomst`: totalen per jaar en km, alle kostenposten, terugverdientijd, goedkoper-vanaf-km.
+- `invoer`: alle velden van de calculator, `gewijzigd`: welke afwijken van de standaard, `voertuig`: soort, model, huidig/nieuw, lease per kant (schatting of offerte, prijs per maand), tol, bandbreedtes en RDW-gegevens, `uitkomst`: totalen per jaar en km, alle kostenposten, terugverdientijd, goedkoper-vanaf-km.
 - `reeks` + `nr`: alle berekeningen binnen één paginabezoek (willekeurig ID, alleen in het geheugen, niets op het apparaat).
 - Ook zonder toestemming, maar dan zonder `visitor_id`/`session_id` (de database dwingt dat af). Met toestemming staan die erbij.
 - Het kenteken (`plk`, `plkE`) gaat nooit mee; de database weigert rijen waar het in staat.

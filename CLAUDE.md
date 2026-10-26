@@ -25,6 +25,7 @@ Do not introduce ad-hoc field names, divergent keys, or arbitrary data models.
   - `default_insurance_diesel_annual` (numeric), `default_insurance_electric_annual` (numeric)
   - `default_maintenance_diesel_per_km` (numeric), `default_maintenance_electric_per_km` (numeric)
   - `default_toll_diesel_per_km` (numeric), `default_toll_electric_per_km` (numeric)
+  - `default_lease_excess_km_eur` (numeric): meerkilometerprijs bij operational lease, € per km excl. btw
   - `quick_select_km` (integer array)
 
 ### 2. `vehicle_models`
