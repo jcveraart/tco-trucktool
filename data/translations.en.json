@@ -1295,5 +1295,9 @@
   "leasen loont tot": "leasing pays off up to",
   "In de calculator kies je bij Aanschaf per kant Kopen of Leasen. Je ziet dan ook tot welke leaseprijs leasen goedkoper is dan kopen.": "In the calculator, choose Buy or Lease for each side under Purchase. You also see up to which lease price leasing beats buying.",
   "Lease": "Lease",
-  "Kilometers": "Kilometres"
+  "Kilometers": "Kilometres",
+  "Meenemen voor de diesel die je koopt": "Include for the diesel you buy",
+  "Meenemen voor de elektrische die je koopt": "Include for the electric vehicle you buy",
+  "alleen elektrisch": "electric only",
+  "alleen diesel": "diesel only"
 }
