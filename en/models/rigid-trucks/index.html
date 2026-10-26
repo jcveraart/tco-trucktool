@@ -3965,8 +3965,8 @@ function twText(el,to,from,D=550){
  const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);if(k<1){el.textContent=B.a+nf(A.v+(B.v-A.v)*e,B.d)+B.b;el._twr=requestAnimationFrame(step)}else el.textContent=to};
  el._twr=requestAnimationFrame(step);
 }
-/* Alleen "Elektrisch tot € … per jaar goedkoper" op de startpagina telt door; alle andere bedragen staan direct goed. */
-const TWQ='[data-tw="hx"]';
+/* Alleen "Elektrisch tot € … per jaar goedkoper" (startpagina) en "Elektrisch € … goedkoper" (resultaten) tellen door; alle andere bedragen staan direct goed. */
+const TWQ='[data-tw="hx"],[data-tw="hv"]';
 function twSet(el,put){
  const old={};el.querySelectorAll(TWQ).forEach(n=>old[n.dataset.tw]=n.textContent);
  put();
