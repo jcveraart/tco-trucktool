@@ -2050,6 +2050,64 @@ html{touch-action:manipulation}
 [data-page=uitgebreid] .bc2>b{font:600 20px/1.3 var(--text);font-variant-numeric:tabular-nums}
 [data-page=uitgebreid] .trk .tk s{font:500 11px var(--text);font-variant-numeric:tabular-nums}
 #sum .st b,.nTl .st b{font-weight:400}
+/* Interactie: alles wat je kunt aanklikken reageert zacht. Kleuren lopen in .15s over, knoppen en kaarten komen bij hover 1–2 px omhoog
+   en zakken bij indrukken even in. Alleen kleur, schaduw en een kleine verschuiving: de opmaak zelf blijft staan.
+   Beweging alleen met een muis (hover:hover) en niet bij prefers-reduced-motion; indrukken werkt ook op telefoon. */
+:where(a,button,summary,label,select,input,textarea,.slv,.plate){transition:color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease,text-decoration-color .15s ease,translate .15s ease}
+.vt{transition:box-shadow .15s ease,translate .15s ease}
+.gtl a,.mc{transition:box-shadow .15s ease,translate .15s ease}
+.st svg{transition:color .15s ease,translate .15s ease}
+input[type=range]::-webkit-slider-thumb{transition:box-shadow .15s ease}
+input[type=range]::-moz-range-thumb{transition:box-shadow .15s ease}
+
+/* Schuiven: de knop krijgt bij hover een zachte ring, bij vastpakken een grotere */
+input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 6px color-mix(in srgb,var(--fill,var(--ink)) 14%,transparent),0 2px 5px rgba(0,0,0,.2)}
+input[type=range]:active::-webkit-slider-thumb{box-shadow:0 0 0 9px color-mix(in srgb,var(--fill,var(--ink)) 20%,transparent),0 2px 6px rgba(0,0,0,.25)}
+input[type=range]:hover::-moz-range-thumb{box-shadow:0 0 0 6px color-mix(in srgb,var(--fill,var(--ink)) 14%,transparent)}
+input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srgb,var(--fill,var(--ink)) 20%,transparent)}
+
+/* Invulvelden: de rand wordt donkerder zodra je erboven komt, zodat je ziet dat je kunt typen */
+.slv:hover:not(:focus-within){box-shadow:inset 0 0 0 1px var(--ink-3)}
+:is(.ff input,.ff textarea,.gpc input,.mpp input,.selw select):hover:not(:focus){box-shadow:inset 0 0 0 1px var(--ink-3)}
+.pdfd input[type=email]:hover:not(:focus){box-shadow:inset 0 0 0 1.5px var(--ink-3)}
+.msearch input:hover:not(:focus){border-color:var(--ink-3)}
+.plate:not(.hplt .plate):hover:not(:focus-within){box-shadow:inset 0 0 0 1px var(--ink-3)}
+.selw:hover::after{border-color:var(--ink)}
+
+/* Schakelaars en vinkjes */
+.sw2:hover input:not(:checked){background:var(--ink-3)}
+.sw2:hover input:checked{background:var(--volt-ink)}
+.mcv:hover{color:var(--ink)}
+.mcv:has(input:disabled){cursor:not-allowed}.mcv:has(input:disabled):hover{color:var(--ink-2)}
+
+/* Tabs en wisselknoppen die nog geen achtergrond kregen bij hover */
+.uvtab button:not([aria-selected=true]):hover,.mode a:not([aria-current=page]):hover,#mCat a:not([aria-current=page]):hover{background:rgba(21,23,26,.06)}
+.hch button:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.uvc button:not([aria-pressed=true]):hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.gnx a:hover small{color:var(--ink-2)}
+
+/* Indrukken: knoppen zakken 1 px in, ook op telefoon */
+@media (prefers-reduced-motion:no-preference){
+ :is(button,[role=button],.cta,.rhgo,.btn,.bk[data-home],.mode a,#nav a,#mCat a,.gnx a,.gtl a,.fln,.lang a):not(:disabled):active{translate:0 1px;transition-duration:.05s}
+ :is(.rh,.lnk,.mci,.pbpk):not(:disabled):active{translate:none}
+}
+
+/* Hover met een muis: knoppen en kaarten komen een tikje omhoog */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+ :is(.cta,.rhgo,.btn,.wbtn,.bk[data-home],.ckb button,.addc,.chip,.zch,.qk button,.qs,.qi,.uvc button,.mpb):not(:disabled):not(:active):hover{translate:0 -1px}
+ :is(.cta:not(.big):not(.hgo),.rhgo):not(:active):hover{box-shadow:0 8px 18px -10px rgba(0,0,0,.5)}
+ :is(.vt,.hch button,.gtl a,.gnx a,.fln):not(:active):hover{translate:0 -2px}
+ :is(.vt,.hch button):not(:active):hover{box-shadow:inset 0 0 0 1px var(--ink),0 10px 22px -16px rgba(0,0,0,.4)}
+ .vt[aria-checked=true]:hover,.hch button[aria-checked=true]:hover{box-shadow:inset 0 0 0 2px var(--ink),0 10px 22px -16px rgba(0,0,0,.4)}
+ .gnx a:not(:active):hover{box-shadow:0 0 0 1px var(--ink),0 10px 22px -16px rgba(0,0,0,.4)}
+ .fln:not(:active):hover{box-shadow:0 12px 24px -16px rgba(0,0,0,.6)}
+ .gtl a:not(.gsp):hover{box-shadow:0 0 0 1px var(--ink),0 10px 22px -16px rgba(0,0,0,.4)}
+ .gtl a.gsp:hover{box-shadow:0 0 0 2px var(--volt),0 10px 22px -16px rgba(0,0,0,.5)}
+ .st:hover svg{translate:2px -2px}
+ /* Logo: het schakelaartje kriebelt even richting de andere stand */
+ .brand:hover .bmark .bk{transform:translateX(-4px)}
+ html.sod-d .brand:hover .bmark .bk{transform:translateX(-24px)}
+}
 
 
 #mCat a{display:inline-flex;align-items:center;padding:7px 13px;text-decoration:none;color:var(--ink-2);font:600 14px var(--text);border-radius:4px;white-space:nowrap}#mCat a[aria-current=page]{background:var(--ink);color:white}.seo-intro{max-width:72ch;color:var(--ink-2);font-size:17px;line-height:1.5;margin:14px 0 0}.seo-advice{max-width:76ch;color:var(--ink-2);line-height:1.6;margin:24px 0}#home{min-height:360px}@media(max-width:760px){#mCat a{padding:7px 9px;font-size:13px}#home{min-height:570px}}
