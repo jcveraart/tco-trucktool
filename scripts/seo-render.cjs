@@ -9,7 +9,9 @@ function translateHTML(html,t,routes){
  const tokens=/<!--[\s\S]*?-->|<(script|style|textarea|pre|code)\b[^>]*>[\s\S]*?<\/\1\s*>|<\/?[a-zA-Z](?:[^>"']|"[^"]*"|'[^']*')*>/gi;
  const text=s=>{if(stack.some(x=>x.skip))return s;const n=decode(s),model=stack.some(x=>x.model),v=model?n.replace(/\b([RSLP])-serie elektrisch\b/g,'$1-series Electric').replace(/nieuwe generatie/g,'next generation').replace(/\(Europa\)/g,'(Europe)'):t(n);return v===n?s:esc(v)};
  for(const m of html.matchAll(tokens)){out+=text(html.slice(last,m.index));let tag=m[0];last=m.index+tag.length;if(/^<!--|^<(script|style|textarea|pre|code)\b/i.test(tag)){out+=tag;continue}const name=tag.match(/^<\/?([\w-]+)/)[1].toLowerCase();if(/^<\//.test(tag)){const i=stack.map(x=>x.name).lastIndexOf(name);if(i>=0)stack.length=i;out+=tag;continue;}
- const skip=/\bdata-no-translate\b|\bdata-lang=|class="[^"]*\bmbrand\b/.test(tag),parentSkip=stack.some(x=>x.skip);
+ // The homepage explainer renders its own English at runtime. Translate its initial
+ // static copy too, while keeping its runtime opt-out and protecting brand names.
+ const skip=/\bdata-no-translate\b|\bdata-lang=|class="[^"]*\bmbrand\b/.test(tag)&&! /\bid="uv"/.test(tag),parentSkip=stack.some(x=>x.skip);
  tag=tag.replace(/\b(href|aria-label|title|placeholder|data-tt|alt)="([^"]*)"/g,(_,a,v)=>a+'="'+esc(a==='href'?localHref(v,routes,'en'):skip||parentSkip?decode(v):t(decode(v)))+'"');
  out+=tag;if(!voids.has(name)&&!tag.endsWith('/>'))stack.push({name,skip,model:/class="[^"]*\bmcn\b/.test(tag)});
  }return out+text(html.slice(last));
