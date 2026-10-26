@@ -1,9 +1,9 @@
 (()=>{
  const en=document.documentElement.lang==='en';
  const norm=s=>s.replace(/\u00ad/g,'').replace(/\s+/g,' ').trim();
- const keys=Object.keys(SOD_EN).sort((a,b)=>b.length-a.length),lower=new Map(keys.map(k=>[k.toLowerCase(),SOD_EN[k]]));
+ const keys=en?Object.keys(SOD_EN).sort((a,b)=>b.length-a.length):[],lower=new Map(keys.map(k=>[k.toLowerCase(),SOD_EN[k]]));
  const escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
- const terms=new RegExp('(?<![\\p{L}])(?:'+keys.map(escape).join('|')+')(?![\\p{L}])','giu');
+ const terms=en?new RegExp('(?<![\\p{L}])(?:'+keys.map(escape).join('|')+')(?![\\p{L}])','giu'):/(?!)/gu;
  const translate=s=>{
   if(!en||!s)return s;
   const n=norm(s);if(Object.hasOwn(SOD_EN,n))return s.replace(n,SOD_EN[n])===s?SOD_EN[n]:s.replace(n,SOD_EN[n]);
@@ -52,22 +52,23 @@
  };
  window.sodText=translate;
  const seen=new WeakMap(),attrs=new WeakMap();
- const skip=e=>!e||e.closest('script,style,textarea,pre,code,[data-no-translate],[data-lang],.mbrand');
+ const skip=e=>!e||e.closest('script,style,title,noscript,textarea,pre,code,[data-no-translate],[data-lang],.mbrand');
  const modelText=s=>s.replace(/\b([RSLP])-serie elektrisch\b/g,'$1-series Electric').replace(/nieuwe generatie/g,'next generation').replace(/\(Europa\)/g,'(Europe)');
- const text=n=>{if(skip(n.parentElement)||seen.get(n)===n.data)return;const model=n.parentElement.closest('.mcn,#mpN,.mpo b');const t=model?modelText(n.data):translate(n.data);if(t!==n.data)n.data=t;seen.set(n,n.data)};
- const attributes=e=>{if(skip(e))return;let prev=attrs.get(e)||{};const names=['aria-label','title','placeholder','data-tt','alt'];if(e.matches('meta[name=description],meta[property="og:title"],meta[property="og:description"]'))names.push('content');for(const a of names){const v=e.getAttribute(a);if(v&&prev[a]!==v){const t=translate(v);if(t!==v)e.setAttribute(a,t);prev[a]=t}}attrs.set(e,prev)};
+ const text=n=>{if(skip(n.parentElement)||seen.get(n)===n.data)return;if(window.SOD_STATIC_TEXT?.get(n)===n.data){seen.set(n,n.data);return}const model=n.parentElement.closest('.mcn,#mpN,.mpo b');const t=model?modelText(n.data):translate(n.data);if(t!==n.data)n.data=t;seen.set(n,n.data)};
+ const attributes=e=>{if(e.matches('a[href^="/"]')&&!e.hasAttribute('data-lang')&&window.sodLocalizedURL){const h=e.getAttribute('href'),u=window.sodLocalizedURL(h);if(u!==h)e.setAttribute('href',u)}if(skip(e))return;let prev=attrs.get(e)||{};const names=['aria-label','title','placeholder','data-tt','alt'];for(const a of names){const v=e.getAttribute(a);if(v&&prev[a]!==v){if(window.SOD_STATIC_ATTR?.get(e)?.[a]===v){prev[a]=v;continue}const t=translate(v);if(t!==v)e.setAttribute(a,t);prev[a]=t}}attrs.set(e,prev)};
  const visit=root=>{if(root.nodeType===3){text(root);return}if(root.nodeType!==1||skip(root))return;attributes(root);const w=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.nodeType===3)text(n);else attributes(n)}};
  if(en){
-  visit(document.body);visit(document.querySelector('title'));document.querySelectorAll('meta').forEach(attributes);
+  visit(document.body);
   const observer=new MutationObserver(records=>{observer.disconnect();for(const r of records){if(r.type==='characterData')text(r.target);else if(r.type==='attributes')attributes(r.target);else r.addedNodes.forEach(visit)}observe()});
-  const observe=()=>observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','title','placeholder','data-tt','alt','content']});observe();
+  const observe=()=>observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','title','placeholder','data-tt','alt','href']});observe();
  }
- document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===document.documentElement.lang)));
- document.addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(!b||b.dataset.lang===document.documentElement.lang)return;
+ document.querySelectorAll('[data-lang]').forEach(b=>{if(b.dataset.lang===document.documentElement.lang)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');b.removeAttribute('aria-pressed')});
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(!b)return;e.preventDefault();if(b.dataset.lang===document.documentElement.lang)return;
   try{localStorage.setItem('sod-language',b.dataset.lang)}catch(err){}
-  const url=new URL(shareURL());url.searchParams.set('lang',b.dataset.lang);url.hash=location.hash;
+  const url=new URL(shareURL());url.pathname=new URL(window.sodLocalizedURL(url.href,b.dataset.lang),location.origin).pathname;url.searchParams.delete('lang');url.hash=location.hash;
   if($('wz').open)url.searchParams.set('step',wzStep);
   location.assign(url.href);
  });
  if(window.SOD_STEP&&steps().some(s=>s[0]===window.SOD_STEP))openWz(window.SOD_STEP);
 })();
+

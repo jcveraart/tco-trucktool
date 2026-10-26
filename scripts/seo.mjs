@@ -1,108 +1,42 @@
-// Maakt van index.html een losse pagina per route (/overstapgids/laden/ enz.), met eigen titel,
-// beschrijving, canonical, Open Graph en structured data, plus sitemap.xml en 404.html.
-// Bron van de teksten: het blok <script type="application/json" id="seo"> in index.html.
-// Draai na elke wijziging aan index.html: node scripts/seo.mjs (de workflow seo.yml doet het ook).
+// Generate crawlable Dutch and English pages with no server or build dependencies.
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath } from 'node:url';
-
-const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SITE = 'https://stekkerofdiesel.nl';
-const BRAND = 'Stekker of Diesel';
-const PATHS = { calc: '/', uitgebreid: '/uitgebreid/', modellen: '/modellen/', faq: '/overstapgids/', nieuws: '/nieuws/', over: '/over-ons/', privacy: '/privacy/', vloot: '/vlootanalyse/', restwaarde: '/restwaarde/' };
-const PRIO = { calc: '1.0', uitgebreid: '0.8', modellen: '0.9', faq: '0.9', nieuws: '0.7', vloot: '0.6', restwaarde: '0.7', over: '0.4', privacy: '0.2' };
-
-const src = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-const { routes } = JSON.parse(src.match(/<script type="application\/json" id="seo">([\s\S]*?)<\/script>/)[1]);
-const today = new Date().toISOString().slice(0, 10);
-const esc = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-const text = h => h.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
-const urlOf = k => SITE + (k.startsWith('gids/') ? '/overstapgids/' + k.slice(5) + '/' : PATHS[k]);
-
-// Vorige lastmod per url, met een hash van de inhoud, zodat lastmod alleen verschuift als de pagina echt verandert
-const prev = {};
-try {
-  const sm = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
-  for (const m of sm.matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod><!-- ([0-9a-f]+) -->/g)) prev[m[1]] = { d: m[2], h: m[3] };
-} catch (e) {}
-
-function sectionOf(html, k) {
-  const p = k.startsWith('gids/') ? 'gids' : k;
-  const s = html.match(new RegExp(`<section class="page" data-page="${p}"[\\s\\S]*?\\n</section>`));
-  if (!s) throw new Error('Geen sectie voor ' + k);
-  if (p !== 'gids') return s[0];
-  const a = s[0].match(new RegExp(`<article class="ga" data-g="${k.slice(5)}"[\\s\\S]*?</article>`));
-  if (!a) throw new Error('Geen gidsonderwerp ' + k);
-  return a[0];
-}
-
-function faqItems(html, k = 'faq') {
-  return [...sectionOf(html, k).matchAll(/<details><summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g)]
-    .map(m => ({ '@type': 'Question', name: text(m[1]), acceptedAnswer: { '@type': 'Answer', text: text(m[2]) } }));
-}
-
-function jsonld(k, r, mod) {
-  const url = urlOf(k), org = { '@id': SITE + '/#org' };
-  const crumbs = [[BRAND, SITE + '/']];
-  if (k.startsWith('gids/')) crumbs.push([routes.faq.name, urlOf('faq')]);
-  if (k !== 'calc') crumbs.push([r.name, url]);
-  const g = [
-    { '@type': 'Organization', '@id': SITE + '/#org', name: BRAND, url: SITE + '/', logo: SITE + '/apple-touch-icon.png' },
-    { '@type': 'WebSite', '@id': SITE + '/#website', url: SITE + '/', name: BRAND, inLanguage: 'nl-NL', publisher: org },
-    { '@type': k === 'faq' || k === 'calc' ? ['WebPage', 'FAQPage'] : 'WebPage', '@id': url, url, name: r.title, description: r.desc, inLanguage: 'nl-NL', isPartOf: { '@id': SITE + '/#website' }, dateModified: mod, primaryImageOfPage: SITE + '/og.png', ...(crumbs.length > 1 ? { breadcrumb: { '@id': url + '#kruimel' } } : {}), ...(k === 'faq' || k === 'calc' ? { mainEntity: faqItems(src, k) } : {}) }
-  ];
-  if (crumbs.length > 1) g.push({ '@type': 'BreadcrumbList', '@id': url + '#kruimel', itemListElement: crumbs.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item })) });
-  if (k === 'calc' || k === 'uitgebreid') g.push({ '@type': 'WebApplication', name: 'TCO-calculator elektrisch of diesel', url, applicationCategory: 'BusinessApplication', operatingSystem: 'Web', inLanguage: 'nl-NL', isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' }, publisher: org, description: r.desc });
-  if (k.startsWith('gids/')) g.push({ '@type': 'Article', headline: r.name, description: r.desc, mainEntityOfPage: { '@id': url }, image: SITE + '/og.png', inLanguage: 'nl-NL', dateModified: mod, author: org, publisher: org });
-  return JSON.stringify({ '@context': 'https://schema.org', '@graph': g }).replace(/</g, '\\u003c');
-}
-
-function head(k, mod, noindex) {
-  const r = routes[k], url = urlOf(k);
-  return [
-    '<!--seo-->',
-    `<title>${esc(r.title)}</title>`,
-    `<meta name="description" content="${esc(r.desc)}">`,
-    noindex ? '<meta name="robots" content="noindex">' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">',
-    noindex ? '' : `<link rel="canonical" href="${url}">`,
-    '<meta property="og:type" content="website">',
-    `<meta property="og:site_name" content="${BRAND}">`,
-    '<meta property="og:locale" content="nl_NL">',
-    `<meta property="og:url" content="${url}">`,
-    `<meta property="og:title" content="${esc(r.title)}">`,
-    `<meta property="og:description" content="${esc(r.desc)}">`,
-    `<meta property="og:image" content="${SITE}/og.png">`,
-    '<meta property="og:image:width" content="1200">',
-    '<meta property="og:image:height" content="630">',
-    `<meta property="og:image:alt" content="${BRAND}: vind jouw ideale bedrijfsauto">`,
-    '<meta name="twitter:card" content="summary_large_image">',
-    `<script type="application/ld+json">${jsonld(k, r, mod)}</script>`,
-    '<!--/seo-->'
-  ].filter(Boolean).join('\n');
-}
-
-function page(k, mod, noindex) {
-  const p = k.startsWith('gids/') ? 'gids' : k;
-  let h = src.replace(/<!--seo-->[\s\S]*?<!--\/seo-->/, () => head(k, mod, noindex));
-  h = h.replace(/<section class="page" data-page="([a-z]+)"( id="calc")?( hidden)?>/g, (m, x, id = '') => `<section class="page" data-page="${x}"${id}${x === p ? '' : ' hidden'}>`);
-  if (p === 'gids') h = h.replace(/<article class="ga" data-g="([a-z-]+)"( hidden)?>/g, (m, g) => `<article class="ga" data-g="${g}"${g === k.slice(5) ? '' : ' hidden'}>`);
-  return h;
-}
-
-const urls = [];
-let calcMod = today;
-for (const k of Object.keys(routes)) {
-  const url = urlOf(k);
-  const hash = crypto.createHash('sha1').update(JSON.stringify(routes[k]) + sectionOf(src, k)).digest('hex').slice(0, 12);
-  const mod = prev[url] && prev[url].h === hash ? prev[url].d : today;
-  if (k === 'calc') calcMod = mod;
-  const file = path.join(ROOT, new URL(url).pathname, 'index.html');
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, page(k, mod));
-  urls.push(` <url><loc>${url}</loc><lastmod>${mod}</lastmod><!-- ${hash} --><priority>${k.startsWith('gids/') ? '0.8' : PRIO[k]}</priority></url>`);
-}
-fs.writeFileSync(path.join(ROOT, '404.html'), page('calc', calcMod, true));
-fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
-console.log(`${urls.length} pagina's, sitemap en 404.html geschreven`);
-
+import vm from 'node:vm';
+import {fileURLToPath} from 'node:url';
+import render from './seo-render.cjs';
+const ROOT=path.join(path.dirname(fileURLToPath(import.meta.url)),'..'),SITE='https://stekkerofdiesel.nl',BRAND='Stekker of Diesel';
+const src=fs.readFileSync(path.join(ROOT,'index.html'),'utf8'),{routes}=JSON.parse(src.match(/<script type="application\/json" id="seo">([\s\S]*?)<\/script>/)[1]);
+const dictionary=JSON.parse(fs.readFileSync(path.join(ROOT,'data/translations.en.json'),'utf8')),runtime=fs.readFileSync(path.join(ROOT,'scripts/locale-runtime.js'),'utf8');
+const translate=render.makeTranslator(dictionary,runtime),esc=render.esc,today=process.env.SOD_BUILD_DATE||new Date().toISOString().slice(0,10),cards={nl:render.modelRenderer(src,'nl'),en:render.modelRenderer(src,'en')};
+const previous={};try{for(const m of fs.readFileSync(path.join(ROOT,'sitemap.xml'),'utf8').matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod><!-- ([0-9a-f]+) -->/g))previous[m[1]]={date:m[2],hash:m[3]};}catch{}
+const url=(r,l)=>SITE+(l==='en'?r.enPath:r.path),type=(k,r)=>r.page||(k.startsWith('gids/')?'gids':k);
+function contentOf(h,k,r){const s=h.match(new RegExp('<section class="page" data-page="'+type(k,r)+'"[\\s\\S]*?\\n</section>'));if(!s)throw Error('Missing page '+k);if(type(k,r)!=='gids')return s[0];const a=s[0].match(new RegExp('<article class="ga" data-g="'+k.slice(5)+'"[\\s\\S]*?</article>'));if(!a)throw Error('Missing guide '+k);return a[0];}
+function schema(k,r,l,date,models){const c=l==='en'?r.en:r,u=url(r,l),org={'@id':SITE+'/#org'},g=[
+ {'@type':'Organization','@id':SITE+'/#org',name:BRAND,url:SITE+'/',logo:SITE+'/apple-touch-icon.png'},
+ {'@type':'WebSite','@id':SITE+'/#website',url:SITE+'/',name:BRAND,inLanguage:['nl-NL','en'],publisher:org},
+ {'@type':type(k,r)==='modellen'?'CollectionPage':'WebPage','@id':u,url:u,name:c.title,description:c.desc,inLanguage:l==='nl'?'nl-NL':'en',isPartOf:{'@id':SITE+'/#website'},dateModified:date,primaryImageOfPage:{'@type':'ImageObject',url:SITE+'/og.png',width:1200,height:630},...(k==='calc'?{}:{breadcrumb:{'@id':u+'#breadcrumb'}})}];
+ if(k!=='calc'){const crumbs=[[BRAND,SITE+(l==='en'?'/en/':'/')]];if(k.startsWith('gids/'))crumbs.push([l==='en'?routes.faq.en.name:routes.faq.name,url(routes.faq,l)]);if(r.category)crumbs.push([l==='en'?routes.modellen.en.name:routes.modellen.name,url(routes.modellen,l)]);crumbs.push([c.name,u]);g.push({'@type':'BreadcrumbList','@id':u+'#breadcrumb',itemListElement:crumbs.map(([name,item],i)=>({'@type':'ListItem',position:i+1,name,item}))});}
+ if(k==='calc'||k==='uitgebreid')g.push({'@type':'WebApplication',name:l==='en'?'Electric vs diesel TCO calculator':'TCO-calculator elektrisch of diesel',url:u,applicationCategory:'BusinessApplication',operatingSystem:'Web',inLanguage:l,isAccessibleForFree:true,offers:{'@type':'Offer',price:'0',priceCurrency:'EUR'},publisher:org,description:c.desc});
+ if(k.startsWith('gids/'))g.push({'@type':'Article',headline:c.name,description:c.desc,mainEntityOfPage:{'@id':u},image:SITE+'/og.png',inLanguage:l,dateModified:date,author:org,publisher:org});
+ if(models)g[2].mainEntity={'@type':'ItemList',numberOfItems:models.groups.length,itemListElement:models.groups.map((m,i)=>({'@type':'ListItem',position:i+1,name:m.top.b+' '+(m.top.fam||m.top.m)}))};
+ return JSON.stringify({'@context':'https://schema.org','@graph':g}).replace(/</g,'\\u003c');}
+function head(k,r,l,date,models){const c=l==='en'?r.en:r,u=url(r,l);return['<!--seo-->',`<title>${esc(c.title)}</title>`,`<meta name="description" content="${esc(c.desc)}">`,`<meta name="robots" content="${r.noindex?'noindex,follow':'index,follow,max-image-preview:large,max-snippet:-1'}">`,`<link rel="canonical" href="${u}">`,...['nl','en','x-default'].map(x=>`<link rel="alternate" hreflang="${x}" href="${url(r,x==='en'?'en':'nl')}">`),'<meta property="og:type" content="website">',`<meta property="og:site_name" content="${BRAND}">`,`<meta property="og:locale" content="${l==='en'?'en_GB':'nl_NL'}">`,`<meta property="og:locale:alternate" content="${l==='en'?'nl_NL':'en_GB'}">`,`<meta property="og:url" content="${u}">`,`<meta property="og:title" content="${esc(c.title)}">`,`<meta property="og:description" content="${esc(c.desc)}">`,`<meta property="og:image" content="${SITE}/og.png">`,'<meta property="og:image:width" content="1200">','<meta property="og:image:height" content="630">',`<meta property="og:image:alt" content="${BRAND}: ${esc(c.name)}">`,'<meta name="twitter:card" content="summary_large_image">',`<meta name="twitter:title" content="${esc(c.title)}">`,`<meta name="twitter:description" content="${esc(c.desc)}">`,`<script type="application/ld+json">${schema(k,r,l,date,models)}</script>`,'<!--/seo-->'].join('\n');}
+function fill(h,id,content,tag='div'){const start=new RegExp('<'+tag+'\\b[^>]*\\bid="'+id+'"[^>]*>').exec(h);if(!start)throw Error('Missing rendering target '+id);const from=start.index+start[0].length,tokens=new RegExp('</?'+tag+'\\b[^>]*>','g');tokens.lastIndex=from;let depth=1,m;while(m=tokens.exec(h)){depth+=m[0].startsWith('</')?-1:1;if(!depth)return h.slice(0,from)+content+h.slice(m.index);}throw Error('Unclosed rendering target '+id);}
+const app=src.match(/<script>([\s\S]*?)<\/script>/)[1],steps=vm.runInNewContext('('+app.match(/const GSTEPS=([\s\S]*?);\nconst GKEY/)[1]+')');
+function body(k,r,l){const p=type(k,r);let h=src.replace(/<section class="page" data-page="([a-z]+)"( id="calc")?( hidden)?>/g,(_,x,id='')=>`<section class="page" data-page="${x}"${id}${x===p?'':' hidden'}>`);
+ h=fill(h,'home',render.homeRenderer(src));
+ h=h.replace(/<article class="ga" data-g="([a-z-]+)"( hidden)?>/g,(_,g)=>`<article class="ga" data-g="${g}"${p==='gids'&&g===k.slice(5)?'':' hidden'}>`);
+ let models=null;if(p==='modellen'){models=cards[l](r.category);h=fill(h,'mList',models.cards);h=fill(h,'mIntro',esc(r.intro||r.desc),'p');h=fill(h,'mAdvice',esc(r.advice||''),'p');h=fill(h,'mCat',[['all','Alle'],['trekker','Trekker'],['bakwagen','Bakwagen'],['bestel','Bestelbus'],['bus','Bus']].map(([cat,label])=>{const q=cat==='all'?routes.modellen:routes['modellen/'+cat];return`<a href="${q.path}" data-mcat="${cat}"${cat===(r.category||'all')?' aria-current="page"':''}>${label}</a>`}).join(''));h=h.replace(/(<span[^>]*id="mCount"[^>]*>)[\s\S]*?<\/span>/,(_,a)=>a+models.groups.length+' modellen</span>');h=h.replace(/(<section class="page" data-page="modellen"[^>]*>[\s\S]*?<h1[^>]*>)[\s\S]*?<\/h1>/,(_,a)=>a+esc(r.name)+'</h1>');}
+ h=fill(h,'gTl',Object.entries(routes).filter(([x])=>x.startsWith('gids/')).map(([key,g],i)=>`<li><a href="${g.path}"><small>${String(i+1).padStart(2,'0')}</small><b>${esc(g.name)}</b></a></li>`).join(''),'ol');
+ h=fill(h,'gSt',steps.map((s,i)=>`<li><button type="button" class="gck" data-gst="${i}" aria-pressed="false" aria-label="${esc(s[0])}"></button><div><b>${esc(s[0])}</b><p>${esc(s[1])}</p><a href="${s[2]}">${esc(s[3])}</a></div></li>`).join(''),'ol');
+ h=h.replace('<html lang="nl"','<html lang="'+l+'"'+(l==='en'?' data-static-lang="en"':''));
+ h=h.replace(/<html\b[^>]*>/,tag=>/\bclass=/.test(tag)?tag:tag.replace('>',' class="fresh">'));
+ if(l==='en'){const a=h.indexOf('<body>')+6,b=h.lastIndexOf('</body>');h=h.slice(0,a)+render.translateHTML(h.slice(a,b),translate,routes)+h.slice(b);}
+ h=h.replace(/<a\b[^>]*\bdata-lang="(nl|en)"[^>]*>/g,(tag,x)=>tag.replace(/href="[^"]*"/,'href="'+(x==='en'?r.enPath:r.path)+'"').replace(/\saria-current="page"/g,'').replace(/>$/,x===l?' aria-current="page">':'>'));
+ return{html:h,models};}
+const entries=[];
+for(const [k,r]of Object.entries(routes)){if(!r.path||!r.enPath||!r.en?.title)throw Error('Incomplete bilingual route '+k);for(const l of ['nl','en']){let {html,models}=body(k,r,l);const u=url(r,l),hash=crypto.createHash('sha1').update(JSON.stringify(l==='en'?r.en:r)+contentOf(html,k,r)).digest('hex').slice(0,12),date=previous[u]?.hash===hash?previous[u].date:today;html=html.replace(/<!--seo-->[\s\S]*?<!--\/seo-->/,()=>head(k,r,l,date,models));const file=path.join(ROOT,new URL(u).pathname,'index.html');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,html);if(!r.noindex)entries.push(` <url><loc>${u}</loc><lastmod>${date}</lastmod><!-- ${hash} -->${['nl','en','x-default'].map(x=>`<xhtml:link rel="alternate" hreflang="${x}" href="${url(r,x==='en'?'en':'nl')}"/>`).join('')}</url>`);}}
+fs.writeFileSync(path.join(ROOT,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'+entries.join('\n')+'\n</urlset>\n');
+fs.writeFileSync(path.join(ROOT,'404.html'),`<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Pagina niet gevonden | ${BRAND}</title><style>body{max-width:48rem;margin:15vh auto;padding:24px;font:18px/1.6 system-ui;background:#f3f3f0;color:#15171a}a{color:#07734a}h1{line-height:1.2}</style></head><body><p>${BRAND} · 404</p><h1>Deze pagina bestaat niet</h1><p>Ga naar de <a href="/">calculator</a>, <a href="/modellen/">elektrische modellen</a> of de <a href="/overstapgids/">overstapgids</a>.</p><section lang="en"><h2>Page not found</h2><p>Try the <a href="/en/">calculator</a>, <a href="/en/models/">electric models</a> or <a href="/en/switching-guide/">switching guide</a>.</p></section></body></html>`);
+console.log(`${Object.keys(routes).length*2} bilingual pages generated; ${entries.length} canonical URLs in sitemap.`);
