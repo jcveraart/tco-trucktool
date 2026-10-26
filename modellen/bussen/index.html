@@ -2251,13 +2251,12 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
  .tli h2{font-size:20px;line-height:1.3}
  .prose>p:first-child{font-size:17px;line-height:1.5}
 }
-@media(min-width:401px) and (max-width:640px){
+@media(min-width:360px) and (max-width:640px){
  #gtLd .gc .seg.sm{grid-auto-flow:column;grid-template-columns:none}
  #gtLd .gc .seg.sm>*{grid-column:auto}
 }
-@media(max-width:400px){
+@media(max-width:359px){
  .mfil{grid-template-columns:minmax(0,1fr)}
- .mca .cta{flex:1 1 100%;justify-content:center}
 }
 @media(max-width:359px){
  .topin{gap:8px}
@@ -2273,6 +2272,82 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
  .nwg.seg button{padding:6px 2px;font-size:13px}
  .hA .plate input::placeholder{font-size:18px}
  .gtool{padding-left:12px;padding-right:12px}
+}
+/* Telefoon, ronde 4 (2026-10-26): compacter. Minder witruimte tussen blokken, kleinere koppen, modelkaarten en uitkomstrijen dichter op elkaar. */
+@media(max-width:640px){
+ /* Uitkomst: kop */
+ .nBk{margin-bottom:2px}
+ .nBk .bk[data-home]{padding:4px 0;background:none;color:var(--ink-2);box-shadow:none;font-size:13px}
+ .nBk .bk[data-home]:hover{color:var(--ink)}
+ .rveh{gap:10px}
+ .rveh h1{font-size:24px}
+ .nS>.nA,.nS>.nB{padding-top:16px;padding-bottom:16px}
+ .nTop>.nA{padding-top:10px;padding-bottom:12px}
+ .nTop>.nB{padding-top:14px}
+ .nTop{position:relative}
+ .nTop .acts{position:absolute;top:44px;right:0;margin:0;gap:8px}
+ .nTop .acts .btn{padding:8px 11px}
+ .nTop:has(.acts) .rvw{padding-right:104px}
+ .nV{font-size:27px;line-height:1.15}
+ p.nk{font-size:19px!important;margin-bottom:10px!important}
+ .nX{padding-top:16px!important;padding-bottom:16px!important}
+ .nXh{margin-bottom:2px}
+ .nPk{margin-top:14px}
+ .nPk>div{padding-top:10px!important}
+ /* Schuiven en lijsten dichter op elkaar */
+ .nSl{gap:8px}
+ .rsl input[type=range]{height:36px}
+ .xdr{padding-top:6px;padding-bottom:6px}
+ .xdr .xdb{margin-top:0}
+ .nTl .st{min-height:42px;padding-top:8px;padding-bottom:8px}
+ .nF .rf{padding-top:8px;padding-bottom:8px}
+ /* Uitgebreid */
+ [data-page=uitgebreid] .cmain>section{padding-top:16px;padding-bottom:18px}
+ [data-page=uitgebreid] .cmain>section>h2,[data-page=uitgebreid] .vsh h2{font-size:19px!important}
+ [data-page=uitgebreid] .vsh{gap:10px}
+ [data-page=uitgebreid] .vsl{margin-top:12px}
+ [data-page=uitgebreid] .row .rh>span{padding-top:10px;padding-bottom:10px}
+ .uvS.mlS{padding-top:18px;padding-bottom:18px}
+ [data-page=uitgebreid] .pbc{margin-top:8px}
+ [data-page=uitgebreid] .pbt{grid-template-columns:repeat(2,minmax(0,1fr))}
+ [data-page=uitgebreid] .pbt>div:first-child{grid-column:1/-1}
+ [data-page=uitgebreid] :is(.pbt>div:first-child,.pbq>div){padding-top:10px;padding-bottom:10px}
+ [data-page=uitgebreid] .pbq>div:last-child{padding-left:14px!important}
+ [data-page=uitgebreid] .pbq span{font-size:11px!important}
+ [data-page=uitgebreid] .pbq b{font-size:22px}
+ [data-page=uitgebreid] .pbw{margin-top:10px}
+ [data-page=uitgebreid] .snw{margin-top:6px}
+ [data-page=uitgebreid] .snw .bc2{padding-top:10px;padding-bottom:4px}
+ [data-page=uitgebreid] .trk{margin-top:28px;margin-bottom:30px}
+ [data-page=uitgebreid] .fln{margin-top:24px}
+ [data-page=uitgebreid] .cmain>.ad{margin-top:24px}
+ /* Modellen: kaarten compact. Bereik en specificaties op twee regels, knoppen op één rij */
+ .phead{padding-top:10px;padding-bottom:14px}
+ .mgrid{gap:10px}
+ .mc{display:flex;flex-direction:column;gap:8px;padding:14px 14px 12px}
+ .mc>*{align-self:stretch}
+ .mca{margin-top:2px}
+ .mcn{margin-top:-6px;font-size:19px}
+ .mcr{gap:6px}
+ .mcr b{font-size:30px}
+ .mcs{gap:4px 14px}
+ .mcs li{font-size:14px}
+ .mcs svg{width:16px;height:16px}
+ .mcs .mpr{flex-basis:auto}
+ .mca{flex-wrap:nowrap;gap:12px;padding-top:10px}
+ .mca .cta{padding:9px 12px;white-space:nowrap}
+ .mcv,.mci{white-space:nowrap}
+ .mca .mci{padding-top:8px;padding-bottom:8px}
+ /* Overige pagina's: kop van de pagina iets dichter op de inhoud */
+ .bkw{padding-top:8px}
+ .nwr{white-space:nowrap}
+ body:has(.page[data-page=gids]:not([hidden])) #bkw{display:none}
+ [data-page=uitgebreid] .pbt>div:first-child::before{display:none}
+ [data-page=uitgebreid] .hm td{padding-top:7px;padding-bottom:7px}
+}
+@media(max-width:359px){
+ .mca{flex-wrap:wrap}
+ .mca .cta{flex:1 1 100%;justify-content:center}
 }
 </style>
 <link rel="preload" href="/assets/fonts/e2291e842cf5af.woff2" as="font" type="font/woff2" crossorigin>
@@ -2521,7 +2596,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
    <div class="more">
     <details id="wfD" hidden><summary><b>Wat doen de extra kosten met de besparing?</b></summary><div id="wfX" style="padding-top:24px"></div></details>
     <details><summary><b>Goed om te weten</b></summary><dl class="facts" id="facts"></dl></details>
-    <details><summary><b>Toelichting op de cijfers</b></summary><p>De voorbeeldcijfers per voertuig zijn indicatief: aanschaf, verbruik, accu, onderhoud, verzekering en restwaarde verschillen per merk, uitvoering en inzet. Vervang ze door je eigen offertes en cijfers.</p><p>Kilometerheffing geldt alleen voor vrachtwagens (N2 en N3) boven 3.500 kg. De calculator rekent met de wettelijke tarieven van 2026, zonder de tijdelijke korting: voor een trekker boven 32 ton € 0,201 diesel en € 0,038 elektrisch, voor een bakwagen van 18 tot 32 ton € 0,182 en € 0,037. AanZET is een percentage van de aanschafprijs met een maximum, afhankelijk van N2 of N3 en de bedrijfsgrootte. De MIA is indicatief berekend als netto belastingvoordeel: 36% extra aftrek over 90% van de aanschafprijs, bij 19% of 25,8% vennootschapsbelasting. AanZET en MIA kunnen niet samen.</p><p>De actieradius is de bruikbare accucapaciteit gedeeld door het verbruik. In de winter en met zware lading ligt hij lager. De dagrit is het aantal kilometers per jaar gedeeld door het aantal rijdagen.</p><p>CO₂-factoren van CO2emissiefactoren.nl, van bron tot wiel: 3,27 kg per liter diesel en 0,48 kg per kWh grijze stroom. Exclusief chauffeur, overhead en btw.</p><p>Bij Extra kosten zijn alle voorbeeldbedragen aannames en aan te passen: rente, rendementseis, netaansluiting, onderhoud en netkosten van de laadpaal, tolbedragen per kilometer en prijs en tijdverlies bij laden onderweg. Controleer tarieven per land bij de tolbeheerder.</p></details>
+    <details><summary><b>Toelichting op de cijfers</b></summary><p>De voorbeeldcijfers per voertuig zijn indicatief: aanschaf, verbruik, accu, onderhoud, verzekering en restwaarde verschillen per merk, uitvoering en inzet. Vervang ze door je eigen offertes en cijfers.</p><p>Kilometerheffing geldt alleen voor vrachtwagens (N2 en N3) boven 3.500 kg. De calculator rekent met de wettelijke tarieven van 2026, zonder de tijdelijke korting: voor een trekker boven 32 ton €&nbsp;0,201 diesel en €&nbsp;0,038 elektrisch, voor een bakwagen van 18 tot 32 ton €&nbsp;0,182 en €&nbsp;0,037. AanZET is een percentage van de aanschafprijs met een maximum, afhankelijk van N2 of N3 en de bedrijfsgrootte. De MIA is indicatief berekend als netto belastingvoordeel: 36% extra aftrek over 90% van de aanschafprijs, bij 19% of 25,8% vennootschapsbelasting. AanZET en MIA kunnen niet samen.</p><p>De actieradius is de bruikbare accucapaciteit gedeeld door het verbruik. In de winter en met zware lading ligt hij lager. De dagrit is het aantal kilometers per jaar gedeeld door het aantal rijdagen.</p><p>CO₂-factoren van CO2emissiefactoren.nl, van bron tot wiel: 3,27 kg per liter diesel en 0,48 kg per kWh grijze stroom. Exclusief chauffeur, overhead en btw.</p><p>Bij Extra kosten zijn alle voorbeeldbedragen aannames en aan te passen: rente, rendementseis, netaansluiting, onderhoud en netkosten van de laadpaal, tolbedragen per kilometer en prijs en tijdverlies bij laden onderweg. Controleer tarieven per land bij de tolbeheerder.</p></details>
    </div>
  </div>
  </div>
@@ -2629,13 +2704,13 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
     </section>
     <section id="fq2"><h2>Subsidies en fiscaal</h2>
      <details><summary>Hoe is de AanZET-subsidie berekend?</summary><p>AanZET is een percentage van de chassisprijs (zonder opbouw en btw) van een nieuwe zero-emissie vrachtwagen, met een maximumbedrag. Dat hangt af van de bedrijfsgrootte en van de categorie: N3 (boven 12 ton) of N2 vanaf 10.000 kg. In 2026 is dat voor N3 11,1% tot 29% en voor N2 6,1% tot 14,8%. AanZET werkt met aanvraagrondes met een beperkt budget; controleer bij RVO of er een ronde openstaat. Bij <a href="/overstapgids/subsidies/">Subsidies en regelingen</a> zie je wat er voor jou geldt.</p></details>
-     <details><summary>Wat is de MIA en waarom niet samen met AanZET?</summary><p>De MIA is een fiscale regeling: je mag extra aftrekken van de winst. De tool rekent met een grondslag van 90% van de aanschafprijs en 36% extra aftrek daarover, en toont het indicatieve netto belastingvoordeel: 19% bij een winst tot € 200.000 en 25,8% daarboven. AanZET en MIA kunnen niet tegelijk worden gebruikt. Controleer de actuele voorwaarden altijd bij RVO en de Belastingdienst.</p></details>
+     <details><summary>Wat is de MIA en waarom niet samen met AanZET?</summary><p>De MIA is een fiscale regeling: je mag extra aftrekken van de winst. De tool rekent met een grondslag van 90% van de aanschafprijs en 36% extra aftrek daarover, en toont het indicatieve netto belastingvoordeel: 19% bij een winst tot €&nbsp;200.000 en 25,8% daarboven. AanZET en MIA kunnen niet tegelijk worden gebruikt. Controleer de actuele voorwaarden altijd bij RVO en de Belastingdienst.</p></details>
      <details><summary>Is er subsidie voor een elektrische bestelbus of bus?</summary><p>De landelijke SEBA-subsidie voor elektrische bestelauto's is gestopt, en AanZET geldt alleen voor vrachtwagens. Krijg je een andere bijdrage, bijvoorbeeld van je gemeente of provincie, kies dan bij subsidie voor een eigen bedrag.</p></details>
      <details><summary>Wat is de ERE-opbrengst?</summary><p>Emissiereductie-eenheden kun je als lader van een elektrisch voertuig verkopen. De netto opbrengst per geladen kWh is een actuele aanname die kan veranderen. Pas hem aan naar de prijs die jij kunt krijgen.</p></details>
     </section>
     <section id="fq3"><h2>Laden en heffing</h2>
      <details><summary>Hoe werkt de kilometerheffing in de berekening?</summary><p>De vrachtwagenheffing geldt sinds 1 juli 2026 voor vrachtwagens (N2 en N3) boven 3.500 kg, per kilometer op bijna alle snelwegen en een deel van de provinciale en gemeentelijke wegen. Elektrisch betaalt een veel lager tarief. Bussen en gewone bestelauto's vallen erbuiten. In de tool vul je zelf in hoeveel kilometers over wegen met heffing gaan en welk tarief geldt. Controleer de actuele tarieven op vrachtwagenheffing.nl. Zie ook <a href="/overstapgids/heffing/">Kilometerheffing en tol</a>.</p></details>
-     <details><summary>Hoe zit het met de laadpaal?</summary><p>De laadpaal zet je aan bij Extra kosten. Er is gerekend met één laadpaal van 50 kW inclusief installatie. De investering na SPRILA-subsidie is verdeeld over de afschrijftermijn, plus kosten voor netaansluiting, onderhoud en vaste netkosten. SPRILA geeft voor een DC-laadpunt van 50 kW een vast bedrag van € 9.760 (mkb) of € 4.880 (grote onderneming), maar nooit meer dan 40% (mkb) of 20% (groot) van de kosten en alleen als de subsidie minstens € 2.500 is.</p></details>
+     <details><summary>Hoe zit het met de laadpaal?</summary><p>De laadpaal zet je aan bij Extra kosten. Er is gerekend met één laadpaal van 50 kW inclusief installatie. De investering na SPRILA-subsidie is verdeeld over de afschrijftermijn, plus kosten voor netaansluiting, onderhoud en vaste netkosten. SPRILA geeft voor een DC-laadpunt van 50 kW een vast bedrag van €&nbsp;9.760 (mkb) of €&nbsp;4.880 (grote onderneming), maar nooit meer dan 40% (mkb) of 20% (groot) van de kosten en alleen als de subsidie minstens €&nbsp;2.500 is.</p></details>
     </section>
     <section id="fq4"><h2>Je gegevens</h2>
      <details><summary>Worden mijn gegevens opgeslagen?</summary><p>Je invoer wordt in je eigen browser bewaard, zodat je de volgende keer verder kunt waar je was. Met Herstel voorbeeldcijfers zet je alles terug. Geef je toestemming voor statistieken, dan meten we hoe je de calculator gebruikt, zonder naam of contactgegevens. Je keuze pas je aan via Cookies onderaan de pagina. Meer in het <a href="/privacy/">privacybeleid</a>.</p></details>
@@ -2876,10 +2951,10 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
   <div class="phead"><h1 tabindex="-1">Nieuws</h1></div>
   <div class="tl">
    <article class="tli lng"><time datetime="2026-09-08">8 september 2026</time><span class="kick2">Onderzoek</span><h2><button class="tlb" type="button" aria-expanded="false">Elektrisch op lange afstand tot 15% goedkoper</button></h2><div class="tlx"><p>Bain &amp; Company ondervroeg 507 beslissers over wagenparken in Duitsland, Frankrijk, het Verenigd Koninkrijk, Italië en Polen. Ruim 60% verwacht dat de eigen vloot de komende drie jaar groeit.</p><p>Op lange afstand is elektrisch volgens Bain grotendeels even duur als diesel of goedkoper. In Duitsland kost een zware elektrische trekker over vijf jaar tot 15% minder, vooral door lagere energiekosten en tolvoordeel. Wat vervoerders nog tegenhoudt: te weinig openbare laadpunten, de hoge aanschafprijs, minder flexibiliteit en lange laadtijden.</p><p>Vervoerders verwachten dat diesel in 2030 nog ongeveer de helft van de nieuwe trucks is, en in 2035 een derde. Waterstof blijft tot 2035 een niche. Bij de keuze voor een elektrische truck weegt laadsnelheid zwaarder dan betrouwbaarheid.</p><p>Opvallend: een op de drie vervoerders heeft contact gehad met een Chinese fabrikant en koopt er waarschijnlijk binnen drie jaar een. 61% verwacht dat Chinese trucks 10 tot 30% goedkoper zijn. Merkvertrouwen, service en restwaarde zijn nog hun zwakke punten.</p><div class="src"><a href="https://www.bain.com/insights/european-truck-market-outlook-2026/" target="_blank" rel="noopener">Bron: Bain &amp; Company</a></div></div></article>
-   <article class="tli lng"><time datetime="2026-09-16">16 september 2026</time><span class="kick2">Laden</span><h2><button class="tlb" type="button" aria-expanded="false">Deel je laadplein met andere vervoerders</button></h2><div class="tlx"><p>In de eerste helft van 2026 werden in de EU bijna 172.000 nieuwe trucks geregistreerd, 9,8% meer dan een jaar eerder. Het aantal elektrische trucks steeg met 47,7%, tot 4,8% van de markt. Duitsland, Nederland en Frankrijk zijn samen goed voor 74% van de elektrische trucks. In Nederland groeide het aantal met 44,5%.</p><p>Vornfeld ziet laden nu als het grootste knelpunt. Subsidie helpt, maar kan ook remmen. In Duitsland werden drie subsidierondes voor laadinfrastructuur van samen zo’n € 300 miljoen ruim overvraagd, en veel vervoerders wachten nu af. Het advies: bouw een laadplein dat ook zonder subsidie uit kan.</p><p>Dat lukt het best als het laadplein veel gebruikt wordt. Een laadpaal die ’s nachts stilstaat, is geld dat niets oplevert. Daarom zetten sommige vervoerders hun laadplein open voor andere vervoerders.</p><p>Een voorbeeld is Alfredsson Transport in het Zweedse Norrköping. Het depot laadt de eigen vloot en is open voor andere vervoerders, ook met megawattladen (MCS). In plaats van te wachten op een zwaardere netaansluiting plaatste het bedrijf een batterij van 1,2 MW en 400 kWp aan zonnepanelen.</p><div class="src"><a href="https://www.linkedin.com/pulse/utilization-imperative-how-shared-depots-flexible-drive-vornfeld-314ze/" target="_blank" rel="noopener">Bron: Vornfeld op LinkedIn</a><a href="/overstapgids/laden/">Overstapgids</a></div></div></article>
-   <article class="tli"><time datetime="2026-10-09">9 oktober 2026</time><span class="kick2">Accijns</span><h2>Dieselkorting ook in 2027</h2><p>Het kabinet stelt voor de korting op de dieselaccijns in 2027 te verlengen, op € 0,552 per liter. In 2028 wordt dat € 0,616 en vanaf 2029 € 0,701. De Tweede Kamer stemt op 12 november.</p><div class="src"><a href="https://www.taxence.nl/nieuws/tweede-nota-van-wijziging-belastingplan-2027/" target="_blank" rel="noopener">Bron: Taxence</a><a href="/">Reken het na</a></div></article>
-   <article class="tli lng"><time datetime="2026-10-16">16 oktober 2026</time><span class="kick2">Kosten</span><h2><button class="tlb" type="button" aria-expanded="false">ABN AMRO: 2026 is het kantelpunt</button></h2><div class="tlx"><p>Volgens ABN AMRO breekt elektrisch wegtransport in 2026 door. Fiscale prikkels, betere techniek en hoge brandstofprijzen maken de elektrische truck aantrekkelijker. Een zware Euro 6-dieseltruck betaalt ongeveer € 0,21 vrachtwagenheffing per kilometer, een elektrische € 0,04. Voor ritten binnen Nederland, die grotendeels binnen 500 km blijven, kan elektrisch daardoor goedkoper zijn. De aanschaf is wel nog zo’n drie keer zo duur.</p><p>Nederland loopt voorop. In het eerste halfjaar van 2026 was 16,3% van de nieuwe trucks elektrisch, tegen 4,8% in de hele EU. Bij nieuwe bestelwagens was dat 83,7%.</p><p>Het knelpunt is nu de stekker, niet de truck. Veel vervoerders krijgen door netcongestie geen zwaardere aansluiting. ABN AMRO wijst op slimme sturing van zonnestroom, batterijopslag en laadpalen, en op contracten waarmee je tussen middernacht en 06:00 extra capaciteit gebruikt.</p><p>Transportbedrijf Weduwe J. de Bruijn en Zonen, met 55 trucks, rijdt al met vier elektrische trucks. Die zijn volgens het bedrijf nu al voordeliger dan diesel, voor trucks die ’s nachts thuis laden en meer dan 300 km per dag rijden. Rond 2030 wil het bedrijf 25 tot 30 elektrische trucks hebben.</p><div class="src"><a href="https://www.abnamro.nl/nl/zakelijk/insights/sectoren-en-trends/logistiek/kantelpunt-2026-elektrificatie-breekt-door-in-wegtransport.html" target="_blank" rel="noopener">Bron: ABN AMRO</a></div></div></article>
-   <article class="tli soon"><time datetime="2028-01-01">1 januari 2028</time><span class="kick2">CO₂-prijs</span><h2>ETS2 op brandstof</h2><p>Brandstofleveranciers gaan betalen voor de CO₂ van diesel. Bij € 50 per ton is dat ongeveer 13 cent per liter.</p><div class="src"><a href="https://www.evupdate.nl/elektrisch-rijden/artikel/automobilisten-kunnen-opgelucht-ademhalen-extra-co-heffing-op-brandstof-komt-pas-in-2028" target="_blank" rel="noopener">Bron: EV Update</a></div></article>
+   <article class="tli lng"><time datetime="2026-09-16">16 september 2026</time><span class="kick2">Laden</span><h2><button class="tlb" type="button" aria-expanded="false">Deel je laadplein met andere vervoerders</button></h2><div class="tlx"><p>In de eerste helft van 2026 werden in de EU bijna 172.000 nieuwe trucks geregistreerd, 9,8% meer dan een jaar eerder. Het aantal elektrische trucks steeg met 47,7%, tot 4,8% van de markt. Duitsland, Nederland en Frankrijk zijn samen goed voor 74% van de elektrische trucks. In Nederland groeide het aantal met 44,5%.</p><p>Vornfeld ziet laden nu als het grootste knelpunt. Subsidie helpt, maar kan ook remmen. In Duitsland werden drie subsidierondes voor laadinfrastructuur van samen zo’n €&nbsp;300 miljoen ruim overvraagd, en veel vervoerders wachten nu af. Het advies: bouw een laadplein dat ook zonder subsidie uit kan.</p><p>Dat lukt het best als het laadplein veel gebruikt wordt. Een laadpaal die ’s nachts stilstaat, is geld dat niets oplevert. Daarom zetten sommige vervoerders hun laadplein open voor andere vervoerders.</p><p>Een voorbeeld is Alfredsson Transport in het Zweedse Norrköping. Het depot laadt de eigen vloot en is open voor andere vervoerders, ook met megawattladen (MCS). In plaats van te wachten op een zwaardere netaansluiting plaatste het bedrijf een batterij van 1,2 MW en 400 kWp aan zonnepanelen.</p><div class="src"><a href="https://www.linkedin.com/pulse/utilization-imperative-how-shared-depots-flexible-drive-vornfeld-314ze/" target="_blank" rel="noopener">Bron: Vornfeld op LinkedIn</a><a href="/overstapgids/laden/">Overstapgids</a></div></div></article>
+   <article class="tli"><time datetime="2026-10-09">9 oktober 2026</time><span class="kick2">Accijns</span><h2>Dieselkorting ook in 2027</h2><p>Het kabinet stelt voor de korting op de dieselaccijns in 2027 te verlengen, op €&nbsp;0,552 per liter. In 2028 wordt dat €&nbsp;0,616 en vanaf 2029 €&nbsp;0,701. De Tweede Kamer stemt op 12 november.</p><div class="src"><a href="https://www.taxence.nl/nieuws/tweede-nota-van-wijziging-belastingplan-2027/" target="_blank" rel="noopener">Bron: Taxence</a><a href="/">Reken het na</a></div></article>
+   <article class="tli lng"><time datetime="2026-10-16">16 oktober 2026</time><span class="kick2">Kosten</span><h2><button class="tlb" type="button" aria-expanded="false">ABN AMRO: 2026 is het kantelpunt</button></h2><div class="tlx"><p>Volgens ABN AMRO breekt elektrisch wegtransport in 2026 door. Fiscale prikkels, betere techniek en hoge brandstofprijzen maken de elektrische truck aantrekkelijker. Een zware Euro 6-dieseltruck betaalt ongeveer €&nbsp;0,21 vrachtwagenheffing per kilometer, een elektrische €&nbsp;0,04. Voor ritten binnen Nederland, die grotendeels binnen 500 km blijven, kan elektrisch daardoor goedkoper zijn. De aanschaf is wel nog zo’n drie keer zo duur.</p><p>Nederland loopt voorop. In het eerste halfjaar van 2026 was 16,3% van de nieuwe trucks elektrisch, tegen 4,8% in de hele EU. Bij nieuwe bestelwagens was dat 83,7%.</p><p>Het knelpunt is nu de stekker, niet de truck. Veel vervoerders krijgen door netcongestie geen zwaardere aansluiting. ABN AMRO wijst op slimme sturing van zonnestroom, batterijopslag en laadpalen, en op contracten waarmee je tussen middernacht en 06:00 extra capaciteit gebruikt.</p><p>Transportbedrijf Weduwe J. de Bruijn en Zonen, met 55 trucks, rijdt al met vier elektrische trucks. Die zijn volgens het bedrijf nu al voordeliger dan diesel, voor trucks die ’s nachts thuis laden en meer dan 300 km per dag rijden. Rond 2030 wil het bedrijf 25 tot 30 elektrische trucks hebben.</p><div class="src"><a href="https://www.abnamro.nl/nl/zakelijk/insights/sectoren-en-trends/logistiek/kantelpunt-2026-elektrificatie-breekt-door-in-wegtransport.html" target="_blank" rel="noopener">Bron: ABN AMRO</a></div></div></article>
+   <article class="tli soon"><time datetime="2028-01-01">1 januari 2028</time><span class="kick2">CO₂-prijs</span><h2>ETS2 op brandstof</h2><p>Brandstofleveranciers gaan betalen voor de CO₂ van diesel. Bij €&nbsp;50 per ton is dat ongeveer 13 cent per liter.</p><div class="src"><a href="https://www.evupdate.nl/elektrisch-rijden/artikel/automobilisten-kunnen-opgelucht-ademhalen-extra-co-heffing-op-brandstof-komt-pas-in-2028" target="_blank" rel="noopener">Bron: EV Update</a></div></article>
   </div>
   <aside class="ad band" aria-label="Advertentie">Advertentie</aside>
  </div>
@@ -4020,7 +4095,7 @@ function rTop(r,x){
  const pn=i?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):'';
  const back=`<a class="bk" href="/" data-home>${BKI}Terug naar start</a>`;
  return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rvw"><div><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p></div></div></div>
-<div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · <span data-tw="hl">${eur(Math.abs(d)*L)}</span> in ${L} jaar`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
+<div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · <span data-tw="hl">${eur(Math.abs(d)*L)}</span> <span class="nwr">in ${L} jaar</span>`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
 }
 /* Ronde getallen voor de schaal boven de balken */
 const niceStep=mx=>{const p=Math.pow(10,Math.floor(Math.log10(mx/4||1))),m=mx/4/p;return(m<=1?1:m<=2?2:m<=5?5:10)*p};

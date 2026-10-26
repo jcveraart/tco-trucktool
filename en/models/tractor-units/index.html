@@ -2251,13 +2251,12 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
  .tli h2{font-size:20px;line-height:1.3}
  .prose>p:first-child{font-size:17px;line-height:1.5}
 }
-@media(min-width:401px) and (max-width:640px){
+@media(min-width:360px) and (max-width:640px){
  #gtLd .gc .seg.sm{grid-auto-flow:column;grid-template-columns:none}
  #gtLd .gc .seg.sm>*{grid-column:auto}
 }
-@media(max-width:400px){
+@media(max-width:359px){
  .mfil{grid-template-columns:minmax(0,1fr)}
- .mca .cta{flex:1 1 100%;justify-content:center}
 }
 @media(max-width:359px){
  .topin{gap:8px}
@@ -2273,6 +2272,82 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
  .nwg.seg button{padding:6px 2px;font-size:13px}
  .hA .plate input::placeholder{font-size:18px}
  .gtool{padding-left:12px;padding-right:12px}
+}
+/* Telefoon, ronde 4 (2026-10-26): compacter. Minder witruimte tussen blokken, kleinere koppen, modelkaarten en uitkomstrijen dichter op elkaar. */
+@media(max-width:640px){
+ /* Uitkomst: kop */
+ .nBk{margin-bottom:2px}
+ .nBk .bk[data-home]{padding:4px 0;background:none;color:var(--ink-2);box-shadow:none;font-size:13px}
+ .nBk .bk[data-home]:hover{color:var(--ink)}
+ .rveh{gap:10px}
+ .rveh h1{font-size:24px}
+ .nS>.nA,.nS>.nB{padding-top:16px;padding-bottom:16px}
+ .nTop>.nA{padding-top:10px;padding-bottom:12px}
+ .nTop>.nB{padding-top:14px}
+ .nTop{position:relative}
+ .nTop .acts{position:absolute;top:44px;right:0;margin:0;gap:8px}
+ .nTop .acts .btn{padding:8px 11px}
+ .nTop:has(.acts) .rvw{padding-right:104px}
+ .nV{font-size:27px;line-height:1.15}
+ p.nk{font-size:19px!important;margin-bottom:10px!important}
+ .nX{padding-top:16px!important;padding-bottom:16px!important}
+ .nXh{margin-bottom:2px}
+ .nPk{margin-top:14px}
+ .nPk>div{padding-top:10px!important}
+ /* Schuiven en lijsten dichter op elkaar */
+ .nSl{gap:8px}
+ .rsl input[type=range]{height:36px}
+ .xdr{padding-top:6px;padding-bottom:6px}
+ .xdr .xdb{margin-top:0}
+ .nTl .st{min-height:42px;padding-top:8px;padding-bottom:8px}
+ .nF .rf{padding-top:8px;padding-bottom:8px}
+ /* Uitgebreid */
+ [data-page=uitgebreid] .cmain>section{padding-top:16px;padding-bottom:18px}
+ [data-page=uitgebreid] .cmain>section>h2,[data-page=uitgebreid] .vsh h2{font-size:19px!important}
+ [data-page=uitgebreid] .vsh{gap:10px}
+ [data-page=uitgebreid] .vsl{margin-top:12px}
+ [data-page=uitgebreid] .row .rh>span{padding-top:10px;padding-bottom:10px}
+ .uvS.mlS{padding-top:18px;padding-bottom:18px}
+ [data-page=uitgebreid] .pbc{margin-top:8px}
+ [data-page=uitgebreid] .pbt{grid-template-columns:repeat(2,minmax(0,1fr))}
+ [data-page=uitgebreid] .pbt>div:first-child{grid-column:1/-1}
+ [data-page=uitgebreid] :is(.pbt>div:first-child,.pbq>div){padding-top:10px;padding-bottom:10px}
+ [data-page=uitgebreid] .pbq>div:last-child{padding-left:14px!important}
+ [data-page=uitgebreid] .pbq span{font-size:11px!important}
+ [data-page=uitgebreid] .pbq b{font-size:22px}
+ [data-page=uitgebreid] .pbw{margin-top:10px}
+ [data-page=uitgebreid] .snw{margin-top:6px}
+ [data-page=uitgebreid] .snw .bc2{padding-top:10px;padding-bottom:4px}
+ [data-page=uitgebreid] .trk{margin-top:28px;margin-bottom:30px}
+ [data-page=uitgebreid] .fln{margin-top:24px}
+ [data-page=uitgebreid] .cmain>.ad{margin-top:24px}
+ /* Modellen: kaarten compact. Bereik en specificaties op twee regels, knoppen op één rij */
+ .phead{padding-top:10px;padding-bottom:14px}
+ .mgrid{gap:10px}
+ .mc{display:flex;flex-direction:column;gap:8px;padding:14px 14px 12px}
+ .mc>*{align-self:stretch}
+ .mca{margin-top:2px}
+ .mcn{margin-top:-6px;font-size:19px}
+ .mcr{gap:6px}
+ .mcr b{font-size:30px}
+ .mcs{gap:4px 14px}
+ .mcs li{font-size:14px}
+ .mcs svg{width:16px;height:16px}
+ .mcs .mpr{flex-basis:auto}
+ .mca{flex-wrap:nowrap;gap:12px;padding-top:10px}
+ .mca .cta{padding:9px 12px;white-space:nowrap}
+ .mcv,.mci{white-space:nowrap}
+ .mca .mci{padding-top:8px;padding-bottom:8px}
+ /* Overige pagina's: kop van de pagina iets dichter op de inhoud */
+ .bkw{padding-top:8px}
+ .nwr{white-space:nowrap}
+ body:has(.page[data-page=gids]:not([hidden])) #bkw{display:none}
+ [data-page=uitgebreid] .pbt>div:first-child::before{display:none}
+ [data-page=uitgebreid] .hm td{padding-top:7px;padding-bottom:7px}
+}
+@media(max-width:359px){
+ .mca{flex-wrap:wrap}
+ .mca .cta{flex:1 1 100%;justify-content:center}
 }
 </style>
 <link rel="preload" href="/assets/fonts/e2291e842cf5af.woff2" as="font" type="font/woff2" crossorigin>
@@ -4008,7 +4083,7 @@ function rTop(r,x){
  const pn=i?[plName(i),i.first&&i.first.getFullYear()].filter(Boolean).join(' · '):'';
  const back=`<a class="bk" href="/" data-home>${BKI}Terug naar start</a>`;
  return`<section class="nS nTop"><div class="nA"><p class="nBk">${back}</p><div class="rvw"><div><div class="rveh">${VICON[vtype]}<h1 tabindex="-1">${q.n}</h1></div><p class="nSub">${[q.sub,pn].filter(Boolean).join(' · ')}</p></div></div></div>
-<div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · <span data-tw="hl">${eur(Math.abs(d)*L)}</span> in ${L} jaar`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
+<div class="nB${cheap?'':' neg'}" data-r="head"><p class="nV${even?' ev':''}">${even?'Diesel en elektrisch kosten ongeveer hetzelfde':`Elektrisch <b data-tw="hv">${eur(Math.abs(d))}</b> ${cheap?'goedkoper':'duurder'}`}</p><p class="nVs">in totale kosten per jaar${even?'':` · <span data-tw="hl">${eur(Math.abs(d)*L)}</span> <span class="nwr">in ${L} jaar</span>`}</p>${bd?`<p class="nVs">Bandbreedte ${bandTxt(bd)} per jaar</p>`:''}${x?`<div class="acts"><button class="btn" type="button" data-step="use">${ICON.pen}<span>Aanpassen</span></button><button class="btn" type="button" data-print aria-label="Opslaan als PDF of afdrukken">${ICON.print}<span>PDF</span></button></div>`:''}</div></section>`;
 }
 /* Ronde getallen voor de schaal boven de balken */
 const niceStep=mx=>{const p=Math.pow(10,Math.floor(Math.log10(mx/4||1))),m=mx/4/p;return(m<=1?1:m<=2?2:m<=5?5:10)*p};
