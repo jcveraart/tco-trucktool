@@ -8,11 +8,25 @@
 - **Events** (`<script id="meten">` en `<script id="meten-koppelen">`) gaan in batches naar de tabel `public.web_events` in Supabase, met de publishable key. Die mag alleen invoegen, nooit lezen.
   - Met toestemming voor statistieken: willekeurig bezoekers-ID (`sod-vid`), sessie-ID (`sod-sid`, 30 min inactief = nieuwe sessie) en alle events hieronder.
   - Zonder toestemming (of zonder keuze): alleen `page_view` en `consent`, zonder ID's en zonder iets op te slaan. De database dwingt dat af.
-- **Google Analytics 4** is optioneel: vul `GA_ID` in (`G-...`). Het laadt pas na toestemming voor statistieken en krijgt dezelfde events.
+- **Google Analytics 4**: webstream `G-SH3XRBV17P`, property `560817083` (Stekker of Diesel). Het laadt alleen op `stekkerofdiesel.nl` en `www.stekkerofdiesel.nl`, na toestemming voor statistieken. De koppeling stuurt een expliciete selectie van events en velden; previews sturen niets naar Google. Consentversie 2 vraagt opnieuw toestemming omdat Google Analytics nu daadwerkelijk wordt toegevoegd. Zonder statistiektoestemming wordt de Google-tag niet geladen. Intrekken zet bovendien de GA-disablevlag aan en verwijdert Analytics-cookies en lokale bezoekers-ID's.
 
 ## IP-adressen
 
-De website schrijft geen ruwe IP-adressen of IP-hashes naar `web_events` of `calc_runs`; de tabellen bevatten daar geen kolom voor. Met statistiektoestemming worden willekeurige bezoekers- en sessie-ID's gebruikt. `GA_ID` is momenteel leeg: Google Analytics is voorbereid maar niet ingeschakeld. Anonieme paginatellingen en berekeningen blijven bestaan zonder bezoekers-ID, ook bij weigeren.
+De website schrijft geen ruwe IP-adressen of IP-hashes naar `web_events` of `calc_runs`; de tabellen bevatten daar geen kolom voor. Met statistiektoestemming worden willekeurige bezoekers- en sessie-ID's gebruikt. GA4 gebruikt IP-adressen voor onder andere een globale locatie, maar bewaart de ruwe IP-adressen niet: [uitleg van Google](https://support.google.com/analytics/answer/12017362). Land/regio/stad, apparaat en browser zijn dus te rapporteren zonder een eigen lijst van volledige IP-adressen. Anonieme paginatellingen en berekeningen blijven in Supabase bestaan zonder bezoekers-ID, ook bij weigeren.
+
+## Rapporten in Google Analytics
+
+[Open de property](https://analytics.google.com/analytics/web/#/a413475584p560817083/reports/intelligenthome). Realtime toont nieuwe bezoeken; gewone rapporten en aangepaste definities kunnen 24–48 uur achterlopen. Dit is geen terugwerkende meting van oude bezoeken.
+
+- **Acquisitie**: waar bezoekers vandaan komen, inclusief bron/medium/campagne uit gecontroleerde UTM-labels. Gebruik daar nooit namen, e-mailadressen of andere persoonlijke codes in. De volledige query, `s`-deellink en URL-fragmenten worden niet naar Google gestuurd.
+- **Pagina's**: aparte weergaven per echt pad, ook bij navigatie tussen twee gidsartikelen of twee modelcategorieën binnen dezelfde website. De opgeslagen context van een uitgestelde weergave blijft bij de juiste pagina horen.
+- **Gebruik**: scrollstappen 25/50/75/90%, zichtbare tijd, modelinteresse en -vergelijkingen, navigatie, hulp, delen en printen.
+- **Calculator**: `calculator_start`, `calculator_step`, `calculator_abandon`, `calculator_complete`. Geen volledige invoer, bedragen of kentekens naar Google; alleen geselecteerde categorieën, model, stap en globale uitkomst.
+- **Leads**: `generate_lead`, met `lead_type` = `fleet_analysis`, `model_quote` of `calculation_pdf`. Het event volgt alleen op de bestaande geslaagde inzending; nooit de naam, contactgegevens of formulierinhoud.
+
+`calculator_complete` en `generate_lead` zijn de belangrijkste meetdoelen. Gebruik aangepaste dimensies voor `vehicle_type`, `model_id`, `calc_step`, `site_language` en `lead_type`. De gebeurtenissen in de Supabase-tabel houden hun bestaande namen.
+
+Verbeterde automatische meting staat uit: de eigen route- en eventkoppeling voorkomt dubbele weergaven en ongecontroleerde formulier-, zoek- en linkgegevens. Google-signalen en advertentiepersonalisatie zijn voor deze Analytics-tag uitgeschakeld. De normale Analytics-metingen van sessies, apparaten en globale geografie blijven beschikbaar na toestemming. Bewaring van gebruikers- en gebeurtenisgegevens: 14 maanden voor vergelijking met een vorig jaar; Analytics-cookies: maximaal 12 maanden.
 
 Dit betekent niet dat een bezoek geen IP-adres verwerkt. GitHub Pages [logt bezoekers-IP's voor beveiliging](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection). Supabase ontvangt het IP-adres bij netwerkverzoeken. Dat staat los van de applicatietabellen; de serverlogs van deze leveranciers vallen niet onder deze code-audit. Lettertypen worden lokaal gehost en vereisen geen Google Fonts-verzoek.
 
