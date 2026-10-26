@@ -2165,6 +2165,115 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 
 
 #mCat a{display:inline-flex;align-items:center;padding:7px 13px;text-decoration:none;color:var(--ink-2);font:600 14px var(--text);border-radius:4px;white-space:nowrap}#mCat a[aria-current=page]{background:var(--ink);color:white}.seo-intro{max-width:72ch;color:var(--ink-2);font-size:17px;line-height:1.5;margin:14px 0 0}.seo-advice{max-width:76ch;color:var(--ink-2);line-height:1.6;margin:24px 0}#home{min-height:360px}@media(max-width:760px){#mCat a{padding:7px 9px;font-size:13px}#home{min-height:570px}}
+/* Telefoon en tablet, ronde 3 (2026-10-26): de hele site op 320–900 px. Regels breken netjes (geen los woord op de laatste regel),
+   knoppenrijen passen altijd in de breedte, tabellen houden hun kolommen recht en de kop blijft op één regel. Desktop verandert niet. */
+@media(max-width:900px){
+ :is(h1,h2,h3,h4,summary,.glk a,.gcl,.gbr small,.nV,.hxh,.mcn,.tlb,.rl b,.xrv,.gtl a b,.fln b,.st span,.rf span,.xtr>span:first-child,.wzh h2,label,.gl){text-wrap:balance}
+ :is(p,li,dd,.faq p,.prose p,.ga p,.tlx p){text-wrap:pretty}
+}
+@media(max-width:640px){
+ /* Kop: logo, Menu en taal op één regel, ook op 320 px */
+ .topin{gap:10px}
+ .topin>.brand{flex:none;font-size:18px;white-space:nowrap;gap:8px}
+ .mnu{padding:8px 13px;font-size:14px}
+ .lang{margin-left:0}
+ .lang a{padding:8px 6px;min-width:30px;justify-content:center}
+ .lang a[aria-current=page],.lang span{display:none}
+
+ /* Startscherm: de twee keuzes als rustige rijen, zodat de tekst niet over drie regels breekt */
+ .hch{grid-template-columns:minmax(0,1fr);gap:6px}
+ .hch button{padding:12px 44px 12px 14px;min-height:46px}
+ .hch b{font-size:15px}
+ .hch button::after{right:14px}
+ .hA .vt b{font-size:13.5px;letter-spacing:-.01em}
+ .uvtab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible;margin-right:0}
+ .uvtab button{padding:9px 10px;font-size:14px;box-shadow:inset 0 0 0 1px var(--line);border-radius:999px}
+ .uvtab button[aria-selected=true]{box-shadow:none}
+
+ /* Simpel: de drie bedragen per km staan op dezelfde hoogte, ook als een label over twee regels gaat */
+ .nPk>div{display:flex;flex-direction:column;justify-content:space-between;gap:4px}
+ .nPk span{font-size:13px;line-height:1.3}
+
+ /* Tabellen: kopjes in gewone letters in plaats van smalle hoofdletters, zodat niets wordt afgekapt */
+ .xdh,.xth,[data-page=uitgebreid] .colh span{font:500 11px/1.3 var(--text)!important;letter-spacing:0!important;text-transform:none!important;color:var(--ink-3)}
+ .xdh>span,.xth>span{white-space:normal;text-wrap:balance}
+ .xtr.xrw{grid-template-columns:58px repeat(3,minmax(0,1fr))}
+ .nkp{display:none}
+ .nVs{text-wrap:balance}
+ .xtr.on{box-shadow:-8px 0 0 var(--soft),8px 0 0 var(--soft)}
+ .xtr em{display:block;margin:1px 0 0;font-size:9px}
+ [data-page=uitgebreid] .colh>span{white-space:normal;text-wrap:balance;padding:0 4px}
+
+ /* Uitgebreid: blokken lijnen links uit met de rest, schaalgetallen botsen niet */
+ [data-page=uitgebreid] :is(.pbt>div:first-child,.pbq>div,.snw .bc2){padding-left:0!important;padding-right:0!important}
+ [data-page=uitgebreid] .trk:has(.tk:nth-of-type(7)) .tk:nth-of-type(even) s{visibility:hidden}
+ [data-page=uitgebreid] .hm tr:first-child th:first-child{width:52px;font-size:11px;line-height:1.35}
+ .hm tr:first-child th:first-child span:not(.hmd){display:block;white-space:nowrap}
+ .hmd{display:none}
+ [data-page=uitgebreid] .trk{margin-left:12px;margin-right:12px}
+ .xrg~.nF .rf b small{display:block;margin-top:4px}
+ .xback{margin:20px 0 0}
+ [data-page=uitgebreid] .more{margin-top:20px}
+
+ /* Extra kosten: tegels in twee gelijke kolommen, tekst op één regel */
+ [data-page=uitgebreid] .add .addc{padding-left:8px;padding-right:8px;gap:7px;font-size:14px;white-space:nowrap}
+
+ /* Voettekst: links breken de regelafstand niet meer */
+ .fdis a,.fdis .fck{display:inline;padding:6px 0}
+ .fdis{text-wrap:pretty}
+
+ /* Modellen */
+ #mCat.seg{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr)) auto;overflow:visible;width:100%}
+ #mCat a{justify-content:center;padding:7px 6px;font-size:13px}
+ .mfil #mRg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+ .mfil #mRg button{padding:8px 0;font-size:12.5px;letter-spacing:-.01em}
+ .mca .mci{margin-left:auto}
+ .mc{grid-template-columns:minmax(0,1fr)}
+ .mcr p{flex-wrap:wrap;row-gap:0}
+ .mfil #mRg{grid-template-columns:auto repeat(4,minmax(0,1fr))}
+ .mfil #mRg button[data-mrg="0"]{padding:8px 9px}
+
+ /* Overstapgids: tools krijgen meer breedte, keuzeknoppen vullen de rij in gelijke vakken */
+ .gtool{padding:16px 14px 18px}
+ .gc .seg.sm{align-self:stretch;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);flex-wrap:nowrap}
+ .gc .seg.sm button{padding:7px 2px;font-size:13px}
+ .gc .seg.sm:has(>:nth-child(5)){grid-auto-flow:row;grid-template-columns:repeat(6,minmax(0,1fr))}
+ .gc .seg.sm:has(>:nth-child(5))>*{grid-column:span 2}
+ .gc .seg.sm:has(>:nth-child(5)):not(:has(>:nth-child(6)))>:nth-child(n+4){grid-column:span 3}
+ .gc .seg.sm:has(>:nth-child(5)) button{font-size:12.5px;letter-spacing:-.01em}
+ .zmt .gc .seg.sm{align-self:auto}
+
+ /* Restwaarde en andere keuzerijen bovenaan een pagina */
+ #rwC{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);width:100%}
+ #rwC button{padding:7px 2px;font-size:13px}
+
+ /* Nieuws en Over ons: koppen en intro iets kleiner, zodat zinnen niet om de twee woorden breken */
+ .tli h2{font-size:20px;line-height:1.3}
+ .prose>p:first-child{font-size:17px;line-height:1.5}
+}
+@media(min-width:401px) and (max-width:640px){
+ #gtLd .gc .seg.sm{grid-auto-flow:column;grid-template-columns:none}
+ #gtLd .gc .seg.sm>*{grid-column:auto}
+}
+@media(max-width:400px){
+ .mfil{grid-template-columns:minmax(0,1fr)}
+ .mca .cta{flex:1 1 100%;justify-content:center}
+}
+@media(max-width:359px){
+ .topin{gap:8px}
+ .topin>.brand{font-size:16.5px;gap:7px}
+ .mnu{padding:8px 11px}
+ .hA .vt b{font-size:12.5px;white-space:normal;text-wrap:balance;line-height:1.15;overflow-wrap:anywhere}
+ .xtr{grid-template-columns:minmax(0,1fr) repeat(3,minmax(56px,auto));gap:6px}
+ .xtr.xrw{grid-template-columns:50px repeat(3,minmax(0,1fr))}
+ .hA .vt{padding-left:4px;padding-right:4px}
+ .addl{grid-template-columns:minmax(0,1fr)}
+ .mcr b{font-size:34px}
+ .nwg.seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);width:100%}
+ .nwg.seg button{padding:6px 2px;font-size:13px}
+ .hA .plate input::placeholder{font-size:18px}
+ .gtool{padding-left:12px;padding-right:12px}
+}
 </style>
 <link rel="preload" href="/assets/fonts/e2291e842cf5af.woff2" as="font" type="font/woff2" crossorigin>
 <style id="sod-fonts">
@@ -3882,7 +3991,7 @@ function sensHTML(sv){
  const rows=es.map((e,i)=>`<tr><th scope="row">${nf(e,2)}</th>${ds.map((d,j)=>{const z=grid[i][j],bg=z>=0?`rgba(10,143,91,${.1+.42*z/mx})`:`rgba(242,163,58,${.2+.45*-z/mx})`;return`<td class="${d===dp0&&e===sp0?'cur':''}" style="background:${bg}">${z<0?'−':''}${nf(Math.abs(z)/1000)}k</td>`}).join('')}</tr>`).join('');
  const kb=kmBreak(),km0=v('km');
  const c0=card('Break-even kilometers',kb===0?'Elke afstand':kb===null?'—':`${nf(Math.ceil(kb/1000)*1000)} <small>km per jaar</small>`,kb===0?`Elektrisch is bij elke afstand goedkoper. Nu rekent de calculator met ${nf(km0)} km.`:kb===null?'Ook bij 400.000 km per jaar is elektrisch niet goedkoper.':`Elektrisch is goedkoper vanaf dit aantal kilometers. Nu rekent de calculator met ${nf(km0)} km.`,kb>0?trk(kb/1000,km0/1000,'hi',50).replace(/>(\d+),00</g,'>$1k<'):'');
- return`<div class="bec">${c0}${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's, omkaderd is je huidige situatie</small><div class="tw"><table class="hm"><tr><th>€/kWh ↓ · €/L →</th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
+ return`<div class="bec">${c0}${c1}${c2}</div><div class="hmw"><small>Besparing per jaar in duizenden euro's, omkaderd is je huidige situatie</small><div class="tw"><table class="hm"><tr><th><span>€/kWh ↓</span><span class="hmd"> · </span><span>€/L →</span></th>${ds.map(d=>`<th scope="col">${nf(d,2)}</th>`).join('')}</tr>${rows}</table></div></div>`;
 }
 
 /* ===== Invulvenster ===== */
@@ -3986,7 +4095,7 @@ const uvDiff=(d,e,k,sp)=>{const x=d-e;return`<small${x<0?' class="d"':''} data-t
 function uvUit(k,r){
  const g=v;return{
   afs:uL(`<span data-tw="u-gpD">${eur(g('pD'))}</span> voor de diesel en <span data-tw="u-gpE">${eur(g('pE'))}</span> voor elektrisch${r.sub?`, min <span data-tw="u-rsub">${eur(r.sub)}</span> subsidie`:''}, min de restwaarde, verdeeld over ${r.L} jaar.`,`<span data-tw="u-gpD">${eur(g('pD'))}</span> for the diesel and <span data-tw="u-gpE">${eur(g('pE'))}</span> for electric${r.sub?`, minus <span data-tw="u-rsub">${eur(r.sub)}</span> in grants`:''}, minus the residual value, spread over ${r.L} years.`),
-  en:uL(`${nf(r.km)} km per jaar: ${nf(g('ld'),1)} liter per 100 km à <span data-tw="u-gdp2">${eur(g('dp'),2)}</span> tegenover ${nf(g('le'))} kWh à <span data-tw="u-gsp2">${eur(g('sp'),2)}</span>${r.ereV?', min de ERE-opbrengst':''}.`,`${nf(r.km)} km a year: ${nf(g('ld'),1)} litres per 100 km at <span data-tw="u-gdp2">${eur(g('dp'),2)}</span> against ${nf(g('le'))} kWh at <span data-tw="u-gsp2">${eur(g('sp'),2)}</span>${r.ereV?', minus ERE income':''}.`),
+  en:uL(`${nf(r.km)} km per jaar: ${nf(g('ld'),1)} liter per 100&nbsp;km à <span data-tw="u-gdp2">${eur(g('dp'),2)}</span> tegenover ${nf(g('le'))} kWh à <span data-tw="u-gsp2">${eur(g('sp'),2)}</span>${r.ereV?', min de ERE-opbrengst':''}.`,`${nf(r.km)} km a year: ${nf(g('ld'),1)} litres per 100 km at <span data-tw="u-gdp2">${eur(g('dp'),2)}</span> against ${nf(g('le'))} kWh at <span data-tw="u-gsp2">${eur(g('sp'),2)}</span>${r.ereV?', minus ERE income':''}.`),
   ond:uL(`<span data-tw="u-goD2">${eur(g('oD'),2)}</span> tegenover <span data-tw="u-goE2">${eur(g('oE'),2)}</span> per km. Een elektromotor heeft geen olie, filters of koppeling.`,`<span data-tw="u-goD2">${eur(g('oD'),2)}</span> against <span data-tw="u-goE2">${eur(g('oE'),2)}</span> per km. An electric motor has no oil, filters or clutch.`),
   ver:uL(`Een vast bedrag per jaar: <span data-tw="u-gvD">${eur(g('vD'))}</span> tegenover <span data-tw="u-gvE">${eur(g('vE'))}</span>. Elektrisch is duurder te verzekeren door de hogere nieuwwaarde.`,`A fixed amount per year: <span data-tw="u-gvD">${eur(g('vD'))}</span> against <span data-tw="u-gvE">${eur(g('vE'))}</span>. Electric costs more to insure because of its higher value.`),
   hef:uL(`${nf(r.kmH)} km met vrachtwagenheffing: <span data-tw="u-gtD3">${eur(g('tD'),3)}</span> tegenover <span data-tw="u-gtE3">${eur(g('tE'),3)}</span> per km.`,`${nf(r.kmH)} km with the Dutch truck charge: <span data-tw="u-gtD3">${eur(g('tD'),3)}</span> against <span data-tw="u-gtE3">${eur(g('tE'),3)}</span> per km.`)}[k];
@@ -4152,7 +4261,7 @@ function rPaint(r){
  const cost=`<div class="rcb" data-r="bars"><span>${dn}</span><i class="d"><u style="width:${r.td/mx*100}%"></u></i><b data-tw="td">${eur(r.td)}</b><span>${en}</span><i class="e"><u style="width:${r.te/mx*100}%"></u></i><b data-tw="te">${eur(r.te)}</b></div><div class="nPk" data-r="pkm"><div><span>Diesel per km</span><b data-tw="pd">${eur(r.td/km,2)}</b></div><div><span>Elektrisch per km</span><b data-tw="pe">${eur(r.te/km,2)}</b></div><div><span>Verschil per km</span><b data-tw="pv">${eur(Math.abs(d)/km,2)}</b></div></div>`;
  const h=`<div class="rN">${rTop(r,0)}
 <section class="nS"><div class="nA"><p class="nk">Totale kosten per jaar</p>${cost}</div><div class="nB"><p class="nk">Wat als</p><div class="nSl">${rsl('km','Kilometers per jaar',x=>nf(x)+' km')}${rsl('dp','Dieselprijs',x=>eur(x,2)+' per liter')}${rsl('sp','Stroomprijs',x=>eur(x,2)+' per kWh')}</div></div></section>
-<section class="nS nX"><div class="nXh"><p class="nk">Waar zit het verschil · ${pt}</p>${per}</div><div class="xd" data-r="xd">${diff}</div></section>
+<section class="nS nX"><div class="nXh"><p class="nk">Waar zit het verschil<span class="nkp"> · ${pt}</span></p>${per}</div><div class="xd" data-r="xd">${diff}</div></section>
 <section class="nS"><div class="nA"><p class="nk">Jouw cijfers</p><div class="nTl" data-r="tiles">${lst}</div></div><div class="nB"><p class="nk">Omslagpunten</p><div class="nF" data-r="facts">${facts}</div></div></section>
 <a class="rhgo" href="/uitgebreid/" data-xgo>Uitgebreide resultaten ${HARR}</a></div>`;
  rSet(el,h);twIntro(el);
