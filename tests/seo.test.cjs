@@ -20,7 +20,7 @@ test('category pages contain the actual model cards before JavaScript and matchi
 test('first paint contains the homepage, local fonts and no unused advertising download',()=>{
  const explainer=read('/en/').match(/<div class="wrap home uv"[\s\S]*?<div class="wrap">/)[0];
  assert.match(explainer,/What Stekker of Diesel does/);assert.match(explainer,/Free, no account and no sales pitch/);assert.match(explainer,/Is an electric truck cheaper than a diesel/);assert.match(explainer,/href="\/en\/switching-guide\/zero-emission-zones\/"/);assert.doesNotMatch(explainer,/Wie een trekker|Gratis, zonder|Wat er verandert|Bij gemiddeld gebruik|Voor trekkers|Dat hangt af/);
- assert.match(source,/<html[^>]*class="fresh"/);assert.match(source,/<div class="home" id="home"><div class="wrap hA">/);assert.match(read('/en/'),/Find the right vehicle for your business/);assert.doesNotMatch(source,/<(?:link|script)[^>]*(?:fonts\.googleapis\.com|fonts\.gstatic\.com|pagead2\.googlesyndication\.com)/);
+ assert.match(source,/<html[^>]*class="fresh"/);assert.match(source,/<div class="home" id="home"><div class="wrap hA">/);assert.match(read("/en/"),/Electric or diesel\? Do the maths/);assert.doesNotMatch(source,/<(?:link|script)[^>]*(?:fonts\.googleapis\.com|fonts\.gstatic\.com|pagead2\.googlesyndication\.com)/);
  for(const m of source.matchAll(/url\((\/assets\/fonts\/[^)]+)\)/g))assert.ok(fs.existsSync(path.join(ROOT,m[1])),m[1]);
 });
 test('all executable scripts compile on both language entry points',()=>{
