@@ -1,0 +1,8 @@
+# Python >=3.12. Verified versions for the self-contained notebook.
+highspy==1.15.1
+numpy==2.5.4
+matplotlib==3.11.2
+nbformat==5.11.1
+nbclient==0.11.0
+ipykernel==7.4.0
+jupyterlab>=4.4,<5

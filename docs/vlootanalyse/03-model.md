@@ -1,5 +1,7 @@
 # 03 · Het wiskundige model
 
+**Uitvoerbare implementatie:** [het volledige Jupyter notebook](vlootanalyse.ipynb) en [de herbruikbare rekenkern](vlootmodel.py). [09](09-notebook.md) legt vast welke onderdelen zijn gecodeerd en getest, hoe je rekent en welke invoer-/praktijkvalidatie nog nodig is.
+
 Gecorrigeerd ontwerp, 27 oktober 2026. Dit document is een specificatie voor een toekomstige vervangingsoptimizer. De uitgevoerde referentie in `referentie.py` toetst een **vast** laadplan en financiële deelregels; zij implementeert niet dit hele strategische model. Iedere toekomstige restrictie krijgt een test volgens [08 · Correcties en acceptatie](08-correcties-en-acceptatie.md).
 
 Bedragen zijn euro excl. btw, energie kWh aan de expliciet genoemde meter/accuzijde, vermogen kW en tijd uur. Reken voor belasting of na belasting consequent; toon economische NCW, kasstroom en financieringsbehoefte afzonderlijk.

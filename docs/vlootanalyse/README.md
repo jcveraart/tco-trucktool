@@ -1,6 +1,6 @@
-# Vlootanalyse: ontwerp en geteste referentie
+# Vlootanalyse: uitvoerbaar model en validatie
 
-Stand: 27 oktober 2026 · correctieronde na de technische review.
+Stand: 27 oktober 2026 · gecorrigeerd ontwerp, gezamenlijke optimalisatie en uitgevoerd notebook.
 
 De dienst beantwoordt welke voertuigen elektrisch kunnen, onder welke laadvoorwaarden en met welke kosten en kasstromen. De eerste scope is een **begeleide pilot: één depot, vaste of duidelijk begrensde routegroepen en bevestigde voertuiguitvoeringen**. De klant krijgt inzicht in haalbaarheid, kosten en uitzonderingen; geen onvoorwaardelijke investeringsgarantie.
 
@@ -11,7 +11,8 @@ De dienst beantwoordt welke voertuigen elektrisch kunnen, onder welke laadvoorwa
 | Website | Kennismaking en contactaanvraag; geen online vlootoptimizer |
 | `referentie.py` | Geteste hulpmiddelen voor energie, reserve, lease, kasstromen, datakwaliteit en een vast laadplan |
 | `rekenvoorbeeld.py` | Reproduceerbare screening en afzonderlijke stresscases, met voorwaardelijke uitkomsten |
-| Volledige vervangingsoptimalisatie | Gecorrigeerd ontwerp in 03; nog geen productie-implementatie |
+| [Gezamenlijke optimalisatie in Jupyter](vlootanalyse.ipynb) | Uitgevoerde MILP-kern: vloot, koop/lease, vervangmoment, infrastructuur en laden; fictieve demo, grafieken en 30 modeltests |
+| Productie- en praktijkvalidatie | Geen online vlootoptimizer of empirisch gevalideerd klantmodel; intake en praktijkpoorten blijven nodig |
 | Klantadvies | Pas na intake, chronologische replay, scenario's, onafhankelijke controle en menselijke goedkeuring |
 
 De referentie bevat geen klantdata. Productiecode, klantbestanden en prijsafspraken horen in een afgeschermde omgeving. Een onbekende technische waarde wordt niet stilzwijgend een standaard of een groen oordeel.
@@ -28,14 +29,28 @@ De referentie bevat geen klantdata. Productiecode, klantbestanden en prijsafspra
 | 06 | [Parameters](06-parameters.md) | Bevestigde waarden, schattingen en geldigheidsdata |
 | 07 | [Rekenvoorbeeld](07-rekenvoorbeeld.md) | Basis, gevoeligheden en wat het voorbeeld niet bewijst |
 | 08 | [Correcties en acceptatie](08-correcties-en-acceptatie.md) | Traceerbare dekking van de review en verplichte pilotpoorten |
+| 09 | [Uitvoerbaar notebook](09-notebook.md) | Installeren, gezamenlijke rekenkern, invoercontract, uitvoer en grenzen |
 
 ## Reproduceren
 
-Python 3.11 of nieuwer, in een eigen omgeving:
+**Volledige gezamenlijke optimalisatie:** Python 3.12+, in een eigen omgeving. Open daarna het notebook en kies Run All. Het bevat alle code en heeft geen API-sleutel nodig.
+
+```sh
+python -m pip install -r docs/vlootanalyse/requirements-notebook.txt
+python -m jupyterlab docs/vlootanalyse/vlootanalyse.ipynb
+```
+
+**Alle Python-tests** na installatie van die omgeving:
+
+```sh
+python -m unittest discover -s docs/vlootanalyse -p 'test_*.py' -v
+```
+
+**Oorspronkelijke beperkte laadreferentie:** Python 3.11+, in een eigen omgeving. Selecteer alleen deze tests als je uitsluitend de oude requirements installeert:
 
 ```sh
 python -m pip install -r docs/vlootanalyse/requirements.txt
-python -m unittest discover -s docs/vlootanalyse -p 'test_*.py' -v
+python -m unittest discover -s docs/vlootanalyse -p 'test_referentie.py' -v
 python docs/vlootanalyse/rekenvoorbeeld.py
 ```
 

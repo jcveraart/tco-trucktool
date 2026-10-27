@@ -1,6 +1,6 @@
 # 05 · Oplossen en valideren
 
-Stand 27 oktober 2026. Het ongeteste Gurobi-skelet is verwijderd: het dekte belangrijke voorwaarden uit het ontwerp niet. [03](03-model.md) is de gecorrigeerde ontwerpbron; `referentie.py` is de beperkte, uitgevoerde referentie. Een beschreven uitbreiding is geen geïmplementeerde feature.
+Stand 27 oktober 2026. Het ongeteste Gurobi-skelet is verwijderd: het dekte belangrijke voorwaarden uit het ontwerp niet. [03](03-model.md) is de gecorrigeerde ontwerpbron; `referentie.py` is de beperkte, uitgevoerde referentie. Sinds de notebookronde bevat [vlootanalyse.ipynb](vlootanalyse.ipynb) daarnaast de gezamenlijke uitvoerbare MILP-kern voor voertuigkeuze, vervanging, infrastructuur en laden. [09](09-notebook.md) beschrijft de geteste dekking en grenzen. De beperkte `referentie.py` en de nieuwe gezamenlijke kern zijn afzonderlijke implementaties.
 
 ## 1. Solver en modelleertaal
 
@@ -59,7 +59,13 @@ python -m unittest discover -s docs/vlootanalyse -p 'test_*.py' -v
 python docs/vlootanalyse/rekenvoorbeeld.py
 ```
 
-## 6. Wat het model oplevert
+## 5.3 Gezamenlijke optimalisatie in het notebook
+
+[vlootanalyse.ipynb](vlootanalyse.ipynb) bevat alle code, een vierjarige fictieve casus, oplossing, tabellen, grafieken, vergelijking met de huidige vloot, vaste-investeringsreplay en gevoeligheden. `vlootmodel.py` bevat dezelfde importeerbare kern; `test_vlootmodel.py` bevat 30 gerichte controles. Installeer `requirements-notebook.txt` voor deze uitvoering. Er is ook een tienjarige beslisketentest, maar nog geen prestatiebenchmark op een grote echte vloot.
+
+Het model toetst alle matrixrijen, bounds en integrality en reconstrueert accu-/net-/kastbalansen en NCW afzonderlijk. Het rekent met expliciet bevestigde kandidaten en dienstvarianten. Juridische/fiscale aanspraak en verbruiksnauwkeurigheid volgen niet uit de solver.
+
+## 6. Wat de beperkte referentie oplevert
 
 Een referentierun levert haalbaar/ondoenlijk, modus, depotpiek, acculadingen en laadvermogens. Het voorbeeld voegt eenvoudige jaar-TCO-scenario's toe. Het levert geen optimale vervangkalender, subsidieclaim of beproefd klantadvies.
 
