@@ -53,6 +53,10 @@ test('GA4 loads once after statistics consent on the production host and is disa
  for(const hostname of ['localhost','example.test','stekkerofdiesel.nl.evil.test']){const local=browser(undefined,{hostname});local.click('yes');assert.equal(local.scripts.length,0)}
 });
 
+test('enabling statistics later sends the current page exactly once without waiting for navigation',()=>{
+ const b=browser(undefined,{hostname:'stekkerofdiesel.nl'});b.c.page='calc';b.click('no');b.click(null,'footer');b.e.ckS.checked=true;b.click('set');assert.equal(b.commands().filter(x=>x[0]==='event'&&x[1]==='page_view').length,1);b.click(null,'footer');b.click('set');assert.equal(b.commands().filter(x=>x[0]==='event'&&x[1]==='page_view').length,1);
+});
+
 test('GA4 drops form contents, number plates, raw search terms, error messages and private URL parameters',()=>{
  const b=browser(undefined,{hostname:'stekkerofdiesel.nl',search:'?utm_source=newsletter&utm_medium=email&utm_campaign=autumn-2026&s=private-share-state&email=private@example.com'});b.c.track('page_view');b.click('yes');
  b.c.track('wizard_complete',{vt:'bestel',model:'peugeot-e-partner',jr:5,seen:5,inputs:{plk:'AB123C',name:'Private Person'},email:'private@example.com',diff_year:1234});
