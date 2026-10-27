@@ -3234,6 +3234,7 @@ function dropIds(){
 }
 /* via: 'banner', 'settings' of 'tcf' (de toestemmingsmelding van Google, als die in AdSense aan staat) */
 function setConsent(c,via){
+ const previouslyAllowed=statOK(),queuedView=pend.some(e=>e.event==='page_view');
  const changed=!consent||consent.stat!==!!c.stat||consent.ads!==!!c.ads;
  consent={v:CK_VER,stat:!!c.stat,ads:!!c.ads,t:Date.now()};
  if(GA_ID)window['ga-disable-'+GA_ID]=!consent.stat;
@@ -3247,6 +3248,7 @@ function setConsent(c,via){
  abMark();
  if(changed&&via!=='load')track('consent',{stat:consent.stat,ads:consent.ads,via});
  pend.splice(0).forEach(e=>send(e));
+ if(consent.stat&&!previouslyAllowed&&!queuedView&&via!=='load'&&typeof page==='string')track('page_view',{p:page});
  if(changed&&typeof render==='function'&&typeof page==='string')render();
 }
 /* Melding */
