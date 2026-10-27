@@ -1,6 +1,6 @@
 # 02 · Data: wat we vragen en hoe we het klaarmaken
 
-Het model is zo goed als de data. Dit document zegt welke data we van een klant vragen, in welk formaat, hoe we die aanvullen uit open bronnen, hoe we opschonen, en hoe we van ruwe ritten naar de diensten en representatieve dagen komen die het [model](03-model.md) gebruikt.
+Stand 27 oktober 2026. De eerste scope is beschreven in [01](01-werkwijze.md). Een databestand is geen bewijs dat alle vereiste eigenschappen bevestigd zijn. Het model is zo goed als de data. Dit document zegt welke data we van een klant vragen, in welk formaat, hoe we die aanvullen uit open bronnen, hoe we opschonen, en hoe we van ruwe ritten naar de diensten en representatieve dagen komen die het [model](03-model.md) gebruikt.
 
 ---
 
@@ -11,9 +11,9 @@ Het model is zo goed als de data. Dit document zegt welke data we van een klant 
 | 1. Altijd | Voertuiglijst | Wagenparkbeheer, Excel | Wie, wat, hoe oud, welk contract | Geen analyse |
 | 1. Altijd | Tankpasdata, 12 maanden | Export van de tankpas | Werkelijk verbruik en kilometers | Verbruik uit catalogus, grote marge |
 | 1. Altijd | Depot en aansluiting | Energierekening, netbeheerder | Laadplan, netbehoefte | Alleen per voertuig rekenen |
-| 2. Veel beter | Ritten en stops, 3 tot 12 maanden | Telematica of planningssysteem | Diensten, stilstand op depot, laadkansen | Diensten grof benaderd uit tankpas |
+| 2. Veel beter | Ritten en stops, 3 tot 12 maanden | Telematica of planningssysteem | Diensten, stilstand op depot, laadkansen | Alleen kostenoriëntatie; geen onderbouwde dagelijkse ritgeschiktheid |
 | 2. Veel beter | Kwartierverbruik depot | Meetbedrijf (grootverbruik), slimme meter (kleinverbruik) | Ruimte op de aansluiting per kwartier | Standaardprofiel |
-| 3. Grote vloot | Voertuigdata via rFMS (de standaard van de truckmerken) | Portalen van DAF, Scania, Volvo, Mercedes-Benz, MAN | Exact verbruik, snelheid, gewicht | Regressie op ritdata |
+| 3. Grote vloot | Voertuigdata via rFMS (de standaard van de truckmerken) | Portalen van DAF, Scania, Volvo, Mercedes-Benz, MAN | Beschikbare voertuigsignalen; volledigheid, meetgrens en hardware per veld controleren | Regressie op ritdata |
 
 Met alleen laag 1 maken we een quickscan. Voor een vlootplan is laag 2 nodig.
 
@@ -28,7 +28,7 @@ We sturen de klant een Excel-bestand met een tabblad per sjabloon, plus een kort
 | Veld | Type | Voorbeeld | Toelichting |
 | --- | --- | --- | --- |
 | **voertuig_code** | tekst | `BW-07` | Eigen code van de klant of door ons gegeven. |
-| **kenteken** | tekst | `12-ABC-3` | Voor RDW-aanvulling; daarna vervangen door de code. |
+| kenteken | tekst | `12-ABC-3` | Voor RDW-aanvulling; daarna vervangen door de code. |
 | **soort** | keuze | `bakwagen` | `trekker`, `bakwagen`, `bestel`, `bus` (zelfde indeling als de calculator). |
 | **depot** | tekst | `tilburg` | Waar het voertuig 's nachts staat. |
 | **eigendom** | keuze | `lease` | `koop`, `lease`, `financial_lease`, `huur`. |
@@ -58,7 +58,7 @@ We sturen de klant een Excel-bestand met een tabblad per sjabloon, plus een kort
 | plaats | tekst | `Tilburg` |
 | land | tekst | `NL` |
 
-De meeste tankpasportalen hebben een transactie-export naar Excel of CSV per periode. Vraag 12 maanden, zodat winter en zomer erin zitten.
+De meeste tankpasportalen hebben een transactie-export naar Excel of CSV per periode. Vraag bij voorkeur 12 maanden en leg ontbrekende perioden vast; een kortere periode rechtvaardigt geen uitspraak over niet-gemeten seizoenen.
 
 ### 2.3 `ritten` (uit telematica of planning)
 
@@ -85,7 +85,7 @@ De meeste tankpasportalen hebben een transactie-export naar Excel of CSV per per
 | soort | keuze | `klant` | `klant`, `pauze`, `depot`, `tanken`, `overig`. |
 | laadpaal | keuze | `onbekend` | `ja` (met kW), `nee`, `onbekend`. |
 
-Telematicasystemen hebben vrijwel allemaal een ritrapport (rittenoverzicht) met per rit vertrek, aankomst, adres en kilometers, en een stoprapport. Een export per voertuig per maand naar Excel volstaat. Ruwe GPS-punten vragen we niet.
+Telematicasystemen hebben vrijwel allemaal een ritrapport (rittenoverzicht) met per rit vertrek, aankomst, adres en kilometers, en een stoprapport. Een export per voertuig per maand kan als bron dienen; controleer tijdzone, volledigheid en de definitie van rit en stop voordat de gegevens geschikt worden verklaard. Ruwe GPS-punten vragen we niet.
 
 ### 2.5 `depots`
 
@@ -120,9 +120,9 @@ Klanten, eigen vestigingen en vaste pauzeplekken waar geladen kan worden: locati
 | --- | --- | --- |
 | RDW open data (kenteken) | Merk, handelsbenaming, datum eerste toelating, leeggewicht, toegestane maximummassa, brandstof, emissieklasse | Soort en klasse (N1, N2, N3), leeftijd, laadvermogen, zero-emissiezoneregels |
 | KNMI daggegevens | Gemiddelde en minimale temperatuur per dag (dichtstbijzijnde station) | Wintertoeslag op verbruik, keuze representatieve dagen |
-| Day-ahead-stroomprijzen (bijvoorbeeld via het ENTSO-E-transparantieplatform) | Uurprijzen | Prijsprofiel bij een dynamisch contract |
+| Day-ahead-stroomprijzen (bijvoorbeeld via het ENTSO-E-transparantieplatform) | Intervalprijzen (tegenwoordig ook kwartieren) | Prijsprofiel bij een dynamisch contract |
 | Openbare laadpuntregisters en de sites van truckladernetwerken | Locatie, vermogen, geschiktheid voor vrachtwagens | Laadkansen onderweg |
-| Capaciteitskaart van de netbeheerders | Of er een wachtrij is in het gebied | Verwachte $`y^{\min}_{o,\ell}`$, als de klant het nog niet weet |
+| Capaciteitskaart van de netbeheerders | Indicatie van congestie | Alleen scenario; geen individuele wachttijd of transportrecht |
 | Zero-emissiezones (dezelfde gegevens als de [kaart in de overstapgids](https://stekkerofdiesel.nl/overstapgids/zero-emissiezones/)) | Zonegrenzen en ingangsdata | Welke diensten een zone in rijden |
 | Hoogtedata | Helling per ritsegment | Alleen bij heuvelachtige routes (buitenland) |
 | Modellencatalogus van de site (`data/vehicles_catalog.json`, Supabase) | Accu, bereik, laadvermogen, prijs | Kandidaattypen $`\mathcal{K}`$ |
@@ -134,105 +134,67 @@ Klanten, eigen vestigingen en vaste pauzeplekken waar geladen kan worden: locati
 ### 4.1 Tankpas
 
 1. Sorteer per voertuig op tijd.
-2. Kilometerstanden moeten oplopen. Een stand die terugloopt of meer dan 3.000 km (vrachtwagen) of 1.500 km (bestelbus) na de vorige ligt, is waarschijnlijk een tikfout: markeer en sla die tankbeurt over in de verbruiksberekening.
-3. Verbruik per periode = liters tussen twee volle tankbeurten gedeeld door de kilometers ertussen. Gebruik maandgemiddelden om ruis van niet-volle tankbeurten te dempen.
-4. Meerdere voertuigen op één pas: verdelen naar kilometers, of het voertuig weglaten uit de verbruikskalibratie.
+2. Kilometerstanden moeten reconcilieerbaar zijn. Markeer sprongen en teruglopende standen. Een groot verschil kan door een lang interval of een ontbrekende tankbeurt komen; verwijder niets automatisch op een vaste kilometergrens.
+3. Liters tussen volle tankbeurten zijn alleen bruikbaar als vol-tank-status betrouwbaar is. Leg opening/eindvoorraad, gedeeltelijk tanken en hulpverbruik vast of gebruik een langere gereconcilieerde periode met onzekerheidsband. Het huidige transactiesjabloon bewijst geen volle tank.
+4. Meerdere voertuigen op één pas: eerst toewijzing onderzoeken. Een verdeling naar kilometers is een expliciete schatting, geen gemeten kalibratie.
 5. AdBlue: meestal 3 tot 6% van het dieselverbruik. Ver daarbuiten: controleren.
 6. Plausibiliteit per soort (zie [06 · Parameters](06-parameters.md#voertuigen-per-soort)): een bakwagen op 8 l/100 km of 60 l/100 km is fout of bijzonder.
 
 ### 4.2 Ritten en stops
 
-1. Ritten korter dan 0,5 km of korter dan 2 minuten zijn meestal verplaatsingen op het terrein: samenvoegen met de stop.
+1. Markeer korte ritten en terreinverplaatsingen; verwijder ze niet automatisch. PTO, koeling en omzetten kunnen bedrijfsmatig relevant zijn.
 2. Gaten in de tijd (voertuig vertrekt ergens anders dan waar het aankwam): markeren; vaak een gemiste rit door storing.
-3. Kilometers per rit vergelijken met de rechte afstand × 1,3: veel groter of kleiner is verdacht.
+3. Vergelijk met een plausibele route voor de voertuigklasse. Rechte afstand × 1,3 is hoogstens een signaal; rondritten, zones en truckbeperkingen kunnen veel afwijken.
 4. Totale kilometers per voertuig per maand vergelijken met de tankpas; meer dan 10% verschil uitzoeken.
 
 ---
 
 ## 5. Van ritten naar diensten
 
-Een **dienst** is wat één voertuig op één dag doet, van vertrek uit het depot tot terugkomst. Dat is de eenheid van het model.
+1. Normaliseer tijdstippen naar UTC met bewaarde lokale bedrijfstijd en oorspronkelijke offset. Een lokale dag kan 92, 96 of 100 kwartieren bevatten.
+2. Gebruik unieke voertuig-/contract-ID's, bronbestand en exportversie. Leg begin-/eindlocatie en SoC vast waar beschikbaar.
+3. Bouw diensten uit de echte ritten en stops; behoud meerdaagse ketens en externe overnachtingen. Een dagovergang reset geen accu of voertuiglocatie.
+4. Stel planningsgroepen en vaste plekken met de klant vast. Een gebiedscirkel kan depotstops helpen herkennen, maar bevestig de ligging en toegang.
+5. Splits intervallen op werkelijke aankomst-/vertrekgrenzen. Een fractie kwartier kan geen overlappende stekkerbezetting legitimeren.
+6. Maak laadacties uitsluitend uit bevestigde stilstand en geschikte locaties. Neem aansluiten, trucktoegang en omrijden mee; een ontbrekende pauze wordt geen automatisch ingevoegde laadstop.
+7. Extra wachttijd vraagt een herberekende hele dienst met latere tijdvensters. De referentie ondersteunt alleen vaste vensters.
+8. Route-/zone-/tolinformatie vraagt routegegevens of bevestigde routeklassen; alleen vertrek- en eindpunt bewijzen niet welke wegen zijn gereden.
 
-**Algoritme**
-
-1. **Depots herkennen.** Een cirkel van 150 tot 300 m om elk eigen depot. Een stop binnen die cirkel is een depotstop.
-2. **Dagen afbakenen.** Kies als dagovergang het moment waarop de meeste voertuigen op het depot staan (vaak tussen 01:00 en 04:00). Zo valt een late avonddienst niet in tweeën.
-3. **Dienst per voertuig per dag:** alle ritten en stops tussen twee dagovergangen. Begint en eindigt hij op het depot, dan is $`o(j)`$ dat depot.
-4. **Externe overnachting** (voertuig slaapt elders): de dienst eindigt daar. Laden kan dan alleen via een laadkans op die plek. Markeer deze diensten; ze komen apart in het rapport.
-5. **Op het depot per tijdstap:** $`\delta_{j,t} = 1`$ als het voertuig het hele kwartier op het depot staat. Voor gedeeltelijke kwartieren gebruiken we de fractie (0 tot 1) als vermenigvuldiger van het maximale laadvermogen in restrictie (A5).
-6. **Verbruik per tijdstap:** het verbruik van een rit (uit §7) verdelen we over de kwartieren waarin gereden wordt, naar rato van de tijd.
-7. **Laadkansen onderweg** maken we van stops:
-   - pauzes van 45 minuten of langer binnen 5 km van een geschikte snellader;
-   - stops bij een klant of eigen locatie met laadpaal, met stilstand van minstens 15 minuten;
-   - per laadkans: $`t_s`$, $`\tau_s`$, $`P^{\text{rt}}_s`$, omrijkilometers en omrijtijd, soort (voor de bedrijfsschakelaars).
-8. **Rijtijden:** waar de data geen pauze laat zien, leggen we een verplichte pauze na 4,5 uur rijden; die wordt een potentiële laadkans (variant B in [04 · Bedrijfsvarianten](04-bedrijfsvarianten.md#1-onderweg-laden)).
-9. **Eisen aan de dienst:** maximale lading, koeling, zones op de route, buitenlandse kilometers, kilometers op het heffingsnet. Daaruit volgt $`\phi_{j,m,y}`$.
-
-**Alleen tankpasdata, geen ritten (quickscan).** Benader een dienst per werkdag: kilometers per dag = kilometers tussen tankbeurten gedeeld door werkdagen. Neem een standaardwerkdag (bijvoorbeeld vertrek 06:00, terug 17:00) en zeg in het rapport dat dit grof is. De spreiding over dagen is onbekend, dus gebruik voor ritgeschiktheid een toeslag (bijvoorbeeld de langste dag = 1,4 × gemiddelde dag).
-
----
+Alleen tankpasdata geven geen vertrek, terugkomst of dagspreiding. Zij ondersteunen kostenoriëntatie, geen groen haalbaarheidsoordeel uit een fictieve langste-dagfactor.
 
 ## 6. Representatieve dagen
 
-Het model rekent niet met 365 dagen maar met 6 tot 12 echte historische dagen die het jaar vertegenwoordigen, plus een paar extreme dagen.
+Kies hele echte depotdagen, inclusief gelijktijdigheid van diensten en gebouwbelasting. Clustering is een screeningsmethode, geen validatie. Vergelijk jaarenergie, piek, beschikbaarheidsvensters en kritieke dienstdekking; voeg drukke koude dagen, late terugkomst, korte nachten en laderuitval toe.
 
-**Kenmerken per historische dag** (elk genormaliseerd):
+Bewaar extreme dagen ook als hun kostenweging nul is. Externe dekking daarop moet expliciet toegestaan, beschikbaar en geprijsd zijn. Een nulgewicht maakt een niet-passende dienst niet gratis of robuust.
 
-- totaal benodigde energie per depot als alles elektrisch zou rijden (met het standaard elektrische verbruik);
-- aantal diensten;
-- energie van de zwaarste dienst;
-- kortste stilstand op het depot;
-- aantal voertuigen op het depot per uur (24 getallen);
-- gemiddelde buitentemperatuur;
-- weekdag of weekend.
-
-**Methode:** k-medoids (PAM) met $`k`$ tussen 6 en 12. Een medoid is een echte dag, dus alle diensten en stilstanden zijn echt en onderling consistent. Gewicht $`w_d`$ = aantal dagen in het cluster, geschaald naar het aantal inzetdagen per jaar.
-
-**Extreme dagen** $`\mathcal{D}^x`$, met gewicht 0 of 1:
-
-1. de dag met de meeste totale energie;
-2. de koudste werkdag;
-3. de dag met de zwaarste enkele dienst;
-4. de dag met de kortste nachtelijke stilstand.
-
-**Controle:** reken met de representatieve dagen het jaarverbruik en de jaarpiek (bij alles elektrisch, dom laden) en vergelijk met alle dagen. Verschil meer dan 5%: $`k`$ verhogen of kenmerken aanpassen. Met minder dan 60 dagen data gebruiken we gewoon alle dagen.
-
----
+Speel het gekozen plan daarna chronologisch terug op **alle beschikbare opeenvolgende dagen**, met dezelfde fysieke voertuigen en begin/eind-SoC. Gebruik waar mogelijk een andere periode dan de kalibratie en voeg ontbrekende seizoenen als scenario of meetvraag toe.
 
 ## 7. Energiemodel kalibreren
 
-**Stap 1: startwaarde uit diesel.** Voor dezelfde dienst verhoudt elektrisch verbruik zich ruwweg tot dieselverbruik als de rendementen van de aandrijving. Een liter diesel bevat ongeveer 10 kWh; een dieselaandrijving haalt daar 35 tot 42% van, een elektrische 85 tot 90%. De standaardwaarden van de calculator geven deze verhoudingen:
+Begin bij bevestigde gegevens van dezelfde uitvoering en vergelijkbare inzet. Diesel-naar-elektrisch is een expliciete startschatting; aandrijfverliezen, stilstand, PTO en koeling zijn niet met één vaste factor te scheiden.
 
-| Soort | Diesel l/100 km | Elektrisch kWh/100 km | kWh per liter |
-| --- | --- | --- | --- |
-| Trekker | 30 | 115 | 3,8 |
-| Bakwagen | 25 | 100 | 4,0 |
-| Bestelbus | 9 | 25 | 2,8 |
-| Bus | 32 | 120 | 3,8 |
+Kalibreer temperatuur, belading en snelheid tegen passende EV-data of een praktijkproef. Vermijd een tweede wintertoeslag als de startwaarde die al bevat. Fabrieksbereik gedeeld door accucapaciteit is geen praktijkmeting.
 
-Dus: elektrisch verbruik van een dienst ≈ diesel l/100 km van dat voertuig × de factor van zijn soort.
+Hulpverbruik volgt actieve uren tijdens rijden én stops: koeluren, PTO-werkuren, HVAC en voorconditioneren afzonderlijk. De fysische recuperatie gebruikt positieve arbeid en terugwinning apart; zie [03 §5](03-model.md#5-laag-1-voorbewerking-per-dienst-en-voertuigsoort).
 
-**Stap 2: corrigeren voor het type.** Een type met een lagere fabrieksopgave dan het categoriegemiddelde krijgt naar verhouding minder: vermenigvuldig met $`\text{verbruik}_k / \text{verbruik}_{\text{soort}}`$ uit de catalogus.
-
-**Stap 3: temperatuur.** Toeslag per dag: $`1 + \beta_4 \max(0, 15 - T_d)`$, met $`\beta_4`$ zo gekozen dat een dag rond 0 °C 15 tot 30% meer verbruikt (meer bij bestelbussen en stadsdistributie, minder bij trekkers op de snelweg). Bij voertuigen met warmtepomp lager.
-
-**Stap 4: gewicht en snelheid**, als ritdata dat geven: regressie zoals in het model (§5.1). Ankerpunten: fabrieksopgaven bij genoemde belading, praktijkmetingen uit open bronnen, en het liefst data van een elektrisch voertuig dat de klant al heeft.
-
-**Stap 5: marge.** Ontwerpverbruik = berekend verbruik × (1 + 10%) voor de ritgeschiktheid. In de kosten rekenen we zonder die marge.
-
-**Stap 6: koeling en aftakas** apart optellen (kWh per uur), uit opgave van de fabrikant van de koelunit of telematica.
-
----
+Bewaar twee reeksen: verwacht verbruik voor kosten en expliciet ontwerp-/stressverbruik voor haalbaarheid. Rapporteer hun aannames en foutband. Een marge van 10% is een aanname, geen bewezen zekerheid.
 
 ## 8. Gebouwprofiel en prijsprofiel
 
-**Gebouw.** Uit `verbruik_kwartier` per representatieve dag het profiel van dezelfde datum nemen. Zonder kwartierdata: een standaardprofiel voor bedrijven (bijvoorbeeld de NEDU-profielen) geschaald naar het jaarverbruik. Zeg in het rapport dat dit geschat is.
+Meterdata bevatten expliciet begin/eind, eenheid, richting en meetgrens. Kwartier-kWh × 4 is gemiddeld kW bij exact 15 minuten; gebruik bij andere intervallen de echte duur. Controleer bestaande EV-laders, zonnepanelen en teruglevering om dubbeltelling te voorkomen.
 
-**Stroomprijs.**
+Een standaardgebouwprofiel is alleen screening en geen bewijs dat een aansluiting een vloot draagt. Gebruik voor een definitieve depottoets echte intervalmetingen én het transportcontract. Een 3×80A-aansluiting vraagt ook fase-/installatiecontrole; de laadpalen krijgen niet automatisch alle circa 55 kW.
 
-- Vast contract: één prijs per kWh, plus energiebelasting en netkosten.
-- Dynamisch: uurprijzen van dezelfde datum vorig jaar, verschoven naar het verwachte prijsniveau, plus opslag leverancier, energiebelasting en netkosten per kWh.
-- Toekomstige jaren: een prijspad per scenario (zie [06 · Parameters](06-parameters.md#prijzen-en-prijspaden)).
+Prijs-, gebouw- en ritprofielen gebruiken dezelfde UTC-tijdas, ook bij kwartierprijzen en zomer-/wintertijd. Bij een dynamisch contract gelden opslag en belasting volgens dat contract; voeg ze niet nogmaals toe aan een all-in prijs. Toekomstprijzen zijn scenario's met een passende reële of nominale rente.
+
+### Verplichte metadata en uitvoeringsgegevens
+
+Bewaar per veld waarde, eenheid, status (`bevestigd`, `schatting`, `onbekend`), bron, controledatum en geldigheidsperiode. Voeg toe: chassis/opties/opbouwprijs, echte bruikbare accu, AC/DC-acceptatie, connector, payload/aslasten, contractdekking en reserve/charter.
+
+De openbare catalogus is een oriëntatiebron. Op 27 oktober bevat de geaudite JSON 67 modellen, 24 expliciete bruikbare accu's, 7 expliciete verbruiken, 32 numerieke prijzen en geen gestructureerd AC-veld. Dit zegt niets over eventueel aanvullende live databasevelden. Vul ontbrekende waarden niet gunstig in; vraag een uitvoering/offerte of beperk de conclusie.
+
+De referentie `normaliseer_meter` weigert ontbrekende tijdzone, overlap en onbekende eenheden; gaten komen zichtbaar in het kwaliteitsrapport. Een echte importketen moet daarnaast voertuigen, brandstofvoorraad, locaties en contracten reconcilieren.
 
 ---
 
@@ -249,6 +211,13 @@ Na het opschonen een kort intern overzicht:
 | Tankpas | dekking in % van de kilometers |
 | Kwartierdata | ja of standaardprofiel |
 | Representatieve dagen | $`k`$, fout in jaarverbruik en jaarpiek |
-| Aannames | lijst |
+| Aannames | lijst, bronstatus, goedkeuring en effect op advies |
 
 De aannames gaan mee naar de bijlage van het rapport.
+
+## 10. Beslispoort voor data
+
+Geen ritdata: alleen kostenbandbreedte. Geen bevestigde uitvoering: geschiktheid niet aangetoond. Geen echte meterdata of transportcontract: geen definitief depotbewijs. Geen passende EV-meting: verbruik blijft een gekalibreerde/geschatte band met praktijkcontrole als voorwaarde.
+
+Bronnen: [Webfleet-rapportage](https://www.webfleet.com/en_gb/webfleet/products/webfleet/reporting/), [ENTSO-E marktresolutie](https://www.entsoe.eu/network_codes/cacm/implementation/sdac/), [betekenis capaciteitskaart](https://capaciteitskaart.netbeheernederland.nl/info/faq/).
+

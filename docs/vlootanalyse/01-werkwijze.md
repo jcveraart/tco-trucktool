@@ -1,236 +1,123 @@
 # 01 · Werkwijze: van aanvraag tot vlootplan
 
-Dit is de praktische gids: wat we doen vanaf het moment dat een aanvraag binnenkomt via [de vlootanalysepagina](https://stekkerofdiesel.nl/vlootanalyse/) tot het rapport op tafel ligt, en daarna. De wiskunde staat in [03 · Model](03-model.md); hier gaat het om het traject, de vragen, de controles en de afspraken.
-
----
+Stand 27 oktober 2026. De eerste versie is een begeleide analyse, geen automatische online vlootoptimizer. De geteste referentie staat in [05](05-oplossen.md); de toekomstige strategie in [03](03-model.md).
 
 ## 1. Wat we leveren
 
-| Pakket | Voor wie | Inhoud | Data nodig | Doorlooptijd |
-| --- | --- | --- | --- | --- |
-| **Quickscan** | 3 tot 20 voertuigen, eerste oriëntatie | TCO per voertuig met eigen cijfers, globale ritgeschiktheid, vervangvolgorde, eerste inschatting laden op het depot | Voertuiglijst, tankpasdata, gegevens aansluiting | 1 week |
-| **Vlootplan** | 5 tot 100 voertuigen, wil beslissen | Alles van de quickscan, plus ritanalyse per dienst, laadplan met netaansluiting, vervangplan per jaar uit de optimalisatie, subsidietiming, onzekerheid, bespreking | Plus ritdata (telematica of planning) en kwartierverbruik van het depot | 2 tot 4 weken |
-| **Monitoring** | Klanten na een vlootplan | Elk kwartaal de echte ritten en het echte laden naast het plan; seintje als het volgende voertuig rijp is; jaarlijkse herberekening | Doorlopende export of koppeling | doorlopend |
+| Product | Benodigde gegevens | Verdedigbare uitkomst |
+|---|---|---|
+| Kostenoriëntatie | Voertuigen, jaar-km, verbruik, contracten/offertes | TCO-bandbreedte en meetvragen; geen groen actieradiusoordeel |
+| Begeleide pilot | Eén depot, vergelijkbare voertuigen, vaste of begrensde routegroepen, echte ritten en laadvensters | Ritgeschiktheid met voorwaarden, laadplan, kosten/kasstromen en uitzonderingen |
+| Vlootplan | Pilotgegevens plus meterdata, netcontract, bewezen uitvoering en chronologische validatie | Onderbouwde vervangvolgorde en uitvoeringsstappen, na menselijke controle |
+| Monitoring | Nieuwe meetdata en vastgestelde afspraken | Plan versus praktijk en herberekening; geen ongevraagde werknemersmonitoring |
 
-De site toont bewust geen prijs, en deze repository is openbaar: prijzen en offertes horen hier dus niet. Spreek per pakket een vaste prijs af (monitoring per voertuig per maand) en stel die bij na de eerste vijf klanten, op basis van de gemeten tijd per stap in §2.
-
----
+Start bij voorkeur met 5–20 voertuigen die regelmatig op één depot terugkomen. Dit is een gekozen scope, geen universele marktgrens. Internationaal meerdaags werk, thuisladen, complexe koeling/PTO en batterij/zon vragen aanvullende gegevens en eigen tests. Zet klantdata, offertes en prijsafspraken niet in deze openbare repository.
 
 ## 2. Het traject in tien stappen
 
-| Stap | Wat | Uitkomst | Tijd (vlootplan) |
-| --- | --- | --- | --- |
-| 0 | Aanvraag komt binnen (tabel `fleet_requests` in Supabase) | Reactie binnen 1 werkdag, zoals de site belooft | 15 min |
-| 1 | Kennismaking (30 tot 45 minuten, bellen of langs) | Beeld van de vloot, het doel en de beslisser | 1 uur |
-| 2 | Voorstel en afspraken | Pakket, prijs, planning, verwerkersovereenkomst getekend | 1 uur |
-| 3 | Data-intake | Sjablonen ingevuld, exports ontvangen | 1 week wachten, 1 uur werk |
-| 4 | Data opschonen en diensten opbouwen | Schone diensten per dag, voertuigen aangevuld uit RDW, kwaliteitsrapport | 2 tot 6 uur |
-| 5 | Quickscan | TCO per voertuig en globale ritgeschiktheid; eerste gevoel | 1 uur |
-| 6 | Optimalisatie en scenario's | Vervangplan, laadplan, netbehoefte, scenario's | 2 tot 6 uur |
-| 7 | Controle | Vier-ogen-check, plausibiliteit, terugtoets op historische dagen | 1 tot 2 uur |
-| 8 | Rapport en bespreking | Rapport, bespreking van 60 tot 90 minuten | 3 uur |
-| 9 | Nazorg | Vragen, offertes vergelijken, eventueel monitoring | naar behoefte |
+| Stap | Werk | Bewijs/uitkomst |
+|---|---|---|
+| 0 | Aanvraag opvolgen | Verantwoordelijke medewerker en bevestigde melding/werkvoorraad |
+| 1 | Kennismaking en scope | Beslisvraag, geschikte eerste inzetgroep, onbekende voorwaarden |
+| 2 | Voorstel en data-afspraken | Product, prijs, planning, privacyrollen en bevoegdheden |
+| 3 | Beveiligde data-intake | Originele bestanden, eenheden, tijdzone, dekking en herkomst |
+| 4 | Opschonen | Versiebeheer, kwaliteitsrapport en expliciete correcties |
+| 5 | Kosten- en ritscreening | Bevestigd/geschat/onbekend; alternatieven en meetvragen |
+| 6 | Laadplan en financiële scenario's | Fysieke connectoren, werkelijke netgrens, kasstromen |
+| 7 | Replay en onafhankelijke controle | Alle beschikbare opeenvolgende dagen en verklaarde uitzonderingen |
+| 8 | Praktijkcontrole, rapport en bespreking | Passende proefrit/laadsessie en tweede beoordelaar |
+| 9 | Nazorg | Afspraken voor uitvoering, meting en actualisatie |
 
 ### Stap 0: aanvraag
 
-- De aanvraag staat in Supabase (`fleet_requests`: naam, bedrijf, e-mail, telefoon, aantal voertuigen, eventueel de link naar een berekening uit de calculator).
-- Reageer binnen 1 werkdag, liefst telefonisch, anders per mail vanaf help@stekkerofdiesel.nl. Stel een tijd voor de kennismaking voor.
-- Kijk vooraf: als er een calculatorlink is, open die; dan weet je al welk voertuig en welke cijfers de klant in gedachten heeft.
+De website slaat contactaanvragen op in `fleet_requests`. De database-insert bewijst geen e-mailmelding of opvolging. Controleer vóór klantwerving de daadwerkelijk uitgerolde RLS, een ontvangst-ID, meldingen en een eigenaar van de werkvoorraad. De belofte van reactie binnen één werkdag moet organisatorisch worden gedekt.
+
+Een client-side honeypot is geen serverbeveiliging. Een productie-intake vraagt een serverfunctie met validatie, begrenzing van aanvragen en idempotentie. De referentie is geen implementatie van die infrastructuur; verifieer dit afzonderlijk voor livegebruik.
 
 ### Stap 1: kennismaking
 
-Doel: begrijpen wat de klant wil beslissen, en of een quickscan of een vlootplan past. Gebruik de [vragenlijst in §3](#3-vragenlijst-kennismaking). Sluit af met:
-
-- welk pakket,
-- welke data de klant kan leveren en wie die gaat exporteren,
-- wanneer het rapport klaar is en wanneer de bespreking is.
+Bepaal de beslisvraag, uitvoeringen, planningsgroepen, rijpatroon en werkelijk beschikbare reserve/charterdekking. Stop of beperk de scope als ritten, technische eigenschappen of laadlocaties niet bevestigd kunnen worden. Een interessante kostenbesparing rechtvaardigt geen onhaalbare rit.
 
 ### Stap 2: voorstel en afspraken
 
-Een korte mail of pdf met: wat we doen, wat we nodig hebben, wanneer het klaar is, de prijs, de voorwaarden (inclusief de [beperking van aansprakelijkheid in §6](#6-privacy-afspraken-en-aansprakelijkheid)), en de verwerkersovereenkomst.
+Leg scope, output, beperkingen, prijs, verwacht overleg en benodigde data vast. Een doorlooptijd start na bruikbare intake, niet automatisch bij het eerste contact. Een volledig vlootplan in één dag is een te meten verbeterdoel; de oorspronkelijke trajectinschatting telde al circa 12–21 werkuren vóór nazorg.
 
 ### Stap 3: data-intake
 
-Stuur de sjablonen en de uitleg per tankpas en telematicasysteem uit [02 · Data](02-data.md#2-sjablonen). Bied aan om samen een half uur door de exports te lopen; dat scheelt dagen heen en weer mailen.
+Gebruik de sjablonen uit [02](02-data.md). Laat bronbestanden ongewijzigd en bewaar afgeleide versies met reden en datum. Bestanden gaan via afgeschermde, klantgebonden opslag, niet via analytics of de openbare repository.
 
-### Stap 4: opschonen en diensten opbouwen
+### Stap 4: opschonen
 
-Volgens [02 · Data](02-data.md). Altijd afsluiten met een kwaliteitsrapport voor jezelf: hoeveel dagen, hoeveel ritten, wat ontbrak, wat is aangenomen. Belangrijke aannames gaan later in het rapport.
+Reconcilieer voertuigen, kilometers, tankvolumes en energiemeting. Gaten worden gemarkeerd en niet als nulverbruik of stilstand ingevuld. Laat belangrijke aannames door de klant bevestigen.
 
 ### Stap 5: quickscan
 
-Reken elk voertuig door zoals de calculator dat doet, met de eigen cijfers van de klant (km per jaar, verbruik, prijzen). Plus per voertuig de eenvoudige ritgeschiktheid: haalt de langste gewone dag het met alleen 's nachts laden? Voor het quickscanpakket is dit, netjes opgeschreven, het product. Voor het vlootplan is het de controle of de optimalisatie later iets geks doet.
+Kostenoriëntatie kan met jaargegevens. Dagelijkse ritgeschiktheid vereist ritten/stops en passende uitvoeringsgegevens. Een fictieve langste dag uit een factor op gemiddelde km is geen haalbaarheidsbewijs.
 
 ### Stap 6: optimalisatie en scenario's
 
-Bouw de klantconfiguratie ([04 · Bedrijfsvarianten](04-bedrijfsvarianten.md#20-klantconfiguratie-in-één-bestand)), draai het model ([05 · Oplossen](05-oplossen.md)) en draai minstens deze scenario's:
-
-1. **Basis:** de configuratie zoals besproken.
-2. **Zonder onderweg laden** (als de basis het toestaat) of **met laden in de pauze** (als de basis het niet toestaat). De klant ziet zo wat die keuze waard is.
-3. **Geen netverzwaring:** wat kan binnen de huidige aansluiting, met slim laden en eventueel een batterij.
-4. **Prijzen tegen:** diesel 15% goedkoper, stroom 30% duurder, restwaarde elektrisch 10 procentpunt lager.
-5. **Alles diesel houden:** de referentie waartegen alle besparingen gelden.
-
-Plus de Monte Carlo over het gekozen plan voor de bandbreedte.
+Vergelijk eerst concrete plannen. Minimaal: basis, geen ERE, geen subsidie, lagere laadprestatie, zwaardere dag, kritieke lader uit en upgrade later. Extra wachttijd is alleen toegestaan als de hele dienst en de klanttijdvensters opnieuw worden gecontroleerd.
 
 ### Stap 7: controle
 
-Zie de [controlelijst in §5](#5-controlelijst-voor-oplevering). Bij twijfel: laat iemand anders de uitkomst in één zin navertellen; als die zin niet klopt met jouw verhaal, deugt het rapport nog niet.
+Doe chronologische replay op een periode buiten de kalibratie waar mogelijk. Iedere uitzondering krijgt reden, noodoplossing, beschikbare capaciteit en kosten. De norm wordt per klant gekozen; 97% is geen automatisch groen oordeel.
 
 ### Stap 8: rapport en bespreking
 
-Opbouw in [§4](#4-opbouw-van-het-rapport). Stuur het rapport een dag voor de bespreking. In de bespreking: begin met het antwoord ("vier van je twaalf wagens kunnen in 2027 elektrisch, dat scheelt zoveel per jaar, je aansluiting kan het aan met slim laden"), dan pas de onderbouwing.
+Vergelijk ten minste één passende praktijkdienst en laadsessie met het plan voordat het als gevalideerd klantadvies wordt gepresenteerd. Een tweede beoordelaar controleert input, oplossing en formulering van de conclusie.
 
 ### Stap 9: nazorg
 
-- Vragen beantwoorden, offertes van dealers en installateurs naast het plan leggen (we blijven onafhankelijk: geen voorkeur, geen commissie).
-- Na een half jaar bellen: is er iets veranderd? Dat is ook het moment om monitoring aan te bieden.
-
----
+Leg vast wanneer offertes, prijzen, routes en regels opnieuw worden gecontroleerd. Monitoring gebruikt nieuwe gegevens alleen binnen de afgesproken doelen en toegang.
 
 ## 3. Vragenlijst kennismaking
 
-Niet alles hoeft in het eerste gesprek. Wat er niet uitkomt, komt in de data-intake.
+Vraag naar doel en beslisdatum; eigendom, lease-einde en inbegrepen diensten; werkelijke uitvoeringen, payload en opbouw; vaste/flexibele routegroepen; normale en uitzonderlijke dagen; toegestane laadplekken; reservewagens en charterafspraken; netcontract en meterdata; beschikbare exports en verantwoordelijke voor aanlevering.
 
-**Doel en besluit**
-
-- Waarom nu? (zone, klant die het vraagt, contract dat afloopt, subsidie, kosten, imago)
-- Wie beslist, en wanneer moet er een besluit liggen?
-- Is er een doel (bijvoorbeeld "in 2030 de helft elektrisch") of een eis van een opdrachtgever?
-- Is er een budget per jaar?
-
-**Vloot**
-
-- Hoeveel voertuigen, welke soorten (trekker, bakwagen, bestelbus, bus), hoe oud?
-- Eigendom of lease, en wanneer lopen contracten af?
-- Al elektrische voertuigen? Ervaringen?
-- Bijzonderheden: koeling, laadklep, kraan of andere aftakas, ADR, assen, lange of zware ladingen.
-
-**Ritten en planning**
-
-- Vaste routes of elke dag anders?
-- Kan de planner diensten tussen wagens wisselen?
-- Hoe lang is een gewone dag, en de langste dag? Ploegendiensten?
-- Komen de wagens 's nachts terug op het depot? Of neemt de chauffeur de wagen mee naar huis?
-- Rijden jullie in zero-emissiezones, en zo ja welke?
-- Buitenland?
-- Charters of onderaannemers?
-
-**Laden**
-
-- Mag een chauffeur onderweg laden? Alleen in de pauze, of ook daarbuiten?
-- Hebben klanten laadpalen waar jullie lossen?
-- Hebben chauffeurs thuis een eigen oprit (bij bestelbussen)?
-
-**Depot en net**
-
-- Eigen terrein of huur? Ruimte voor laadpunten?
-- Netbeheerder, aansluitwaarde (bijvoorbeeld 3x80A of kVA), gecontracteerd vermogen?
-- Is er al contact met de netbeheerder geweest? Wat zei die?
-- Zonnepanelen of plannen daarvoor?
-- Energiecontract: vast, dag en nacht, of dynamisch?
-
-**Data**
-
-- Welk telematicasysteem (Webfleet, Trimble, Transics, fabrikantenportaal, anders)?
-- Welke tankpas (Travelcard, DKV, Shell, TotalEnergies, anders)?
-- Wie kan exports maken?
-
-**Bedrijf**
-
-- Aantal medewerkers en omzet (bepaalt AanZET en SPRILA).
-- BV of eenmanszaak (bepaalt het fiscale voordeel).
-
----
+Bepaal bedrijfsgrootte met de toepasselijke mkb-regels, inclusief balanstotaal en partner-/verbonden ondernemingen. Alleen FTE en omzet is onvoldoende. Vraag rechtsvorm en fiscale benutbaarheid als belastingvoordeel in de vergelijking komt.
 
 ## 4. Opbouw van het rapport
 
-Het rapport volgt de stijl van de bestaande pdf-rapporten van de calculator. Elk hoofdstuk heeft één boodschap in de kop.
+1. Besluit en belangrijkste voorwaarden, met een eerstvolgende stap.
+2. Beschikbare data, ontbrekende gegevens en correcties.
+3. Ritgeschiktheid en de concrete niet-passende dagen.
+4. Laadplan op gewone en zware dagen, aansluiting en connectoren.
+5. Jaar-TCO, NCW, kasstromen en maximale financieringsbehoefte, duidelijk onderscheiden.
+6. Subsidie-/contractvoorwaarden met bron en datum.
+7. Scenario's, nooddekking en kosten van uitzonderingen.
+8. Uitvoeringsstappen, proefresultaten en actualisatiemoment.
+9. Bijlage met volledige invoer-, model- en bronversies.
 
-| Nr | Hoofdstuk | Inhoud | Uit het model |
-| --- | --- | --- | --- |
-| 1 | Samenvatting | Het antwoord in drie zinnen, het plan per jaar in één tabel, de besparing met bandbreedte | Vervangplan, $`Z`$ tegen alles diesel, Monte Carlo |
-| 2 | Jouw vloot vandaag | Voertuigen, kilometers, kosten per jaar, CO₂ | Data en referentiescenario |
-| 3 | Ritanalyse | Per dienst: groen, oranje of rood, en waarom (depot, onderweg, zone, snellader, klant) | Ritgeschiktheid §5.3, $`\phi`$ |
-| 4 | Laden en netaansluiting | Laadpunten, piekvermogen, laadprofiel van een gewone en een zware dag, wel of geen verzwaring, wat een kW extra waard is | $`u`$, $`P^{\text{pk}}`$, $`p`$, schaduwprijs van (N2) |
-| 5 | Vervangplan | Welk voertuig wanneer, koop of lease, welk type (zonder merkvoorkeur: we noemen geschikte modellen) | $`z`$, $`b`$, $`n`$ |
-| 6 | Kosten en subsidie | TCO per jaar, AanZET-rondes, MIA, SPRILA, kasstroom per jaar | Doelfunctie per term |
-| 7 | Onzekerheid | Wat als diesel goedkoper wordt of stroom duurder; kans dat het plan goedkoper is dan alles diesel | Scenario's en Monte Carlo |
-| 8 | Volgende stappen | Wat de klant deze maand, dit kwartaal en dit jaar doet (aanvraag netbeheerder, AanZET-ronde, offertes) | Eerste-fasebeslissingen |
-| B | Bijlage: aannames | Alle parameters met bron, wat geschat is | Configuratie en [06 · Parameters](06-parameters.md) |
-
----
+Toon geen bedragen op de euro als onderliggende offertes ontbreken. Onbekende data krijgen een vraag of voorwaardelijk oordeel.
 
 ## 5. Controlelijst voor oplevering
 
-**Data**
-
-- [ ] Elk voertuig uit de lijst komt in de data voor, of het ontbreken is verklaard.
-- [ ] Kilometers per jaar uit de data liggen binnen 10% van wat de klant zelf opgaf.
-- [ ] Dieselverbruik per voertuig is plausibel voor de soort (zie [06 · Parameters](06-parameters.md)).
-- [ ] De representatieve dagen geven samen het jaarverbruik en de jaarpiek binnen 5% terug.
-
-**Model**
-
-- [ ] Het scenario *alles diesel* geeft dezelfde jaarkosten als de quickscan (binnen 2%).
-- [ ] Geen dienst is uitbesteed in de basis, tenzij dat zo bedoeld is.
-- [ ] Optimaliteitsgat kleiner dan 1% (of verklaard).
-- [ ] Het gekozen plan is op kwartierniveau nagerekend voor alle extreme dagen.
-- [ ] Terugtoets: het plan is haalbaar op minstens 97% van alle historische dagen (niet alleen de representatieve).
-
-**Rapport**
-
-- [ ] De samenvatting noemt het plan, de besparing met bandbreedte en de belangrijkste voorwaarde.
-- [ ] Elke geschatte waarde is gemarkeerd als schatting.
-- [ ] Geen merkvoorkeur; waar modellen genoemd worden, staan er meerdere geschikte.
-- [ ] Aannames en beperkingen staan in de bijlage.
-
----
+- Originele bronnen en versies zijn herleidbaar; ontbrekende voertuigen/ritten/intervalmetingen verklaard.
+- Voertuiguitvoering, AC/DC-acceptatie, payload, opbouw en prijsgrondslag bevestigd.
+- Tijdas, eenheden en bestaande zon/EV-lading zijn gecontroleerd.
+- Reserve is een expliciet geheel aantal of bevestigde externe dekking.
+- Geen fictieve meerkilometers bij koop of verdwenen leaseverplichtingen op de horizon.
+- Geen gratis fallback op extreme dagen.
+- Chronologische energiebalans, laadvensters, connectoren en netgrens onafhankelijk geverifieerd.
+- Geen subsidie of ERE als gegarandeerd inkomen zonder aanspraak/contract.
+- Uitzonderingen zijn verklaard, beschikbaar gedekt en geprijsd.
+- Praktijkcontrole en tweede beoordeling vastgelegd.
 
 ## 6. Privacy, afspraken en aansprakelijkheid
 
-**Privacy (AVG)**
+Ritgegevens met voertuigcodes kunnen nog steeds herleidbaar zijn. Vraag alleen noodzakelijke gegevens; geen chauffeursnamen of volledige GPS-sporen als ritsamenvattingen volstaan. Een code is pseudonimisering, geen automatische anonimiteit.
 
-- Ritdata en telematica zijn persoonsgegevens van chauffeurs. Wij zijn verwerker, de klant verantwoordelijke: teken een verwerkersovereenkomst vóór de data komt.
-- Vraag alleen wat nodig is. Ritsamenvattingen (vertrek, aankomst, kilometers, stops) zijn genoeg; geen ruwe GPS-sporen, geen chauffeursnamen. Vervang kentekens en chauffeur-id's door codes in de werkbestanden.
-- Bewaar klantdata niet in de publieke repository en niet in openbare tabellen. Een afgeschermde opslag (bijvoorbeeld een privé-bucket in Supabase met alleen beheerderstoegang, of versleutelde lokale opslag) met een vaste bewaartermijn: ruwe data weg binnen 3 maanden na oplevering, het rapport en de geaggregeerde invoer zolang de klant monitoring heeft of maximaal 12 maanden, in lijn met de [privacyverklaring](https://stekkerofdiesel.nl/privacy/).
+Wie doel en middelen bepaalt, bepaalt de privacyrol. Leg per opdracht vast of Stekker of Diesel verwerker, verantwoordelijke of een andere rol heeft. Een verwerkersovereenkomst alleen maakt de gegevensverstrekking niet automatisch rechtmatig. Beoordeel doelen, bevoegdheid, toegang, subverwerkers, bewaartermijn en verwijdering met de klant. [EU-uitleg rollen](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/application-gdpr_en).
 
-**Aansprakelijkheid**
+Bewaar klantdata afgeschermd en gescheiden van site/analytics. Test verwijderen van originele én afgeleide bestanden en regel back-ups. Laat voorwaarden en aansprakelijkheidsafspraken juridisch beoordelen; een generieke limiet tot factuurbedrag is geen vaststaand passend beding voor iedere opdracht.
 
-Het rapport is een advies op basis van aangeleverde data en aannames. Neem in de voorwaarden en in het rapport op:
-
-- dat de uitkomsten afhangen van de data van de klant en van aannames die in de bijlage staan;
-- dat actieradius in de praktijk afhangt van weer, belading, rijstijl en accuveroudering, en dat we daarom marges gebruiken;
-- dat subsidies, tarieven en regels kunnen veranderen en dat de klant ze vóór een besluit nagaat bij RVO, de netbeheerder en de leverancier;
-- een beperking van de aansprakelijkheid tot het factuurbedrag.
-
-Laat de voorwaarden één keer door een jurist nakijken.
-
-**Onafhankelijkheid**
-
-De site belooft: geen merkvoorkeur en we verkopen geen trucks. Daarom geen commissie van merken, dealers of leasemaatschappijen. Partners (installateurs, energieadviseurs) alleen na het rapport, en als er een vergoeding is, dan staat die open op de site.
-
----
+Onafhankelijkheid blijft expliciet: geen ongemelde merkvoorkeur of commissie. Vergoedingen en samenwerking worden vooraf duidelijk gemaakt.
 
 ## 7. Gereedschap
 
-| Doel | Gereedschap |
-| --- | --- |
-| Data inlezen en opschonen | Python met pandas; Jupyter-notebooks per klant |
-| Open data | RDW (kenteken), KNMI (temperatuur), energieprijzen, laadpuntlocaties (zie [02 · Data](02-data.md#3-aanvullen-uit-open-bronnen)) |
-| Optimalisatie | `gurobipy` (Gurobi); voor ontwikkelen en kleine klanten kan het open-source HiGHS. Zie [05 · Oplossen](05-oplossen.md#1-solver-en-modelleertaal) |
-| Rapport | Dezelfde opmaak als de pdf-rapporten van de calculator; grafieken met matplotlib of Vega-Lite |
-| Opslag klantdata | Afgeschermd, nooit in deze repository |
-| Versiebeheer van de modelcode | Een aparte, **privé** repository (deze repository is openbaar en voedt de website) |
-
----
+Python en de geteste referentie voor deelberekeningen; een afgeschermde productieomgeving voor klantwerk; versieerbare invoer en rapporten; onafhankelijke controle. HiGHS kan commercieel worden gebruikt onder zijn licentie. De beperkte/academische Gurobi-licentie is geen commerciële productielicentie.
 
 ## 8. Groeipad
 
-| Fase | Wanneer | Wat | Poort naar de volgende fase |
-| --- | --- | --- | --- |
-| 0. Voorbereiden | nu, 2 tot 3 weken | Sjablonen, verwerkersovereenkomst, rekenkern van de calculator als Python-module, rapportsjabloon, model met testdata | Een verzonnen vloot van 10 voertuigen in één dag doorgerekend |
-| 1. Eerste klanten | 1 tot 2 maanden | 3 klanten, de eerste twee goedkoop in ruil voor referentie; veel handwerk | 3 rapporten, minstens 1 betalende klant of echte vervanging |
-| 2. Vastzetten | 1 maand | Pakketten en prijzen, rekenregels en marges vast, tijd per stap gemeten | Een vlootplan kost hooguit 1 dag |
-| 3. Eigen tool | 2 tot 3 maanden | Intern beheerscherm: upload, opschonen, model, rapport met één klik | Vlootplan in 2 tot 3 uur, 10 klanten gedaan |
-| 4. Schalen | doorlopend | Koppelingen met de twee meest gebruikte telematicasystemen, monitoring als abonnement, partners aan de uitvoerkant | Terugkerende omzet en aanvragen zonder eigen werving |
+De poorten zijn bewijsstukken, geen vaste belofte van een paar weken: eerst consistente referentietests; dan bruikbare import en kwaliteitsrapport; dan twee begeleide pilots met praktijkcontrole; vervolgens gemeten tijd, correcties, klantbesluit en kostprijs. Automatiseer pas de stappen die daarin bewezen zijn. Zie [08](08-correcties-en-acceptatie.md).
+

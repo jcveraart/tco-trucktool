@@ -1,8 +1,8 @@
 # 06 · Parameters en standaardwaarden
 
-Alle getallen die het model nodig heeft, met waar ze vandaan komen. Drie soorten:
+Werkregister van referentiewaarden, geen compleet of automatisch gevalideerd klantparameterbestand. Iedere waarde krijgt bronstatus, eenheid, uitvoering, prijs-/controledatum en geldigheidsperiode. Drie soorten:
 
-- **Calculator:** dezelfde waarde als op stekkerofdiesel.nl (in `index.html` en Supabase, feitencheck 23 oktober 2026). Bij een wijziging op de site verandert de vlootanalyse mee; houd die twee gelijk.
+- **Calculator:** dezelfde waarde als op stekkerofdiesel.nl (in `index.html` en Supabase, feitencheck 23 oktober 2026). Een sitewijziging werkt niet automatisch door in Python: vergelijk bronversies en voer golden-tests uit voordat klantwerk dezelfde kostenbasis claimt.
 - **Aanname:** een redelijke startwaarde die we per klant of na de eerste klanten bijstellen.
 - **Klant:** komt altijd van de klant; geen standaardwaarde.
 
@@ -72,7 +72,7 @@ In het model per jaar: $`\tau^{H}_{m,y}`$ en $`\tau^{\text{tol}}_{m,\text{land},
 | Dieselprijs | 2,03 €/l | Calculator (live, CBS 19-10-2026) | Excl. btw. Tabel `live_prices` in Supabase. |
 | Stroom op eigen terrein | 0,25 €/kWh | Calculator | Klantcontract heeft voorrang. |
 | Korting slim laden | 0,03 €/kWh | Calculator | Alleen in de calculator; in het model volgt het voordeel uit het laadschema. |
-| ERE-opbrengst | 0,10 €/kWh | Calculator | Netto, per kWh geleverd aan het voertuig op eigen geregistreerde laadpunten. |
+| ERE-opbrengst | 0,10 €/kWh of 0 | Scenario, geen garantie | Alleen bevestigde aanspraak en contractueel netto toekomende inkomsten, op de correcte meetgrens. |
 | Openbaar snelladen | 0,55 €/kWh | Calculator | Per aanbieder of abonnement verschillend. |
 | Tijdverlies onderweg laden | 6 min per 100 km | Calculator | Alleen voor de quickscan; het model rekent met de laadkansen zelf. |
 | Kosten stilstand chauffeur en wagen | 60 €/uur | Calculator | $`c^{\text{chf}}`$ in het model. |
@@ -122,9 +122,9 @@ Kosten en tarieven van verzwaring, kW-maximum en gecontracteerd vermogen ($`I^{\
 | Middelgroot | 21%, max 83.200 € | 12%, max 29.900 € |
 | Klein of non-profit | 29%, max 115.200 € | 14,8%, max 36.900 € |
 
-Bedrijfsgrootte: groot vanaf 250 FTE of meer dan 50 miljoen omzet; middelgroot onder 250 FTE en onder 50 miljoen; klein onder 50 FTE en onder 10 miljoen. De najaarsronde 2026 (29 september tot 16 oktober) is gesloten; de volgende ronde wordt rond half maart 2027 verwacht. Aanvragen vóór de koopovereenkomst. Kans op toekenning $`\rho_n`$: aanname per ronde (overtekening).
+Bedrijfsgrootte wordt met de geldende mkb-toets vastgesteld: medewerkers én omzet of balanstotaal, inclusief partner-/verbonden ondernemingen. Alleen FTE en omzet is onvoldoende. De najaarsronde 2026 (29 september tot 16 oktober) is gesloten; de volgende ronde wordt rond half maart 2027 verwacht. Een nog niet-definitieve overeenkomst is nodig; aanvraag vóór de onherroepelijke verplichting. Grondslag is subsidiabel chassis plus af-fabrieksopties, zonder opbouw/btw. Vierjarige houdverplichting/terugbetaling en daadwerkelijke betaalmomenten vastleggen. Kans op toekenning $`\rho_n`$: aanname per ronde (overtekening).
 
-**MIA en Vamil** (calculator): MIA-aftrek 36% over 90% van de aanschafprijs, voordeel = aftrek × Vpb-tarief (19% of 25,8%). Niet te combineren met AanZET. Elektrische bestelbussen staan niet op de Milieulijst 2026. Vamil-percentage en Milieulijstcode per jaar nagaan bij RVO.
+**MIA en Vamil** (calculator): MIA-aftrek 36% over 90% van de aanschafprijs, voordeel = aftrek × Vpb-tarief (19% of 25,8%). Niet te combineren met AanZET. Elektrische bestelbussen staan niet op de Milieulijst 2026. **D3116 in 2026 heeft geen Vamil**. Een later jaar krijgt geen automatisch doorgetrokken aanspraak. Belastingvoordeel volgt de feitelijke benutbaarheid en betaaldatum.
 
 **SPRILA 2026** (calculator): vast bedrag per laadpunt, voor een DC-laadpunt van 50 kW 9.760 € (mkb) of 4.880 € (groot), begrensd op 40% respectievelijk 20% van de kosten, minimaal 2.500 €. Andere vermogens: bedragen uit de regeling.
 
@@ -143,14 +143,14 @@ Bedrijfsgrootte: groot vanaf 250 FTE of meer dan 50 miljoen omzet; middelgroot o
 | Gefinancierd deel | 80% | Calculator |
 | Rente lening | 6% | Calculator |
 | Rendement eigen geld | 4% | Calculator |
-| Rekenrente $`r`$ | 0,8 × 6% + 0,2 × 4% = **5,6%** | Afgeleid; klant kan eigen waarde geven |
+| Rekenrente r | 5,6% als expliciet scenario | Geen automatisch reële WACC; passend bij prijsbasis en klant. |
 | Opslag bij geschatte leaseprijs | 7% | Calculator (beheer, risico, marge) |
 
 ---
 
 ## Prijzen en prijspaden
 
-Het model rekent per jaar met een prijspad. Standaard reëel (zonder inflatie) met een reële rekenrente; drie paden als scenario's:
+Een prijspad is een scenario. Leg reëel/nominaal vast. Bij nominale rente en reële prijzen: r_reëel=(1+r_nominaal)/(1+inflatie)−1. Tel rente niet dubbel naast discontering. Drie paden:
 
 | Grootheid | Laag | Basis | Hoog | Opmerking |
 | --- | --- | --- | --- | --- |
@@ -177,8 +177,20 @@ Het model rekent per jaar met een prijspad. Standaard reëel (zonder inflatie) m
 | Knikpunt laadcurve | 0,80 | $`\kappa_m`$ | DC; bij AC 22 kW nauwelijks relevant. |
 | Wintertoeslag verbruik | 15 tot 30% bij 0 °C | $`\beta_4`$ | Hoger voor stadsdistributie en bestelbussen. |
 | Marge ritgeschiktheid | 10% | | Alleen voor haalbaarheid, niet voor kosten. |
-| Reservevoertuigen | 5% | $`r^{\text{res}}_m`$ | Onderhoud en storing. |
-| Effectief snellaadvermogen | 0,8 × min(lader, voertuig) × beschikbaarheid | $`P^{\text{rt}}_s`$ | Beschikbaarheid 0,7 zonder, 1,0 met reservering. |
+| Reservevoertuigen | Expliciet geheel aantal per groep | R[g,o,y] | Geen automatische 5%-afronding; voorbeeld heeft 0 en bewijst geen uitvaldekking. |
+| Effectief snellaadvermogen | Bevestigde prestatie per uitvoering/stop | P_weg | Aparte scenario's voor lager vermogen, kortere stop en volledige uitval. |
 | Maximale omrijafstand naar snellader | 5 km | | |
-| Kleurgrenzen ritgeschiktheid | groen vanaf 97%, oranje vanaf 85% | | |
+| Ritgeschiktheid | Klantspecifieke servicenorm | | Toon uitzonderingen, dekking en kosten; geen automatisch groen bij 97%. |
 | Optimaliteitsgat | 1% | | |
+
+## Verplichte toepassingsregels
+
+- De getallen hierboven zijn screeningreferenties. Tarieven en regelingen hebben bron, ingangs-/einddatum en toepassingsvoorwaarden; geen vaste tienjaarsgarantie.
+- Prijs splitst chassis, opties, opbouw, installaties en service. Een vanafprijs of berichtgeving is geen offerte voor een passende uitvoering.
+- Operationele lease houdt kilometrage, onderhoud en verzekering per contract gescheiden. Horizonverplichtingen, directe verkoop/afkoop en bruto liquiditeitsbehoefte blijven zichtbaar.
+- Nominale/reële rente, voor/na belasting en de meterrand voor ERE/CO₂ worden expliciet gekozen. Jaar-TCO en NCW zijn verschillende uitkomsten.
+- Bevestig AC/DC-acceptatie, connector, payload, aslasten, bruto/bruikbare accu en opbouw. Onbekend blijft onbekend, geen stille 90%- of categorieaanname voor definitief advies.
+- Gebruik ontwerp-SoH voor screening en een leeftijds-/gebruiksafhankelijke gevoeligheid. 85% is geen universele garantie of automatisch economisch optimum.
+- Net-, batterij- en zonopties vereisen levensduur, vervanging, richting, contract en meetgrens. Neem bestaande installaties niet dubbel mee.
+
+Bronnen: [AanZET](https://www.rvo.nl/subsidies-financiering/aanzet), [voorwaarden](https://www.rvo.nl/subsidies-financiering/aanzet/voorwaarden), [Mkb-verklaring](https://www.rvo.nl/files/file/2025-01/Mkb-verklaring.pdf), [Milieulijst 2026](https://zoek.officielebekendmakingen.nl/stcrt-2025-40676.html), [SPRILA](https://www.rvo.nl/subsidies-financiering/laadinfrastructuur/sprila-aanschaf), [ERE](https://www.emissieautoriteit.nl/regelgeving/hernieuwbare-energie-voor-vervoer-eres/inboeken-hernieuwbare-energie-vervoer/inboeken-elektriciteit).

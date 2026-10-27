@@ -1,104 +1,63 @@
-"""Rekenvoorbeeld bij 07-rekenvoorbeeld.md: laadschema van drie bakwagens op een depot met 3x80A.
+"""Fictieve herhaalde-dagscreening, stresscases en eenvoudige kostenvergelijking.
 
-Lost per scenario het laad-LP van model §9 en §10 op voor de zware winterdag (kwartieren),
-en vergelijkt slim laden met dom laden (vol vermogen vanaf aankomst).
-Draaien: pip install highspy numpy && python rekenvoorbeeld.py
+Geen bewijs van optimale aankoop, reserve, subsidie, contract of echte klantinzet.
+Run: python docs/vlootanalyse/rekenvoorbeeld.py
 """
-import highspy
-import numpy as np
+from referentie import laadplan, reservebehoefte
+import json
 
-T, DT = 96, 0.25                      # kwartieren
-AANSLUITING = 55.0                    # kW, 3x80A
-ETA_DEPOT, ETA_ONDERWEG = 0.92, 0.95  # net naar accu
-P_LAADPUNT = 22.0                     # kW, AC
-B_ONTWERP = 300 * 0.85                # kWh: bruikbaar 300, ontwerp-SoH 85%
-U_MIN, U_MAX, U_ONDERWEG_MAX = 0.10, 1.00, 0.80
-VERBRUIK = 1.20                       # kWh/km, zware winterdag incl. 10% marge
-P_SNELLADER = 120.0                   # kW effectief
+DIENSTEN={'D1':(6.,15.,180,None),'D2':(5.,17.,260,(10.5,11.25)),'D3':(7.,16.,120,None)}
 
 
-def uur(t):
-    return t * DT
+def voorbeeld(diensten=('D1','D2','D3'), onderweg=True, verbruik=1.2, weg_kw=120, depot_kw=22, soh=.85, pauze_min=45):
+    dt=.25; n=96
+    data={'dt':[dt]*n,'gebouw_kw':[20. if 7<=t*dt<18 else 5. for t in range(n)],
+          'net_kw':[55.]*n,'kasten':[],'voertuigen':[]}
+    for naam in diensten:
+        vertrek,terug,km,pauze=DIENSTEN[naam]
+        pauze=(pauze[0],pauze[0]+pauze_min/60) if pauze else None
+        if pauze and (pauze[0]%dt or pauze[1]%dt):
+            raise ValueError('Voorbeeldpauze moet op intervalgrenzen vallen; splits anders de tijdas')
+        weg=[vertrek<=t*dt<terug for t in range(n)]
+        laden=[bool(pauze and pauze[0]<=t*dt<pauze[1]) for t in range(n)]
+        rijden=[w and not l for w,l in zip(weg,laden)]
+        data['kasten'].append({'id':naam,'kw':depot_kw})
+        data['voertuigen'].append({'id':naam,'kast':naam,'connector':naam+'_stekker',
+            'capaciteit':300*soh,'reserve':.1,'eta_depot':.92,'eta_weg':.95,'weg_soc_max':.8,
+            'depot_kw':[depot_kw if not w else 0 for w in weg],
+            'weg_kw':[weg_kw if onderweg and l else 0 for l in laden],
+            'verbruik_kwh':[km*verbruik/sum(rijden) if r else 0 for r in rijden]})
+    return data
 
 
-GEBOUW = np.array([20.0 if 7 <= uur(t) < 18 else 5.0 for t in range(T)])
-
-# dienst: vertrek, terug (uur), km, pauze met snellader (start, eind) of None
-DIENSTEN = {
-    "D1": (6.0, 15.0, 180, None),
-    "D2": (5.0, 17.0, 260, (10.5, 11.25)),
-    "D3": (7.0, 16.0, 120, None),
-}
-
-
-def profiel(dienst):
-    vertrek, terug, km, pauze = DIENSTEN[dienst]
-    weg = np.array([vertrek <= uur(t) < terug for t in range(T)])
-    in_pauze = np.array([pauze is not None and pauze[0] <= uur(t) < pauze[1] for t in range(T)])
-    rijden = weg & ~in_pauze
-    e = np.where(rijden, km * VERBRUIK / rijden.sum(), 0.0)
-    return ~weg, in_pauze, e
+def jaarvergelijking(aanzet=True, ere=.10):
+    """Eenvoudige jaar-TCO, geen NCW: vaste jaarlijkse inzet en 0 reservevoertuigen."""
+    besparing=0.
+    for km_dag in (180,260,120):
+        km=km_dag*250
+        diesel=95000*.8/7+km*.25*2.03+km*.10+4500+km*.8*.182
+        weg_accu=max(0,km_dag-229.5); depot_accu=km_dag-weg_accu
+        elektrisch=(240000-(69600 if aanzet else 0)-48000)/7
+        elektrisch+=250*(depot_accu*.25/.92+weg_accu*.55/.95-depot_accu*ere)
+        elektrisch+=km*.06+6500+km*.8*.037
+        besparing+=diesel-elektrisch
+    return besparing-2250 # drie fictieve AC-laadpunten en beheer
 
 
-def laadschema(diensten, onderweg_laden=True, minimaliseer_piek=True):
-    h = highspy.Highs()
-    h.setOptionValue("output_flag", False)
-    piek = h.addVariable(lb=0, ub=AANSLUITING if not minimaliseer_piek else highspy.kHighsInf)
-    imp = [h.addVariable(lb=0) for _ in range(T)]
-    laad = {}
-    for d in diensten:
-        op_depot, in_pauze, e = profiel(d)
-        p = [h.addVariable(lb=0, ub=P_LAADPUNT if op_depot[t] else 0) for t in range(T)]
-        eps = [h.addVariable(lb=0, ub=(P_SNELLADER * DT if (in_pauze[t] and onderweg_laden) else 0)) for t in range(T)]
-        E = [h.addVariable(lb=U_MIN * B_ONTWERP, ub=U_MAX * B_ONTWERP) for _ in range(T + 1)]
-        for t in range(T):
-            # (A1) accubalans
-            h.addConstr(E[t + 1] - E[t] - ETA_DEPOT * DT * p[t] - ETA_ONDERWEG * eps[t] == -e[t])
-            # (A9) onderweg tot 80%
-            if in_pauze[t]:
-                h.addConstr(E[t + 1] <= U_ONDERWEG_MAX * B_ONTWERP)
-        h.addConstr(E[T] - E[0] >= 0)    # (A2) cyclisch
-        laad[d] = (p, eps)
-    for t in range(T):
-        # (N1) en (N3)
-        h.addConstr(imp[t] - sum(laad[d][0][t] for d in diensten) == GEBOUW[t])
-        h.addConstr(piek - imp[t] >= 0)
-    h.minimize(piek)
-    if h.getModelStatus() != highspy.HighsModelStatus.kOptimal:
-        return None
-    sol = h.getSolution().col_value
-    onderweg = sum(sol[v.index] for d in diensten for v in laad[d][1])
-    return sol[piek.index], onderweg
+def resultaten():
+    cases=[('A: D1 en D3, geen onderweg laden',dict(diensten=('D1','D3'),onderweg=False)),
+           ('B: alle drie, bevestigde pauze',{}),('D2 zonder onderweg laden',dict(diensten=('D2',),onderweg=False)),
+           ('B: 1% extra ontwerpverbruik',dict(verbruik=1.212)),('B: 20% minder snellaadvermogen',dict(weg_kw=96)),
+           ('B: 30 minuten laden',dict(pauze_min=30)),('B: 83% SoH',dict(soh=.83)),('B: 11 kW depot',dict(depot_kw=11))]
+    out=[]
+    for naam,args in cases:
+        r=laadplan(voorbeeld(**args),modus='cyclische_screening')
+        out.append({'scenario':naam,'status':r['status'],'piek_kw':r.get('piek_kw')})
+    return {'status':'fictieve_screening_geen_klantadvies','reserve':{'afgesproken':0,'nodig_bij_een_reserve':reservebehoefte(3,1)},
+            'cases':out,'jaarvoordeel_eur':{'met_aanzet_en_ere':jaarvergelijking(),
+              'met_aanzet_zonder_ere':jaarvergelijking(ere=0),'zonder_aanzet_en_ere':jaarvergelijking(False,0)}}
 
 
-def dom_laden(diensten):
-    """Iedereen laadt op vol vermogen vanaf aankomst tot vol; geeft de piekafname."""
-    belasting = GEBOUW.copy()
-    for d in diensten:
-        vertrek, terug, km, pauze = DIENSTEN[d]
-        _, in_pauze, e = profiel(d)
-        nodig = e.sum() / ETA_DEPOT
-        if pauze is not None:
-            nodig -= min(P_SNELLADER * DT * in_pauze.sum() * ETA_ONDERWEG, e.sum()) / ETA_DEPOT
-        t = int(terug / DT)
-        while nodig > 1e-9:
-            stap = min(P_LAADPUNT * DT, nodig)
-            belasting[t % T] += stap / DT
-            nodig -= stap
-            t += 1
-    return belasting.max()
+if __name__=='__main__':
+    print(json.dumps(resultaten(),indent=2,ensure_ascii=False))
 
-
-if __name__ == "__main__":
-    for naam, diensten, onderweg in [
-        ("A: geen onderweg laden, D1 en D3 elektrisch", ["D1", "D3"], False),
-        ("B: laden in de pauze, alle drie elektrisch", ["D1", "D2", "D3"], True),
-        ("D2 elektrisch zonder onderweg laden", ["D2"], False),
-    ]:
-        r = laadschema(diensten, onderweg)
-        if r is None:
-            print(f"{naam}: ONDOENLIJK")
-            continue
-        piek, kwh_onderweg = r
-        print(f"{naam}: minimale piek {piek:.1f} kW (grens {AANSLUITING:.0f}), "
-              f"onderweg geladen {kwh_onderweg:.1f} kWh (netkant), dom laden piek {dom_laden(diensten):.1f} kW")
