@@ -2526,6 +2526,8 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 @media(max-width:640px){#uvK .uvc small{font-size:14px}}
 [data-page=uitgebreid] #snX .trk .tk s{font:500 14px var(--text);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 @media(max-width:640px){[data-page=uitgebreid] #snX .trk .tk s{font-size:13px}}
+.vzf .ff textarea{min-height:76px;resize:none;overflow:hidden}
+@media(max-width:640px){.vzf .ff textarea{min-height:88px}}
 </style>
 </head>
 <body>
@@ -3168,6 +3170,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
     <label class="ff"><span>Bedrijf</span><input name="company" required maxlength="200" autocomplete="organization"></label>
     <label class="ff"><span>E-mail</span><input name="email" type="email" required maxlength="200" autocomplete="email"></label>
     <label class="ff"><span>Telefoon</span><input name="phone" type="tel" maxlength="50" autocomplete="tel"></label>
+    <label class="ff"><span>Bericht</span><textarea name="message" id="fMsg" rows="2" maxlength="4000"></textarea></label>
     <fieldset class="ffs"><legend>Aantal voertuigen</legend><div class="seg"><label><input type="radio" name="fleet_size" value="1-5"><span>1–5</span></label><label><input type="radio" name="fleet_size" value="6-20" checked><span>6–20</span></label><label><input type="radio" name="fleet_size" value="21-50"><span>21–50</span></label><label><input type="radio" name="fleet_size" value="50+"><span>50+</span></label></div></fieldset>
     <input class="fhp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="ferr" id="fErr" role="alert" hidden></p>
@@ -6506,6 +6509,8 @@ const vzPair=(at,f)=>document.querySelectorAll('.vz ['+at+']').forEach(e=>{const
 vzPair('data-s');vzPair('data-p',x=>document.querySelector('.vzpd').classList.toggle('hl',x!==null));
 document.querySelector('.vzs1').addEventListener('click',()=>$('fForm').elements.contact_name.focus());
 $('fGo').addEventListener('click',()=>{$('fForm').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('fForm').elements.contact_name.focus({preventScroll:true}),400)});
+/* Bericht groeit mee met de tekst */
+const fMsgFit=()=>{const t=$('fMsg');t.style.height='auto';t.style.height=t.scrollHeight+2+'px'};$('fMsg').addEventListener('input',fMsgFit);
 $('fForm').addEventListener('submit',async e=>{
  e.preventDefault();const f=e.target,fd=new FormData(f),val=n=>String(fd.get(n)||'').trim();
  if(val('website'))return;
