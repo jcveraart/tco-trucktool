@@ -69,6 +69,7 @@ De optionele ontwikkelcontrole heeft alleen Node.js nodig: `node --test tests/ca
 - **Live prijzen**: Supabase haalt elke ochtend de dieselprijs (CBS) en het stroomverschil nacht/dag (EnergyZero) op in `live_prices`; de site gebruikt die als voorbeeldwaarde.
 - **Database**: alles staat in `supabase/migrations/20261023120000_restwaarde_offertes_live.sql`. Draai dat bestand eenmalig in de Supabase SQL-editor.
 - **Wekelijkse verzamelaar**: `.github/workflows/restwaarde.yml` draait elke maandag `scripts/restwaarde.mjs`. Die leest de pagina's in `scripts/bronnen.json`, laat Claude de voertuigen met prijs eruit halen, slaat ze op in `residual_listings` en mailt prijsalarmen (via Resend). Zet in GitHub onder **Settings → Secrets and variables → Actions** de secrets `ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY` en eventueel `RESEND_API_KEY`. Alle bronnen staan standaard uit: veel advertentiesites verbieden automatisch verzamelen, dus zet een bron pas aan na eigen afweging. Proefdraaien: `cd scripts && npm install && node restwaarde.mjs --droog`.
+- **Vlootanalyse-aanvragen**: het formulier op `/vlootanalyse/` schrijft naar `fleet_requests`. `.github/workflows/vlootmelding.yml` draait elke 10 minuten `scripts/vlootmelding.mjs`, dat nieuwe aanvragen via Resend naar info@stekkerofdiesel.nl mailt (reply-to is de aanvrager) en `notified_at` zet. Nodig: migratie `20261027190000_fleet_requests_melding.sql` en de secrets `SUPABASE_SERVICE_ROLE_KEY` en `RESEND_API_KEY`.
 
 ## Rekenmethode
 
