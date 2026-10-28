@@ -1,0 +1,2286 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-27T21:26:00.887988+00:00",
+  "calculated_at": "2026-10-27T20:00:00Z",
+  "run_id": "demo-20261027",
+  "selected_variant": "basis",
+  "title": "Uw vloot, vooruit.",
+  "client": {
+    "name": "Van Dalen Techniek · voorbeeld",
+    "place": "Voorbeeldstad"
+  },
+  "author": {
+    "name": "Stekker of Diesel",
+    "email": "info@stekkerofdiesel.nl"
+  },
+  "settings": {
+    "startjaar": 2027,
+    "jaren": 6,
+    "rekenrente": 0.056,
+    "inzetdagen": 230,
+    "periode_jaren": 2,
+    "dieselprijs": 2.15,
+    "diesel_stijging": 0.0,
+    "stroom_dal": 0.19,
+    "stroom_piek": 0.27,
+    "soc_min": 0.1,
+    "begin_soc": 0.9,
+    "accu_veroudering": 0.02
+  },
+  "fleet": [
+    {
+      "id": "v366ca859",
+      "naam": "Installatie",
+      "kenteken": "",
+      "soort": "bestel",
+      "groep": "bestel",
+      "aandrijving": "diesel",
+      "bouwjaar": 2021,
+      "contract": "koop",
+      "resterende_jaren": 2,
+      "lease_pj": 0,
+      "accu_kwh": 70,
+      "verbruik_kwh100": 25,
+      "verbruik_l100": 9
+    },
+    {
+      "id": "v824d1ca7",
+      "naam": "Onderhoud",
+      "kenteken": "",
+      "soort": "bestel",
+      "groep": "bestel",
+      "aandrijving": "diesel",
+      "bouwjaar": 2021,
+      "contract": "koop",
+      "resterende_jaren": 4,
+      "lease_pj": 0,
+      "accu_kwh": 70,
+      "verbruik_kwh100": 25,
+      "verbruik_l100": 9
+    },
+    {
+      "id": "v1f7f0cd0",
+      "naam": "Service",
+      "kenteken": "",
+      "soort": "bestel",
+      "groep": "bestel",
+      "aandrijving": "diesel",
+      "bouwjaar": 2021,
+      "contract": "koop",
+      "resterende_jaren": 4,
+      "lease_pj": 0,
+      "accu_kwh": 70,
+      "verbruik_kwh100": 25,
+      "verbruik_l100": 9
+    },
+    {
+      "id": "va47fb638",
+      "naam": "Projecten",
+      "kenteken": "",
+      "soort": "bestel",
+      "groep": "bestel",
+      "aandrijving": "diesel",
+      "bouwjaar": 2021,
+      "contract": "koop",
+      "resterende_jaren": 6,
+      "lease_pj": 0,
+      "accu_kwh": 70,
+      "verbruik_kwh100": 25,
+      "verbruik_l100": 9
+    }
+  ],
+  "trips": [
+    {
+      "id": "r6df0e0b1",
+      "naam": "Dagroute installatie",
+      "groep": "bestel",
+      "vertrek": 7,
+      "aankomst": 16,
+      "km": 140,
+      "laadvermogen_kg": 750,
+      "ze_vanaf": null,
+      "piek": false
+    },
+    {
+      "id": "re846156c",
+      "naam": "Dagroute onderhoud",
+      "groep": "bestel",
+      "vertrek": 7,
+      "aankomst": 16,
+      "km": 180,
+      "laadvermogen_kg": 750,
+      "ze_vanaf": null,
+      "piek": false
+    },
+    {
+      "id": "r7f00af94",
+      "naam": "Dagroute service",
+      "groep": "bestel",
+      "vertrek": 7,
+      "aankomst": 16,
+      "km": 220,
+      "laadvermogen_kg": 750,
+      "ze_vanaf": null,
+      "piek": false
+    },
+    {
+      "id": "r45558cf9",
+      "naam": "Dagroute projecten",
+      "groep": "bestel",
+      "vertrek": 7,
+      "aankomst": 16,
+      "km": 390,
+      "laadvermogen_kg": 750,
+      "ze_vanaf": null,
+      "piek": false
+    }
+  ],
+  "depot": {
+    "naam": "Depot",
+    "aansluiting_kw": 55,
+    "gebouw_dag_kw": 8,
+    "gebouw_nacht_kw": 2,
+    "pv_bestaand_kw": 0
+  },
+  "variants": [
+    {
+      "variant": "basis",
+      "naam": "Geleidelijk vernieuwen",
+      "referentie": false,
+      "status": "optimaal",
+      "gap": 0.0,
+      "ncw": 356295.1186258244,
+      "investering": 161963.14431999988,
+      "kapitaal": 116567.03181999945,
+      "jaren": [
+        "2027–28",
+        "2029–30",
+        "2031–32"
+      ],
+      "tijdas": [
+        0,
+        180,
+        360,
+        420,
+        540,
+        720,
+        900,
+        960,
+        1080,
+        1200,
+        1320,
+        1440
+      ],
+      "kosten": [
+        {
+          "post": "Brandstof, stroom, onderhoud, heffing",
+          "ncw": 232556.40088716167
+        },
+        {
+          "post": "Aanschaf voertuigen",
+          "ncw": 142570.20735113905
+        },
+        {
+          "post": "Verzekering en vaste kosten",
+          "ncw": 46799.84315661434
+        },
+        {
+          "post": "Verkoop voertuigen",
+          "ncw": -43556.01019402961
+        },
+        {
+          "post": "Restwaarde einde horizon",
+          "ncw": -33936.184499890485
+        },
+        {
+          "post": "Laadpunten",
+          "ncw": 9020.81722309603
+        },
+        {
+          "post": "Vaste netkosten",
+          "ncw": 3069.2216495432754
+        },
+        {
+          "post": "Restwaarde laadpunten",
+          "ncw": -2884.5394449437504
+        },
+        {
+          "post": "Onderhoud laadpunten",
+          "ncw": 2655.362497134303
+        }
+      ],
+      "per_jaar": [
+        {
+          "jaar": "2027",
+          "investering": 68000,
+          "laden": 5000
+        },
+        {
+          "jaar": "2028",
+          "voertuig": 18000,
+          "laden": 2000,
+          "gebruik": 93923
+        },
+        {
+          "jaar": "2029"
+        },
+        {
+          "jaar": "2030",
+          "voertuig": 18000,
+          "laden": 2000,
+          "gebruik": 93923
+        },
+        {
+          "jaar": "2031",
+          "investering": 38567,
+          "laden": 5000
+        },
+        {
+          "jaar": "2032",
+          "voertuig": 19000,
+          "investering": -47059,
+          "laden": -1200,
+          "gebruik": 83853
+        }
+      ],
+      "vloot": [
+        {
+          "id": "v366ca859",
+          "naam": "Installatie",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            false,
+            false,
+            false
+          ],
+          "plek": "bestel0",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "v824d1ca7",
+          "naam": "Onderhoud",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            true,
+            true,
+            false
+          ],
+          "plek": "bestel1",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_m9b6df18b_bestel1_2_K",
+          "naam": "Elektrische servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "electric",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2031–32",
+          "actief": [
+            false,
+            false,
+            true
+          ],
+          "plek": "bestel1",
+          "prijs": 47963.14431999999,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "v1f7f0cd0",
+          "naam": "Service",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            false,
+            false,
+            false
+          ],
+          "plek": "bestel2",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_m9b6df18b_bestel2_0_K",
+          "naam": "Elektrische servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "electric",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2027–28",
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel2",
+          "prijs": 52000.0,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "va47fb638",
+          "naam": "Projecten",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel3",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_m9b6df18b_bestel3_0_K",
+          "naam": "Elektrische servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "electric",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2027–28",
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel3",
+          "prijs": 52000.0,
+          "lease_pj": null,
+          "subsidie": false
+        }
+      ],
+      "aantallen": [
+        {
+          "periode": "2027–28",
+          "elektrisch": 2,
+          "diesel": 2
+        },
+        {
+          "periode": "2029–30",
+          "elektrisch": 2,
+          "diesel": 2
+        },
+        {
+          "periode": "2031–32",
+          "elektrisch": 3,
+          "diesel": 1
+        }
+      ],
+      "laadpunten": [
+        {
+          "naam": "AC 22 kW dubbel",
+          "aantal": [
+            1,
+            1,
+            2
+          ]
+        }
+      ],
+      "net": [
+        "Huidige aansluiting 55 kW",
+        "Huidige aansluiting 55 kW",
+        "Huidige aansluiting 55 kW"
+      ],
+      "net_kw": [
+        55.0,
+        55.0,
+        55.0
+      ],
+      "energie": [],
+      "co2": [
+        61123.17000000008,
+        61123.170000000064,
+        55846.70999999995
+      ],
+      "ze_aandeel": [
+        0.43010752688172044,
+        0.43010752688172044,
+        0.5806451612903226
+      ],
+      "dagen": [
+        {
+          "periode": "2027–28",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Onderhoud",
+              "voertuig_id": "v824d1ca7",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel2_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel3_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel2_0_K",
+              "kwh": [
+                18.3,
+                23.1,
+                53.5,
+                53.5,
+                43.5,
+                28.5,
+                13.5,
+                8.5,
+                8.5,
+                8.5,
+                8.5,
+                18.3
+              ],
+              "capaciteit": 85.0
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel3_0_K",
+              "kwh": [
+                22.1,
+                52.5,
+                57.3,
+                63.5,
+                51.3,
+                32.9,
+                14.6,
+                8.5,
+                8.5,
+                8.5,
+                8.5,
+                22.1
+              ],
+              "capaciteit": 85.0
+            }
+          ],
+          "net": [
+            14.74,
+            14.74,
+            14.74,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            14.74
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            12.74,
+            12.74,
+            6.74,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            12.74
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        },
+        {
+          "periode": "2029–30",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Onderhoud",
+              "voertuig_id": "v824d1ca7",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel2_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel3_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel2_0_K",
+              "kwh": [
+                11.4,
+                41.7,
+                47.0,
+                53.2,
+                43.2,
+                28.2,
+                13.2,
+                8.2,
+                8.2,
+                8.2,
+                8.2,
+                11.4
+              ],
+              "capaciteit": 81.6
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel3_0_K",
+              "kwh": [
+                28.4,
+                33.2,
+                63.2,
+                63.2,
+                50.9,
+                32.6,
+                14.3,
+                8.2,
+                8.2,
+                8.2,
+                8.2,
+                28.4
+              ],
+              "capaciteit": 81.6
+            }
+          ],
+          "net": [
+            14.74,
+            14.74,
+            14.74,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            14.74
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            12.74,
+            12.74,
+            6.74,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            12.74
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        },
+        {
+          "periode": "2031–32",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel1_2_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel3_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel2_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel1_2_K",
+              "kwh": [
+                19.5,
+                31.6,
+                33.4,
+                43.5,
+                35.7,
+                24.1,
+                12.4,
+                8.5,
+                8.5,
+                8.5,
+                8.5,
+                19.5
+              ],
+              "capaciteit": 85.0
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel2_0_K",
+              "kwh": [
+                28.1,
+                32.5,
+                62.8,
+                62.8,
+                50.6,
+                32.3,
+                13.9,
+                7.8,
+                7.8,
+                7.8,
+                7.8,
+                28.1
+              ],
+              "capaciteit": 78.2
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel3_0_K",
+              "kwh": [
+                33.2,
+                63.6,
+                78.2,
+                78.2,
+                68.2,
+                53.2,
+                38.2,
+                33.2,
+                33.2,
+                33.2,
+                33.2,
+                33.2
+              ],
+              "capaciteit": 78.2
+            }
+          ],
+          "net": [
+            18.97,
+            18.97,
+            18.97,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            18.97
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            16.97,
+            16.97,
+            10.97,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            16.97
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        }
+      ],
+      "aannames": [
+        "Eén representatieve werkdag, 230 keer per jaar, verdeeld over 11 rekenintervallen.",
+        "Beslissingen per 2 jaar.",
+        "Vervangen kan nu, aan het einde van de huidige wagen, of wanneer een zone of doel ingaat.",
+        "Elke plek in de vloot heeft een eigen laadpunt op het depot en een vaste plek bij de snelladers."
+      ],
+      "waarschuwingen": [
+        "Dagroute projecten: 390 km haalt geen elektrisch model zonder laadstop, deze rit blijft diesel."
+      ],
+      "controle": {
+        "physical_intervals_checked": 297,
+        "cashflow_npv_reconciled": true,
+        "matrix_rows_checked": 6948
+      },
+      "texts": {
+        "samenvatting": "Voor deze fictieve installatieonderneming kiezen we een gefaseerde vernieuwing. De kortere dagroutes passen bij elektrisch rijden. De lange projectroute vraagt om een andere oplossing en blijft in dit voorbeeld diesel.\n\nBegin met de voertuigen die aan vervanging toe zijn. Laat de bestaande aansluiting eerst toetsen, vraag passende offertes op en stem het laadritme af op de werkdag.",
+        "advies0": "Vraag vergelijkbare offertes op voor de elektrische servicebus en de dieselreferentie.",
+        "advies1": "Toets de representatieve dagroutes met recente ritgegevens, inclusief winterdagen."
+      },
+      "notices": []
+    },
+    {
+      "variant": "sneller",
+      "naam": "Sneller elektrisch",
+      "referentie": false,
+      "status": "optimaal",
+      "gap": 0.0,
+      "ncw": 358140.5262773568,
+      "investering": 165999.99999999886,
+      "kapitaal": 112000.00000000009,
+      "jaren": [
+        "2027–28",
+        "2029–30",
+        "2031–32"
+      ],
+      "tijdas": [
+        0,
+        180,
+        360,
+        420,
+        540,
+        720,
+        900,
+        960,
+        1080,
+        1200,
+        1320,
+        1440
+      ],
+      "kosten": [
+        {
+          "post": "Brandstof, stroom, onderhoud, heffing",
+          "ncw": 214470.2141584264
+        },
+        {
+          "post": "Aanschaf voertuigen",
+          "ncw": 155999.99999999886
+        },
+        {
+          "post": "Verkoop voertuigen",
+          "ncw": -54000.0
+        },
+        {
+          "post": "Verzekering en vaste kosten",
+          "ncw": 48596.00945110158
+        },
+        {
+          "post": "Restwaarde einde horizon",
+          "ncw": -21202.675069494584
+        },
+        {
+          "post": "Laadpunten",
+          "ncw": 10000.000000000002
+        },
+        {
+          "post": "Onderhoud laadpunten",
+          "ncw": 4092.2955327243635
+        },
+        {
+          "post": "Vaste netkosten",
+          "ncw": 3069.2216495432754
+        },
+        {
+          "post": "Restwaarde laadpunten",
+          "ncw": -2884.539444943756
+        }
+      ],
+      "per_jaar": [
+        {
+          "jaar": "2027",
+          "investering": 102000,
+          "laden": 10000
+        },
+        {
+          "jaar": "2028",
+          "voertuig": 19000,
+          "laden": 2800,
+          "gebruik": 83853
+        },
+        {
+          "jaar": "2029"
+        },
+        {
+          "jaar": "2030",
+          "voertuig": 19000,
+          "laden": 2800,
+          "gebruik": 83853
+        },
+        {
+          "jaar": "2031"
+        },
+        {
+          "jaar": "2032",
+          "voertuig": 19000,
+          "investering": -29402,
+          "laden": -1200,
+          "gebruik": 83853
+        }
+      ],
+      "vloot": [
+        {
+          "id": "v366ca859",
+          "naam": "Installatie",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            false,
+            false,
+            false
+          ],
+          "plek": "bestel0",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "v824d1ca7",
+          "naam": "Onderhoud",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            false,
+            false,
+            false
+          ],
+          "plek": "bestel1",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_m9b6df18b_bestel1_0_K",
+          "naam": "Elektrische servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "electric",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2027–28",
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel1",
+          "prijs": 52000.0,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "v1f7f0cd0",
+          "naam": "Service",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            false,
+            false,
+            false
+          ],
+          "plek": "bestel2",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_m9b6df18b_bestel2_0_K",
+          "naam": "Elektrische servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "electric",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2027–28",
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel2",
+          "prijs": 52000.0,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "va47fb638",
+          "naam": "Projecten",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel3",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_m9b6df18b_bestel3_0_K",
+          "naam": "Elektrische servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "electric",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2027–28",
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel3",
+          "prijs": 52000.0,
+          "lease_pj": null,
+          "subsidie": false
+        }
+      ],
+      "aantallen": [
+        {
+          "periode": "2027–28",
+          "elektrisch": 3,
+          "diesel": 1
+        },
+        {
+          "periode": "2029–30",
+          "elektrisch": 3,
+          "diesel": 1
+        },
+        {
+          "periode": "2031–32",
+          "elektrisch": 3,
+          "diesel": 1
+        }
+      ],
+      "laadpunten": [
+        {
+          "naam": "AC 22 kW dubbel",
+          "aantal": [
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "net": [
+        "Huidige aansluiting 55 kW",
+        "Huidige aansluiting 55 kW",
+        "Huidige aansluiting 55 kW"
+      ],
+      "net_kw": [
+        55.0,
+        55.0,
+        55.0
+      ],
+      "energie": [],
+      "co2": [
+        55846.70999999992,
+        55846.7099999999,
+        55846.7100000003
+      ],
+      "ze_aandeel": [
+        0.5806451612903226,
+        0.5806451612903226,
+        0.5806451612903226
+      ],
+      "dagen": [
+        {
+          "periode": "2027–28",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel3_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel2_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel1_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel1_0_K",
+              "kwh": [
+                28.7,
+                59.1,
+                63.5,
+                63.5,
+                51.3,
+                32.9,
+                14.6,
+                8.5,
+                8.5,
+                8.5,
+                8.5,
+                28.7
+              ],
+              "capaciteit": 85.0
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel2_0_K",
+              "kwh": [
+                8.5,
+                13.0,
+                43.4,
+                53.5,
+                43.5,
+                28.5,
+                13.5,
+                8.5,
+                8.5,
+                8.5,
+                8.5,
+                8.5
+              ],
+              "capaciteit": 85.0
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel3_0_K",
+              "kwh": [
+                19.5,
+                31.4,
+                43.5,
+                43.5,
+                35.7,
+                24.1,
+                12.4,
+                8.5,
+                8.5,
+                8.5,
+                8.5,
+                19.5
+              ],
+              "capaciteit": 85.0
+            }
+          ],
+          "net": [
+            18.97,
+            18.97,
+            18.97,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            18.97
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            16.97,
+            16.97,
+            10.97,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            -0.0,
+            -0.0,
+            0.0,
+            16.97
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        },
+        {
+          "periode": "2029–30",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel3_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel2_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel1_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel1_0_K",
+              "kwh": [
+                19.1,
+                35.6,
+                57.7,
+                63.2,
+                50.9,
+                32.6,
+                14.3,
+                8.2,
+                8.2,
+                8.2,
+                8.2,
+                19.1
+              ],
+              "capaciteit": 81.6
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel2_0_K",
+              "kwh": [
+                28.4,
+                28.4,
+                53.2,
+                53.2,
+                43.2,
+                28.2,
+                13.2,
+                8.2,
+                8.2,
+                8.2,
+                8.2,
+                28.4
+              ],
+              "capaciteit": 81.6
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel3_0_K",
+              "kwh": [
+                8.2,
+                38.5,
+                38.5,
+                43.2,
+                35.4,
+                23.7,
+                12.0,
+                8.2,
+                8.2,
+                8.2,
+                8.2,
+                8.2
+              ],
+              "capaciteit": 81.6
+            }
+          ],
+          "net": [
+            18.97,
+            18.97,
+            18.97,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            18.97
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            16.97,
+            16.97,
+            10.97,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            16.97
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        },
+        {
+          "periode": "2031–32",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel2_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel1_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Elektrische servicebus",
+              "voertuig_id": "n_m9b6df18b_bestel3_0_K",
+              "aandrijving": "electric",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel1_0_K",
+              "kwh": [
+                22.5,
+                52.8,
+                52.8,
+                52.8,
+                42.8,
+                27.8,
+                12.8,
+                7.8,
+                7.8,
+                7.8,
+                7.8,
+                22.5
+              ],
+              "capaciteit": 78.2
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel2_0_K",
+              "kwh": [
+                7.8,
+                16.2,
+                32.7,
+                42.8,
+                35.0,
+                23.4,
+                11.7,
+                7.8,
+                7.8,
+                7.8,
+                7.8,
+                7.8
+              ],
+              "capaciteit": 78.2
+            },
+            {
+              "voertuig": "Elektrische servicebus",
+              "id": "n_m9b6df18b_bestel3_0_K",
+              "kwh": [
+                24.4,
+                32.5,
+                62.8,
+                62.8,
+                50.6,
+                32.3,
+                13.9,
+                7.8,
+                7.8,
+                7.8,
+                7.8,
+                24.4
+              ],
+              "capaciteit": 78.2
+            }
+          ],
+          "net": [
+            18.97,
+            18.97,
+            18.97,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            18.97
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            16.97,
+            16.97,
+            10.97,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            16.97
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        }
+      ],
+      "aannames": [
+        "Eén representatieve werkdag, 230 keer per jaar, verdeeld over 11 rekenintervallen.",
+        "Beslissingen per 2 jaar.",
+        "Vervangen kan nu, aan het einde van de huidige wagen, of wanneer een zone of doel ingaat.",
+        "Elke plek in de vloot heeft een eigen laadpunt op het depot en een vaste plek bij de snelladers."
+      ],
+      "waarschuwingen": [
+        "Dagroute projecten: 390 km haalt geen elektrisch model zonder laadstop, deze rit blijft diesel."
+      ],
+      "controle": {
+        "physical_intervals_checked": 396,
+        "cashflow_npv_reconciled": true,
+        "matrix_rows_checked": 9096
+      },
+      "texts": {},
+      "notices": []
+    },
+    {
+      "variant": "referentie",
+      "naam": "Diesel blijven",
+      "referentie": true,
+      "status": "optimaal",
+      "gap": 0.0,
+      "ncw": 392310.8729837279,
+      "investering": 126000.0,
+      "kapitaal": 94202.775,
+      "jaren": [
+        "2027–28",
+        "2029–30",
+        "2031–32"
+      ],
+      "tijdas": [
+        0,
+        180,
+        360,
+        420,
+        540,
+        720,
+        900,
+        960,
+        1080,
+        1200,
+        1320,
+        1440
+      ],
+      "kosten": [
+        {
+          "post": "Brandstof, stroom, onderhoud, heffing",
+          "ncw": 314953.5507057699
+        },
+        {
+          "post": "Aanschaf voertuigen",
+          "ncw": 105213.296841126
+        },
+        {
+          "post": "Restwaarde einde horizon",
+          "ncw": -45073.8765031355
+        },
+        {
+          "post": "Verzekering en vaste kosten",
+          "ncw": 40922.95532724367
+        },
+        {
+          "post": "Verkoop voertuigen",
+          "ncw": -26774.275036819425
+        },
+        {
+          "post": "Vaste netkosten",
+          "ncw": 3069.2216495432754
+        }
+      ],
+      "per_jaar": [
+        {
+          "jaar": "2027"
+        },
+        {
+          "jaar": "2028",
+          "voertuig": 16000,
+          "laden": 1200,
+          "gebruik": 123140
+        },
+        {
+          "jaar": "2029",
+          "investering": 28995
+        },
+        {
+          "jaar": "2030",
+          "voertuig": 16000,
+          "laden": 1200,
+          "gebruik": 123140
+        },
+        {
+          "jaar": "2031",
+          "investering": 65208
+        },
+        {
+          "jaar": "2032",
+          "voertuig": 16000,
+          "investering": -62504,
+          "laden": 1200,
+          "gebruik": 123140
+        }
+      ],
+      "vloot": [
+        {
+          "id": "v366ca859",
+          "naam": "Installatie",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            true,
+            false,
+            false
+          ],
+          "plek": "bestel0",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_mea027e98_bestel0_1_K",
+          "naam": "Diesel servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2029–30",
+          "actief": [
+            false,
+            true,
+            true
+          ],
+          "plek": "bestel0",
+          "prijs": 42000.0,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "v824d1ca7",
+          "naam": "Onderhoud",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            true,
+            true,
+            false
+          ],
+          "plek": "bestel1",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "v1f7f0cd0",
+          "naam": "Service",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            true,
+            true,
+            false
+          ],
+          "plek": "bestel2",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_mea027e98_bestel2_2_K",
+          "naam": "Diesel servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2031–32",
+          "actief": [
+            false,
+            false,
+            true
+          ],
+          "plek": "bestel2",
+          "prijs": 42000.0,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "va47fb638",
+          "naam": "Projecten",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "eigendom",
+          "bestaand": true,
+          "start": null,
+          "actief": [
+            true,
+            true,
+            true
+          ],
+          "plek": "bestel3",
+          "prijs": null,
+          "lease_pj": null,
+          "subsidie": false
+        },
+        {
+          "id": "n_mea027e98_bestel3_2_K",
+          "naam": "Diesel servicebus",
+          "kenteken": "",
+          "groep": "bestel",
+          "aandrijving": "diesel",
+          "contract": "koop",
+          "bestaand": false,
+          "start": "2031–32",
+          "actief": [
+            false,
+            false,
+            true
+          ],
+          "plek": "bestel3",
+          "prijs": 42000.0,
+          "lease_pj": null,
+          "subsidie": false
+        }
+      ],
+      "aantallen": [
+        {
+          "periode": "2027–28",
+          "elektrisch": 0,
+          "diesel": 4
+        },
+        {
+          "periode": "2029–30",
+          "elektrisch": 0,
+          "diesel": 4
+        },
+        {
+          "periode": "2031–32",
+          "elektrisch": 0,
+          "diesel": 4
+        }
+      ],
+      "laadpunten": [],
+      "net": [
+        "Huidige aansluiting 55 kW",
+        "Huidige aansluiting 55 kW",
+        "Huidige aansluiting 55 kW"
+      ],
+      "net_kw": [
+        55.0,
+        55.0,
+        55.0
+      ],
+      "energie": [],
+      "co2": [
+        76198.76999999999,
+        76198.76999999999,
+        76198.76999999999
+      ],
+      "ze_aandeel": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dagen": [
+        {
+          "periode": "2027–28",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Service",
+              "voertuig_id": "v1f7f0cd0",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Installatie",
+              "voertuig_id": "v366ca859",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Onderhoud",
+              "voertuig_id": "v824d1ca7",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [],
+          "net": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        },
+        {
+          "periode": "2029–30",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Diesel servicebus",
+              "voertuig_id": "n_mea027e98_bestel0_1_K",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Onderhoud",
+              "voertuig_id": "v824d1ca7",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Service",
+              "voertuig_id": "v1f7f0cd0",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [],
+          "net": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        },
+        {
+          "periode": "2031–32",
+          "toewijzing": [
+            {
+              "rit": "Dagroute installatie",
+              "rit_id": "r6df0e0b1",
+              "voertuig": "Diesel servicebus",
+              "voertuig_id": "n_mea027e98_bestel0_1_K",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute onderhoud",
+              "rit_id": "re846156c",
+              "voertuig": "Diesel servicebus",
+              "voertuig_id": "n_mea027e98_bestel3_2_K",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute service",
+              "rit_id": "r7f00af94",
+              "voertuig": "Projecten",
+              "voertuig_id": "va47fb638",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            },
+            {
+              "rit": "Dagroute projecten",
+              "rit_id": "r45558cf9",
+              "voertuig": "Diesel servicebus",
+              "voertuig_id": "n_mea027e98_bestel2_2_K",
+              "aandrijving": "diesel",
+              "kenteken": ""
+            }
+          ],
+          "accu": [],
+          "net": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "teruglevering": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "laden": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gebouw": [
+            2.0,
+            2.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            8.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "zon": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grens": 55.0,
+          "onderweg_kwh_pj": 0
+        }
+      ],
+      "aannames": [
+        "Eén representatieve werkdag, 230 keer per jaar, verdeeld over 11 rekenintervallen.",
+        "Beslissingen per 2 jaar.",
+        "Vervangen kan nu, aan het einde van de huidige wagen, of wanneer een zone of doel ingaat.",
+        "Elke plek in de vloot heeft een eigen laadpunt op het depot en een vaste plek bij de snelladers."
+      ],
+      "waarschuwingen": [],
+      "controle": {
+        "physical_intervals_checked": 33,
+        "cashflow_npv_reconciled": true,
+        "matrix_rows_checked": 2692
+      },
+      "texts": {},
+      "notices": []
+    }
+  ],
+  "demo": true
+}
