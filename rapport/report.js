@@ -1,5 +1,6 @@
 import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport, periodYears, scenarioPlans, scenarioLevel, dayKm, totalKm, analysisTexts, adviceSummary } from './report-core.mjs';
 import { moves, reasonFor, stays, verdict, pillars, differenceStory, yearsStory, chargingStory, robustness, CHOICES, SETTINGS, formatValue, GLOSSARY } from './report-explain.mjs';
+import { fleetLifecycle, periodChanges, scenarioCatalogue, statusLabel, presentationContext } from './report-planning.mjs';
 
 const API = 'https://zarvyblveyomngypwvhw.supabase.co/rest/v1/rpc/fleet_report_read';
 const APIKEY = 'sb_publishable_srfj19l9xWDSkdirFz6RtQ_RperxnNH';
@@ -29,7 +30,7 @@ const E = (tag, attrs = {}, ...children) => {
     if (k.startsWith('on')) node.addEventListener(k.slice(2), v);
     else if (k === 'class') node.className = v;
     else if (k === 'style') for (const [sk, sv] of Object.entries(v)) sk.startsWith('--') ? node.style.setProperty(sk, sv) : node.style[sk] = sv;
-    else node.setAttribute(k, v === true ? '' : String(v));
+    else node.setAttribute(k, v === true && !k.startsWith('aria-') ? '' : String(v));
   }
   for (const c of children.flat(Infinity)) if (c != null && c !== false) node.append(c.nodeType ? c : document.createTextNode(String(c)));
   return node;
@@ -91,8 +92,8 @@ const SCENARIO_TEXT = {
 const KIND = { investering: 'Investeringen', voertuig: 'Lease en vaste kosten', gebruik: 'Brandstof, stroom en onderhoud', laden: 'Laden en net', overig: 'Overig' };
 const KIND_COLOR = { investering: '#15171A', voertuig: '#7A8188', gebruik: '#F2A33A', laden: '#0A8F5B', overig: '#C3C3BD' };
 
-let report;
-const state = { variant: 0, scenario: null, period: 0, costMode: 'cum', diffMode: 'jaar', clock: 28, playing: null, vehicle: null, compare: true, open: new Set() };
+let report, sourceReport;
+const state = { variant: 0, scenario: null, period: 0, costMode: 'cum', diffMode: 'jaar', clock: 28, playing: null, planPlaying: null, vehicle: null, compare: true, open: new Set(), fleetFilter: 'all', scenarioFilter: 'all', scenarioSort: 'axis', inspect: null };
 const params = new URLSearchParams(location.search);
 
 async function load() {
@@ -113,13 +114,13 @@ async function load() {
     if (!response.ok) throw new Error((await response.json().catch(() => null))?.fout || 'Het rapport kan nu niet worden geladen. Probeer het later opnieuw.');
     const data = await response.json();
     if (!data) throw new Error('Deze link is verlopen, ingetrokken of niet gevonden. Vraag ons om een nieuwe link.');
-    report = validateReport(data);
+    sourceReport = report = validateReport(data);
     state.variant = Math.max(0, report.variants.findIndex(x => x.variant === report.selected_variant));
-    state.period = report.variants[state.variant].jaren.length - 1;
+    state.period = 0;
     document.title = `${report.client.name} · ${(report.title || 'Vlootadvies').replace(/\.$/, '')} · Stekker of Diesel`;
     render();
     addEventListener('scroll', spy, { passive: true });
-    addEventListener('beforeprint', () => document.querySelectorAll('details.app').forEach(d => { d.open = true; }));
+    addEventListener('beforeprint', () => { stopPlan(); stopDay(); document.querySelectorAll('details.app').forEach(d => { d.open = true; }); });
     let w = innerWidth, t;
     addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { if (Math.abs(innerWidth - w) > 40) { w = innerWidth; render(); } }, 200); });
   } catch (error) {
@@ -136,13 +137,32 @@ function current() {
   return { plan, ref, key, m: metrics(report, plan, ref), years: periodYears(report, plan) };
 }
 function set(patch, focus) {
+  if (patch.scenario) {
+    const check = scenarioCatalogue(sourceReport).find(c => c.id === patch.scenario);
+    if (!check?.explorable) return;
+    patch.variant = sourceReport.variants.findIndex(v => v.variant === 'basis');
+  }
+  if ('period' in patch || 'scenario' in patch || 'variant' in patch) stopPlan();
+  if ('scenario' in patch || 'variant' in patch) { stopDay(); patch.vehicle = null; }
   Object.assign(state, patch);
   const r = report.variants[state.variant];
   state.period = Math.min(state.period, r.jaren.length - 1);
   render();
-  if (focus) q(`#${focus}`)?.focus({ preventScroll: true });
+  if (focus) document.getElementById(focus)?.focus({ preventScroll: true });
 }
 function stopDay() { clearInterval(state.playing); state.playing = null; }
+function stopPlan() { clearInterval(state.planPlaying); state.planPlaying = null; }
+function playPlan() {
+  if (state.planPlaying) { stopPlan(); render(); return; }
+  stopDay();
+  state.vehicle = null;
+  if (state.period === current().plan.jaren.length - 1) state.period = 0;
+  state.planPlaying = setInterval(() => {
+    if (state.period >= current().plan.jaren.length - 1) stopPlan(); else state.period++;
+    render();
+  }, 2400);
+  render();
+}
 
 // ---------------------------------------------------------------- building blocks
 const section = (id, title, ...children) => E('section', { class: 'section', id, 'aria-label': title }, title ? E('div', { class: 'section-head' }, E('h2', {}, title), children[0]?.isHead ? children.shift().node : null) : null, ...children);
@@ -248,12 +268,12 @@ function topbar() {
       E('button', { class: 'btn ghost', type: 'button', onclick: downloadCsv }, icon('download'), E('span', {}, 'Cijfers')),
       E('button', { class: 'btn dark', type: 'button', onclick: () => print() }, icon('print'), E('span', {}, 'Bewaar als pdf')))));
 }
-const SECTIONS = [['overzicht', 'Overzicht', 'Advies'], ['analyse', 'Analyse'], ['verschil', 'Verschil'], ['jaren', 'Jaren'], ['kansen', 'Kansen'], ['vlootplan', 'Vlootplan', 'Onderbouwing'], ['wagens', 'Wagens'],
-  ['investeringen', 'Investering'], ['laden', 'Laden'], ['werkdag', 'Werkdag'], ['uitstoot', 'Uitstoot'], ['scenarios', 'Scenario’s'], ['varianten', 'Varianten'], ['stappen', 'Stappen'], ['verantwoording', 'Aannames'], ['bijlage', 'Bijlage', 'Bijlage']];
+const SECTIONS = [['overzicht', 'Overzicht'], ['vlootplan', 'Vlootplan'], ['scenarios', 'Scenario’s'], ['analyse', 'Analyse'], ['verschil', 'Kosten'], ['jaren', 'Door de jaren'], ['kansen', 'Kansen'], ['keuzes', 'Keuzes'], ['wagens', 'Per wagen'],
+  ['investeringen', 'Investering'], ['laden', 'Laden'], ['werkdag', 'Werkdag'], ['uitstoot', 'Uitstoot'], ['varianten', 'Plannen'], ['stappen', 'Stappen'], ['verantwoording', 'Aannames'], ['bijlage', 'Bijlage']];
 function nav(c) {
   const lvl = scenarioLevel(report, c.key);
   return E('nav', { class: 'nav', 'aria-label': 'Hoofdstukken' }, E('div', { class: 'wrap nav-in' },
-    E('div', { class: 'nav-links' }, SECTIONS.filter(([id]) => id !== 'scenarios' || report.scenarios).filter(([id]) => id !== 'kansen' || report.opportunities?.items?.length).filter(([id]) => id !== 'analyse' || aiTexts().ai_kern || aiTexts().ai_samenvatting).filter(([id]) => id !== 'varianten' || report.variants.length > 2)
+    E('div', { class: 'nav-links' }, SECTIONS.filter(([id]) => id !== 'scenarios' || scenarioCatalogue(report).length).filter(([id]) => id !== 'kansen' || report.opportunities?.items?.length || report.opportunities?.checks?.length).filter(([id]) => id !== 'analyse' || aiTexts().ai_kern || aiTexts().ai_samenvatting).filter(([id]) => id !== 'varianten' || report.variants.length > 2 || report.variant_checks?.some(v => !Number.isFinite(v.ncw)))
       .map(([id, label, group]) => [group ? E('span', { class: 'nav-group' }, group) : null, E('a', { href: `#${id}`, 'data-id': id, onclick: e => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); } }, label)])),
     lvl ? E('button', { class: 'chip', type: 'button', onclick: () => set({ scenario: null }), 'aria-label': 'Terug naar de basis' }, `${lvl.axis.name} ${lvl.level.label}`, icon('close')) : null));
 }
@@ -271,7 +291,7 @@ function overview(c) {
   const trips = report.trips.filter(t => !t.piek).length;
   const lvl = scenarioLevel(report, c.key);
   const left = E('div', { class: 'id' }, E('div', { class: 'eyebrow' }, vehicleIcon(groups[0] || 'bestel'), E('span', {}, report.client.name)),
-    E('h1', { class: 'verdict' }, verdict(report, plan, ref, m)),
+    E('h1', { class: 'verdict' }, `Vlootplan ${years}`),
     E('p', {}, [`${report.fleet.length} voertuigen`, `${trips} ritten per dag`, years, report.client.place].filter(Boolean).join(' · ')));
   let headline;
   const ze = report.trips.some(t => t.ze_vanaf) || (report.goals?.ze_doel_pct > 0);
@@ -294,10 +314,85 @@ function overview(c) {
       E('b', {}, money(state.diffMode === 'jaar' ? v / Y : v))))), kmTiles);
   return section('overzicht', null,
     E('div', { class: 'hero' }, left, right),
+    fleetPlan(c),
+    E('p', { class: 'plan-conclusion' }, verdict(report, plan, ref, m)),
     E('div', { class: 'pillars' }, pillars(report, plan, ref, m).map(x => E('div', { class: 'pillar' }, E('span', {}, x.key), E('b', {}, x.big, E('small', {}, x.unit)), E('p', {}, x.text)))),
-    route(c),
     E('div', { class: 'split' }, totals, whatIf(c)),
     advice(c));
+}
+
+function fleetPlan(c) {
+  const { plan } = c, rows = fleetLifecycle(report, plan), changes = periodChanges(report, plan, state.period);
+  const visible = rows.filter(r => state.fleetFilter === 'all' || (state.fleetFilter === 'electric' ? isEV(r.vehicle) : !isEV(r.vehicle)));
+  const pick = (id, period, focus) => {
+    set({ vehicle: id === state.vehicle && period === state.period ? null : id, period }, focus);
+    if (state.vehicle) document.querySelector('.fleet-detail')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+  };
+  const cols = plan.jaren.length + 2;
+  const groups = [[true, 'Huidige voertuigen'], [false, 'Nieuwe voertuigen']].map(([existing, title]) => {
+    const group = visible.filter(r => r.existing === existing);
+    return group.length ? [E('tr', { class: 'fleet-group' }, E('th', { colspan: cols, scope: 'colgroup' }, title, E('span', {}, `${group.length}`))), group.map(row => {
+      const v = row.vehicle, exit = row.events.find(e => e.kind === 'exit');
+      return E('tr', { class: row.id === state.vehicle ? 'selected' : '' },
+        E('th', { scope: 'row', class: 'fleet-name' }, E('button', { type: 'button', onclick: () => pick(row.id, Math.max(0, row.first), `fleet-row-${row.id}`), id: `fleet-row-${row.id}` },
+          vehicleIcon(kindOf(v), isEV(v) ? 'e' : 'd'), E('span', {}, E('b', {}, row.label), E('small', {}, [isEV(v) ? 'Elektrisch' : 'Diesel', v.kenteken].filter(Boolean).join(' · '))))),
+        E('td', { class: 'fleet-now' }, row.existing ? E('span', { class: 'fleet-current' }, 'In uw vloot') : E('span', { class: 'fleet-muted' }, '—')),
+        plan.jaren.map((j, p) => {
+          const event = row.events.find(e => e.period === p);
+          const label = event?.label || (row.active[p] ? 'Rijdt door' : exit && p > exit.period ? 'Uit vloot' : 'Nog niet in vloot');
+          const id = `fleet-cell-${row.id}-${p}`;
+          return E('td', { class: p === state.period ? 'period-on' : '' }, E('button', { id, type: 'button',
+            class: `fleet-cell ${row.active[p] ? isEV(v) ? 'electric' : 'diesel' : 'inactive'}${event?.kind === 'exit' ? ' exit' : ''}${event?.kind === 'start' ? ' arrival' : ''}`,
+            'aria-label': `${row.label}, ${j}: ${label}`, 'aria-pressed': row.id === state.vehicle && p === state.period,
+            onclick: () => pick(row.id, p, id) },
+            event ? E('span', { class: 'fleet-event' }, E('i', { 'aria-hidden': 'true' }, event.kind === 'exit' ? '↗' : '+'), event.label) :
+              row.active[p] ? E('span', { class: 'fleet-running' }, E('i', { 'aria-hidden': 'true' }), 'Rijdt door') : E('span', { class: 'fleet-muted' }, exit && p > exit.period ? 'Uit vloot' : '—')));
+        }));
+    })] : null;
+  });
+  const selected = rows.find(r => r.id === state.vehicle);
+  const planPicker = E('label', { class: 'plan-picker' }, E('span', {}, 'Bekijk plan'), E('select', { id: 'plan-picker', onchange: e => set({ variant: +e.target.value, scenario: null, inspect: null }, 'plan-picker') },
+    report.variants.map((v, i) => E('option', { value: i, selected: i === state.variant }, v.naam))));
+  const catalogue = scenarioCatalogue(report), checked = catalogue.length;
+  return E('div', { id: 'vlootplan', class: 'fleet-planner' },
+    E('div', { class: 'planner-heading' }, E('div', {}, E('h2', {}, 'Uw vloot, van nu tot straks'), E('p', {}, 'Klik op een voertuig of periode voor de keuze, de kosten en de inzet.')), planPicker),
+    c.key ? E('div', { class: 'scenario-context', role: 'status' }, E('span', {}, E('b', {}, `Scenario: ${scenarioLevel(report, c.key)?.axis.name || ''} · ${scenarioLevel(report, c.key)?.level.label || ''}`), 'Dit hele rapport toont de uitkomst van dit scenario.'),
+      E('button', { class: 'btn small', onclick: () => set({ scenario: null }, 'plan-picker') }, 'Terug naar basis')) : null,
+    E('div', { class: 'planner-toolbar' }, E('div', { class: 'fleet-key' }, E('span', {}, E('i', { class: 'electric' }), 'Elektrisch'), E('span', {}, E('i', { class: 'diesel' }), 'Diesel'), E('span', {}, E('i', { class: 'sale' }), 'Verkoop / uit lease')),
+      segmented([['all', 'Alle'], ['electric', 'Elektrisch'], ['diesel', 'Diesel']], state.fleetFilter, v => set({ fleetFilter: v, vehicle: null }), 'Voertuigen filteren')),
+    E('p', { class: 'fleet-mobile-hint' }, 'Veeg naar links om alle jaren te bekijken →'),
+    E('div', { class: 'fleet-scroll', id: 'fleet-scroll', tabindex: 0, role: 'region', 'aria-label': 'Interactieve vlootplanning, horizontaal en verticaal te scrollen' },
+      E('table', { class: 'fleet-matrix', style: { '--periods': plan.jaren.length } }, E('caption', { class: 'sr-only' }, 'Vlootplanning: huidige vloot, aanschaf, inzet en verkoop per periode'),
+        E('thead', {}, E('tr', {}, E('th', { scope: 'col' }, 'Voertuig'), E('th', { scope: 'col', class: 'fleet-now' }, 'Nu'),
+          plan.jaren.map((j, p) => E('th', { scope: 'col', class: p === state.period ? 'period-on' : '' }, E('button', { type: 'button', id: `fleet-period-${p}`, 'aria-pressed': p === state.period, onclick: () => set({ period: p }, `fleet-period-${p}`) }, j, E('small', {}, p === 0 ? 'Start plan' : 'Bekijk periode')))))),
+        E('tbody', {}, groups, visible.length ? null : E('tr', {}, E('td', { colspan: cols, class: 'fleet-empty' }, 'Geen voertuigen met dit filter.'))))),
+    E('div', { class: 'planner-footer' }, E('span', {}, '↗ Verkoop staat bij de start van de periode waarin het voertuig uit de vloot gaat.'), E('span', {}, 'Een gekleurde balk betekent: in gebruik.')),
+    selected ? fleetVehicleDetail(plan, selected) : null,
+    E('div', { class: 'period-detail', 'aria-live': 'polite' }, E('div', { class: 'period-heading' }, E('span', { class: 'eyebrow' }, 'Op dit beslismoment'), E('h3', {}, plan.jaren[state.period]),
+      E('div', { class: 'period-arrows' }, plan.jaren.length > 1 ? E('button', { class: 'btn small ghost', type: 'button', id: 'plan-play', onclick: playPlan, 'aria-label': state.planPlaying ? 'Vlootplan pauzeren' : 'Vlootplan afspelen' }, icon(state.planPlaying ? 'pause' : 'play'), state.planPlaying ? 'Pauze' : 'Speel plan') : null,
+        E('button', { class: 'btn small ghost', type: 'button', id: 'plan-prev', disabled: state.period === 0, 'aria-label': 'Vorige periode', onclick: () => set({ period: state.period - 1 }, state.period === 1 ? 'plan-next' : 'plan-prev') }, '←'),
+        E('button', { class: 'btn small ghost', type: 'button', id: 'plan-next', disabled: state.period === plan.jaren.length - 1, 'aria-label': 'Volgende periode', onclick: () => set({ period: state.period + 1 }, state.period === plan.jaren.length - 2 ? 'plan-prev' : 'plan-next') }, '→'))),
+      E('div', { class: 'period-actions' }, ...[
+        [changes.bought.length, changes.bought.length === 1 ? 'nieuw voertuig' : 'nieuwe voertuigen', changes.bought.map(e => `${e.row.label} · ${e.label.toLowerCase()}`)],
+        [changes.sold.length, 'voertuigen uit de vloot', changes.sold.map(e => `${e.row.label} · ${e.label.toLowerCase()}`)],
+        [changes.chargers.reduce((s, x) => s + x.added, 0), changes.chargers.reduce((s, x) => s + x.added, 0) === 1 ? 'nieuw laadpunt' : 'nieuwe laadpunten', changes.chargers.map(x => `${x.added}× ${x.name}`)],
+      ].map(([n, title, lines]) => E('div', {}, E('b', {}, n), E('span', {}, title), E('p', {}, lines.length ? lines.join(' · ') : 'Geen wijziging')))),
+      E('div', { class: 'period-facts' }, E('span', {}, 'Net ', E('b', {}, `${num(changes.grid)} kW`)), E('span', { title: 'Saldo van aanschaf en opbrengsten in deze periode, inclusief de restwaarde aan het einde van de looptijd.' }, 'Investeringen en opbrengsten ', E('b', {}, money(changes.investment)), ' · incl. eindrestwaarde'), E('span', {}, 'CO₂ per jaar ', E('b', {}, tons(changes.co2))))),
+    checked ? E('button', { class: 'scenario-jump', type: 'button', onclick: () => document.getElementById('scenarios')?.scrollIntoView({ behavior: 'smooth' }) },
+      E('span', {}, E('b', {}, `${checked} scenario’s onderzocht`), 'Ontdek wat prijzen, groei of een andere aansluiting veranderen.'), icon('arrow')) : null);
+}
+
+function fleetVehicleDetail(plan, row) {
+  const v = row.vehicle, trips = plan.dagen?.[state.period]?.toewijzing?.filter(t => t.voertuig_id === row.id) || [];
+  const start = row.existing ? 'Nu in uw vloot' : row.first >= 0 ? `${v.contract === 'lease' ? 'Lease vanaf' : 'Aankoop in'} ${plan.jaren[row.first]}` : 'Niet ingezet';
+  const exit = row.events.find(e => e.kind === 'exit');
+  const f = report.fleet.find(f => f.id === row.id);
+  return E('div', { class: 'fleet-detail', role: 'region', 'aria-labelledby': 'fleet-detail-title' }, E('div', { class: 'fleet-detail-head' }, vehicleIcon(kindOf(v), isEV(v) ? 'e' : 'd'), E('div', {}, E('span', { class: 'eyebrow' }, 'Dit gebeurt met dit voertuig'), E('h3', { id: 'fleet-detail-title' }, row.label)),
+    E('button', { class: 'btn small ghost', type: 'button', onclick: () => set({ vehicle: null }), 'aria-label': 'Voertuigdetails sluiten' }, icon('close'))),
+    E('div', { class: 'fleet-detail-facts' }, tile('Begin', start), tile('Einde', exit ? `${exit.label} in ${plan.jaren[exit.period]}` : 'Blijft binnen de looptijd in de vloot'),
+      tile(row.existing ? 'Huidig contract' : v.contract === 'lease' ? 'Lease per maand' : 'Aanschaf', row.existing ? f?.contract === 'lease' ? 'Lease' : 'Eigendom' : v.contract === 'lease' ? money((v.lease_pj || 0) / 12) : money(v.prijs))),
+    E('p', {}, E('b', {}, `Inzet in ${plan.jaren[state.period]}: `), trips.length ? trips.map(t => t.rit).join(' · ') : row.active[state.period] ? 'In de vloot; geen vaste rit toegewezen in deze werkdag.' : 'Niet in gebruik in deze periode.'),
+    !row.existing ? why(reasonFor(report, plan, moveOf(plan, v))) : null);
 }
 // The plan at a glance: per decision moment what changes, and the main reason.
 function route(c) {
@@ -407,7 +502,7 @@ function difference(c) {
 // Every opportunity was solved separately, starting from the advice, and only loosens a limit: the gain is never negative.
 function opportunities(c) {
   const o = report.opportunities;
-  if (!o?.items?.length) return null;
+  if (!o || !o.items?.length && !o.checks?.length) return null;
   const Y = report.settings.jaren, base = report.variants.find(v => v.variant === 'basis');
   const small = x => x.gain < Math.max(1000, Math.abs(o.base_ncw) * .0025);
   const real = o.items.filter(x => !small(x)), none = o.items.filter(small);
@@ -432,8 +527,11 @@ function opportunities(c) {
     none.length ? `${list(none.map(x => x.title.toLowerCase()))} ${none.length === 1 ? 'levert' : 'leveren'} weinig of niets op; dat ${none.length === 1 ? 'is' : 'zijn'} geen knelpunt${none.length === 1 ? '' : 'en'}` : null,
     'elke verandering is apart doorgerekend, vanaf het advies; met meer rekentijd kan de opbrengst iets hoger uitvallen, nooit lager dan nul',
   ];
-  return section('kansen', 'Waar zit de winst', E('div', { class: 'split' }, list_(kansen, 'Wat u kunt doen'), list_(eisen, 'Wat uw eisen kosten') || why(reasons, 'Wat dit zegt')),
-    eisen.length ? why(reasons, 'Wat dit zegt') : null, aiNote('kansen'));
+  const failed = (o.checks || []).filter(x => !Number.isFinite(x.ncw));
+  return section('kansen', 'Waar zit de winst', E('div', { class: 'split' }, list_(kansen, 'Wat u kunt doen'), list_(eisen, 'Wat uw eisen kosten') || (o.items.length ? why(reasons, 'Wat dit zegt') : null)),
+    eisen.length ? why(reasons, 'Wat dit zegt') : null,
+    none.length ? E('details', { class: 'sensitivity' }, E('summary', {}, `Ook doorgerekend: ${none.length} veranderingen met weinig of geen voordeel`), list_(none, 'Volledige uitkomsten')) : null,
+    failed.length ? E('div', { class: 'unavailable-plans' }, E('h3', {}, 'Onderzocht zonder berekende uitkomst'), failed.map(x => E('div', {}, E('b', {}, x.title), E('span', {}, statusLabel(x))))) : null, aiNote('kansen'));
 }
 
 // ---------------------------------------------------------------- 3 door de jaren
@@ -462,35 +560,13 @@ function years(c) {
 }
 
 // ---------------------------------------------------------------- 4 vlootplan
-function fleetPlan(c) {
-  const { plan } = c, P = plan.jaren.length;
-  const lanes = fleetSlots(plan);
+function fleetRationale(c) {
+  const { plan } = c;
   const counts = plan.aantallen;
   const maxN = Math.max(1, ...counts.map(x => x.elektrisch + x.diesel));
   const bars = E('div', { class: 'counts' }, counts.map((x, p) => E('button', { type: 'button', class: 'count' + (p === state.period ? ' on' : ''), onclick: () => set({ period: p }), 'aria-label': `${plan.jaren[p]}: ${x.elektrisch} elektrisch, ${x.diesel} diesel` },
     E('div', { class: 'stack' }, E('i', { class: 'd', style: { height: `${x.diesel / maxN * 100}%` } }), E('i', { class: 'e', style: { height: `${x.elektrisch / maxN * 100}%` } })),
     E('b', {}, `${x.elektrisch} / ${x.elektrisch + x.diesel}`), E('span', {}, plan.jaren[p]))));
-  const grid = E('div', { class: 'gantt', style: { gridTemplateColumns: `minmax(130px, 220px) repeat(${P}, minmax(0, 1fr))`, '--p': P } },
-    E('div', { class: 'gh' }), plan.jaren.map((j, p) => E('button', { type: 'button', class: 'gh' + (p === state.period ? ' on' : ''), onclick: () => set({ period: p }) }, j)));
-  let group = null;
-  for (const lane of lanes) {
-    const first = lane.find(v => v.bestaand) || lane[0];
-    if (first.groep !== group) { group = first.groep; grid.append(E('div', { class: 'gg', style: { gridColumn: `1 / span ${P + 1}` } }, group)); }
-    grid.append(E('div', { class: 'gl' }, vehicleIcon(kindOf(first)), E('span', {}, first.bestaand ? first.naam : 'Nieuwe plek'), first.kenteken ? E('small', {}, first.kenteken) : null));
-    for (let p = 0; p < P; p++) {
-      const v = lane.find(x => x.actief[p]);
-      const cell = E('div', { class: 'gc' + (p === state.period ? ' on' : '') });
-      if (v) {
-        const startHere = p === 0 || !lane.find(x => x.actief[p - 1]) || lane.find(x => x.actief[p - 1]) !== v;
-        const endHere = p === P - 1 || lane.find(x => x.actief[p + 1]) !== v;
-        cell.append(E('button', { type: 'button', class: `pill ${isEV(v) ? 'e' : 'd'}${startHere ? ' s' : ''}${endHere ? ' t' : ''}${state.vehicle === v.id ? ' sel' : ''}`,
-          onclick: () => set({ vehicle: state.vehicle === v.id ? null : v.id }), 'aria-label': `${v.naam}, ${plan.jaren[p]}` }, startHere ? E('span', {}, v.bestaand ? 'Huidig' : v.naam) : null));
-      }
-      grid.append(cell);
-    }
-  }
-  const sel = plan.vloot.find(v => v.id === state.vehicle);
-  const detail = sel ? vehicleCard(plan, sel) : null;
   const st = stays(report, plan), mv = moves(report, plan), ch = report.choices || {};
   const reasons = [
     mv.length ? 'het model kiest voor elke wagen het goedkoopste moment om te vervangen: nu, aan het einde van zijn leven of contract, of zodra een zone of doel ingaat' : 'vervangen is in geen enkel jaar goedkoper dan doorrijden',
@@ -499,19 +575,7 @@ function fleetPlan(c) {
     ch.reserve_per_groep ? `per groep blijven ${ch.reserve_per_groep} reservewagens achter de hand` : null,
     ch.groei_pct ? `de ritten ${ch.groei_pct > 0 ? 'groeien' : 'krimpen'} met ${Math.abs(ch.groei_pct)}% per jaar${ch.groei_vanaf ? ` vanaf ${ch.groei_vanaf}` : ''}, de vloot groeit of krimpt mee` : null,
   ];
-  return section('vlootplan', 'Het vlootplan', bars, E('div', { class: 'gantt-wrap' }, grid), legend([['Elektrisch', '#0A8F5B'], ['Diesel', '#F2A33A']]), detail, why(reasons), aiNote('vlootplan'), prose(plan.texts?.vlootplan));
-}
-function vehicleCard(plan, v) {
-  const active = plan.jaren.filter((_, p) => v.actief[p]);
-  const f = report.fleet.find(x => x.id === v.id);
-  return E('div', { class: 'vcard' }, E('button', { class: 'x', type: 'button', onclick: () => set({ vehicle: null }), 'aria-label': 'Sluiten' }, icon('close')),
-    E('div', { class: 'vcard-h' }, vehicleIcon(kindOf(v), isEV(v) ? 'e' : 'd'), E('div', {}, E('h3', {}, v.naam), E('p', {}, [isEV(v) ? 'Elektrisch' : 'Diesel', v.bestaand ? 'huidig voertuig' : v.contract === 'lease' ? 'lease' : 'koop', v.kenteken].filter(Boolean).join(' · ')))),
-    E('div', { class: 'tiles four' },
-      tile('In gebruik', active.length ? `${active[0]}${active.length > 1 ? ` t/m ${active.at(-1)}` : ''}` : 'niet'),
-      v.bestaand ? tile('Bouwjaar', f?.bouwjaar || '—') : tile(v.contract === 'lease' ? 'Lease per maand' : 'Aanschafprijs', v.contract === 'lease' ? money((v.lease_pj || 0) / 12) : money(v.prijs)),
-      v.bestaand ? tile('Contract', f?.contract === 'lease' ? 'lease' : 'eigendom') : tile('Vanaf', v.start || '—'),
-      isEV(v) && f?.accu_kwh ? tile('Accu', `${num(f.accu_kwh)} kWh`) : v.subsidie ? tile('Subsidie', 'ja') : tile('Groep', v.groep)),
-    v.bestaand ? null : why(reasonFor(report, plan, moveOf(plan, v))));
+  return section('keuzes', 'De keuzes achter uw vlootplan', bars, why(reasons), route(c), aiNote('vlootplan'), prose(plan.texts?.vlootplan));
 }
 function moveOf(plan, v) {
   return moves(report, plan).find(x => x.vehicle.id === v.id) || { vehicle: v, old: null, period: plan.jaren.indexOf(v.start) };
@@ -648,6 +712,7 @@ function workday(c) {
   const slider = E('input', { type: 'range', id: 'day-clock', min: 0, max: 47, step: 1, value: state.clock, 'aria-label': 'Tijdstip', style: { '--f': state.clock / 47 },
     oninput: e => { stopDay(); set({ clock: +e.target.value }, 'day-clock'); } });
   const play = E('button', { class: 'btn ghost small', type: 'button', id: 'day-play', onclick: () => {
+    stopPlan();
     if (state.playing) { stopDay(); set({}, 'day-play'); return; }
     state.playing = setInterval(() => set({ clock: (state.clock + 1) % 48 }), 450); set({}, 'day-play');
   } }, icon(state.playing ? 'pause' : 'play'), state.playing ? 'Pauze' : 'Afspelen');
@@ -710,7 +775,7 @@ function zeTrips(plan) {
 }
 
 // ---------------------------------------------------------------- 10 scenario's
-function scenarios(c) {
+function scenarioSensitivity(c) {
   const sc = report.scenarios;
   if (!sc?.axes?.length) return null;
   const base = report.variants.find(v => v.variant === 'basis'), ref = report.variants.find(v => v.referentie);
@@ -728,20 +793,74 @@ function scenarios(c) {
         vals.filter(x => x.l.id !== 'basis').map(x => E('button', { type: 'button', class: 'tor-dot' + (state.scenario === x.key ? ' on' : '') + (pos(x.v) < 14 ? ' l' : pos(x.v) > 86 ? ' r' : ''), style: { left: `${pos(x.v)}%` },
           onclick: () => set({ scenario: state.scenario === x.key ? null : x.key }), 'aria-label': `${a.name} ${x.l.label}: voordeel ${money(round(x.v))}` }, E('span', {}, E('b', {}, money(round(x.v))), x.l.label)))));
     }));
-  const table = E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' }, E('thead', {}, E('tr', {}, ['Scenario', 'Advies', 'Diesel blijven', 'Voordeel', 'Elektrisch aan het eind'].map((h, i) => E('th', { class: i ? 'n' : '' }, h)))),
-    E('tbody', {}, E('tr', { class: !state.scenario ? 'on' : '', onclick: () => set({ scenario: null }) }, E('td', {}, 'Basis'), E('td', { class: 'n' }, money(base.ncw)), E('td', { class: 'n' }, money(ref.ncw)), E('td', { class: 'n pos' }, money(ref.ncw - base.ncw)), E('td', { class: 'n' }, endCount(base))),
-      sc.axes.flatMap(a => a.levels.filter(l => l.id !== 'basis').map(l => {
-        const key = `${a.id}:${l.id}`, o = sc.outcomes[key];
-        return E('tr', { class: state.scenario === key ? 'on' : '', onclick: () => set({ scenario: state.scenario === key ? null : key }) }, E('td', {}, `${a.name} ${l.label}`), E('td', { class: 'n' }, money(o.advies.ncw)), E('td', { class: 'n' }, money(o.diesel.ncw)),
-          E('td', { class: 'n ' + (o.diesel.ncw - o.advies.ncw >= 0 ? 'pos' : 'neg') }, money(o.diesel.ncw - o.advies.ncw)), E('td', { class: 'n' }, endCount(o.advies)));
-      })))));
-  return section('scenarios', 'Scenario’s', tornado, table, why(robustness(report, base, ref), 'Wat dit zegt'), aiNote('scenarios'));
+  return E('details', { class: 'sensitivity' }, E('summary', {}, 'Welke aanname maakt het meeste verschil?'), prose('De punten tonen het voordeel van het scenario ten opzichte van de eigen dieselvergelijking. Klik op een punt om dat scenario in het rapport te bekijken.'), tornado, why(robustness(report, base, ref), 'Wat dit zegt'));
   function endCount(v) { const e = v.aantallen?.at(-1); return e ? `${e.elektrisch} van ${e.elektrisch + e.diesel}` : '—'; }
+}
+
+function scenarios(c) {
+  const all = scenarioCatalogue(report);
+  if (!all.length) return null;
+  const base = report.variants.find(v => v.variant === 'basis'), ref = report.variants.find(v => v.referentie);
+  const baseSaving = base && ref ? ref.ncw - base.ncw : null;
+  const names = [...new Map(all.map(x => [x.axis, x.name]))];
+  const visible = all.filter(x => state.scenarioFilter === 'all' || x.axis === state.scenarioFilter).sort((a, b) => {
+    if (state.scenarioSort === 'saving') return (b.saving ?? -Infinity) - (a.saving ?? -Infinity) || a.name.localeCompare(b.name);
+    if (state.scenarioSort === 'cost') return (a.advice.ncw ?? Infinity) - (b.advice.ncw ?? Infinity) || a.name.localeCompare(b.name);
+    return all.indexOf(a) - all.indexOf(b);
+  });
+  const openScenario = check => {
+    const baseIndex = report.variants.findIndex(v => v.variant === 'basis');
+    set({ variant: baseIndex, scenario: check.id, inspect: check.id }, `inspect-${check.id}`);
+    document.getElementById('vlootplan')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  };
+  const checksDone = all.filter(x => x.saving != null).length;
+  return section('scenarios', 'Hoe stevig staat uw plan?',
+    E('div', { class: 'scenario-intro' }, E('p', {}, `We hebben ${all.length} scenario’s voor deze berekening onderzocht. Bekijk de uitkomsten naast elkaar en open een scenario om het volledige vlootplan, de kosten en de werkdag te verkennen.`),
+      E('div', { class: 'scenario-tally' }, E('b', {}, all.length), E('span', {}, 'scenario’s'), E('small', {}, `${checksDone} met een kostenvergelijking · ${all.length - checksDone} zonder volledige vergelijking`))),
+    E('div', { class: 'scenario-toolbar' }, E('div', { class: 'scenario-filters', role: 'group', 'aria-label': 'Scenario’s filteren' }, [['all', 'Alle scenario’s'], ...names].map(([key, label]) =>
+      E('button', { class: 'scenario-filter', type: 'button', 'aria-pressed': key === state.scenarioFilter, id: `scenario-filter-${key}`, onclick: () => set({ scenarioFilter: key }, `scenario-filter-${key}`) }, label))),
+      E('label', { class: 'scenario-sort' }, 'Sorteer op', E('select', { id: 'scenario-sort', onchange: e => set({ scenarioSort: e.target.value }, 'scenario-sort') },
+        [['axis', 'Onderwerp'], ['saving', 'Grootste voordeel'], ['cost', 'Laagste kosten']].map(([v, label]) => E('option', { value: v, selected: state.scenarioSort === v }, label))))),
+    E('div', { class: 'scenario-list-head', 'aria-hidden': 'true' }, E('span', {}, 'Doorgerekende aanname'), E('span', {}, 'Advies'), E('span', {}, 'Diesel blijven'), E('span', {}, 'Voordeel t.o.v. diesel'), E('span', {}, '')),
+    E('div', { class: 'scenario-list' }, visible.map(check => {
+      const expanded = state.inspect === check.id, active = state.scenario === check.id;
+      const end = check.advice.aantallen?.at(-1), delta = baseSaving != null && check.saving != null ? check.saving - baseSaving : null;
+      const openId = `scenario-details-${check.id}`;
+      const controls = E('button', { class: 'scenario-case', type: 'button', id: `inspect-${check.id}`, 'aria-expanded': expanded, 'aria-controls': openId,
+        onclick: () => set({ inspect: expanded ? null : check.id }, `inspect-${check.id}`) },
+        E('span', { class: 'case-name' }, E('b', {}, check.name), E('span', {}, check.label), active ? E('small', { class: 'case-active' }, 'U bekijkt dit scenario') : null),
+        E('span', { class: 'case-value', 'data-label': 'Advies' }, E('b', {}, money(check.advice.ncw)), E('small', {}, statusLabel(check.advice))),
+        E('span', { class: 'case-value', 'data-label': 'Diesel blijven' }, E('b', {}, money(check.diesel.ncw)), E('small', {}, statusLabel(check.diesel))),
+        E('span', { class: 'case-value ' + (check.saving == null ? '' : check.saving >= 0 ? 'positive' : 'negative'), 'data-label': 'Voordeel' }, E('b', {}, money(check.saving)), E('small', {}, check.saving == null ? 'Geen volledige vergelijking' : 'contante waarde')),
+        E('span', { class: 'case-chevron', 'aria-hidden': 'true' }, expanded ? '−' : '+'));
+      return E('article', { class: `scenario-item${active ? ' active' : ''}${expanded ? ' expanded' : ''}` }, controls,
+        expanded ? E('div', { class: 'scenario-details', id: openId }, E('p', {}, SCENARIO_TEXT[check.axis] || 'Deze aanname is afzonderlijk doorgerekend.'),
+          Object.keys(check.changes || {}).length ? E('div', { class: 'scenario-assumptions' }, E('b', {}, 'Dit hebben we aangepast'), E('ul', {}, inputChanges(check.changes).map(x => E('li', {}, x)))) : null,
+          E('div', { class: 'scenario-detail-metrics' }, tile('Advies, contante waarde', money(check.advice.ncw)), tile('Voordeel t.o.v. eigen diesel', money(check.saving)),
+            tile('Verschil in voordeel t.o.v. basis', delta == null ? '—' : money(delta), 'elk scenario heeft een eigen dieselvergelijking'),
+            tile('Elektrisch aan het einde', end ? `${end.elektrisch} van ${end.elektrisch + end.diesel}` : '—')),
+          E('div', { class: 'scenario-detail-bottom' }, E('p', {}, check.explorable ? 'Open deze uitkomst: de planning, grafieken, bedragen en werkdag in het hele rapport volgen dan dit scenario.' : check.saving == null ? 'Voor dit scenario is geen volledige kostenvergelijking beschikbaar. Een ontbrekende uitkomst wordt niet als nul of als besparing weergegeven.' : 'De kosten zijn bewaard. Dit scenario kan in deze gedeelde versie niet als volledig rapport worden geopend.'),
+            check.explorable ? E('button', { class: 'btn dark', type: 'button', onclick: () => openScenario(check) }, 'Bekijk dit scenario in het rapport', icon('arrow')) : null)) : null);
+    })),
+    E('p', { class: 'scenario-method' }, 'Elk scenario verandert één aanname en heeft een eigen doorgerekend advies en dieselvergelijking. Scenario’s combineren we hier niet: daarvoor is een nieuwe berekening nodig.'),
+    scenarioSensitivity(c), aiNote('scenarios'));
+}
+
+function inputChanges(changes) {
+  return Object.entries(changes || {}).map(([key, value]) => {
+    const [scope, name] = key.split('.'), def = (scope === 'instellingen' ? SETTINGS : CHOICES)[name];
+    if (def) return `${def[1]}: ${formatValue(def[2], value)}`;
+    if (key === 'factor.ev_prijs') return `Aanschafprijs elektrische voertuigen: ${pct(value - 1)} ten opzichte van basis`;
+    if (key === 'factor.heffing') return `Vrachtwagenheffing: ${pct(value - 1)} ten opzichte van basis`;
+    if (key === 'factor.net_jaren') return `Netaansluiting beschikbaar: ${Math.abs(value)} jaar ${value < 0 ? 'eerder' : 'later'}`;
+    return `${name.replaceAll('_', ' ')}: ${typeof value === 'boolean' ? value ? 'ja' : 'nee' : value}`;
+  });
 }
 
 // ---------------------------------------------------------------- 11 varianten
 function variants(c) {
-  if (report.variants.length < 3) return null;
+  const unavailable = (report.variant_checks || []).filter(v => !Number.isFinite(v.ncw));
+  if (report.variants.length < 3 && !unavailable.length) return null;
   const ref = report.variants.find(v => v.referentie), adv = report.variants.find(v => v.variant === 'basis');
   const max = Math.max(1, ...report.variants.map(v => ref ? Math.abs(ref.ncw - v.ncw) : 0));
   const reasons = [ref ? 'Diesel blijven rijdt alleen op diesel en vervangt wagens door een nieuwe diesel; zero-emissie-eisen tellen daar niet mee. Het is de vergelijking voor alle andere plannen' : null,
@@ -756,7 +875,8 @@ function variants(c) {
       E('b', {}, v.naam, changes(v) ? E('em', {}, changes(v)) : null), E('div', { class: 'vtrack' }, ref && !v.referentie ? E('i', { class: ref.ncw >= v.ncw ? 'pos' : 'neg', style: ref.ncw >= v.ncw ? { left: '50%', width: `${(ref.ncw - v.ncw) / max * 50}%` } : { right: '50%', width: `${(v.ncw - ref.ncw) / max * 50}%` } }) : null),
       E('span', { class: 'n' }, money(v.ncw)), E('small', {}, v.referentie ? 'referentie' : ref ? `${money(ref.ncw - v.ncw)} ${ref.ncw >= v.ncw ? 'voordeel' : 'nadeel'}` : ''),
       E('small', {}, e ? `${e.elektrisch} van ${e.elektrisch + e.diesel} elektrisch` : ''));
-  })), why(reasons), prose(report.variants[state.variant].texts?.varianten));
+  })), unavailable.length ? E('div', { class: 'unavailable-plans' }, E('h3', {}, 'Ook onderzocht'), unavailable.map(v => E('div', {}, E('b', {}, v.naam || 'Alternatief plan'), E('span', {}, statusLabel(v)), E('small', {}, 'Geen berekend plan om te openen.')))) : null,
+    why(reasons), prose(report.variants[state.variant].texts?.varianten));
 }
 // What a variant changes, in words: "leasen: nee".
 function changes(v) {
@@ -774,7 +894,7 @@ function roadmap(c) {
   const defaults = generic.length ? generic : ['Ritgegevens toetsen met een maand echte ritregistratie of telematica.', 'Offertes opvragen voor de nieuwe voertuigen en de laadpunten.',
     'Subsidies en fiscale regelingen aanvragen vóór het tekenen van een koopovereenkomst.', 'Chauffeurs en planning voorbereiden: laadmomenten, laadpassen en wie de stekkers verwisselt.'];
   return section('stappen', 'Stappenplan', E('ol', { class: 'road' }, E('li', { class: 'now' }, E('b', {}, 'Nu'), E('ul', {}, defaults.map(s => E('li', {}, s)))),
-    plan.jaren.map((j, p) => { const s = steps(report, plan, p); return s.length ? E('li', {}, E('b', {}, j), E('ul', {}, s.map(x => E('li', {}, x)))) : null; })));
+    plan.jaren.map((j, p) => { const exits = periodChanges(report, plan, p).sold.map(e => `${e.row.label}: ${e.label.toLowerCase()}.`), s = [...exits, ...steps(report, plan, p)]; return s.length ? E('li', {}, E('b', {}, j), E('ul', {}, s.map(x => E('li', {}, x)))) : null; })));
 }
 
 // ---------------------------------------------------------------- 13 verantwoording
@@ -787,6 +907,7 @@ function accountability(c) {
   const choices = [b.meerdere_ritten ? 'Een wagen mag meerdere ritten per dag rijden.' : null, b.eerder_vervangen === false ? 'Wagens worden pas vervangen als ze op zijn.' : null,
     b.max_leeftijd ? `Eigen wagens hooguit ${b.max_leeftijd} jaar oud.` : null, b.lease_eerder_stoppen ? 'Lease mag eerder stoppen tegen afkoop.' : null].filter(Boolean);
   return section('verantwoording', 'Uitgangspunten en verantwoording',
+    Object.keys(report.view_changes || {}).length ? why(inputChanges(report.view_changes), 'Aangepast voor het plan dat u bekijkt') : null,
     E('div', { class: 'facts' }, facts.map(([k, v]) => E('div', {}, E('span', {}, k), E('b', {}, v)))),
     E('div', { class: 'split' }, E('div', { class: 'block' }, E('h3', {}, 'Aannames'), E('ul', { class: 'list' }, [...(plan.aannames || []), ...choices].map(a => E('li', {}, a)))),
       E('div', { class: 'block' }, E('h3', {}, 'Let op'), E('ul', { class: 'list' }, [...(plan.waarschuwingen || []), ...(plan.notices || [])].map(a => E('li', {}, a))),
@@ -884,13 +1005,10 @@ function appendix(c) {
     E('h4', {}, 'Per post, contante waarde'), table(['Post', plan.naam, ...(ref && ref !== plan ? [ref.naam, 'Verschil'] : [])],
       costRows(plan, ref && ref !== plan ? ref : null).map(r => [r.name, money(r.plan), ...(ref && ref !== plan ? [money(r.base), { v: money(r.saving), cls: r.saving >= 0 ? 'pos' : 'neg' }] : [])]), [1, 2, 3])]]);
   // J. Scenario's
-  const sc = report.scenarios, ss = report.scenario_settings || {};
-  if (sc?.axes?.length) parts.push(['j', 'Scenario’s', `${sc.axes.length * 2} doorgerekend`, [
-    defs(sc.axes.map(a => [a.name, a.levels.filter(l => l.id !== 'basis').map(l => l.label).join(' · '), SCENARIO_TEXT[a.id] || null])),
-    table(['Scenario', 'Advies', 'Diesel blijven', 'Voordeel', 'Investering', 'Elektrisch aan het eind', 'CO₂ laatste jaar'], sc.axes.flatMap(a => a.levels.filter(l => l.id !== 'basis').map(l => {
-      const o = sc.outcomes[`${a.id}:${l.id}`]; if (!o) return null; const e = o.advies.aantallen?.at(-1);
-      return [`${a.name} ${l.label}`, money(o.advies.ncw), money(o.diesel.ncw), { v: money(o.diesel.ncw - o.advies.ncw), cls: o.diesel.ncw >= o.advies.ncw ? 'pos' : 'neg' }, money(o.advies.investering), e ? `${e.elektrisch} van ${e.elektrisch + e.diesel}` : '—', o.advies.co2 ? tons(o.advies.co2.at(-1)) : '—'];
-    })).filter(Boolean), [1, 2, 3, 4, 5, 6])]]);
+  const checkedScenarios = scenarioCatalogue(report);
+  if (checkedScenarios.length) parts.push(['j', 'Alle onderzochte scenario’s', `${checkedScenarios.length} scenario’s`, [
+    table(['Scenario', 'Status advies', 'Status diesel', 'Advies', 'Diesel blijven', 'Voordeel', 'Investering'], checkedScenarios.map(x =>
+      [`${x.name} · ${x.label}`, statusLabel(x.advice), statusLabel(x.diesel), money(x.advice.ncw), money(x.diesel.ncw), money(x.saving), money(x.advice.investering)]), [3, 4, 5, 6])]]);
   // K. Begrippen
   parts.push(['k', 'Begrippen', `${GLOSSARY.length} begrippen`, defs(GLOSSARY.map(([k, v]) => [k, null, v]))]);
   // L. Rekenmethode
@@ -920,14 +1038,18 @@ function footer() {
 
 // ---------------------------------------------------------------- render
 function render() {
-  const y = scrollY, c = current();
+  report = presentationContext(sourceReport, sourceReport.variants[state.variant], state.scenario);
+  const y = scrollY, activeId = document.activeElement?.id, fleetScroll = document.getElementById('fleet-scroll'), savedScroll = [fleetScroll?.scrollLeft || 0, fleetScroll?.scrollTop || 0], c = current();
   q('#app').replaceChildren(
     report.demo ? E('div', { class: 'demo' }, 'Voorbeeldrapport · fictieve organisatie') : null,
     topbar(), nav(c),
-    E('main', { id: 'inhoud', class: 'wrap' }, overview(c), analysis(c), difference(c), years(c), opportunities(c), fleetPlan(c), perVehicle(c), investments(c), charging(c), workday(c), emissions(c), scenarios(c), variants(c), roadmap(c), accountability(c), appendix(c)),
+    E('main', { id: 'inhoud', class: 'wrap' }, overview(c), scenarios(c), analysis(c), difference(c), years(c), opportunities(c), fleetRationale(c), perVehicle(c), investments(c), charging(c), workday(c), emissions(c), variants(c), roadmap(c), accountability(c), appendix(c)),
     footer());
   q('#app').setAttribute('aria-busy', 'false');
+  const restored = document.getElementById('fleet-scroll');
+  if (restored) { restored.scrollLeft = savedScroll[0]; restored.scrollTop = savedScroll[1]; }
   scrollTo(0, y); spy();
+  if (activeId) document.getElementById(activeId)?.focus({ preventScroll: true });
 }
 
 function downloadCsv() {
@@ -936,6 +1058,8 @@ function downloadCsv() {
   plan.per_jaar.forEach((r, i) => rows.push([r.jaar, ...Object.keys(KIND).map(k => r[k] || 0), totalYear(r), ...(ref && ref !== plan ? [totalYear(ref.per_jaar[i])] : [])]));
   rows.push([]); rows.push(['Post', `${plan.naam} (contante waarde)`, ...(ref && ref !== plan ? [`${ref.naam} (contante waarde)`] : [])]);
   costRows(plan, ref).forEach(r => rows.push([r.name, Math.round(r.plan), ...(ref && ref !== plan ? [Math.round(r.base)] : [])]));
+  rows.push([], ['Scenario', 'Aanname', 'Status advies', 'Status diesel', 'Kosten advies', 'Kosten diesel', 'Voordeel']);
+  scenarioCatalogue(report).forEach(x => rows.push([x.name, x.label, statusLabel(x.advice), statusLabel(x.diesel), x.advice.ncw ?? '', x.diesel.ncw ?? '', x.saving ?? '']));
   const csv = rows.map(r => r.map(x => typeof x === 'number' ? String(Math.round(x)) : `"${String(x).replaceAll('"', '""')}"`).join(';')).join('\r\n');
   const a = E('a', { href: URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })), download: `vlootadvies-${report.client.name.replace(/[^\w-]+/g, '-').toLowerCase()}.csv` });
   document.body.append(a); a.click(); a.remove();

@@ -90,7 +90,7 @@ export function scenarioPlans(report, variant, key) {
   const ref = reference(report, variant);
   const outcome = key && variant.variant === 'basis' ? report.scenarios?.outcomes?.[key] : null;
   if (!outcome) return { plan: variant, ref, key: null };
-  return { plan: { ...variant, ...outcome.advies, notices: [] }, ref: ref ? { ...ref, ...outcome.diesel } : null, key };
+  return { plan: { ...variant, ...outcome.advies, texts: {}, notices: [] }, ref: ref ? { ...ref, ...outcome.diesel, texts: {} } : null, key };
 }
 export function scenarioLevel(report, key) {
   if (!key) return null;
