@@ -93,6 +93,23 @@ button.toevoegen:hover{background:#07734A}
 .groepkop{display:flex;justify-content:space-between;align-items:baseline}
 .groepkop .aantal{font-size:12px;color:var(--ink3);text-transform:none;letter-spacing:0}
 
+
+.testregel{display:flex;align-items:center;gap:10px;margin-top:12px;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:7px 11px}
+.testregel .testknop{border:0;background:none;font:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink);padding:2px 4px}
+.testregel .testknop:hover{color:var(--volt)}
+.testregel .voortgang{font-size:12px;color:var(--ink3)}
+.testregel .balkje{flex:1;margin:0}
+.bord{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start}
+@media(max-width:900px){.bord{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.bord{grid-template-columns:1fr}}
+.kolom{background:#ECECE7;border:1px solid var(--line);border-radius:var(--r);padding:10px;min-height:120px}
+.kolom h4{margin:2px 4px 10px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.kolom h4 .aantal{background:var(--card);border:1px solid var(--line);border-radius:999px;font-size:11px;padding:1px 8px;color:var(--ink2)}
+.kolom .taak{box-shadow:none;margin:0 0 8px;padding:11px 12px}
+.kolom .taak h3{font-size:13.5px;line-height:1.35}
+.kolom .taak .oms{font-size:12.5px}
+.leegkolom{font-size:12.5px;color:var(--ink3);text-align:center;padding:14px 6px;border:1.5px dashed #CFCFC4;border-radius:9px}
+
 footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px}
 @media print{.hero{background:#fff;color:var(--ink)}.hero p{color:var(--ink2)}.balk-wrap,.invoer,button.toevoegen{display:none}.kaart{break-inside:avoid;box-shadow:none}textarea{display:none}}
 </style>
@@ -251,8 +268,8 @@ function kaart([id,naam,url,doel,def,verb]){
   el.innerHTML = `<div class="kop"><div><h3>${naam}</h3><div class="url">${link} · ook in het Engels</div></div>`+
    `<select class="status" aria-label="Status">${Object.entries(STAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>`+
    `<p class="doel">${doel}</p><div class="vak" style="margin-top:10px"><b>Te verbeteren</b> ${verb||'—'}</div>`+
-   `<div class="sectie"><label><button type="button" class="testknop chip">🧪 Testen tonen</button> <span class="voortgang"></span></label><div class="balkje"><i></i></div>`+
-   `<ul class="testlijst" style="display:none">${checks.map(t=>`<li><label><input type="checkbox"><span>${t}</span></label></li>`).join('')}</ul></div>`+
+   `<div class="testregel"><button type="button" class="testknop">🧪 Testen ▸</button><div class="balkje"><i></i></div><span class="voortgang"></span></div>`+
+   `<ul class="testlijst" style="display:none">${checks.map(t=>`<li><label><input type="checkbox"><span>${t}</span></label></li>`).join('')}</ul>`+
    `<div class="sectie"><label>Notities — kies een categorie en schrijf vrij</label><div class="invoer">`+
    `<select class="cat" aria-label="Categorie van de notitie">${CAT.map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`+
    `<textarea placeholder="Bijv. 'knop doet raar op mobiel, nakijken' — Ctrl+Enter voegt toe"></textarea><button type="button" class="toevoegen">+ Voeg toe</button></div><div class="notities"></div></div>`;
@@ -276,7 +293,7 @@ function kaart([id,naam,url,doel,def,verb]){
   ta.addEventListener('keydown', e=>{ if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) knop.click(); });
   const testknop = el.querySelector('.testknop'), testlijstEl = el.querySelector('.testlijst');
   testknop.onclick = () => { const open = testlijstEl.style.display !== 'none';
-    testlijstEl.style.display = open ? 'none' : ''; testknop.textContent = open ? '🧪 Testen tonen' : '🧪 Testen verbergen'; };
+    testlijstEl.style.display = open ? 'none' : ''; testknop.textContent = open ? '🧪 Testen ▸' : '🧪 Testen ▾'; };
   testVoortgang(); teken(); return el;
 }
 const lijst = document.getElementById('lijst');
@@ -306,7 +323,7 @@ const START_TAKEN = [
  ["Website-overzicht als tracker gebouwd","verbetering","middel","","Dit document zelf: statussen, testlijsten, notities met categorie en deze checklist.","klaar"]
 ];
 let taken = JSON.parse(localStorage.getItem('sod-taken')||'null');
-if (!taken){ taken = START_TAKEN.map(([titel,c,pagina,oms,st],i)=>({id:'start-'+i, titel, c, prio:p, pagina, oms, st})); localStorage.setItem('sod-taken', JSON.stringify(taken)); }
+if (!taken){ taken = START_TAKEN.map(([titel,c,prio,pagina,oms,st],i)=>({id:'start-'+i, titel, c, prio, pagina, oms, st})); localStorage.setItem('sod-taken', JSON.stringify(taken)); }
 const saveTaken = () => localStorage.setItem('sod-taken', JSON.stringify(taken));
 const ntCat = document.getElementById('nt-cat'), ntPag = document.getElementById('nt-pagina'), tCatF = document.getElementById('tcatfilter');
 for (const [k,v] of CAT){ ntCat.add(new Option(v,k)); tCatF.add(new Option('Categorie: '+v,k)); }
@@ -315,15 +332,20 @@ const PAGNAAM = Object.fromEntries(GROEPEN.flatMap(([,items])=>items.map(([id,na
 let tfilter = 'alle';
 function tekenTaken(){
   const cf = tCatF.value, lijstEl = document.getElementById('takenlijst');
-  const volgorde = {todo:0, bezig:1, later:2, klaar:3}, prioW = {hoog:0, middel:1, laag:2};
+  const prioW = {hoog:0, middel:1, laag:2};
   const zichtbaar = taken.filter(t => (tfilter==='alle'||t.st===tfilter) && (!cf||t.c===cf))
-                         .sort((a,b)=> volgorde[a.st]-volgorde[b.st] || prioW[a.prio]-prioW[b.prio]);
+                         .sort((a,b)=> prioW[a.prio]-prioW[b.prio]);
   lijstEl.innerHTML = '';
-  let vorigeStatus = null;
+  const bord = document.createElement('div'); bord.className = 'bord'; lijstEl.append(bord);
+  const kolommen = {};
+  for (const st of Object.keys(TSTAT)){
+    if (tfilter!=='alle' && tfilter!==st) continue;
+    const kol = document.createElement('div'); kol.className='kolom';
+    const items = zichtbaar.filter(t=>t.st===st);
+    kol.innerHTML = '<h4>'+TSTAT[st]+'<span class="aantal">'+items.length+'</span></h4>' + (items.length?'':'<div class="leegkolom">Niets hier.</div>');
+    bord.append(kol); kolommen[st] = kol;
+  }
   for (const t of zichtbaar){
-    if (t.st !== vorigeStatus){ vorigeStatus = t.st;
-      const kop = document.createElement('h2'); kop.innerHTML = TSTAT[t.st]+' <span style="float:right;font-size:12px;color:var(--ink3)">'+zichtbaar.filter(x=>x.st===t.st).length+' taken</span>';
-      lijstEl.append(kop); }
     const el = document.createElement('article'); el.className='taak'; el.dataset.tstatus=t.st;
     el.innerHTML = `<div class="kop"><h3>${esc(t.titel)}<span class="prio prio-${t.prio}">${t.prio==='hoog'?'🔴 hoog':t.prio==='middel'?'🟡 middel':'⚪ laag'}</span></h3>`+
       `<select class="tstatus" aria-label="Status">${Object.entries(TSTAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>`+
@@ -333,7 +355,7 @@ function tekenTaken(){
     const sel = el.querySelector('.tstatus'); sel.value = t.st;
     sel.onchange = () => { t.st = sel.value; saveTaken(); tekenTaken(); };
     el.querySelector('.tverwijder').onclick = () => { if (confirm('Taak verwijderen?')){ taken = taken.filter(x=>x.id!==t.id); saveTaken(); tekenTaken(); } };
-    lijstEl.append(el);
+    kolommen[t.st].append(el);
   }
   if (!zichtbaar.length) lijstEl.innerHTML = '<div class="uitleg">Geen taken in deze weergave. Voeg hierboven een nieuwe toe.</div>';
   const klaarN = taken.filter(t=>t.st==='klaar').length;
