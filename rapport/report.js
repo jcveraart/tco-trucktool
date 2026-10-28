@@ -1,416 +1,679 @@
-import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport } from './report-core.mjs';
+import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport, periodYears, scenarioPlans, scenarioLevel, dayKm, totalKm } from './report-core.mjs';
 
 const API = 'https://zarvyblveyomngypwvhw.supabase.co/rest/v1/rpc/fleet_report_read';
 const APIKEY = 'sb_publishable_srfj19l9xWDSkdirFz6RtQ_RperxnNH';
 const q = s => document.querySelector(s);
-const money = x => x == null ? '—' : `${x < 0 ? '−' : ''}€ ${new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 0 }).format(Math.abs(x))}`;
-const num = (x, d = 0) => x == null ? '—' : new Intl.NumberFormat('nl-NL', { maximumFractionDigits: d }).format(x);
-const pct = (x, d = 0) => `${num(x * 100, d)}%`;
-const time = minutes => `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(Math.round(minutes % 60)).padStart(2, '0')}`;
+const nf = d => new Intl.NumberFormat('nl-NL', { minimumFractionDigits: d, maximumFractionDigits: d });
+const num = (x, d = 0) => x == null || !Number.isFinite(x) ? '—' : nf(d).format(x);
+const money = (x, d = 0) => x == null || !Number.isFinite(x) ? '—' : `${x < 0 ? '−' : ''}€ ${nf(d).format(Math.abs(x))}`;
+const round = x => Math.abs(x) >= 10000 ? Math.round(x / 1000) * 1000 : Math.abs(x) >= 1000 ? Math.round(x / 100) * 100 : Math.round(x);
+const pct = (x, d = 0) => x == null || !Number.isFinite(x) ? '—' : `${num(x * 100, d)}%`;
+const compact = x => { const a = Math.abs(x); return a >= 1e6 ? `€ ${num(x / 1e6, a >= 1e7 ? 0 : 1)} mln` : a >= 1e4 ? `€ ${num(x / 1e3)}k` : money(x); };
+function ticks(lo, hi, n = 4) {
+  const raw = (hi - lo) / n, mag = 10 ** Math.floor(Math.log10(raw || 1)), step = [1, 2, 2.5, 5, 10].map(f => f * mag).find(s => s >= raw) || raw;
+  const out = []; for (let v = Math.floor(lo / step) * step; v <= hi + step * .001; v += step) out.push(+v.toFixed(6));
+  if (out.at(-1) < hi) out.push(out.at(-1) + step);
+  return out;
+}
+// Charts are drawn at their real width, so text keeps its size on every screen.
+const full = () => Math.max(320, Math.min(1240, innerWidth - 32));
+const half = () => innerWidth > 820 ? Math.round(full() / 2 - 44) : full();
+const tons = kg => `${num(kg / 1000, kg < 10000 ? 1 : 0)} t`;
+const clock = m => `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(Math.round(m % 60)).padStart(2, '0')}`;
 const date = x => x ? new Date(x).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 const E = (tag, attrs = {}, ...children) => {
   const node = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
+  for (const [k, v] of Object.entries(attrs || {})) {
     if (v == null || (v === false && !k.startsWith('aria-'))) continue;
     if (k.startsWith('on')) node.addEventListener(k.slice(2), v);
     else if (k === 'class') node.className = v;
-    else if (k === 'style') Object.assign(node.style, v);
-    else node.setAttribute(k, k.startsWith('aria-') ? String(v) : v === true ? '' : String(v));
+    else if (k === 'style') for (const [sk, sv] of Object.entries(v)) sk.startsWith('--') ? node.style.setProperty(sk, sv) : node.style[sk] = sv;
+    else node.setAttribute(k, v === true ? '' : String(v));
   }
-  for (const child of children.flat(Infinity)) if (child != null && child !== false) node.append(child.nodeType ? child : document.createTextNode(String(child)));
+  for (const c of children.flat(Infinity)) if (c != null && c !== false) node.append(c.nodeType ? c : document.createTextNode(String(c)));
   return node;
 };
 const NS = 'http://www.w3.org/2000/svg';
-function V(tag, attrs = {}, ...children) {
+const V = (tag, attrs = {}, ...children) => {
   const node = document.createElementNS(NS, tag);
-  for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v));
-  for (const child of children.flat(Infinity)) if (child != null) node.append(child.nodeType ? child : document.createTextNode(String(child)));
+  for (const [k, v] of Object.entries(attrs || {})) if (v != null) { if (k.startsWith('on')) node.addEventListener(k.slice(2), v); else node.setAttribute(k, String(v)); }
+  for (const c of children.flat(Infinity)) if (c != null && c !== false) node.append(c.nodeType ? c : document.createTextNode(String(c)));
   return node;
-}
-const ICONS = {
-  arrow: 'M4 12h16m-6-6 6 6-6 6', download: 'M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5',
-  link: 'm10 13 4-4M8 16l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 1 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0',
-  lock: 'M6 10h12v11H6zM8 10V6a4 4 0 0 1 8 0v4', bolt: 'm14 2-9 12h7l-2 8 9-12h-7z',
-  leaf: 'M5 19c-8-14 13-15 15-16 1 13-4 21-15 16Zm0 0L16 8', coins: 'M12 5c5 0 9-2 9-4M3 1c0 5 18 5 18 0v16c0 5-18 5-18 0V1Zm0 8c0 5 18 5 18 0',
-  van: 'M2 7h12v10H2zM14 10h5l3 4v3h-8M5 17a2 2 0 1 0 4 0m8 0a2 2 0 1 0 4 0M16 11v3h5',
-  play: 'm8 4 12 8-12 8z', pause: 'M8 4v16M16 4v16', check: 'm5 12 4 4L20 5', sun: 'M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2M17 12a5 5 0 1 1-10 0 5 5 0 0 1 10 0',
-  grid: 'M5 2h14l-2 20H7L5 2Zm-3 6h20M3 15h18M12 2v20', chart: 'M3 3v18h18M6 16l5-6 4 3 6-9', info: 'M12 10v7m0-12v1M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0',
 };
-function icon(name) { return V('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 1.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }, V('path', { d: ICONS[name] || ICONS.info })); }
-const button = (label, action, cls = '', ico) => E('button', { class: `btn ${cls}`, type: 'button', onclick: action }, ico ? icon(ico) : null, label);
-const pill = (label, cls = '') => E('span', { class: `pill ${cls}` }, E('i', { class: 'dot', 'aria-hidden': true }), label);
-function brand() { return E('a', { class: 'brand', href: 'https://stekkerofdiesel.nl/', 'aria-label': 'Stekker of Diesel — naar de website' }, E('img', { src: './mark.svg', alt: '', width: 39, height: 39 }), E('div', {}, E('b', {}, 'Stekker of Diesel'), E('span', {}, 'Persoonlijk vlootadvies'))); }
-function toast(text) { q('#toast').textContent = text; q('#toast').classList.add('visible'); clearTimeout(state.toast); state.toast = setTimeout(() => q('#toast').classList.remove('visible'), 2800); }
-function go(id) { document.getElementById(id)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); }
-function anchor(id, label, cls = '') { return E('a', { href: `#${id}`, class: cls, onclick: event => { event.preventDefault(); go(id); } }, label); }
-function textBlock(text, cls = 'prose') { return E('p', { class: cls }, text); }
-function heading(number, id, title, description, right) {
-  return E('header', { class: 'section-heading' }, E('div', {}, E('div', { class: 'eyebrow' }, E('b', {}, String(number).padStart(2, '0')), id), E('h2', {}, title), description ? E('p', {}, description) : null), right);
-}
-function section(id, title, ...children) { return E('section', { class: 'section', id, 'aria-label': title }, ...children); }
-function legend(items) { return E('div', { class: 'legend' }, items.map(([label, cls]) => E('span', {}, E('i', { class: `swatch ${cls}`, 'aria-hidden': true }), label))); }
-function fact(label, value) { return E('div', { class: 'fact' }, E('span', {}, label), E('b', {}, value)); }
-function periods(variant, action) {
-  return E('div', { class: 'periods', role: 'group', 'aria-label': 'Periode kiezen' }, variant.jaren.map((year, index) => E('button', { type: 'button', 'aria-pressed': index === state.period, onclick: () => action(index) }, year)));
-}
+const ICONS = {
+  download: 'M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5', print: 'M6 9V3h12v6M6 18H4v-7h16v7h-2M7 14h10v7H7z', play: 'm8 5 11 7-11 7z', pause: 'M8 5v14M16 5v14',
+  close: 'M6 6l12 12M18 6 6 18', mail: 'M3 6h18v12H3zm0 0 9 7 9-7', bolt: 'm13 2-8 12h6l-1 8 8-12h-6z', arrow: 'M4 12h16m-6-6 6 6-6 6',
+};
+const icon = n => V('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 1.8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }, V('path', { d: ICONS[n] }));
+const VEHICLE = {
+  trekker: 'M2 7h11v8H2zM13 9h4l3 3v3h-7M5 17.5a1.5 1.5 0 1 0 0 .1M16 17.5a1.5 1.5 0 1 0 0 .1M20 15h2',
+  bakwagen: 'M2 5h12v10H2zM14 8h4l3 3v4h-7M5 17.5a1.5 1.5 0 1 0 0 .1M17 17.5a1.5 1.5 0 1 0 0 .1',
+  bus: 'M3 5h18v11H3zM3 10h18M6 18a1.5 1.5 0 1 0 0 .1M18 18a1.5 1.5 0 1 0 0 .1',
+  bestel: 'M2 7h11v9H2zM13 9h5l3 4v3h-8M5 17.5a1.5 1.5 0 1 0 0 .1M17 17.5a1.5 1.5 0 1 0 0 .1',
+};
+const vehicleIcon = (kind, cls = '') => V('svg', { class: `vicon ${cls}`, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 1.6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }, V('path', { d: VEHICLE[kind] || VEHICLE.bestel }));
+const mark = () => V('svg', { class: 'bmark', viewBox: '2 16 60 32', 'aria-hidden': 'true' }, V('rect', { class: 'bt', x: 2, y: 16, width: 60, height: 32, rx: 16 }),
+  V('g', { transform: 'translate(46 32)' }, V('circle', { r: 11, fill: '#fff' }), V('path', { class: 'bb', d: 'M1.6 -7.5L-4.2 1.6H-0.2L-1.6 7.5L4.2 -1.6H0.2Z' })));
+
+// Explanations per cost post, shown on hover in "Waar zit het verschil".
+const POSTS = {
+  'Brandstof, stroom, onderhoud, heffing': 'Diesel of stroom, onderhoud per kilometer en de vrachtwagenheffing.',
+  'Aanschaf voertuigen': 'Koopprijs van nieuwe voertuigen, op het moment van aanschaf.',
+  'Verkoop voertuigen': 'Opbrengst van voertuigen die binnen de looptijd worden verkocht.',
+  'Restwaarde einde horizon': 'Wat het wagenpark aan het einde nog waard is.',
+  'Lease': 'Leasetermijnen van huidige en nieuwe leasevoertuigen.',
+  'Verzekering en vaste kosten': 'Verzekering, motorrijtuigenbelasting en andere vaste kosten per voertuig.',
+  'Laadpunten': 'Aanschaf en installatie van laadpunten op het depot.',
+  'Netverzwaring': 'Eenmalige kosten voor een zwaardere netaansluiting.',
+  'Vaste netkosten': 'Vaste jaarlijkse kosten van de netaansluiting.',
+  'Gecontracteerd vermogen': 'Kosten voor het gecontracteerde en piekvermogen.',
+  'Subsidie': 'Toegekende of verwachte subsidie op elektrische voertuigen.',
+  'Thuisladen, vergoeding stroom': 'Vergoeding aan chauffeurs voor stroom die thuis wordt geladen.',
+  'Laadpalen thuis': 'Laadpalen bij chauffeurs thuis.',
+  'Onderhoud laadpunten': 'Jaarlijks onderhoud en abonnementen van de laadpunten.',
+  'Restwaarde laadpunten': 'Wat de laadpunten aan het einde nog waard zijn.',
+  'Afkoop lease': 'Kosten om een leasecontract eerder te beëindigen.',
+  'Meerkilometers lease': 'Kilometers boven het leasecontract.',
+  'CO₂-prijs': 'De interne CO₂-prijs die u heeft meegegeven.',
+  'Zon en batterij': 'Zonnepanelen en een batterij op het depot.',
+};
+const KIND = { investering: 'Investeringen', voertuig: 'Lease en vaste kosten', gebruik: 'Brandstof, stroom en onderhoud', laden: 'Laden en net', overig: 'Overig' };
+const KIND_COLOR = { investering: '#15171A', voertuig: '#7A8188', gebruik: '#F2A33A', laden: '#0A8F5B', overig: '#C3C3BD' };
 
 let report;
-const state = { variant: 0, period: 0, chart: 'cumulative', baseline: true, clock: 4, player: null, observer: null };
+const state = { variant: 0, scenario: null, period: 0, costMode: 'cum', diffMode: 'jaar', clock: 28, playing: null, vehicle: null, compare: true };
 const params = new URLSearchParams(location.search);
-const preview = params.has('preview');
-const demo = params.get('demo') === '1';
 
 async function load() {
   try {
     let response;
-    if (preview) {
+    if (params.has('preview')) {
       const ids = params.get('preview').split('/');
       if (ids.length !== 2 || ids.some(x => !/^[A-Za-z0-9_-]{1,40}$/.test(x))) throw new Error('Dit voorbeeldadres is ongeldig. Open het rapport vanuit de app.');
       const query = new URLSearchParams({ variant: params.get('variant') || '', kentekens: params.get('kentekens') || '0', titel: params.get('titel') || '', varianten: params.get('varianten') || '' });
       response = await fetch(`/api/klanten/${ids[0]}/berekeningen/${ids[1]}/online?${query}`, { cache: 'no-store' });
-    } else if (demo) response = await fetch('./demo.json', { cache: 'no-store' });
+    } else if (params.get('demo') === '1') response = await fetch('./demo.json', { cache: 'no-store' });
     else {
       const token = location.hash.slice(1);
-      if (!/^[A-Za-z0-9_-]{43}$/.test(token)) throw new Error('Open dit rapport via de persoonlijke link die u van uw adviseur heeft ontvangen.');
+      if (!/^[A-Za-z0-9_-]{43}$/.test(token)) throw new Error('Open dit rapport via de persoonlijke link die u van ons heeft ontvangen.');
       const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token)))].map(x => x.toString(16).padStart(2, '0')).join('');
       response = await fetch(API, { method: 'POST', headers: { apikey: APIKEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_token_hash: hash }), cache: 'no-store', referrerPolicy: 'no-referrer' });
     }
-    if (!response.ok) throw new Error('Het rapport kan nu niet worden geladen. Probeer het later opnieuw of neem contact op met uw adviseur.');
+    if (!response.ok) throw new Error('Het rapport kan nu niet worden geladen. Probeer het later opnieuw.');
     const data = await response.json();
-    if (!data) throw new Error('Deze persoonlijke link is verlopen, ingetrokken of niet gevonden. Vraag uw adviseur om een nieuwe link.');
+    if (!data) throw new Error('Deze link is verlopen, ingetrokken of niet gevonden. Vraag ons om een nieuwe link.');
     report = validateReport(data);
     state.variant = Math.max(0, report.variants.findIndex(x => x.variant === report.selected_variant));
-    state.clock = Math.min(4, report.variants[state.variant].tijdas.length - 2);
-    document.title = `Vlootadvies ${report.client.name} · Stekker of Diesel`;
+    state.period = report.variants[state.variant].jaren.length - 1;
+    document.title = `${report.client.name} · ${(report.title || 'Vlootadvies').replace(/\.$/, '')} · Stekker of Diesel`;
     render();
+    addEventListener('scroll', spy, { passive: true });
+    let w = innerWidth, t;
+    addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { if (Math.abs(innerWidth - w) > 40) { w = innerWidth; render(); } }, 200); });
   } catch (error) {
-    q('#app').replaceChildren(E('main', { class: 'loading' }, E('img', { src: './mark.svg', alt: '', width: 48, height: 48, style: { margin: 'auto' } }), E('h1', {}, 'Uw rapport is persoonlijk.'), E('p', {}, error.message), E('a', { class: 'btn primary', href: 'mailto:info@stekkerofdiesel.nl' }, 'Contact met uw adviseur')));
+    q('#app').replaceChildren(E('main', { class: 'failed' }, E('a', { class: 'brand', href: 'https://stekkerofdiesel.nl/' }, mark(), 'Stekker of Diesel'),
+      E('h1', {}, 'Uw rapport is persoonlijk'), E('p', {}, error.message), E('a', { class: 'btn dark', href: 'mailto:info@stekkerofdiesel.nl' }, icon('mail'), 'info@stekkerofdiesel.nl')));
     q('#app').setAttribute('aria-busy', 'false');
   }
 }
 
-function setPeriod(period) { state.period = period; stopPlayer(); render(); }
-function setVariant(index) { state.variant = index; state.period = Math.min(state.period, report.variants[index].jaren.length - 1); stopPlayer(); render(); }
-function stopPlayer() { clearInterval(state.player); state.player = null; }
+// ---------------------------------------------------------------- state
+function current() {
+  const variant = report.variants[state.variant];
+  const { plan, ref, key } = scenarioPlans(report, variant, state.scenario);
+  return { plan, ref, key, m: metrics(report, plan, ref), years: periodYears(report, plan) };
+}
+function set(patch, focus) {
+  Object.assign(state, patch);
+  const r = report.variants[state.variant];
+  state.period = Math.min(state.period, r.jaren.length - 1);
+  render();
+  if (focus) q(`#${focus}`)?.focus({ preventScroll: true });
+}
+function stopDay() { clearInterval(state.playing); state.playing = null; }
 
-function hero(r, m) {
-  const count = r.aantallen[state.period], electric = count.elektrisch, total = count.elektrisch + count.diesel;
-  const art = E('div', { class: 'hero-art' }, E('div', { class: 'art-heading' }, E('span', {}, 'Uw vloot in beweging'), pill(r.jaren[state.period], 'dark')),
-    E('div', { class: 'art-stage' }, fleetArt(electric > 0), E('div', { class: 'orbit-label one' }, E('b', {}, `${electric} / ${total}`), 'voertuigen elektrisch'),
-      E('div', { class: 'orbit-label two' }, E('b', {}, `${num(r.net_kw[state.period])} kW`), 'netaansluiting')),
-    E('div', { class: 'art-scale', role: 'group', 'aria-label': 'Vloot door de jaren' }, r.jaren.map((year, index) => E('button', { type: 'button', 'aria-pressed': index === state.period, onclick: () => setPeriod(index) }, year))),
-    E('p', { class: 'art-note' }, 'Kies een periode. Ontdek wat er verandert.'));
-  return E('section', { class: 'hero', 'aria-label': 'Uw persoonlijke vlootadvies' },
-      E('div', { class: 'hero-copy' }, E('div', { class: 'eyebrow' }, E('span', { class: 'dot', style: { background: '#b2f1c3' } }), `${report.client.name} · ${report.settings.startjaar}–${report.settings.startjaar + report.settings.jaren - 1}`),
-      E('h1', {}, (report.title || 'Uw vloot, vooruit.').replace(/\.$/, ''), E('em', {}, 'Met een helder plan.')),
-      E('p', {}, `Welke voertuigen, op welk moment, tegen welke kosten? Uw vlootadvies brengt alle keuzes samen. Bekijk het plan en ontdek de cijfers erachter.`),
-      E('div', { class: 'hero-actions' }, button('Ontdek uw vlootplan', () => go('vlootplan'), 'mint', 'arrow'), E('span', { style: { fontSize: '11px', color: '#b0c6b6' } }, `${report.fleet.length} voertuigen · ${report.settings.jaren} jaar vooruit`)),
-      E('div', { class: 'hero-meta' }, E('span', {}, `Opgesteld ${date(report.created_at)}`), E('span', {}, 'Door Stekker of Diesel'), report.publication ? E('span', {}, `Versie ${report.publication.revision}`) : null)), art);
+// ---------------------------------------------------------------- building blocks
+const section = (id, title, ...children) => E('section', { class: 'section', id, 'aria-label': title }, title ? E('div', { class: 'section-head' }, E('h2', {}, title), children[0]?.isHead ? children.shift().node : null) : null, ...children);
+const head = node => ({ isHead: true, node });
+const segmented = (options, value, onpick, label) => E('div', { class: 'seg', role: 'group', 'aria-label': label },
+  options.map(([v, l]) => E('button', { type: 'button', 'aria-pressed': String(v === value), onclick: () => onpick(v) }, l)));
+const periodPicker = (r, onpick = p => set({ period: p })) => segmented(r.jaren.map((j, i) => [i, j]), state.period, onpick, 'Periode');
+const tile = (label, value, note, cls = '') => E('div', { class: `tile ${cls}` }, E('span', {}, label), E('b', {}, value), note ? E('small', {}, note) : null);
+const prose = text => text ? E('p', { class: 'prose' }, text) : null;
+const legend = items => E('div', { class: 'legend' }, items.map(([label, color, dash]) => E('span', {}, E('i', { style: dash ? { borderTop: `2px dashed ${color}`, background: 'none', height: 0 } : { background: color } }), label)));
+const kindOf = v => v.soort || report.fleet.find(f => f.groep === v.groep)?.soort || (v.groep in VEHICLE ? v.groep : 'bestel');
+const isEV = v => v.aandrijving === 'electric';
+
+function tooltip(chart) {
+  let tip = chart.querySelector('.tip');
+  if (!tip) { tip = E('div', { class: 'tip', role: 'presentation' }); chart.append(tip); }
+  return {
+    show(x, y, content) { tip.replaceChildren(...content); tip.classList.add('on'); const w = chart.clientWidth; tip.style.left = `${Math.min(Math.max(x, 70), w - 70)}px`; tip.style.top = `${y}px`; },
+    hide() { tip.classList.remove('on'); },
+  };
 }
 
-function fleetArt(electric) {
-  // Original vector illustration, built from simple depot/vehicle geometry.
-  const color = electric ? '#b2f1c3' : '#e4bd7a';
-  return V('svg', { viewBox: '0 0 370 220', class: 'fleet-art', 'aria-hidden': 'true' },
-    V('ellipse', { cx: 187, cy: 188, rx: 149, ry: 17, fill: '#0a1f16', opacity: '.6' }),
-    V('path', { d: 'M31 119 168 75l159 50-139 48Z', fill: '#42604a' }),
-    V('path', { d: 'm31 119 157 54v16L31 135Z', fill: '#2c4734' }),
-    V('path', { d: 'm188 173 139-48v16l-139 48Z', fill: '#35533d' }),
-    V('path', { d: 'm113 63 76-25 87 29-77 27Z', fill: '#6a8567' }),
-    V('path', { d: 'm113 63 86 31v64l-86-31Z', fill: '#3c5940' }),
-    V('path', { d: 'm199 94 77-27v64l-77 27Z', fill: '#29442f' }),
-    V('path', { d: 'm122 72 66 23v33l-66-23Z', fill: '#203c2b' }),
-    V('path', { d: 'm211 96 52-18v48l-52 18Z', fill: '#182f22' }),
-    V('path', { d: 'm218 101 38-13v31l-38 13Z', fill: '#9dd5a7', opacity: '.18' }),
-    V('path', { d: 'm124 57 65-21 76 25-66 23Z', fill: '#8da68b' }),
-    ...[0, 1, 2].map(i => V('path', { d: `m${139 + i * 22} ${54 + i * 7} 26-8 35 11-26 9Z`, fill: '#1b3e37', stroke: '#86b4a0', 'stroke-width': .6 })),
-    V('path', { d: 'm74 117 59-20 57 19-59 21Z', fill: color }),
-    V('path', { d: 'm74 117 57 20v30l-57-20Z', fill: electric ? '#8bd5a0' : '#cfa566' }),
-    V('path', { d: 'm131 137 59-21v30l-59 21Z', fill: electric ? '#62a87c' : '#ac834b' }),
-    V('path', { d: 'm83 119 21 7v13l-21-7Z', fill: '#244637' }),
-    V('path', { d: 'm107 127 19 6v13l-19-7Z', fill: '#244637' }),
-    V('ellipse', { cx: 90, cy: 154, rx: 7, ry: 10, fill: '#10251c', transform: 'rotate(-15 90 154)' }),
-    V('ellipse', { cx: 146, cy: 160, rx: 7, ry: 10, fill: '#10251c', transform: 'rotate(15 146 160)' }),
-    V('ellipse', { cx: 178, cy: 149, rx: 6, ry: 9, fill: '#10251c', transform: 'rotate(15 178 149)' }),
-    V('path', { d: 'm231 144 34-11 32 11-34 12Z', fill: '#d7e3cf' }),
-    V('path', { d: 'm231 144 32 12v19l-32-12Z', fill: '#a6bea0' }),
-    V('path', { d: 'm263 156 34-12v19l-34 12Z', fill: '#769977' }),
-    V('path', { d: 'm235 145 20 7v8l-20-7Z', fill: '#244637' }),
-    V('ellipse', { cx: 241, cy: 168, rx: 5, ry: 7, fill: '#10251c' }),
-    V('ellipse', { cx: 277, cy: 172, rx: 5, ry: 7, fill: '#10251c' }),
-    V('path', { d: 'm206 133 10-3v31l-10 4Z', fill: '#8eca9e' }),
-    V('path', { d: 'm209 136 4-1v10l-4 1Z', fill: '#224e37' }),
-    electric ? V('path', { d: 'M211 149c-7 18-16 16-21 1', fill: 'none', stroke: '#b2f1c3', 'stroke-width': 2 }) : null);
+// Line chart with crosshair; series: [{ name, values, color, dash }]
+function lineChart(series, labels, { height = 300, width = full(), format = money, axis = compact, marker } = {}) {
+  const W = width, H = height, L = 78, R = 18, T = 28, B = 32;
+  const all = series.flatMap(s => s.values).filter(Number.isFinite);
+  const tk = ticks(Math.min(0, ...all), Math.max(1, ...all)), lo = tk[0], hi = tk.at(-1);
+  const X = i => L + (labels.length === 1 ? (W - L - R) / 2 : i * (W - L - R) / (labels.length - 1)), Y = v => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
+  const svg = V('svg', { viewBox: `0 0 ${W} ${H}`, class: 'svgchart', role: 'img', 'aria-label': series.map(s => `${s.name}: ${labels.map((l, i) => `${l} ${format(s.values[i])}`).join(', ')}`).join('. ') });
+  for (const v of tk) svg.append(V('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: v ? 'gridline' : 'zeroline' }), V('text', { x: L - 12, y: Y(v) + 4, 'text-anchor': 'end', class: 'axis' }, axis(v)));
+  labels.forEach((l, i) => svg.append(V('text', { x: X(i), y: H - 8, 'text-anchor': 'middle', class: 'axis' }, l)));
+  for (const s of series) {
+    const d = s.values.map((v, i) => `${i ? 'L' : 'M'}${X(i)},${Y(v)}`).join('');
+    if (s.area) svg.append(V('path', { d: `${d}L${X(s.values.length - 1)},${Y(Math.max(lo, 0))}L${X(0)},${Y(Math.max(lo, 0))}Z`, fill: s.area }));
+    svg.append(V('path', { d, fill: 'none', stroke: s.color, 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'stroke-dasharray': s.dash || null }));
+    s.values.forEach((v, i) => svg.append(V('circle', { cx: X(i), cy: Y(v), r: 3.5, fill: '#fff', stroke: s.color, 'stroke-width': 2 })));
+  }
+  if (marker != null) { const mx = Math.min(W - R - 62, Math.max(L + 62, X(marker.i)));
+    svg.append(V('g', { class: 'marker' }, V('line', { x1: X(marker.i), x2: X(marker.i), y1: T, y2: H - B }), V('rect', { x: mx - 62, y: T - 24, width: 124, height: 24, rx: 12 }), V('text', { x: mx, y: T - 8, 'text-anchor': 'middle' }, marker.label))); }
+  const cross = V('line', { class: 'cross', x1: 0, x2: 0, y1: T, y2: H - B, opacity: 0 });
+  svg.append(cross);
+  const box = E('div', { class: 'chart' }, svg);
+  const tip = tooltip(box);
+  const hit = V('rect', { x: L, y: T, width: W - L - R, height: H - T - B, fill: 'transparent',
+    onpointermove: e => {
+      const rect = svg.getBoundingClientRect(), x = (e.clientX - rect.left) / rect.width * W;
+      const i = Math.max(0, Math.min(labels.length - 1, Math.round((x - L) / ((W - L - R) / Math.max(1, labels.length - 1)))));
+      cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('opacity', 1);
+      tip.show(X(i) / W * rect.width, 8, [E('b', {}, labels[i]), ...series.map(s => E('div', {}, E('i', { style: { background: s.color } }), s.name, E('strong', {}, format(s.values[i]))))]);
+    },
+    onpointerleave: () => { cross.setAttribute('opacity', 0); tip.hide(); } });
+  svg.append(hit);
+  return box;
 }
 
-function summary(r, m) {
-  const endYear = report.settings.startjaar + report.settings.jaren - 1;
-  const kpi = (label, value, note, ico, cls = '') => E('div', { class: `metric ${cls}` }, E('span', { class: 'metric-icon' }, icon(ico)), E('div', { class: 'metric-label' }, label), E('div', { class: 'metric-value' }, value), E('small', {}, note));
-  const count = m.end.elektrisch + m.end.diesel;
-  const defaultSummary = `${report.client.name} heeft een plan voor ${report.settings.jaren} jaar. In ${endYear} rijden ${m.end.elektrisch} van de ${count} voertuigen elektrisch. `
-    + (m.saving == null ? `De berekende totale kosten bedragen ${money(r.ncw)} in contante waarde.` : `De berekende totale kosten bedragen ${money(r.ncw)}. Dat is ${money(Math.abs(m.saving))} ${m.saving >= 0 ? 'lager' : 'hoger'} dan het dieselplan, in contante waarde.`);
-  let headline = m.end.elektrisch ? 'Stap voor stap naar een andere vloot.' : 'Uw keuzes, zorgvuldig doorgerekend.';
-  if (m.inconclusive) headline = 'De plannen liggen financieel dicht bij elkaar.';
-  const comparison = m.co2Saving == null ? 'Geen dieselvergelijking opgenomen' : `${num(Math.abs(m.co2Saving) / 1000, 1)} ton ${m.co2Saving >= 0 ? 'minder' : 'meer'} dan diesel in hetzelfde jaar`;
-  const board = E('div', { class: 'result-board' + (!m.ref ? ' solo' : '') },
-    m.ref ? E('div', { class: 'result-side diesel' }, E('div', { class: 'result-who' }, E('i', { class: 'dot' }), 'Diesel blijven'), E('div', { class: 'result-total' }, money(m.ref.ncw)), E('p', {}, `Totale kosten over ${report.settings.jaren} jaar`)) : null,
-    E('div', { class: 'result-side plan' }, E('div', { class: 'result-who' }, E('i', { class: 'dot' }), r.naam), E('div', { class: 'result-total' }, money(r.ncw)), E('p', {}, 'Contante waarde · alle kosten samen')),
-    E('div', { class: 'result-footer' }, E('p', {}, m.saving == null ? 'Het gekozen plan, volledig doorgerekend.' : [E('b', { class: m.saving >= 0 ? 'positive' : 'negative' }, money(Math.abs(m.saving))), ` ${m.saving >= 0 ? 'voordeel' : 'meerkosten'} over ${report.settings.jaren} jaar`]),
-      E('span', { class: 'muted' }, m.inconclusive ? 'Verschil binnen de optimalisatiemarge' : `${pct(report.settings.rekenrente, 1)} rekenrente · ${r.gap == null ? 'marge onbekend' : pct(r.gap, 2) + ' optimalisatiemarge'}`)));
-  return section('samenvatting', 'De hoofdlijnen', heading(1, 'De hoofdlijnen', 'De toekomst, in cijfers.', 'De belangrijkste uitkomsten van uw gekozen plan.', pill(r.naam, 'green')), board,
-    E('div', { class: 'summary-grid' },
-      kpi('Investering over de hele looptijd', money(r.investering), 'Voertuigen, laden, net en energie', 'chart'),
-      kpi('Hoogste kapitaalbehoefte', money(r.kapitaal), 'Piek in het benodigde kapitaal', 'coins'),
-      kpi(`Elektrisch in ${endYear}`, `${m.end.elektrisch} van ${count}`, `${pct(r.ze_aandeel?.at(-1) || 0)} van de gereden kilometers`, 'bolt'),
-      kpi(`CO₂-uitstoot in ${endYear}`, `${num(m.co2 / 1000, 1)} t`, comparison, 'leaf')),
-    E('div', { class: 'advice' }, E('div', { class: 'advice-main' }, E('div', { class: 'mini-label' }, 'Het advies van Stekker of Diesel'), E('h3', {}, headline), textBlock(r.texts?.samenvatting || defaultSummary), r.texts?.waarom ? textBlock(r.texts.waarom) : null),
-      E('aside', { class: 'advice-aside', 'aria-label': 'Rapport in het kort' }, fact('Gekozen variant', r.naam), fact('Looptijd', `${report.settings.startjaar}–${endYear}`), fact('Werkdagen', `${report.settings.inzetdagen} per jaar`), fact('Vergeleken plannen', report.variants.length), fact('Berekening', date(report.calculated_at)))),
-    (r.notices || []).map(notice => E('div', { class: 'notice' }, notice)));
+// Stacked bars per label; stacks: [{ name, color, values }]
+function stackChart(stacks, labels, { height = 300, width = full(), format = money, axis = compact, compare } = {}) {
+  const W = width, H = height, L = 78, R = 18, T = 14, B = 32;
+  const tot = labels.map((_, i) => stacks.reduce((s, x) => s + Math.max(0, x.values[i] || 0), 0));
+  const neg = labels.map((_, i) => stacks.reduce((s, x) => s + Math.min(0, x.values[i] || 0), 0));
+  const tk = ticks(Math.min(0, ...neg, ...(compare?.values || [])), Math.max(1, ...tot, ...(compare?.values || []))), lo = tk[0], hi = tk.at(-1);
+  const Y = v => T + (1 - (v - lo) / (hi - lo)) * (H - T - B), band = (W - L - R) / labels.length, bw = Math.min(56, band * .56);
+  const svg = V('svg', { viewBox: `0 0 ${W} ${H}`, class: 'svgchart', role: 'img', 'aria-label': labels.map((l, i) => `${l}: ${format(tot[i] + neg[i])}`).join(', ') });
+  for (const v of tk) svg.append(V('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: v ? 'gridline' : 'zeroline' }), V('text', { x: L - 12, y: Y(v) + 4, 'text-anchor': 'end', class: 'axis' }, axis(v)));
+  const box = E('div', { class: 'chart' }, svg), tip = tooltip(box);
+  labels.forEach((l, i) => {
+    const x = L + band * i + (band - bw) / 2;
+    let up = 0, down = 0;
+    const g = V('g', { class: 'bar' });
+    for (const s of stacks) {
+      const v = s.values[i] || 0; if (!v) continue;
+      const y0 = v > 0 ? up : down, y1 = y0 + v;
+      g.append(V('rect', { x, width: bw, y: Y(Math.max(y0, y1)), height: Math.max(.5, Math.abs(Y(y0) - Y(y1))), fill: s.color, rx: 2 }));
+      if (v > 0) up = y1; else down = y1;
+    }
+    if (compare) {
+      const v = compare.values[i];
+      g.append(V('line', { x1: x - 6, x2: x + bw + 6, y1: Y(v), y2: Y(v), stroke: compare.color, 'stroke-width': 3, 'stroke-linecap': 'round' }));
+    }
+    g.append(V('rect', { x: L + band * i, width: band, y: T, height: H - T - B, fill: 'transparent',
+      onpointerenter: () => { g.classList.add('hover'); const rect = svg.getBoundingClientRect();
+        tip.show((x + bw / 2) / W * rect.width, 8, [E('b', {}, l), ...stacks.filter(s => s.values[i]).map(s => E('div', {}, E('i', { style: { background: s.color } }), s.name, E('strong', {}, format(s.values[i])))),
+          E('div', { class: 'tot' }, 'Totaal', E('strong', {}, format(tot[i] + neg[i]))), compare ? E('div', {}, E('i', { style: { background: compare.color } }), compare.name, E('strong', {}, format(compare.values[i]))) : null]); },
+      onpointerleave: () => { g.classList.remove('hover'); tip.hide(); } }));
+    svg.append(g, V('text', { x: x + bw / 2, y: H - 8, 'text-anchor': 'middle', class: 'axis' }, l));
+  });
+  return box;
 }
 
-function fleet(r) {
-  const grid = E('div', { class: 'fleet-grid', style: { '--periods': r.jaren.length } });
-  grid.append(E('div', { class: 'fleet-cell head' }, 'VOERTUIG / PLEK'), ...r.jaren.map((year, p) => E('div', { class: `fleet-cell head ${p === state.period ? 'current' : ''}` }, year)));
-  for (const slot of fleetSlots(r)) {
-    const first = slot.find(x => x.bestaand) || slot[0];
-    grid.append(E('div', { class: 'fleet-cell' }, E('span', { class: 'vehicle-icon' }, icon('van')), E('div', { class: 'vehicle-name' }, first.bestaand ? first.naam : 'Nieuwe plek', E('small', {}, first.kenteken || first.groep))));
-    for (let p = 0; p < r.jaren.length; p++) {
-      const active = slot.find(x => x.actief[p]);
-      grid.append(E('div', { class: 'fleet-cell' }, active ? E('button', { type: 'button', class: `vehicle-block ${active.aandrijving}`, onclick: () => vehicleDetail(r, active, p), 'aria-label': `${active.naam}, ${r.jaren[p]}, details bekijken` }, E('i', { class: 'dot' }), E('span', {}, E('strong', {}, active.bestaand ? 'Huidig voertuig' : active.naam), E('small', {}, `${active.aandrijving === 'electric' ? 'Elektrisch' : 'Diesel'} · ${active.contract === 'lease' ? 'lease' : 'eigendom'}`))) : E('span', { class: 'muted' }, first.bestaand && !first.actief.some(Boolean) ? 'Afgestoten vóór start' : 'Niet actief')));
+// ---------------------------------------------------------------- top
+function topbar() {
+  return E('header', { class: 'top' }, E('div', { class: 'wrap top-in' },
+    E('a', { class: 'brand', href: 'https://stekkerofdiesel.nl/', 'aria-label': 'Stekker of Diesel' }, mark(), 'Stekker of Diesel'),
+    E('div', { class: 'top-actions' },
+      E('button', { class: 'btn ghost', type: 'button', onclick: downloadCsv }, icon('download'), E('span', {}, 'Cijfers')),
+      E('button', { class: 'btn dark', type: 'button', onclick: () => print() }, icon('print'), E('span', {}, 'Bewaar als pdf')))));
+}
+const SECTIONS = [['overzicht', 'Overzicht'], ['verschil', 'Verschil'], ['jaren', 'Door de jaren'], ['vlootplan', 'Vlootplan'], ['wagens', 'Per wagen'],
+  ['investeringen', 'Investeringen'], ['laden', 'Laden'], ['werkdag', 'Werkdag'], ['uitstoot', 'Uitstoot'], ['scenarios', 'Scenario’s'], ['varianten', 'Varianten'], ['stappen', 'Stappenplan'], ['verantwoording', 'Verantwoording']];
+function nav(c) {
+  const lvl = scenarioLevel(report, c.key);
+  return E('nav', { class: 'nav', 'aria-label': 'Hoofdstukken' }, E('div', { class: 'wrap nav-in' },
+    E('div', { class: 'nav-links' }, SECTIONS.filter(([id]) => id !== 'scenarios' || report.scenarios).filter(([id]) => id !== 'varianten' || report.variants.length > 2)
+      .map(([id, label]) => E('a', { href: `#${id}`, 'data-id': id, onclick: e => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); } }, label))),
+    lvl ? E('button', { class: 'chip', type: 'button', onclick: () => set({ scenario: null }), 'aria-label': 'Terug naar de basis' }, `${lvl.axis.name} ${lvl.level.label}`, icon('close')) : null));
+}
+function spy() {
+  const links = document.querySelectorAll('.nav-links a'); let active = null;
+  for (const a of links) { const s = document.getElementById(a.dataset.id); if (s && s.getBoundingClientRect().top < 160) active = a; }
+  links.forEach(a => a.classList.toggle('on', a === active));
+  if (active && !active.dataset.seen) { active.dataset.seen = 1; active.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+}
+
+// ---------------------------------------------------------------- 1 overzicht
+function overview(c) {
+  const { plan, ref, m } = c, Y = report.settings.jaren, years = `${report.settings.startjaar}–${report.settings.startjaar + Y - 1}`;
+  const groups = [...new Set(report.fleet.map(v => v.soort || v.groep))];
+  const trips = report.trips.filter(t => !t.piek).length;
+  const left = E('div', { class: 'id' }, E('div', { class: 'id-name' }, vehicleIcon(groups[0] || 'bestel', 'big'), E('h1', {}, report.client.name)),
+    E('p', {}, [`${report.fleet.length} voertuigen`, `${trips} ritten per dag`, years, report.client.place].filter(Boolean).join(' · ')));
+  let headline;
+  const ze = report.trips.some(t => t.ze_vanaf) || (report.goals?.ze_doel_pct > 0);
+  if (ref && m.saving > 0) headline = [E('h2', { class: 'headline' }, plan.naam === 'Advies' ? 'Ons advies is ' : `${plan.naam} is `, E('em', {}, money(round(m.saving))), ' goedkoper'),
+    E('p', { class: 'sub' }, `dan diesel blijven · ${money(round(m.saving / Y))} per jaar · ${Y} jaar, contante waarde`)];
+  else if (ref && !plan.referentie && ze) headline = [E('h2', { class: 'headline' }, 'Zero-emissie rijden kost ', E('em', { class: 'amber' }, money(round(-m.saving))), ' extra'), E('p', { class: 'sub' }, `ten opzichte van diesel blijven, dat de zero-emissie-eisen niet haalt · ${Y} jaar`)];
+  else if (ref && !plan.referentie) headline = [E('h2', { class: 'headline' }, 'Diesel blijven is ', E('em', { class: 'amber' }, money(round(-m.saving))), ' goedkoper'), E('p', { class: 'sub' }, `${Y} jaar, contante waarde`)];
+  else headline = [E('h2', { class: 'headline' }, 'Totale kosten ', E('em', {}, money(round(plan.ncw)))), E('p', { class: 'sub' }, `${Y} jaar, contante waarde`)];
+  const lvl = scenarioLevel(report, c.key);
+  const right = E('div', { class: 'claim' }, lvl ? E('span', { class: 'tag' }, `Scenario · ${lvl.axis.name.toLowerCase()} ${lvl.level.label}`) : null, headline);
+
+  // Totale kosten (bars) and per km
+  const rows = ref && ref !== plan ? [[ref.naam, ref.ncw, 'amber'], [plan.naam, plan.ncw, 'green']] : [[plan.naam, plan.ncw, 'green']];
+  const max = Math.max(...rows.map(x => x[1]));
+  const km = totalKm(report, plan), kmRef = ref ? totalKm(report, ref) : 0;
+  const kmTiles = km > 0 ? E('div', { class: 'tiles three' }, ref && ref !== plan ? tile('Diesel blijven per km', money(ref.ncw / kmRef, 2)) : null, tile(`${plan.naam} per km`, money(plan.ncw / km, 2)),
+    ref && ref !== plan ? tile('Verschil per km', money(ref.ncw / kmRef - plan.ncw / km, 2), null, 'green') : null) : null;
+  const totals = E('div', { class: 'block' }, E('div', { class: 'block-head' }, E('h3', {}, state.diffMode === 'jaar' ? 'Totale kosten per jaar' : `Totale kosten in ${Y} jaar`),
+    segmented([['jaar', 'Per jaar'], ['totaal', `In ${Y} jaar`]], state.diffMode, v => set({ diffMode: v }), 'Per jaar of totaal')),
+    E('div', { class: 'bars' }, rows.map(([label, v, cls]) => E('div', { class: 'barrow' }, E('span', {}, label), E('div', { class: 'track' }, E('i', { class: cls, style: { width: `${Math.max(2, v / max * 100)}%` } })),
+      E('b', {}, money(state.diffMode === 'jaar' ? v / Y : v))))), kmTiles);
+  return section('overzicht', null,
+    E('div', { class: 'hero' }, left, right),
+    E('div', { class: 'split' }, totals, whatIf(c)),
+    E('div', { class: 'tiles five' },
+      tile('Investering', money(plan.investering), 'voertuigen, laden en net'),
+      tile('Hoogste kapitaalbehoefte', money(plan.kapitaal)),
+      tile(`Elektrisch in ${plan.jaren.at(-1)}`, `${m.end.elektrisch} van ${m.end.elektrisch + m.end.diesel}`, pct(plan.ze_aandeel?.at(-1)) + ' van de kilometers'),
+      tile('CO₂ per jaar', m.co2 != null ? tons(m.co2) : '—', m.co2Pct != null ? `${pct(Math.abs(m.co2Pct))} ${m.co2Pct >= 0 ? 'minder' : 'meer'} dan diesel blijven` : null),
+      tile('Terugverdiend', m.payback ? String(report.settings.startjaar + m.payback - 1) : ref && m.saving > 0 ? 'binnen de looptijd' : '—', m.payback ? `na ${m.payback} jaar` : null)),
+    advice(c));
+}
+function whatIf(c) {
+  const axes = report.scenarios?.axes || [];
+  const basis = report.variants[state.variant].variant === 'basis';
+  if (!axes.length || !basis) return E('div', { class: 'block whatif' }, E('div', { class: 'block-head' }, E('h3', {}, 'Wat er gebeurt')), timeline(c));
+  return E('div', { class: 'block whatif' }, E('div', { class: 'block-head' }, E('h3', {}, 'Wat als')),
+    axes.map(a => {
+      const cur = c.key?.startsWith(a.id + ':') ? c.key.split(':')[1] : 'basis';
+      const i = Math.max(0, a.levels.findIndex(l => l.id === cur)), n = a.levels.length - 1;
+      const value = E('b', {}, a.levels[i].label);
+      const input = E('input', { type: 'range', id: `wi-${a.id}`, min: 0, max: n, step: 1, value: i, 'aria-label': a.name, 'aria-valuetext': a.levels[i].label, style: { '--f': n ? i / n : 0 },
+        oninput: e => { const l = a.levels[+e.target.value]; value.textContent = l.label; e.target.style.setProperty('--f', n ? +e.target.value / n : 0); },
+        onchange: e => { const l = a.levels[+e.target.value]; set({ scenario: l.id === 'basis' ? null : `${a.id}:${l.id}` }, `wi-${a.id}`); } });
+      return E('label', { class: 'slider' + (cur !== 'basis' ? ' active' : '') }, E('div', {}, E('span', {}, a.name), value), input,
+        E('div', { class: 'stops' }, a.levels.map(l => E('span', {}, l.id === 'basis' ? 'nu' : l.id))));
+    }));
+}
+function timeline(c) {
+  const { plan } = c;
+  return E('ol', { class: 'mini-steps' }, plan.jaren.map((j, p) => {
+    const s = steps(report, plan, p);
+    return E('li', {}, E('b', {}, j), E('span', {}, s.length ? s.slice(0, 2).join(' ') + (s.length > 2 ? ` En ${s.length - 2} meer.` : '') : 'Geen wijzigingen.'));
+  }));
+}
+function advice(c) {
+  const { plan, ref, m } = c, t = plan.texts || {};
+  const nieuw = plan.vloot.filter(v => !v.bestaand);
+  const ev = nieuw.filter(isEV), dsl = nieuw.filter(v => !isEV(v));
+  const first = ev.length ? Math.min(...ev.map(v => plan.jaren.indexOf(v.start)).filter(i => i >= 0)) : -1;
+  const auto = [];
+  if (ev.length) auto.push(`${ev.length} elektrische ${ev.length === 1 ? 'wagen' : 'wagens'} in gebruik nemen, de eerste in ${plan.jaren[first] ?? plan.jaren[0]}.`);
+  if (dsl.length) auto.push(`${dsl.length} ${dsl.length === 1 ? 'rit blijft' : 'ritten blijven'} voorlopig diesel, met een nieuwe diesel waar de huidige wagen op is.`);
+  const netUp = plan.net_kw.findIndex((k, p) => k > (p ? plan.net_kw[p - 1] : report.depot.aansluiting_kw));
+  if (netUp >= 0) auto.push(`De netaansluiting naar ${num(plan.net_kw[netUp])} kW in ${plan.jaren[netUp]}.`);
+  else if (plan.laadpunten?.length) auto.push(`Laden past op de huidige aansluiting van ${num(report.depot.aansluiting_kw)} kW.`);
+  if (m.co2Saving > 0) auto.push(`De CO₂-uitstoot daalt met ${pct(m.co2Pct)} ten opzichte van diesel blijven.`);
+  const points = Object.keys(t).filter(k => /^advies\d+$/.test(k)).sort().map(k => t[k]);
+  const notices = [...(plan.notices || []), ...(plan.budget_over || [])];
+  return E('div', { class: 'advice' }, E('div', {}, E('h3', {}, 'Ons advies'), prose(t.samenvatting || defaultSummary(c)), notices.length ? E('ul', { class: 'notices' }, notices.map(n => E('li', {}, n))) : null),
+    E('ol', { class: 'points' }, (points.length ? points : auto).map(p => E('li', {}, p))));
+  function defaultSummary() {
+    if (!ref || plan === ref) return `Dit plan kost ${money(plan.ncw)} over ${report.settings.jaren} jaar.`;
+    return m.saving > 0 ? `Met dit plan rijdt ${report.client.name} over ${report.settings.jaren} jaar ${money(round(m.saving))} goedkoper dan met alleen diesel. In ${plan.jaren.at(-1)} rijden ${m.end.elektrisch} van de ${m.end.elektrisch + m.end.diesel} voertuigen elektrisch.`
+      : `Doorgaan op diesel is in deze situatie het voordeligst. Elektrisch rijden wordt interessant als prijzen of ritten veranderen.`;
+  }
+}
+
+// ---------------------------------------------------------------- 2 verschil
+function difference(c) {
+  const { plan, ref } = c, Y = report.settings.jaren;
+  if (!ref || ref === plan) return null;
+  const div = state.diffMode === 'jaar' ? Y : 1;
+  const rows = costRows(plan, ref).filter(r => Math.abs(r.saving) >= .5).sort((a, b) => Math.abs(b.saving) - Math.abs(a.saving));
+  const max = Math.max(1, ...rows.map(r => Math.abs(r.saving)));
+  const info = E('div', { class: 'diff-info' }, E('b', {}, 'Totaal'), E('span', {}, `${money((ref.ncw - plan.ncw) / div)} ${ref.ncw >= plan.ncw ? 'voordeel' : 'nadeel'}`));
+  const table = E('div', { class: 'diff' }, E('div', { class: 'diff-row head' }, E('span', {}, ''), E('span', {}, ref.naam), E('span', {}, plan.naam), E('span', { class: 'mid' }, E('em', {}, 'duurder'), E('em', {}, 'goedkoper'))),
+    rows.map(r => {
+      const s = r.saving / div, w = Math.abs(r.saving) / max * 50;
+      return E('div', { class: 'diff-row', tabindex: 0, onpointerenter: () => explain(r), onfocus: () => explain(r), onpointerleave: () => explain(null) },
+        E('span', {}, r.name), E('span', { class: 'n' }, money(r.base / div)), E('span', { class: 'n' }, money(r.plan / div)),
+        E('span', { class: 'mid' }, E('i', { class: s >= 0 ? 'pos' : 'neg', style: s >= 0 ? { left: '50%', width: `${w}%` } : { right: '50%', width: `${w}%` } }), E('b', { class: s >= 0 ? 'pos' : 'neg' }, `${s >= 0 ? '+' : '−'}${money(Math.abs(s)).slice(2)}`)));
+    }));
+  function explain(r) { info.replaceChildren(E('b', {}, r ? r.name : 'Totaal'), E('span', {}, r ? POSTS[r.name] || '' : `${money((ref.ncw - plan.ncw) / div)} ${ref.ncw >= plan.ncw ? 'voordeel' : 'nadeel'}`)); }
+  return section('verschil', `Waar zit het verschil · ${state.diffMode === 'jaar' ? 'per jaar' : `in ${Y} jaar`}`,
+    head(segmented([['jaar', 'Per jaar'], ['totaal', `In ${Y} jaar`]], state.diffMode, v => set({ diffMode: v }), 'Per jaar of totaal')), table, info, prose(plan.texts?.kosten));
+}
+
+// ---------------------------------------------------------------- 3 door de jaren
+function years(c) {
+  const { plan, ref, m } = c;
+  const labels = plan.per_jaar.map(x => x.jaar);
+  const a = plan.per_jaar.map(totalYear), b = ref && ref !== plan ? ref.per_jaar.map(totalYear) : null;
+  let chart;
+  if (state.costMode === 'cum') {
+    const s = [{ name: plan.naam, values: cumulative(a), color: '#0A8F5B', area: '#0A8F5B10' }];
+    if (b) s.unshift({ name: ref.naam, values: cumulative(b), color: '#F2A33A' });
+    chart = lineChart(s, labels, { marker: m.payback ? { i: m.payback - 1, label: `Omslagpunt ${labels[m.payback - 1]}` } : null });
+  } else {
+    const kinds = Object.keys(KIND).filter(k => plan.per_jaar.some(r => r[k]));
+    chart = stackChart(kinds.map(k => ({ name: KIND[k], color: KIND_COLOR[k], values: plan.per_jaar.map(r => r[k] || 0) })), labels,
+      { compare: b ? { name: ref.naam, color: '#F2A33A', values: b } : null });
+  }
+  const cumA = cumulative(a), cumB = b ? cumulative(b) : null;
+  return section('jaren', 'Kosten door de jaren',
+    head(segmented([['cum', 'Opgeteld'], ['jaar', 'Per jaar']], state.costMode, v => set({ costMode: v }), 'Weergave')), chart,
+    state.costMode === 'cum' ? legend([[ref && ref !== plan ? ref.naam : null, '#F2A33A'], [plan.naam, '#0A8F5B']].filter(x => x[0])) : legend([...Object.keys(KIND).filter(k => plan.per_jaar.some(r => r[k])).map(k => [KIND[k], KIND_COLOR[k]]), ...(b ? [[ref.naam, '#F2A33A']] : [])]),
+    E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' }, E('thead', {}, E('tr', {}, E('th', {}, ''), labels.map(l => E('th', { class: 'n' }, l)))),
+      E('tbody', {}, b ? E('tr', {}, E('td', {}, ref.naam), b.map(v => E('td', { class: 'n' }, money(v)))) : null, E('tr', {}, E('td', {}, plan.naam), a.map(v => E('td', { class: 'n' }, money(v)))),
+        b ? E('tr', { class: 'sum' }, E('td', {}, 'Verschil opgeteld'), cumB.map((v, i) => E('td', { class: 'n ' + (v - cumA[i] >= 0 ? 'pos' : 'neg') }, money(v - cumA[i])))) : null))),
+    prose(plan.texts?.financiering));
+}
+
+// ---------------------------------------------------------------- 4 vlootplan
+function fleetPlan(c) {
+  const { plan } = c, P = plan.jaren.length;
+  const lanes = fleetSlots(plan);
+  const counts = plan.aantallen;
+  const maxN = Math.max(1, ...counts.map(x => x.elektrisch + x.diesel));
+  const bars = E('div', { class: 'counts' }, counts.map((x, p) => E('button', { type: 'button', class: 'count' + (p === state.period ? ' on' : ''), onclick: () => set({ period: p }), 'aria-label': `${plan.jaren[p]}: ${x.elektrisch} elektrisch, ${x.diesel} diesel` },
+    E('div', { class: 'stack' }, E('i', { class: 'd', style: { height: `${x.diesel / maxN * 100}%` } }), E('i', { class: 'e', style: { height: `${x.elektrisch / maxN * 100}%` } })),
+    E('b', {}, `${x.elektrisch} / ${x.elektrisch + x.diesel}`), E('span', {}, plan.jaren[p]))));
+  const grid = E('div', { class: 'gantt', style: { gridTemplateColumns: `minmax(130px, 220px) repeat(${P}, minmax(0, 1fr))`, '--p': P } },
+    E('div', { class: 'gh' }), plan.jaren.map((j, p) => E('button', { type: 'button', class: 'gh' + (p === state.period ? ' on' : ''), onclick: () => set({ period: p }) }, j)));
+  let group = null;
+  for (const lane of lanes) {
+    const first = lane.find(v => v.bestaand) || lane[0];
+    if (first.groep !== group) { group = first.groep; grid.append(E('div', { class: 'gg', style: { gridColumn: `1 / span ${P + 1}` } }, group)); }
+    grid.append(E('div', { class: 'gl' }, vehicleIcon(kindOf(first)), E('span', {}, first.bestaand ? first.naam : 'Nieuwe plek'), first.kenteken ? E('small', {}, first.kenteken) : null));
+    for (let p = 0; p < P; p++) {
+      const v = lane.find(x => x.actief[p]);
+      const cell = E('div', { class: 'gc' + (p === state.period ? ' on' : '') });
+      if (v) {
+        const startHere = p === 0 || !lane.find(x => x.actief[p - 1]) || lane.find(x => x.actief[p - 1]) !== v;
+        const endHere = p === P - 1 || lane.find(x => x.actief[p + 1]) !== v;
+        cell.append(E('button', { type: 'button', class: `pill ${isEV(v) ? 'e' : 'd'}${startHere ? ' s' : ''}${endHere ? ' t' : ''}${state.vehicle === v.id ? ' sel' : ''}`,
+          onclick: () => set({ vehicle: state.vehicle === v.id ? null : v.id }), 'aria-label': `${v.naam}, ${plan.jaren[p]}` }, startHere ? E('span', {}, v.bestaand ? 'Huidig' : v.naam) : null));
+      }
+      grid.append(cell);
     }
   }
-  return section('vlootplan', 'Uw vlootplan', heading(2, 'Het vlootplan', 'Elke wagen. Het juiste moment.', 'Klik op een voertuig en bekijk de keuze, de inzet en de kosten.'),
-    r.texts?.vlootplan ? textBlock(r.texts.vlootplan, 'prose section-note') : null,
-    E('div', { class: 'panel' }, E('div', { class: 'panel-head' }, E('div', {}, E('h3', {}, 'Zo ontwikkelt uw vloot zich'), E('p', {}, 'De balken laten zien wat er per periode rijdt.')), legend([['Elektrisch', ''], ['Diesel', 'diesel']])),
-      E('div', { class: 'fleet-table' }, grid), E('div', { class: 'fleet-foot' }, E('span', {}, 'Klik op een gekleurde balk voor de voertuigdetails.'), E('span', {}, `${r.aantallen.at(-1).elektrisch} elektrisch · ${r.aantallen.at(-1).diesel} diesel aan het eind`))),
-    r.texts?.perwagen ? textBlock(r.texts.perwagen, 'prose section-note') : null);
+  const sel = plan.vloot.find(v => v.id === state.vehicle);
+  const detail = sel ? vehicleCard(plan, sel) : null;
+  return section('vlootplan', 'Het vlootplan', bars, E('div', { class: 'gantt-wrap' }, grid), legend([['Elektrisch', '#0A8F5B'], ['Diesel', '#F2A33A']]), detail, prose(plan.texts?.vlootplan));
+}
+function vehicleCard(plan, v) {
+  const active = plan.jaren.filter((_, p) => v.actief[p]);
+  const f = report.fleet.find(x => x.id === v.id);
+  return E('div', { class: 'vcard' }, E('button', { class: 'x', type: 'button', onclick: () => set({ vehicle: null }), 'aria-label': 'Sluiten' }, icon('close')),
+    E('div', { class: 'vcard-h' }, vehicleIcon(kindOf(v), isEV(v) ? 'e' : 'd'), E('div', {}, E('h3', {}, v.naam), E('p', {}, [isEV(v) ? 'Elektrisch' : 'Diesel', v.bestaand ? 'huidig voertuig' : v.contract === 'lease' ? 'lease' : 'koop', v.kenteken].filter(Boolean).join(' · ')))),
+    E('div', { class: 'tiles four' },
+      tile('In gebruik', active.length ? `${active[0]}${active.length > 1 ? ` t/m ${active.at(-1)}` : ''}` : 'niet'),
+      v.bestaand ? tile('Bouwjaar', f?.bouwjaar || '—') : tile(v.contract === 'lease' ? 'Lease per maand' : 'Aanschafprijs', v.contract === 'lease' ? money((v.lease_pj || 0) / 12) : money(v.prijs)),
+      v.bestaand ? tile('Contract', f?.contract === 'lease' ? 'lease' : 'eigendom') : tile('Vanaf', v.start || '—'),
+      isEV(v) && f?.accu_kwh ? tile('Accu', `${num(f.accu_kwh)} kWh`) : v.subsidie ? tile('Subsidie', 'ja') : tile('Groep', v.groep)));
 }
 
-function vehicleDetail(r, vehicle, period) {
-  const original = report.fleet.find(x => x.id === vehicle.id) || {};
-  const assignments = r.dagen[period]?.toewijzing.filter(x => x.voertuig_id === vehicle.id) || [];
-  const lease = vehicle.lease_pj || original.lease_pj;
-  const dialog = E('dialog', { 'aria-labelledby': 'vehicle-title' },
-    E('div', { class: 'dialog-head' }, E('div', {}, E('div', { class: 'eyebrow' }, `Voertuigdetail · ${r.jaren[period]}`), E('h2', { id: 'vehicle-title' }, vehicle.naam)), button('×', () => dialog.close(), 'close')),
-    E('div', { class: 'dialog-body' }, pill(vehicle.aandrijving === 'electric' ? 'Elektrisch' : 'Diesel', vehicle.aandrijving === 'electric' ? 'green' : 'amber'),
-      fact('In het plan', vehicle.bestaand ? 'Huidig voertuig' : `Nieuw vanaf ${vehicle.start}`), fact('Contract', vehicle.contract === 'lease' ? 'Operational lease' : 'Eigendom'),
-      vehicle.kenteken ? fact('Kenteken', vehicle.kenteken) : null,
-      lease && vehicle.contract === 'lease' ? fact('Lease per maand', money(lease / 12)) : null,
-      !vehicle.bestaand && vehicle.contract !== 'lease' ? fact('Aanschafprijs', money(vehicle.prijs)) : null,
-      vehicle.subsidie ? fact('Subsidie', 'Meegenomen in de berekening') : null,
-      E('h3', {}, 'Ritten in deze periode'), assignments.length ? E('ul', {}, assignments.map(a => E('li', {}, a.rit))) : E('p', {}, 'Geen rit toegewezen in de representatieve werkdag.'),
-      E('h3', {}, 'Actief in het vlootplan'), E('p', {}, r.jaren.filter((_, i) => vehicle.actief[i]).join(' · ')),
-      E('p', { style: { marginTop: '20px' } }, 'Deze keuze komt uit de opgeslagen berekening. Een andere inzet of prijs vraagt om een nieuwe berekening door uw adviseur.')));
-  document.body.append(dialog); dialog.addEventListener('close', () => dialog.remove(), { once: true });
-  dialog.addEventListener('click', e => { if (e.target === dialog) { const b = dialog.getBoundingClientRect(); if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) dialog.close(); } });
-  dialog.showModal();
-}
-
-function segmented(options, value, action, label) {
-  return E('div', { class: 'segmented', role: 'group', 'aria-label': label }, options.map(([key, text]) => E('button', { type: 'button', 'aria-pressed': key === value, onclick: () => action(key) }, text)));
-}
-
-function lineChart(series, labels, { yLabel = '', height = 230, format = money, zero = true } = {}) {
-  const W = 700, H = height, L = 55, R = 15, T = 16, B = 30;
-  const values = series.flatMap(s => s.values), low = Math.min(zero ? 0 : Infinity, ...values), high = Math.max(1, ...values);
-  const span = high - low || 1, max = high + span * .09, min = low < 0 ? low - span * .04 : low;
-  const X = i => L + (W - L - R) * i / Math.max(1, labels.length - 1);
-  const Y = v => T + (H - T - B) * (1 - (v - min) / (max - min));
-  const svg = V('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': yLabel || 'Kostenontwikkeling' });
-  svg.append(V('title', {}, yLabel || 'Kostenontwikkeling'));
-  for (let i = 0; i < 5; i++) {
-    const value = min + (max - min) * i / 4, y = Y(value);
-    svg.append(V('line', { x1: L, x2: W - R, y1: y, y2: y, class: 'grid' }), V('text', { x: L - 9, y: y + 4, 'text-anchor': 'end' }, format === money ? `${num(value / 1000)}k` : num(value)));
-  }
-  const main = series[0];
-  if (main?.values.length) svg.append(V('path', { d: `M${X(0)},${Y(Math.max(min, 0))} ` + main.values.map((v, i) => `L${X(i)},${Y(v)}`).join(' ') + ` L${X(labels.length - 1)},${Y(Math.max(min, 0))}Z`, fill: '#e5f2e5', opacity: '.65' }));
-  for (const s of series) {
-    svg.append(V('path', { d: s.values.map((v, i) => `${i ? 'L' : 'M'}${X(i)},${Y(v)}`).join(' '), fill: 'none', stroke: s.color, 'stroke-width': 2.7, ...(s.dashed ? { 'stroke-dasharray': '6 5' } : {}), 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
-    s.values.forEach((v, i) => svg.append(V('circle', { cx: X(i), cy: Y(v), r: 3.6, fill: s.color, stroke: '#fff', 'stroke-width': 1.5 })));
-  }
-  labels.forEach((label, i) => svg.append(V('text', { x: X(i), y: H - 7, 'text-anchor': 'middle' }, label)));
-  const tooltip = E('div', { class: 'chart-tip', hidden: true });
-  const hover = V('line', { x1: L, x2: L, y1: T, y2: H - B, stroke: '#8a9e86', 'stroke-dasharray': '3 3', visibility: 'hidden' });
-  svg.append(hover);
-  labels.forEach((label, i) => {
-    const area = V('rect', { x: X(i) - (W - L - R) / Math.max(1, labels.length - 1) / 2, y: T, width: (W - L - R) / Math.max(1, labels.length - 1), height: H - T - B, fill: 'transparent', tabindex: 0, role: 'img', 'aria-label': `${label}: ${series.map(s => `${s.name} ${format(s.values[i])}`).join(', ')}` });
-    const show = () => { tooltip.hidden = false; tooltip.textContent = `${label}\n${series.map(s => `${s.name}: ${format(s.values[i])}`).join('\n')}`; hover.setAttribute('x1', X(i)); hover.setAttribute('x2', X(i)); hover.setAttribute('visibility', 'visible'); };
-    const hide = () => { tooltip.hidden = true; hover.setAttribute('visibility', 'hidden'); };
-    area.addEventListener('mouseenter', show); area.addEventListener('mouseleave', hide); area.addEventListener('focus', show); area.addEventListener('blur', hide);
-    svg.append(area);
+// ---------------------------------------------------------------- 5 per wagen
+function perVehicle(c) {
+  const { plan } = c, lanes = fleetSlots(plan);
+  const cards = report.fleet.map(f => {
+    const lane = lanes.find(l => l.some(v => v.id === f.id));
+    const own = lane?.find(v => v.id === f.id);
+    const until = own ? own.actief.lastIndexOf(true) : -1;
+    const next = lane?.filter(v => !v.bestaand && v.id !== f.id) || [];
+    const ev = f.aandrijving === 'electric';
+    let line;
+    if (!own || until < 0) line = next.length ? `Wordt direct vervangen.` : 'Gaat bij de start de deur uit.';
+    else if (until === plan.jaren.length - 1 && !next.length) line = `Blijft rijden tot het einde van de looptijd.`;
+    else line = `Rijdt tot en met ${plan.jaren[until]}.`;
+    return E('article', { class: 'wagen', tabindex: 0, onclick: () => { set({ vehicle: (next[0] || own)?.id || null }); document.getElementById('vlootplan')?.scrollIntoView({ behavior: 'smooth' }); } },
+      E('div', { class: 'wagen-h' }, vehicleIcon(f.soort || 'bestel', ev ? 'e' : 'd'), E('div', {}, E('b', {}, f.naam || f.kenteken || 'Voertuig'), E('span', {}, [ev ? 'elektrisch' : 'diesel', f.bouwjaar, f.contract === 'lease' ? 'lease' : null].filter(Boolean).join(' · ')))),
+      E('p', {}, line),
+      next.map(v => E('div', { class: 'wagen-next' }, icon('arrow'), E('span', { class: isEV(v) ? 'e' : 'd' }, v.naam), E('small', {}, `${v.start} · ${v.contract === 'lease' ? `lease ${money((v.lease_pj || 0) / 12)} p/m` : `koop ${money(v.prijs)}`}`))));
   });
-  return E('div', { class: 'chart' }, tooltip, svg);
+  const extra = plan.vloot.filter(v => !v.bestaand && !lanes.find(l => l.some(x => x.bestaand) && l.includes(v)));
+  return section('wagens', 'Wat er met elke wagen gebeurt', E('div', { class: 'wagens' }, cards,
+    extra.length ? E('article', { class: 'wagen extra' }, E('div', { class: 'wagen-h' }, vehicleIcon('bestel', 'e'), E('div', {}, E('b', {}, 'Extra voertuigen'), E('span', {}, `${extra.length} erbij`))),
+      extra.map(v => E('div', { class: 'wagen-next' }, icon('arrow'), E('span', { class: isEV(v) ? 'e' : 'd' }, v.naam), E('small', {}, `${v.start} · ${v.contract === 'lease' ? 'lease' : `koop ${money(v.prijs)}`}`)))) : null),
+    prose(plan.texts?.perwagen));
 }
 
-function finances(r, m) {
-  const annual = r.per_jaar.map(totalYear), base = m.ref?.per_jaar.map(totalYear), accumulated = state.chart === 'cumulative';
-  const series = [{ name: r.naam, values: accumulated ? cumulative(annual) : annual, color: '#18754c' }];
-  if (base && state.baseline) series.push({ name: m.ref.naam, values: accumulated ? cumulative(base) : base, color: '#c99855', dashed: true });
-  const chart = lineChart(series, r.per_jaar.map(x => x.jaar), { yLabel: accumulated ? 'Opgebouwde nominale kosten, inclusief restwaarde' : 'Nominale kosten per jaar, inclusief restwaarde' });
-  const rows = costRows(r, m.ref);
-  const table = dataTable(['Kostenpost', r.naam, ...(m.ref ? ['Diesel blijven', 'Voordeel'] : [])], rows.map(row => [row.name, money(row.plan), ...(m.ref ? [money(row.base), money(row.saving)] : [])]), ['Totaal', money(r.ncw), ...(m.ref ? [money(m.ref.ncw), money(m.saving)] : [])]);
-  return section('kosten', 'Kosten en rendement', heading(3, 'Kosten en rendement', 'Het hele verhaal achter de euro.', 'Bekijk hoe de kosten zich ontwikkelen, en waar het verschil vandaan komt.', button('Cijfers downloaden', () => downloadCosts(r, m.ref), 'small', 'download')),
-    E('div', { class: 'panel' }, E('div', { class: 'panel-head' }, E('div', {}, E('h3', {}, 'Kosten door de jaren'), E('p', {}, 'Beweeg over de grafiek voor de bedragen.')), segmented([['cumulative', 'Opgebouwd'], ['annual', 'Per jaar']], state.chart, chart => { state.chart = chart; render(); }, 'Grafiekweergave')),
-      E('div', { class: 'chart-grid' }, E('div', { class: 'chart-card' }, E('h3', {}, accumulated ? 'Opgeteld, jaar na jaar' : 'De kosten van ieder jaar'), E('p', {}, 'Nominale bedragen · inclusief verkoop en restwaarde'), chart,
-        E('div', { style: { margin: '4px 0 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap' } }, legend([[r.naam, ''], ...(m.ref ? [['Diesel blijven', 'diesel']] : [])]), m.ref ? E('label', { class: 'hint', style: { margin: 0, display: 'flex', alignItems: 'center', gap: '6px' } }, E('input', { type: 'checkbox', ...(state.baseline ? { checked: true } : {}), onchange: e => { state.baseline = e.target.checked; render(); } }), 'Diesel tonen') : null)),
-        E('aside', { class: 'cost-aside' }, E('div', {}, E('label', {}, 'Totale kosten, omgerekend naar vandaag'), E('div', { class: 'big' }, money(r.ncw)), E('p', {}, `${pct(report.settings.rekenrente, 1)} rekenrente · ${report.settings.jaren} jaar`)),
-          E('div', {}, E('label', {}, 'Blijvend goedkoper dan diesel vanaf'), E('div', { class: 'big' }, !m.ref ? '—' : m.payback == null ? 'Niet binnen looptijd' : String(report.settings.startjaar + m.payback - 1)), E('p', {}, 'Op basis van de nominale jaarbedragen, inclusief restwaarde.')),
-          m.inconclusive ? E('p', {}, 'Het verschil tussen de plannen valt binnen de optimalisatiemarge. Gebruik het niet als bewezen financieel voordeel.') : null)),
-      E('details', { class: 'disclosure' }, E('summary', {}, 'Bekijk de volledige kostenopbouw', E('span', { class: 'muted', style: { marginLeft: 'auto', marginRight: '18px', fontSize: '10px' } }, 'Contante waarde')), E('div', { class: 'table-wrap' }, table))),
-    ['kosten', 'investering', 'financiering'].filter(k => r.texts?.[k]).map(k => textBlock(r.texts[k], 'prose hint')));
+// ---------------------------------------------------------------- 6 investeringen
+function investments(c) {
+  const { plan, ref } = c;
+  const labels = plan.per_jaar.map(x => x.jaar);
+  const nieuw = plan.vloot.filter(v => !v.bestaand);
+  const koop = nieuw.filter(v => v.contract !== 'lease'), lease = nieuw.filter(v => v.contract === 'lease');
+  const sub = (plan.kosten || []).find(k => k.post === 'Subsidie');
+  const rows = [
+    ['Voertuigen kopen', `${koop.length}×`, money(koop.reduce((s, v) => s + (v.prijs || 0), 0))],
+    ['Voertuigen leasen', `${lease.length}×`, lease.length ? `${money(lease.reduce((s, v) => s + (v.lease_pj || 0), 0) / 12)} per maand` : '—'],
+    ...(plan.laadpunten || []).map(l => [l.naam, `${Math.max(...l.aantal)}×`, '']),
+    ...(plan.energie || []).map(e => [e.soort, e.omvang, '']),
+  ];
+  return section('investeringen', 'Investeringen en financiering',
+    E('div', { class: 'tiles four' }, tile('Investering totaal', money(plan.investering)), tile('Hoogste kapitaalbehoefte', money(plan.kapitaal)),
+      tile('Subsidie', sub ? money(-sub.ncw) : '—', sub ? 'contante waarde' : null), tile('Nieuwe voertuigen', String(nieuw.length), `${koop.length} koop · ${lease.length} lease`)),
+    E('div', { class: 'split' }, E('div', { class: 'block' }, E('h3', {}, 'Investeringen per jaar'),
+      stackChart([{ name: 'Investeringen', color: '#15171A', values: plan.per_jaar.map(r => Math.max(0, r.investering || 0)) }], labels,
+        { height: 300, width: half(), compare: ref && ref !== plan ? { name: ref.naam, color: '#F2A33A', values: ref.per_jaar.map(r => Math.max(0, r.investering || 0)) } : null })),
+      E('div', { class: 'block' }, E('h3', {}, 'Wat er wordt aangeschaft'), E('table', { class: 'tbl' }, E('tbody', {}, rows.map(r => E('tr', {}, E('td', {}, r[0]), E('td', { class: 'n' }, r[1]), E('td', { class: 'n' }, r[2]))))))),
+    prose(plan.texts?.investering));
 }
 
-function dataTable(headers, rows, total) {
-  const tr = (row, head = false, cls = '') => E('tr', { class: cls }, row.map((value, i) => E(head ? 'th' : 'td', { class: i ? 'num' : '', ...(head ? { scope: 'col' } : {}) }, value)));
-  return E('table', { class: 'data-table' }, E('thead', {}, tr(headers, true)), E('tbody', {}, rows.map(row => tr(row)), total ? tr(total, false, 'total') : null));
+// ---------------------------------------------------------------- 7 laden
+function charging(c) {
+  const { plan } = c;
+  const rows = [
+    ['Netaansluiting', plan.net_kw.map(k => `${num(k)} kW`)],
+    ...(plan.laadpunten || []).map(l => [l.naam, l.aantal.map(a => a ? `${a}×` : '—')]),
+    ['Kilometers elektrisch', (plan.ze_aandeel || []).map(z => pct(z))],
+    ['Laden onderweg', plan.dagen.map(d => d.onderweg_kwh_pj ? `${num(d.onderweg_kwh_pj / 1000, 1)} MWh/jr` : '—')],
+    ...(plan.thuisladers?.length ? [['Thuisladen', plan.dagen.map(d => d.thuis_kwh_pj ? `${num(d.thuis_kwh_pj / 1000, 1)} MWh/jr` : '—')]] : []),
+  ];
+  const pol = report.policies || [];
+  const depotText = p => p.depot === 'nooit' ? 'niet op het depot' : p.depot === 'venster' ? `depot ${clock(p.van * 60)}–${clock(p.tot * 60)}` : 'depot, als hij er staat';
+  const maxKw = Math.max(1, ...plan.net_kw, report.depot.aansluiting_kw || 0);
+  return section('laden', 'Laden en netaansluiting',
+    plan.net_kw.some(k => k !== report.depot.aansluiting_kw) && E('div', { class: 'netbars' }, plan.net_kw.map((k, p) => E('div', { class: 'netbar' }, E('div', { class: 'nb-track' }, E('i', { style: { height: `${k / maxKw * 100}%` } }),
+      E('em', { style: { bottom: `${(report.depot.aansluiting_kw || 0) / maxKw * 100}%` } })), E('b', {}, `${num(k)} kW`), E('span', {}, plan.jaren[p])))),
+    E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' }, E('thead', {}, E('tr', {}, E('th', {}, ''), plan.jaren.map(j => E('th', { class: 'n' }, j)))),
+      E('tbody', {}, rows.map(([l, vals]) => E('tr', {}, E('td', {}, l), vals.map(v => E('td', { class: 'n' }, v))))))),
+    pol.length ? E('div', { class: 'policies' }, pol.map(p => E('div', { class: 'policy' }, E('b', {}, p.group), E('span', {}, [depotText(p), p.laad_tot < 1 ? `tot ${pct(p.laad_tot)}` : null, p.vertrek_min ? `vertrek ≥ ${pct(p.vertrek_min)}` : null, p.thuis ? 'thuisladen' : null, p.snelladen_depot === false ? 'geen snelladen' : null].filter(Boolean).join(' · '))))) : null,
+    prose(plan.texts?.laden));
 }
 
-function dayChart(r, day) {
-  const W = 700, H = 215, L = 42, R = 12, T = 13, B = 29;
-  const axis = r.tijdas, upper = Math.max(1, day.grens || 0, ...day.net, ...day.gebouw, ...day.laden, ...day.zon) * 1.13;
-  const X = minute => L + minute / 1440 * (W - L - R), Y = kw => T + (1 - kw / upper) * (H - T - B);
-  const svg = V('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': `Vermogen op het depot in ${r.jaren[state.period]}. Gebruik de tijdschuif voor exacte waarden.` }, V('title', {}, 'Vermogen op het depot, in kW'));
-  for (let i = 0; i < 5; i++) { const v = upper * i / 4; svg.append(V('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: 'grid' }), V('text', { x: L - 8, y: Y(v) + 4, 'text-anchor': 'end' }, num(v))); }
-  for (let hour = 0; hour <= 24; hour += 3) svg.append(V('text', { x: X(hour * 60), y: H - 6, 'text-anchor': 'middle' }, `${String(hour).padStart(2, '0')}:00`));
-  for (const [values, color, fill] of [[day.gebouw, '#b6bfb0', '#edf0e9'], [day.zon, '#a7b765', '#ebf0d580'], [day.laden, '#2a8b58', '#d8eddf99'], [day.net, '#7898aa', null]]) {
-    let path = '';
-    values.forEach((v, i) => path += `${i ? 'L' : 'M'}${X(axis[i])},${Y(v)}L${X(axis[i + 1])},${Y(v)}`);
-    if (fill) svg.append(V('path', { d: path + `L${X(axis.at(-1))},${Y(0)}L${X(axis[0])},${Y(0)}Z`, fill }));
-    svg.append(V('path', { d: path, stroke: color, 'stroke-width': 2.1, fill: 'none', 'stroke-linejoin': 'round' }));
-  }
-  svg.append(V('line', { x1: L, x2: W - R, y1: Y(day.grens || 0), y2: Y(day.grens || 0), stroke: '#c59a5d', 'stroke-dasharray': '6 4', 'stroke-width': 1.4 }));
-  svg.append(V('line', { id: 'clock-line', x1: X(axis[state.clock]), x2: X(axis[state.clock]), y1: T, y2: H - B, stroke: '#183d2c', 'stroke-width': 1.4 }));
-  svg.dataset.left = L; svg.dataset.plotWidth = W - L - R;
-  return E('div', { class: 'chart', style: { marginTop: '17px' } }, svg);
+// ---------------------------------------------------------------- 8 werkdag
+function workday(c) {
+  const { plan } = c, day = plan.dagen[state.period], axis = plan.tijdas, T = axis.length - 1;
+  const at = minutes => Math.max(0, axis.findIndex((a, i) => a <= minutes && minutes < axis[i + 1]));
+  const W = innerWidth > 820 ? full() - 300 : full(), H = innerWidth > 820 ? 300 : 230, L = 44, R = 12, Tp = 12, B = 30;
+  const upper = Math.max(1, day.grens || 0, ...day.net, ...day.laden.map((v, i) => v + (Array.isArray(day.gebouw) ? day.gebouw[i] : day.gebouw || 0))) * 1.12;
+  const X = m => L + m / 1440 * (W - L - R), Y = kw => Tp + (1 - kw / upper) * (H - Tp - B);
+  const geb = i => Array.isArray(day.gebouw) ? day.gebouw[i] : day.gebouw || 0;
+  const svg = V('svg', { viewBox: `0 0 ${W} ${H}`, class: 'svgchart', role: 'img', 'aria-label': `Vermogen op het depot op een werkdag in ${plan.jaren[state.period]}` });
+  for (let i = 0; i <= 4; i++) { const v = upper * i / 4; svg.append(V('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: 'gridline' }), V('text', { x: L - 8, y: Y(v) + 4, 'text-anchor': 'end', class: 'axis' }, num(v))); }
+  for (let h = 0; h <= 24; h += W < 600 ? 6 : 3) svg.append(V('text', { x: X(h * 60), y: H - 8, 'text-anchor': 'middle', class: 'axis' }, `${String(h).padStart(2, '0')}:00`));
+  const step = (vals, base) => { let d = ''; for (let i = 0; i < T; i++) d += `${i ? 'L' : 'M'}${X(axis[i])},${Y(vals(i) + (base ? base(i) : 0))}L${X(axis[i + 1])},${Y(vals(i) + (base ? base(i) : 0))}`; return d; };
+  const area = (vals, base, fill) => { const top = step(vals, base); let back = ''; for (let i = T - 1; i >= 0; i--) back += `L${X(axis[i + 1])},${Y(base ? base(i) : 0)}L${X(axis[i])},${Y(base ? base(i) : 0)}`; svg.append(V('path', { d: top + back + 'Z', fill })); };
+  area(geb, null, '#E4E4DF'); area(i => day.laden[i], geb, '#3FA87766');
+  if (day.zon?.some(v => v > 0)) svg.append(V('path', { d: step(i => day.zon[i]), fill: 'none', stroke: '#E8B33A', 'stroke-width': 2 }));
+  svg.append(V('path', { d: step(i => day.net[i]), fill: 'none', stroke: '#15171A', 'stroke-width': 2.2 }));
+  if (day.grens) svg.append(V('line', { x1: L, x2: W - R, y1: Y(day.grens), y2: Y(day.grens), stroke: '#B8700E', 'stroke-width': 1.5, 'stroke-dasharray': '6 5' }));
+  const now = V('line', { x1: X(state.clock * 30), x2: X(state.clock * 30), y1: Tp, y2: H - B, stroke: '#0A8F5B', 'stroke-width': 2 });
+  svg.append(now);
+
+  // Wie rijdt wanneer
+  const trips = new Map(report.trips.map(t => [t.id, t]));
+  const byVehicle = new Map();
+  for (const t of day.toewijzing) { const k = t.voertuig_id || `inhuur-${t.rit_id}`; if (!byVehicle.has(k)) byVehicle.set(k, { name: t.voertuig, kind: t.aandrijving, trips: [] }); byVehicle.get(k).trips.push(t); }
+  const soc = new Map((day.accu || []).map(a => [a.id, a]));
+  const rows = [...byVehicle.entries()].sort((a, b) => a[1].kind.localeCompare(b[1].kind) || a[1].name.localeCompare(b[1].name));
+  const gantt = E('div', { class: 'dg' }, E('div', { class: 'dg-axis' }, E('span', {}), E('div', {}, [0, 6, 12, 18, 24].map(h => E('em', { style: { left: `${h / 24 * 100}%` } }, `${String(h).padStart(2, '0')}:00`)))),
+    rows.map(([id, v]) => {
+      const a = soc.get(id);
+      const lane = E('div', { class: 'dg-lane' }, E('i', { class: 'dg-now', style: { left: `${state.clock * 30 / 1440 * 100}%` } }));
+      if (a) {
+        const pts = a.kwh.map((k, i) => `${axis[i] / 1440 * 100},${100 - k / a.capaciteit * 100}`).join(' ');
+        lane.append(V('svg', { class: 'dg-soc', viewBox: '0 0 100 100', preserveAspectRatio: 'none', 'aria-hidden': 'true' }, V('polyline', { points: pts, fill: 'none', stroke: '#0A8F5B', 'stroke-width': 1.5, 'vector-effect': 'non-scaling-stroke' })));
+      }
+      for (const t of v.trips) {
+        const trip = trips.get(String(t.rit_id).split('~')[0]); if (!trip) continue;
+        const s = trip.vertrek * 60, e = trip.aankomst * 60;
+        lane.append(E('span', { class: `dg-trip ${v.kind === 'electric' ? 'e' : v.kind === 'diesel' ? 'd' : 'c'}`, style: { left: `${s / 1440 * 100}%`, width: `${(e - s) / 1440 * 100}%` }, title: `${t.rit} · ${clock(s)}–${clock(e)} · ${num(trip.km)} km` }, t.rit));
+      }
+      const k = a ? a.kwh[Math.min(a.kwh.length - 1, at(state.clock * 30))] : null;
+      return E('div', { class: 'dg-row' }, E('div', { class: 'dg-name' }, E('b', {}, v.name), E('small', {}, a ? `${pct(k / a.capaciteit)} accu` : v.kind === 'diesel' ? 'diesel' : v.kind === 'charter' ? 'inhuur' : '')), lane);
+    }));
+  const i = at(state.clock * 30);
+  const onRoad = day.toewijzing.filter(t => { const tr = trips.get(String(t.rit_id).split('~')[0]); return tr && tr.vertrek * 60 <= state.clock * 30 && state.clock * 30 < tr.aankomst * 60; }).length;
+  const slider = E('input', { type: 'range', id: 'day-clock', min: 0, max: 47, step: 1, value: state.clock, 'aria-label': 'Tijdstip', style: { '--f': state.clock / 47 },
+    oninput: e => { stopDay(); set({ clock: +e.target.value }, 'day-clock'); } });
+  const play = E('button', { class: 'btn ghost small', type: 'button', id: 'day-play', onclick: () => {
+    if (state.playing) { stopDay(); set({}, 'day-play'); return; }
+    state.playing = setInterval(() => set({ clock: (state.clock + 1) % 48 }), 450); set({}, 'day-play');
+  } }, icon(state.playing ? 'pause' : 'play'), state.playing ? 'Pauze' : 'Afspelen');
+  const peak = Math.max(...day.net);
+  return section('werkdag', 'Een werkdag', head(periodPicker(plan, p => { stopDay(); set({ period: p }); })),
+    E('div', { class: 'day' }, E('div', { class: 'day-main' }, E('div', { class: 'chart' }, svg),
+      legend([['Gebouw', '#E4E4DF'], ['Laden', '#3FA87799'], ['Van het net', '#15171A'], ['Aansluiting', '#B8700E', true], ...(day.zon?.some(v => v > 0) ? [['Zon', '#E8B33A']] : [])])),
+      E('aside', { class: 'day-side' }, E('div', { class: 'big-clock' }, clock(state.clock * 30)), slider, play,
+        E('dl', {}, E('dt', {}, 'Van het net'), E('dd', {}, `${num(day.net[i], 1)} kW`), E('dt', {}, 'Laden'), E('dd', {}, `${num(day.laden[i], 1)} kW`),
+          E('dt', {}, 'Onderweg'), E('dd', {}, `${onRoad} ${onRoad === 1 ? 'wagen' : 'wagens'}`), E('dt', {}, 'Hoogste afname'), E('dd', {}, `${num(peak, 0)} kW`),
+          E('dt', {}, 'Ruimte op aansluiting'), E('dd', {}, `${num((day.grens || 0) - peak, 0)} kW`)))),
+    gantt, prose(plan.texts?.werkdag));
 }
 
-function dayView(r) {
-  const day = r.dagen[state.period];
-  state.clock = Math.min(state.clock, r.tijdas.length - 2);
-  const slide = E('input', { type: 'range', class: 'range', min: 0, max: r.tijdas.length - 2, step: 1, value: state.clock, 'aria-label': 'Tijdstip op de werkdag', oninput: e => { stopPlayer(); setClock(r, +e.target.value); updatePlayButton(); } });
-  const play = button('Afspelen', () => {
-    if (state.player) stopPlayer();
-    else state.player = setInterval(() => { setClock(r, (state.clock + 1) % (r.tijdas.length - 1)); slide.value = state.clock; }, 900);
-    updatePlayButton();
-  }, 'small', 'play'); play.id = 'play-day';
-  const soc = E('div', { class: 'soc-list', id: 'soc-list' });
-  const readings = E('div', { class: 'day-readings' }, [['Gebouw', 'gray', 'gebouw'], ['Voertuigen laden', '', 'laden'], ['Zonnepanelen', 'solar', 'zon'], ['Van het net', 'blue', 'net']].map(([label, color, key]) => E('div', { class: 'reading' }, E('span', {}, E('i', { class: `swatch ${color}` }), label), E('b', { id: `reading-${key}` }, `${num(day[key][state.clock], 1)} kW`))));
-  const peak = Math.max(0, ...day.net), margin = (day.grens || 0) - peak;
-  const plan = E('div', { class: 'panel' }, E('div', { class: 'panel-head' }, E('div', {}, E('h3', {}, 'Een werkdag op uw depot'), E('p', {}, 'Kies een periode en schuif door de dag.')), periods(r, setPeriod)),
-    E('div', { class: 'day-layout' }, E('div', { class: 'day-charts' }, E('h3', {}, 'Vermogen gedurende de dag'), E('p', { class: 'chart-note' }, 'kW · representatieve werkdag · stippellijn = aansluiting'), dayChart(r, day),
-      legend([['Laden', ''], ['Gebouw', 'gray'], ['Zon', 'solar'], ['Net', 'blue'], ['Aansluiting', 'diesel']]),
-      E('h3', { style: { marginTop: '28px', fontSize: '14px' } }, 'De accu’s op dit moment'), day.accu.length ? soc : E('div', { class: 'empty', style: { marginTop: '13px' } }, 'In deze periode rijden geen elektrische voertuigen. De grafiek laat het gebouw, zonnepanelen en de netafname zien.')),
-      E('aside', { class: 'day-aside' }, E('div', { class: 'eyebrow' }, 'Een moment op uw werkdag'), E('div', { class: 'day-clock', id: 'clock-time', 'aria-live': 'off' }, time(r.tijdas[state.clock])), slide,
-        E('div', { class: 'clock-controls' }, play, E('span', { id: 'clock-window' }, `${time(r.tijdas[state.clock])}–${time(r.tijdas[state.clock + 1])}`)), readings,
-        E('p', { class: 'hint' }, 'De grafiek toont de basiswerkdag. Winter en andere opgenomen scenario’s worden in de modelcontrole meegenomen.'))),
-    E('div', { class: 'day-facts', style: { gridTemplateColumns: `repeat(${day.thuis_kwh_pj || r.thuisladers?.length ? 4 : 3},1fr)` } }, E('div', {}, E('span', {}, 'Hoogste afname'), E('b', {}, `${num(peak, 1)} kW`)), E('div', {}, E('span', {}, 'Ruimte op de aansluiting'), E('b', {}, `${num(margin, 1)} kW`)), E('div', {}, E('span', {}, 'Laden onderweg'), E('b', {}, `${num((day.onderweg_kwh_pj || 0) / 1000, 1)} MWh/jaar`)),
-      day.thuis_kwh_pj || r.thuisladers?.length ? E('div', {}, E('span', {}, 'Thuisladen'), E('b', {}, `${num((day.thuis_kwh_pj || 0) / 1000, 1)} MWh/jaar`)) : null));
-  const s = section('laden', 'Laden en energie', heading(4, 'Laden en energie', 'Een werkdag die klopt.', 'Zie wanneer uw voertuigen laden en wat dat vraagt van de aansluiting.'), plan,
-    ['laden', 'werkdag'].filter(k => r.texts?.[k]).map(k => textBlock(r.texts[k], 'prose hint')));
-  // Populate after insertion, once all referenced DOM elements are mounted.
-  queueMicrotask(() => { if (q('#clock-time')) setClock(r, state.clock); });
-  return s;
+// ---------------------------------------------------------------- 9 uitstoot
+function emissions(c) {
+  const { plan, ref, years, m } = c;
+  const has = ref && ref !== plan && ref.co2;
+  const saved = has ? ref.co2.reduce((s, v, p) => s + (v - plan.co2[p]) * years[p], 0) : null;
+  const W = full(), H = 280, L = 62, R = 14, T = 12, B = 32, P = plan.jaren.length;
+  const hi = Math.max(1, ...plan.co2, ...(has ? ref.co2 : [])) * 1.1, Y = v => T + (1 - v / hi) * (H - T - B), band = (W - L - R) / P, bw = Math.min(46, band * .22);
+  const svg = V('svg', { viewBox: `0 0 ${W} ${H}`, class: 'svgchart', role: 'img', 'aria-label': plan.jaren.map((j, p) => `${j}: ${tons(plan.co2[p])}`).join(', ') });
+  for (let i = 0; i <= 4; i++) { const v = hi * i / 4; svg.append(V('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: 'gridline' }), V('text', { x: L - 8, y: Y(v) + 4, 'text-anchor': 'end', class: 'axis' }, tons(v))); }
+  plan.jaren.forEach((j, p) => {
+    const x = L + band * p + band / 2;
+    if (has) svg.append(V('rect', { x: x - bw - 3, width: bw, y: Y(ref.co2[p]), height: Y(0) - Y(ref.co2[p]), fill: '#F2A33A', rx: 2 }));
+    svg.append(V('rect', { x: has ? x + 3 : x - bw / 2, width: bw, y: Y(plan.co2[p]), height: Y(0) - Y(plan.co2[p]), fill: '#0A8F5B', rx: 2 }));
+    svg.append(V('text', { x, y: H - 8, 'text-anchor': 'middle', class: 'axis' }, j));
+  });
+  return section('uitstoot', 'Uitstoot en zero-emissie',
+    E('div', { class: 'tiles four' }, tile('CO₂ minder over de looptijd', saved != null ? tons(saved) : '—', saved != null ? 'ten opzichte van diesel blijven' : null, 'green'),
+      tile(`CO₂ in ${plan.jaren.at(-1)}`, tons(plan.co2.at(-1)), 'per jaar'), tile('Minder dan diesel blijven', m.co2Pct != null ? pct(m.co2Pct) : '—'),
+      tile('Kilometers elektrisch', pct(plan.ze_aandeel?.at(-1)), `in ${plan.jaren.at(-1)}`)),
+    E('div', { class: 'chart' }, svg), legend([...(has ? [[ref.naam, '#F2A33A']] : []), [plan.naam, '#0A8F5B']]),
+    zeTrips(plan), prose(plan.texts?.co2));
+}
+function zeTrips(plan) {
+  const ze = report.trips.filter(t => t.ze_vanaf);
+  if (!ze.length) return null;
+  return E('div', { class: 'block', style: { marginTop: '36px' } }, E('h3', {}, 'Ritten in zero-emissiezones'), E('table', { class: 'tbl' }, E('tbody', {}, ze.map(t => E('tr', {}, E('td', {}, t.naam), E('td', { class: 'n' }, `vanaf ${t.ze_vanaf}`), E('td', { class: 'n' }, `${num(t.km)} km`))))));
 }
 
-function updatePlayButton() {
-  const button = q('#play-day'); if (!button) return;
-  button.replaceChildren(icon(state.player ? 'pause' : 'play'), state.player ? 'Pauzeren' : 'Afspelen');
-  button.setAttribute('aria-label', state.player ? 'Werkdag pauzeren' : 'Werkdag afspelen');
-}
-function setClock(r, index) {
-  state.clock = index;
-  const day = r.dagen[state.period], axis = r.tijdas, line = q('#clock-line');
-  if (!q('#clock-time')) return;
-  q('#clock-time').textContent = time(axis[index]);
-  q('#clock-window').textContent = `${time(axis[index])}–${time(axis[index + 1])}`;
-  const input = q('.range'); if (input) input.setAttribute('aria-valuetext', `${time(axis[index])} tot ${time(axis[index + 1])}`);
-  for (const key of ['gebouw', 'laden', 'zon', 'net']) q(`#reading-${key}`).textContent = `${num(day[key][index], 1)} kW`;
-  if (line) { const svg = line.ownerSVGElement; const x = +svg.dataset.left + axis[index] / 1440 * +svg.dataset.plotWidth; line.setAttribute('x1', x); line.setAttribute('x2', x); }
-  const soc = q('#soc-list');
-  if (soc) soc.replaceChildren(...day.accu.map(a => { const fraction = a.capaciteit ? a.kwh[index] / a.capaciteit : 0; return E('div', { class: 'soc-row' }, E('span', {}, a.voertuig), E('b', {}, `${num(a.kwh[index], 1)} kWh · ${pct(fraction)}`), E('div', { class: 'soc-track', role: 'meter', 'aria-label': `${a.voertuig} acculading`, 'aria-valuenow': Math.round(fraction * 100), 'aria-valuemin': 0, 'aria-valuemax': 100 }, E('i', { style: { width: `${Math.max(0, Math.min(1, fraction)) * 100}%` } }))); }));
-}
-
-function variants(r) {
-  return section('varianten', 'Plannen vergelijken', heading(5, 'Plannen vergelijken', 'Verken de mogelijkheden.', 'Kies een doorgerekend plan. Het hele rapport beweegt met uw keuze mee.'),
-    r.texts?.varianten ? textBlock(r.texts.varianten, 'prose section-note') : null,
-    E('div', { class: 'variants-grid', role: 'group', 'aria-label': 'Doorgerekende variant kiezen' }, report.variants.map((variant, index) => {
-      const m = metrics(report, variant);
-      return E('button', { type: 'button', class: 'variant-card', 'aria-pressed': state.variant === index, onclick: () => setVariant(index) }, E('span', { class: 'radio', 'aria-hidden': true }), E('span', { class: 'name' }, variant.naam),
-        E('span', { class: 'amount' }, money(variant.ncw)), E('span', { class: 'caption' }, `${report.settings.jaren} jaar · contante waarde`),
-        E('div', { class: 'variant-facts' }, E('div', {}, E('span', {}, 'Investering'), E('b', {}, money(variant.investering))), E('div', {}, E('span', {}, 'Elektrisch aan het eind'), E('b', {}, `${m.end.elektrisch} van ${m.end.elektrisch + m.end.diesel}`)),
-          E('div', {}, E('span', {}, 'CO₂ laatste jaar'), E('b', {}, `${num(m.co2 / 1000, 1)} t`)),
-          m.saving != null ? E('div', {}, E('span', {}, m.saving >= 0 ? 'Voordeel t.o.v. diesel' : 'Meerkosten t.o.v. diesel'), E('b', { class: m.saving >= 0 ? 'positive' : 'negative' }, money(Math.abs(m.saving)))) : null),
-        m.inconclusive ? E('span', { class: 'hint', style: { margin: 0 } }, 'Verschil binnen optimalisatiemarge') : pill(state.variant === index ? 'Geselecteerd' : variant.referentie ? 'Dieselvergelijking' : 'Doorgerekend', state.variant === index ? 'green' : ''));
-    })), E('p', { class: 'hint' }, 'Dit zijn opgeslagen berekeningen. Aanpassingen aan prijzen, routes of voertuigen laat u opnieuw doorrekenen door uw adviseur.'));
+// ---------------------------------------------------------------- 10 scenario's
+function scenarios(c) {
+  const sc = report.scenarios;
+  if (!sc?.axes?.length) return null;
+  const base = report.variants.find(v => v.variant === 'basis'), ref = report.variants.find(v => v.referentie);
+  if (!base || !ref) return null;
+  const saving = key => { const o = key ? sc.outcomes[key] : null; return o ? o.diesel.ncw - o.advies.ncw : ref.ncw - base.ncw; };
+  const all = sc.axes.flatMap(a => a.levels.map(l => saving(l.id === 'basis' ? null : `${a.id}:${l.id}`)));
+  const lo = Math.min(0, ...all), hi = Math.max(1, ...all), span = hi - lo || 1, pos = v => 5 + (v - lo) / span * 90;
+  const b0 = saving(null);
+  const tornado = E('div', { class: 'tornado' }, E('div', { class: 'tor-axis' }, E('span', {}), E('div', {}, E('em', { style: { left: `${pos(b0)}%` } }, `basis ${money(round(b0))}`), lo < 0 ? E('em', { class: 'zero', style: { left: `${pos(0)}%` } }, '€ 0') : null)),
+    sc.axes.map(a => {
+      const vals = a.levels.map(l => ({ l, key: l.id === 'basis' ? null : `${a.id}:${l.id}`, v: saving(l.id === 'basis' ? null : `${a.id}:${l.id}`) }));
+      const min = Math.min(...vals.map(x => x.v)), max = Math.max(...vals.map(x => x.v));
+      return E('div', { class: 'tor-row' }, E('b', {}, a.name), E('div', { class: 'tor-track' }, E('i', { class: 'tor-base', style: { left: `${pos(b0)}%` } }),
+        E('span', { class: 'tor-bar', style: { left: `${pos(min)}%`, width: `${Math.max(.5, pos(max) - pos(min))}%` } }),
+        vals.filter(x => x.l.id !== 'basis').map(x => E('button', { type: 'button', class: 'tor-dot' + (state.scenario === x.key ? ' on' : '') + (pos(x.v) < 14 ? ' l' : pos(x.v) > 86 ? ' r' : ''), style: { left: `${pos(x.v)}%` },
+          onclick: () => set({ scenario: state.scenario === x.key ? null : x.key }), 'aria-label': `${a.name} ${x.l.label}: voordeel ${money(round(x.v))}` }, E('span', {}, E('b', {}, money(round(x.v))), x.l.label)))));
+    }));
+  const table = E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' }, E('thead', {}, E('tr', {}, ['Scenario', 'Advies', 'Diesel blijven', 'Voordeel', 'Elektrisch aan het eind'].map((h, i) => E('th', { class: i ? 'n' : '' }, h)))),
+    E('tbody', {}, E('tr', { class: !state.scenario ? 'on' : '', onclick: () => set({ scenario: null }) }, E('td', {}, 'Basis'), E('td', { class: 'n' }, money(base.ncw)), E('td', { class: 'n' }, money(ref.ncw)), E('td', { class: 'n pos' }, money(ref.ncw - base.ncw)), E('td', { class: 'n' }, endCount(base))),
+      sc.axes.flatMap(a => a.levels.filter(l => l.id !== 'basis').map(l => {
+        const key = `${a.id}:${l.id}`, o = sc.outcomes[key];
+        return E('tr', { class: state.scenario === key ? 'on' : '', onclick: () => set({ scenario: state.scenario === key ? null : key }) }, E('td', {}, `${a.name} ${l.label}`), E('td', { class: 'n' }, money(o.advies.ncw)), E('td', { class: 'n' }, money(o.diesel.ncw)),
+          E('td', { class: 'n ' + (o.diesel.ncw - o.advies.ncw >= 0 ? 'pos' : 'neg') }, money(o.diesel.ncw - o.advies.ncw)), E('td', { class: 'n' }, endCount(o.advies)));
+      })))));
+  return section('scenarios', 'Scenario’s', tornado, table);
+  function endCount(v) { const e = v.aantallen?.at(-1); return e ? `${e.elektrisch} van ${e.elektrisch + e.diesel}` : '—'; }
 }
 
-function roadmap(r) {
-  const plan = r.jaren.map((year, p) => { const actions = steps(report, r, p); return E('div', { class: 'roadmap-card' }, E('div', { class: 'year' }, year), actions.length ? E('ul', {}, actions.map(x => E('li', {}, x))) : E('p', {}, 'De gekozen vloot en infrastructuur voortzetten.')); });
-  const notes = Object.entries(r.texts || {}).filter(([key]) => /^(advies|stap)\d$/.test(key)).map(([, value]) => value);
-  return section('stappen', 'Van plan naar praktijk', heading(7, 'Van plan naar praktijk', 'Uw volgende stap begint hier.', 'Een helder overzicht van de keuzes die voor u liggen.'),
-    notes.length ? E('div', { class: 'panel', style: { padding: '23px 28px', marginBottom: '24px' } }, E('h3', { style: { marginBottom: '12px' } }, 'Uw adviseur raadt aan'), E('ul', { class: 'prose', style: { paddingLeft: '18px' } }, notes.map(x => E('li', {}, x)))) : null,
-    E('div', { class: 'roadmap', style: { '--periods': r.jaren.length } }, plan),
-    E('div', { class: 'contact-box' }, E('div', {}, E('h3', {}, 'Samen van inzicht naar uitvoering.'), E('p', {}, 'Bespreek het plan, toets de uitgangspunten en bepaal wat u als eerste oppakt.')),
-      E('a', { class: 'btn primary', href: `mailto:${report.author.email}?subject=${encodeURIComponent('Bespreken vlootadvies ' + report.client.name)}` }, 'Bespreek uw vlootadvies', icon('arrow'))));
+// ---------------------------------------------------------------- 11 varianten
+function variants(c) {
+  if (report.variants.length < 3) return null;
+  const ref = report.variants.find(v => v.referentie);
+  const max = Math.max(1, ...report.variants.map(v => ref ? Math.abs(ref.ncw - v.ncw) : 0));
+  return section('varianten', 'Varianten vergelijken', E('div', { class: 'variants' }, report.variants.map((v, i) => {
+    const e = v.aantallen?.at(-1);
+    return E('button', { type: 'button', class: 'variant' + (i === state.variant ? ' on' : '') + (v.referentie ? ' ref' : ''), onclick: () => set({ variant: i, scenario: null, vehicle: null }) },
+      E('b', {}, v.naam), E('div', { class: 'vtrack' }, ref && !v.referentie ? E('i', { class: ref.ncw >= v.ncw ? 'pos' : 'neg', style: ref.ncw >= v.ncw ? { left: '50%', width: `${(ref.ncw - v.ncw) / max * 50}%` } : { right: '50%', width: `${(v.ncw - ref.ncw) / max * 50}%` } }) : null),
+      E('span', { class: 'n' }, money(v.ncw)), E('small', {}, v.referentie ? 'referentie' : ref ? `${money(ref.ncw - v.ncw)} ${ref.ncw >= v.ncw ? 'voordeel' : 'nadeel'}` : ''),
+      E('small', {}, e ? `${e.elektrisch} van ${e.elektrisch + e.diesel} elektrisch` : ''));
+  })), prose(report.variants[state.variant].texts?.varianten));
 }
 
-function assumptions(r) {
-  const settings = report.settings;
-  const rows = [['Looptijd', `${settings.startjaar}–${settings.startjaar + settings.jaren - 1}`], ['Rekenrente', pct(settings.rekenrente, 1)], ['Inzetdagen', `${settings.inzetdagen} per jaar`], ['Dieselprijs', `${moneyDecimal(settings.dieselprijs)} / liter`], ['Stroom dal / piek', `${moneyDecimal(settings.stroom_dal)} / ${moneyDecimal(settings.stroom_piek)} per kWh`], ['Beslisperiode', `${settings.periode_jaren} jaar`]];
-  return section('uitgangspunten', 'De onderbouwing', heading(8, 'De onderbouwing', 'U ziet waarop het plan rust.', 'De aannames en de nauwkeurigheid horen bij het advies.'),
-    r.texts?.over ? textBlock(r.texts.over, 'prose section-note') : null,
-    E('div', { class: 'panel' }, E('div', { class: 'assumptions' }, E('div', {}, E('h3', {}, 'De belangrijkste uitgangspunten'), E('dl', { style: { marginTop: '10px' } }, rows.map(([label, value]) => E('div', {}, E('dt', {}, label), E('dd', {}, value))))),
-      E('div', {}, E('h3', {}, 'Wat u bij deze berekening moet weten'), E('ul', {}, [...(r.aannames || []), ...(r.waarschuwingen || [])].map(x => E('li', {}, x))),
-        E('p', { class: 'hint' }, r.texts?.disclaimer || 'Een onderbouwd plan op basis van de aangeleverde gegevens en indicatieve prijzen. Toets de inzet met echte ritgegevens en bevestig offertes en subsidies voordat u beslist.'))),
-      E('div', { class: 'trustline' }, E('span', {}, `Optimalisatiemarge: ${r.gap == null ? 'onbekend' : pct(r.gap, 3)} · ${r.status === 'optimaal' ? 'opgelost binnen ingestelde nauwkeurigheid' : 'beste gevonden plan'}`),
-        E('span', {}, r.controle?.fout ? 'Modelcontrole meldt een aandachtspunt; bespreek dit met uw adviseur.' : r.controle?.cashflow_npv_reconciled ? 'Energiebalans en kasstromen onafhankelijk nagerekend' : 'Onafhankelijke controle niet volledig beschikbaar')),
-      E('details', { class: 'disclosure' }, E('summary', {}, 'De aangeleverde ritten'), E('div', { class: 'table-wrap' }, dataTable(['Rit', 'Dagafstand', 'Vertrek', 'Terug'], report.trips.map(t => [t.naam, `${num(t.km)} km`, time(t.vertrek * 60), time(t.aankomst * 60)])))),
-      report.policies?.length ? E('details', { class: 'disclosure' }, E('summary', {}, 'Laadbeleid en bedrijfskeuzes'), E('div', { class: 'table-wrap' }, dataTable(['Groep', 'Depot', 'Laden tot', 'Onderweg', 'Thuis'], report.policies.map(p => [p.group, p.depot === 'venster' ? `${time(p.van * 60)}–${time(p.tot * 60)}` : p.depot === 'nooit' ? 'Niet toegestaan' : 'Als aanwezig', pct(p.laad_tot), p.onderweg ? 'Toegestaan' : 'Niet toegestaan', p.thuis ? 'Toegestaan' : 'Niet meegenomen']))),
-        E('div', { class: 'panel-body' }, textBlock(`Meerdere ritten per voertuig: ${report.business?.meerdere_ritten ? 'toegestaan' : 'niet meegenomen'}. Vervroegd vervangen: ${report.business?.eerder_vervangen === false ? 'niet toegestaan' : 'toegestaan'}.`, 'hint'),
-          report.policies.some(p => p.thuis) ? textBlock(`Thuisladen: ${num(report.home_charging?.kw)} kW, ${moneyDecimal(report.home_charging?.prijs)} per kWh. ${r.thuisladers?.length || 0} thuisladers gekozen in dit plan.`, 'hint') : null)) : null));
-}
-function moneyDecimal(x) { return `€ ${num(x, 2)}`; }
-
-function impact(r, m) {
-  const series = [{ name: r.naam, values: r.co2.map(x => x / 1000), color: '#0A8F5B' }];
-  if (m.ref) series.push({ name: 'Diesel blijven', values: m.ref.co2.map(x => x / 1000), color: '#B8700E', dashed: true });
-  const endYear = report.settings.startjaar + report.settings.jaren - 1;
-  const zeTrips = report.trips.filter(t => t.ze_vanaf);
-  return section('impact', 'Uitstoot en inzet', heading(6, 'Uitstoot en inzet', 'Wat uw keuze verandert.', 'De uitstoot en elektrische inzet, steeds vergeleken binnen hetzelfde jaar.'),
-    E('div', { class: 'panel' }, E('div', { class: 'chart-grid' }, E('div', { class: 'chart-card' }, E('h3', {}, 'CO₂-uitstoot per jaar'), E('p', {}, 'Ton CO₂ · gewogen over de opgenomen scenario’s'), lineChart(series, r.jaren, { yLabel: 'CO₂-uitstoot in ton per jaar', format: x => `${num(x, 1)} t`, height: 210 }),
-      E('div', { style: { margin: '0 0 18px' } }, legend([[r.naam, ''], ...(m.ref ? [['Diesel blijven', 'diesel']] : [])]))),
-      E('aside', { class: 'cost-aside' }, E('div', {}, E('label', {}, `Elektrische kilometers in ${endYear}`), E('div', { class: 'big' }, pct(r.ze_aandeel.at(-1))), E('p', {}, `${m.end.elektrisch} van ${m.end.elektrisch + m.end.diesel} voertuigen elektrisch.`)),
-        E('div', {}, E('label', {}, m.co2Saving == null ? `Uitstoot in ${endYear}` : `Verschil met diesel in ${endYear}`), E('div', { class: 'big' }, `${num(Math.abs(m.co2Saving ?? m.co2) / 1000, 1)} t`), E('p', {}, m.co2Saving == null ? 'Geen vergelijkingsplan opgenomen.' : `${m.co2Saving >= 0 ? 'Minder' : 'Meer'} CO₂ dan diesel in hetzelfde jaar.`)))),
-      zeTrips.length ? E('div', { class: 'table-wrap' }, dataTable(['Rit met zero-emissie-eis', 'Vanaf', ...r.jaren], zeTrips.map(t => [t.naam, t.ze_vanaf, ...r.dagen.map(day => { const a = day.toewijzing.find(x => x.rit_id === t.id); return a ? a.aandrijving === 'electric' ? 'Elektrisch' : a.aandrijving === 'charter' ? 'Inhuur' : 'Diesel' : 'Niet toegewezen'; })]))) : null),
-    r.texts?.co2 ? textBlock(r.texts.co2, 'prose hint') : null);
+// ---------------------------------------------------------------- 12 stappenplan
+function roadmap(c) {
+  const { plan } = c, t = plan.texts || {};
+  const generic = ['stap0', 'stap1', 'stap2', 'stap3', 'stap4'].map(k => t[k]).filter(Boolean);
+  const defaults = generic.length ? generic : ['Ritgegevens toetsen met een maand echte ritregistratie of telematica.', 'Offertes opvragen voor de nieuwe voertuigen en de laadpunten.',
+    'Subsidies en fiscale regelingen aanvragen vóór het tekenen van een koopovereenkomst.', 'Chauffeurs en planning voorbereiden: laadmomenten, laadpassen en wie de stekkers verwisselt.'];
+  return section('stappen', 'Stappenplan', E('ol', { class: 'road' }, E('li', { class: 'now' }, E('b', {}, 'Nu'), E('ul', {}, defaults.map(s => E('li', {}, s)))),
+    plan.jaren.map((j, p) => { const s = steps(report, plan, p); return s.length ? E('li', {}, E('b', {}, j), E('ul', {}, s.map(x => E('li', {}, x)))) : null; })));
 }
 
-function downloadCosts(r, ref) {
-  // Guard spreadsheet formula injection in client-edited labels.
-  const safe = x => { let value = typeof x === 'number' ? x.toFixed(2) : String(x ?? ''); if (typeof x !== 'number' && /^[=+@\-\t\r]/.test(value)) value = "'" + value; return `"${value.replaceAll('"', '""')}"`; };
-  const rows = [['Kostenpost', r.naam, ...(ref ? [ref.naam, 'Voordeel'] : [])], ...costRows(r, ref).map(x => [x.name, x.plan, ...(ref ? [x.base, x.saving] : [])])];
-  const blob = new Blob(['\ufeff' + rows.map(row => row.map(safe).join(';')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob), link = E('a', { href: url, download: 'vlootadvies-kosten.csv' }); document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+// ---------------------------------------------------------------- 13 verantwoording
+function accountability(c) {
+  const { plan } = c, s = report.settings, t = plan.texts || {};
+  const facts = [['Looptijd', `${s.startjaar}–${s.startjaar + s.jaren - 1}`], ['Beslissen per', `${s.periode_jaren || 1} jaar`], ['Rekenrente', pct(s.rekenrente, 1)], ['Werkdagen per jaar', num(s.inzetdagen)],
+    ['Dieselprijs', `${money(s.dieselprijs, 2)} per liter`], ['Stijging diesel', `${pct(s.diesel_stijging, 1)} per jaar`], ['Stroom dal', `${money(s.stroom_dal, 2)} per kWh`], ['Stroom piek', `${money(s.stroom_piek, 2)} per kWh`],
+    ['Accu ondergrens', pct(s.soc_min)], ['Accuveroudering', `${pct(s.accu_veroudering, 1)} per jaar`], ['Netaansluiting nu', `${num(report.depot.aansluiting_kw)} kW`], ['Berekend', date(report.calculated_at)]];
+  const b = report.business || {};
+  const choices = [b.meerdere_ritten ? 'Een wagen mag meerdere ritten per dag rijden.' : null, b.eerder_vervangen === false ? 'Wagens worden pas vervangen als ze op zijn.' : null,
+    b.max_leeftijd ? `Eigen wagens hooguit ${b.max_leeftijd} jaar oud.` : null, b.lease_eerder_stoppen ? 'Lease mag eerder stoppen tegen afkoop.' : null].filter(Boolean);
+  return section('verantwoording', 'Uitgangspunten en verantwoording',
+    E('div', { class: 'facts' }, facts.map(([k, v]) => E('div', {}, E('span', {}, k), E('b', {}, v)))),
+    E('div', { class: 'split' }, E('div', { class: 'block' }, E('h3', {}, 'Aannames'), E('ul', { class: 'list' }, [...(plan.aannames || []), ...choices].map(a => E('li', {}, a)))),
+      E('div', { class: 'block' }, E('h3', {}, 'Let op'), E('ul', { class: 'list' }, [...(plan.waarschuwingen || []), ...(plan.notices || [])].map(a => E('li', {}, a))),
+        E('p', { class: 'method' }, `Het plan is berekend met een optimalisatiemodel dat voertuigen, ritten, laden, net en kosten over de hele dag en alle jaren tegelijk afweegt. ${plan.controle?.cashflow_npv_reconciled ? 'Accu, netbelasting en kasstromen zijn na afloop los nagerekend.' : ''}${plan.gap ? ` Optimalisatiemarge ${pct(plan.gap, 1)}.` : ''}`))),
+    prose(t.over), prose(t.disclaimer || 'Dit advies is gebaseerd op de gegevens die u heeft aangeleverd en op prijzen en regelingen zoals die bij het opstellen bekend waren. Vraag altijd offertes op voordat u beslist.'));
 }
 
-async function copyLink() {
-  try { await navigator.clipboard.writeText(location.href); toast('Persoonlijke link gekopieerd. Iedereen met deze link kan het rapport bekijken.'); }
-  catch { toast('Kopieer het adres uit de adresbalk om dit rapport te delen.'); }
+function footer() {
+  return E('footer', { class: 'foot' }, E('div', { class: 'wrap foot-in' }, E('div', {}, E('a', { class: 'brand', href: 'https://stekkerofdiesel.nl/' }, mark(), 'Stekker of Diesel'),
+    E('p', {}, `Opgesteld voor ${report.client.name} · ${date(report.created_at)}${report.publication ? ` · versie ${report.publication.revision}` : ''}`)),
+    E('a', { class: 'btn dark', href: `mailto:${report.author?.email || 'info@stekkerofdiesel.nl'}?subject=${encodeURIComponent('Vlootadvies ' + report.client.name)}` }, icon('mail'), 'Vragen? Mail ons')));
 }
 
+// ---------------------------------------------------------------- render
 function render() {
-  const r = report.variants[state.variant], m = metrics(report, r);
-  stopPlayer(); state.observer?.disconnect();
-  const banners = [demo || report.demo ? E('div', { class: 'demo' }, 'Voorbeeldrapport · fictieve organisatie en voorbeeldberekening') : null, preview ? E('div', { class: 'preview-banner' }, 'Lokaal voorbeeld · dit rapport is nog niet online gepubliceerd') : null];
-  const top = E('header', { class: 'top wrap' }, brand(), E('div', { class: 'top-right' }, E('span', { class: 'personal' }, icon('lock'), 'Uw persoonlijke rapport'), !preview && !demo ? button('Deel link', copyLink, '', 'link') : null, button('Bewaar als pdf', () => { stopPlayer(); print(); }, '', 'download')));
-  const nav = E('div', { class: 'nav-shell' }, E('nav', { class: 'section-nav wrap', 'aria-label': 'In dit rapport' }, E('div', { class: 'nav-links' }, [['samenvatting', 'Overzicht'], ['vlootplan', 'Vlootplan'], ['kosten', 'Kosten'], ['laden', 'Laden & energie'], ['varianten', 'Vergelijken'], ['impact', 'Impact'], ['stappen', 'Volgende stappen'], ['uitgangspunten', 'Onderbouwing']].map(([id, label]) => anchor(id, label))), E('span', { class: 'nav-client' }, report.client.name)));
-  const footer = E('footer', { class: 'footer wrap' }, brand(), E('div', { class: 'footer-right' }, 'Een helder plan voor elke kilometer.', E('span', {}, report.publication?.expires_at ? `Persoonlijke link geldig t/m ${date(report.publication.expires_at)}` : `Opgesteld ${date(report.created_at)} · ${report.client.name}`)));
-  q('#app').replaceChildren(...banners.filter(Boolean), top, E('div', { class: 'wrap' }, hero(r, m)), nav,
-    E('main', { id: 'inhoud', class: 'wrap' }, summary(r, m), fleet(r), finances(r, m), dayView(r), variants(r), impact(r, m), roadmap(r), assumptions(r)), footer);
+  const y = scrollY, c = current();
+  q('#app').replaceChildren(
+    report.demo ? E('div', { class: 'demo' }, 'Voorbeeldrapport · fictieve organisatie') : null,
+    topbar(), nav(c),
+    E('main', { id: 'inhoud', class: 'wrap' }, overview(c), difference(c), years(c), fleetPlan(c), perVehicle(c), investments(c), charging(c), workday(c), emissions(c), scenarios(c), variants(c), roadmap(c), accountability(c)),
+    footer());
   q('#app').setAttribute('aria-busy', 'false');
-  state.observer = new IntersectionObserver(entries => { for (const entry of entries) if (entry.isIntersecting) { q('.section-nav .active')?.classList.remove('active'); document.querySelector(`.section-nav a[href="#${entry.target.id}"]`)?.classList.add('active'); } }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
-  document.querySelectorAll('main .section').forEach(s => state.observer.observe(s));
+  scrollTo(0, y); spy();
 }
-document.addEventListener('visibilitychange', () => { if (document.hidden) { stopPlayer(); updatePlayButton(); } });
-window.addEventListener('pagehide', stopPlayer);
+
+function downloadCsv() {
+  const { plan, ref } = current();
+  const rows = [['Jaar', ...Object.values(KIND).map(k => `${plan.naam} · ${k}`), `${plan.naam} · totaal`, ...(ref && ref !== plan ? [`${ref.naam} · totaal`] : [])]];
+  plan.per_jaar.forEach((r, i) => rows.push([r.jaar, ...Object.keys(KIND).map(k => r[k] || 0), totalYear(r), ...(ref && ref !== plan ? [totalYear(ref.per_jaar[i])] : [])]));
+  rows.push([]); rows.push(['Post', `${plan.naam} (contante waarde)`, ...(ref && ref !== plan ? [`${ref.naam} (contante waarde)`] : [])]);
+  costRows(plan, ref).forEach(r => rows.push([r.name, Math.round(r.plan), ...(ref && ref !== plan ? [Math.round(r.base)] : [])]));
+  const csv = rows.map(r => r.map(x => typeof x === 'number' ? String(Math.round(x)) : `"${String(x).replaceAll('"', '""')}"`).join(';')).join('\r\n');
+  const a = E('a', { href: URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })), download: `vlootadvies-${report.client.name.replace(/[^\w-]+/g, '-').toLowerCase()}.csv` });
+  document.body.append(a); a.click(); a.remove();
+}
+
 load();

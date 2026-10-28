@@ -5,8 +5,8 @@ export const cumulative = values => { let sum = 0; return values.map(x => sum +=
 export function reference(report, variant) {
   return report.variants.find(x => x.referentie && x !== variant && Number.isFinite(x.ncw)) || null;
 }
-export function metrics(report, variant) {
-  const ref = reference(report, variant), end = variant.aantallen?.at(-1) || { elektrisch: 0, diesel: 0 };
+export function metrics(report, variant, ref = reference(report, variant)) {
+  const end = variant.aantallen?.at(-1) || { elektrisch: 0, diesel: 0 };
   const saving = ref ? ref.ncw - variant.ncw : null;
   const uncertainty = ref ? Math.abs(variant.ncw) * (variant.gap || 0) + Math.abs(ref.ncw) * (ref.gap || 0) : 0;
   const baseCO2 = ref?.co2?.at(-1), co2 = variant.co2?.at(-1);
@@ -69,4 +69,33 @@ export function validateReport(data) {
     if (!Number.isFinite(v.ncw) || !Array.isArray(v.jaren) || !v.jaren.length || !Array.isArray(v.per_jaar) || !Array.isArray(v.vloot) || !Array.isArray(v.dagen) || v.dagen.length !== v.jaren.length) throw new Error('Het rapport is onvolledig. Vraag om een nieuwe versie.');
   }
   return data;
+}
+
+// Years per decision period (the last period can be shorter).
+export function periodYears(report, variant) {
+  const pj = report.settings.periode_jaren || 1, Y = report.settings.jaren;
+  return variant.jaren.map((_, p) => Math.max(1, Math.min(pj, Y - p * pj)));
+}
+// A precalculated scenario replaces the advice and its diesel reference by their own solved plans.
+// Only the main advice ('basis') has scenarios; other variants are shown as calculated.
+export function scenarioPlans(report, variant, key) {
+  const ref = reference(report, variant);
+  const outcome = key && variant.variant === 'basis' ? report.scenarios?.outcomes?.[key] : null;
+  if (!outcome) return { plan: variant, ref, key: null };
+  return { plan: { ...variant, ...outcome.advies, notices: [] }, ref: ref ? { ...ref, ...outcome.diesel } : null, key };
+}
+export function scenarioLevel(report, key) {
+  if (!key) return null;
+  const [axis, level] = key.split(':'), a = report.scenarios?.axes?.find(x => x.id === axis);
+  const l = a?.levels.find(x => x.id === level);
+  return a && l ? { axis: a, level: l } : null;
+}
+// Kilometres per working day in a period, from the trips actually assigned (growth copies carry '~n').
+export function dayKm(report, variant, period) {
+  const km = new Map((report.trips || []).map(t => [t.id, +t.km || 0]));
+  return (variant.dagen?.[period]?.toewijzing || []).reduce((sum, t) => sum + (km.get(String(t.rit_id).split('~')[0]) || 0), 0);
+}
+export function totalKm(report, variant) {
+  const days = report.settings.inzetdagen || 0;
+  return periodYears(report, variant).reduce((sum, n, p) => sum + dayKm(report, variant, p) * days * n, 0);
 }
