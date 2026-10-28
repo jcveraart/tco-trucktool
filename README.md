@@ -81,6 +81,16 @@ De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (ex
 
 Bovenaan het script in `index.html` staan alle velden met bereik en standaardwaarde (`FIELDS`), de voertuigen met hun voorbeeldcijfers (`VT`), de AanZET-tabellen voor N2 en N3 (`AZT`), tolling per land (`TOL`) de stappen van het invulvenster (`STEPS`) en de elektrische modellen (`MODELS`). De berekening staat in `calc()` en `calcX()`. Kleuren en lettertypes staan als variabelen bovenaan de stylesheet (`:root`). De naam van de site staat in `BRAND` en in de kop en voet van de HTML.
 
+## Persoonlijke vlootrapporten
+
+`/rapport/` is de interactieve, niet-geïndexeerde rapportviewer van de lokale [Vlootanalyse-app](https://github.com/jcveraart/Vlootanalyse). De bron wordt vanuit die app geëxporteerd met `python tools/export_report_viewer.py --target <website>/rapport`. Hij staat los van `scripts/seo.mjs` en wordt niet in de sitemap opgenomen. `/rapport/?demo=1` opent uitsluitend het expliciet fictieve voorbeeld.
+
+Klantgegevens staan niet in deze repository. Ze worden door de app via de functies uit `supabase/migrations/20261027223000_online_fleet_reports.sql` opgeslagen. Voer deze migratie eenmalig uit in Supabase, samen met de publisher-registratie die de lokale app onder **Online rapport → Instellen** maakt. Daarna kan de app rapporten publiceren, bijwerken en intrekken. De publieke viewer heeft geen algemene tabelrechten en kent de publicatiesleutel niet. Een persoonlijke link bevat een willekeurig 256-bits token in het URL-fragment; de database controleert intrekking en vervaldatum bij elk openen.
+
+Dit levert rapportdeling via een persoonlijke link, zonder klantlogin of betaalverwerking. Gebruik de link als vertrouwelijke toegang. Financiële en CO₂-vergelijkingen tonen de opgeslagen uitkomsten, inclusief relevante beperkingen en de optimalisatiemarge. De client voert geen nieuwe optimalisatie uit.
+
+Controle: `node --test tests/online-report.test.mjs tests/catalog.test.cjs`.
+
 ## Disclaimer
 
 Dit is een rekenvoorbeeld en geen financieel of fiscaal advies. Voorbeeldcijfers, subsidiebedragen (AanZET, MIA, SPRILA) en tarieven zijn indicatief. Controleer ze altijd bij RVO en de Belastingdienst.
