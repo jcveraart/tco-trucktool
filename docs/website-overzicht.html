@@ -5,26 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Website-overzicht — Stekker of Diesel</title>
 <style>
-:root{--paper:#F3F3F0;--card:#fff;--ink:#15171A;--ink2:#565D66;--ink3:#8A9199;--line:#E2E2DB;--volt:#0A8F5B;--voltbg:#E4F3EC;--amber:#B97A16;--amberbg:#FBF2DF;--blue:#3B5BDB;--bluebg:#EDF1FB;--red:#C33;--redbg:#FBEAEA;--r:12px;--shadow:0 1px 3px rgba(21,23,26,.06),0 4px 14px rgba(21,23,26,.05)}
+:root{--paper:#F3F3F0;--card:#fff;--ink:#15171A;--ink2:#565D66;--ink3:#8A9199;--line:#E2E2DB;
+--volt:#0A8F5B;--voltbg:#E4F3EC;--amber:#B97A16;--amberbg:#FBF2DF;--blue:#3B5BDB;--bluebg:#EDF1FB;
+--red:#C33;--redbg:#FBEAEA;--paars:#7048C9;--paarsbg:#F0EAFB;--roze:#C2477E;--rozebg:#FBEAF2;
+--teal:#0E7C86;--tealbg:#E6F4F5;--r:12px;--shadow:0 1px 3px rgba(21,23,26,.06),0 4px 14px rgba(21,23,26,.05)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--volt)}
-.hero{background:var(--ink);color:#F3F3F0;padding:28px 20px 22px}
+.hero{background:var(--ink);color:#F3F3F0;padding:28px 20px 24px}
 .hero-in{max-width:1080px;margin:0 auto}
 .merk{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
 .merk i{width:34px;height:20px;border-radius:999px;background:var(--volt);position:relative;flex:none}
 .merk i::after{content:"";position:absolute;top:3px;left:4px;width:14px;height:14px;border-radius:50%;background:#fff}
 .hero h1{font-size:27px;margin:14px 0 6px;letter-spacing:-.03em;line-height:1.15}
-.hero p{margin:0;color:#B9BEC5;max-width:760px;font-size:14px}
+.hero p{margin:0;color:#B9BEC5;max-width:780px;font-size:14px}
 .stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
 .stat{background:#22262B;border:1px solid #33383F;border-radius:10px;padding:8px 14px;font-size:13px;color:#CDD2D9}
 .stat b{color:#fff;font-size:15px}
-.balk-wrap{position:sticky;top:0;z-index:10;background:rgba(243,243,240,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.stat .balkje{display:inline-block;width:70px;height:6px;border-radius:3px;background:#33383F;vertical-align:middle;margin:0 6px;overflow:hidden}
+.stat .balkje i{display:block;height:100%;background:var(--volt)}
+.balk-wrap{position:sticky;top:0;z-index:10;background:rgba(243,243,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .balk{max-width:1080px;margin:0 auto;padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;cursor:pointer;font:inherit;font-size:13px;transition:all .15s}
 .chip:hover{border-color:#B9B9AF}.chip.aan{background:var(--ink);color:#fff;border-color:var(--ink)}
-input[type=search]{border:1px solid var(--line);border-radius:999px;padding:8px 15px;font:inherit;font-size:13px;min-width:230px;background:var(--card);outline:none}
-input[type=search]:focus{border-color:var(--volt);box-shadow:0 0 0 3px var(--voltbg)}
+input[type=search],select{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--card);outline:none}
+input[type=search]{min-width:210px}input[type=search]:focus{border-color:var(--volt);box-shadow:0 0 0 3px var(--voltbg)}
 .teller{margin-left:auto;font-size:12px;color:var(--ink3)}
 main{max-width:1080px;margin:0 auto;padding:8px 20px 70px}
 h2{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);margin:30px 0 10px}
@@ -38,35 +43,44 @@ h2{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink3
 .url{font-size:12px;color:var(--ink3);font-family:Consolas,monospace}
 .url a{color:var(--ink3);text-decoration:none}.url a:hover{color:var(--volt);text-decoration:underline}
 .doel{font-size:14px;color:var(--ink2);margin:7px 0 0;max-width:820px}
-select{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;outline:none}
+select.status{font-weight:600;border-radius:999px;padding:6px 12px;cursor:pointer}
 select.st-ok{background:var(--voltbg);color:#075C3A;border-color:#BCDCC9}select.st-fix{background:var(--amberbg);color:#7A5208;border-color:#EDD9AC}
 select.st-idea{background:var(--bluebg);color:#2B4396;border-color:#C4D0F5}select.st-bad{background:var(--redbg);color:#8F1F1F;border-color:#F0C4C4}
-.kolommen{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-@media(max-width:720px){.kolommen{grid-template-columns:1fr}}
-.vak{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:13px;color:var(--ink2)}
-.vak b{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-bottom:3px}
-.notitieblok{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
-.notitieblok>label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);font-weight:700}
-.invoer{display:flex;gap:8px;margin-top:7px}
-textarea{flex:1;font:inherit;font-size:13.5px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;min-height:42px;resize:vertical;outline:none}
+.sectie{margin-top:14px}.sectie>label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);font-weight:700;display:flex;justify-content:space-between;align-items:baseline}
+.sectie>label .voortgang{font-weight:600;color:var(--ink2);text-transform:none;letter-spacing:0}
+.balkje{height:6px;border-radius:3px;background:var(--paper);border:1px solid var(--line);overflow:hidden;margin:6px 0 2px}
+.balkje i{display:block;height:100%;background:var(--volt);transition:width .25s}
+.vak{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:13px;color:var(--ink2);margin-top:6px}
+.testlijst{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:5px}
+.testlijst li{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:13px;color:var(--ink2)}
+.testlijst label{display:flex;gap:9px;align-items:flex-start;cursor:pointer}
+.testlijst input{margin-top:3px;accent-color:var(--volt);width:15px;height:15px;flex:none;cursor:pointer}
+.testlijst li.klaar{color:var(--ink3)} .testlijst li.klaar span{text-decoration:line-through}
+.invoer{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+textarea{flex:1;min-width:230px;font:inherit;font-size:13.5px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;min-height:42px;resize:vertical;outline:none}
 textarea:focus{border-color:var(--volt);box-shadow:0 0 0 3px var(--voltbg)}
-button.toevoegen{background:var(--volt);color:#fff;border:0;border-radius:9px;padding:0 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+select.cat{border-radius:9px;padding:0 10px;font-weight:600;cursor:pointer}
+button.toevoegen{background:var(--volt);color:#fff;border:0;border-radius:9px;padding:10px 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
 button.toevoegen:hover{background:#07734A}
 .notities{margin-top:9px;display:grid;gap:6px}
 .notitie{font-size:13.5px;background:#FFFEF5;border:1px solid #EDEBD8;border-radius:9px;padding:7px 11px}
-.notitie .datum{display:inline-block;font-size:10.5px;font-weight:700;color:#8A7B2E;background:#FBF6DC;border-radius:5px;padding:1px 6px;margin-right:7px}
+.notitie .datum{font-size:10.5px;font-weight:700;color:#8A7B2E;background:#FBF6DC;border-radius:5px;padding:1px 6px;margin-right:6px}
+.catbadge{display:inline-block;font-size:10.5px;font-weight:700;border-radius:999px;padding:1.5px 8px;margin-right:6px;vertical-align:1px}
+.cb-seo{background:var(--voltbg);color:#075C3A}.cb-inspiratie{background:var(--paarsbg);color:#4B2E96}
+.cb-verbetering{background:var(--amberbg);color:#7A5208}.cb-taal{background:var(--bluebg);color:#2B4396}
+.cb-bug{background:var(--redbg);color:#8F1F1F}.cb-vraag{background:var(--tealbg);color:#0A5560}.cb-anders{background:var(--paper);color:var(--ink2)}
 .notitie.leeg{color:var(--ink3);border-style:dashed;background:var(--paper)}
 .wis{float:right;border:0;background:none;cursor:pointer;color:var(--ink3);font-size:16px;line-height:1;padding:0 2px}.wis:hover{color:var(--red)}
 .nummer{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-right:9px;flex:none}
 footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px}
-@media print{.hero{background:#fff;color:var(--ink)}.hero p{color:var(--ink2)}.balk-wrap,.invoer{display:none}.kaart{break-inside:avoid;box-shadow:none}textarea{display:none}}
+@media print{.hero{background:#fff;color:var(--ink)}.hero p{color:var(--ink2)}.balk-wrap,.invoer,button.toevoegen{display:none}.kaart{break-inside:avoid;box-shadow:none}textarea{display:none}}
 </style>
 </head>
 <body>
 <div class="hero"><div class="hero-in">
   <div class="merk"><i></i>Stekker of Diesel</div>
   <h1>Website-overzicht</h1>
-  <p>Hoe de site is gebouwd, wat elke pagina doet, wat je eraan test en wat er beter kan. Kies per pagina een status en schrijf er vrij je notities bij — alles wordt automatisch in deze browser bewaard, niets wordt verstuurd.</p>
+  <p>Hoe de site is gebouwd, wat elke pagina doet, wat je eraan test en wat er beter kan. Kies per pagina een status, vink testen af en schrijf notities met een categorie erbij. Alles wordt automatisch in deze browser bewaard; niets wordt verstuurd.</p>
   <div class="stats" id="stats"></div>
 </div></div>
 <div class="balk-wrap"><div class="balk">
@@ -75,19 +89,22 @@ footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px
   <button class="chip" data-filter="fix">🔧 Verbeteren</button>
   <button class="chip" data-filter="idea">💡 Idee</button>
   <button class="chip" data-filter="bad">❌ Probleem</button>
+  <select id="catfilter" aria-label="Filter notities op categorie"><option value="">Notities: alle categorieën</option></select>
   <input type="search" id="zoek" placeholder="Zoek op pagina, URL of onderwerp…">
   <span class="teller" id="teller"></span>
 </div></div>
 <main>
   <div class="uitleg"><b>Zo is de site gebouwd:</b> één groot bronbestand (<code>index.html</code>, ± 860 KB) bevat de hele app. Het script <code>scripts/seo.mjs</code> maakt daar 48 statische pagina's van (23 routes × Nederlands/Engels) met per pagina een eigen titel, omschrijving en canonical. Wijzigen doe je altijd in de bron, daarna: <code>node scripts/i18n.cjs</code> → <code>node scripts/seo.mjs</code> → <code>node --test tests/*.test.cjs</code> (27 tests) → commit en push. Publicatie loopt via GitHub Pages. De volledige uitleg staat in <code>docs/website-overzicht.md</code>.</div>
-  <div class="uitleg"><b>Ontwikkelen en testen:</b> draai de site lokaal met <code>python -m http.server 8000</code> in de hoofdmap en open <code>http://127.0.0.1:8000/</code>. Wijzig nooit een gegenereerde pagina met de hand. De 27 automatische tests dekken metadata, sitemap, taalversies en dat scripts compileren; alles wat je kunt aanklikken test je zelf — per pagina staat onder <i>Testen</i> wat je minimaal doorloopt. Na elke wijziging: pagina opent zonder consolefouten · kernactie werkt · taalwissel neemt de stand mee · mobiel bruikbaar · geen netwerkverkeer zonder toestemming. Valkuilen: nieuwe tekst ook vertalen · eerst <code>git pull</code> (de SEO-workflow commit zelf) · groene tests zeggen niets over aanklikbaarheid.</div>
+  <div class="uitleg"><b>Zo gebruik je dit overzicht:</b> na een wijziging loop je per pagina de testlijst af en vink je af wat je echt hebt geprobeerd. Notities schrijf je vrij — kies er wel een categorie bij (SEO, inspiratie, verbetering, taalgebruik, bug of vraag), dan kun je er later op filteren. De filterbalk hierboven zoekt op paginastatus, notitiecategorie en tekst tegelijk.</div>
   <div id="lijst"></div>
   <h2>Verbeter-backlog (volgorde van waarde)</h2>
   <div id="backlog"></div>
 </main>
-<footer>Bijgewerkt 28 oktober 2026 · Statussen en notities worden lokaal in je browser bewaard (localStorage), niet in de repository.</footer>
+<footer>Bijgewerkt 28 oktober 2026 · Statussen, testvinkjes en notities worden lokaal in je browser bewaard (localStorage), niet in de repository.</footer>
 <script>
 const LIVE = 'https://stekkerofdiesel.nl';
+const CAT = [['seo','🔍 SEO'],['inspiratie','✨ Inspiratie'],['verbetering','🔧 Verbetering'],['taal','✍️ Taalgebruik'],['bug','🐞 Bug'],['vraag','❓ Vraag'],['anders','📌 Anders']];
+const CATNAAM = Object.fromEntries(CAT);
 const GROEPEN = [
  ["Hoofdpagina's", [
   ["calc","Calculator","/","Gratis vergelijking diesel vs elektrisch voor één voertuig: kosten per km en jaar, terugverdientijd, kantelpunt, actieradius tegen de dagrit, CO₂. Delen via link en embed.","ok","“TCO berekenen” staat nu in de meta-omschrijving. Homepage concurreert met /uitgebreid/ als calculator — in de gaten houden."],
@@ -124,34 +141,35 @@ const GROEPEN = [
  ]]
 ];
 const TESTEN = {
- calc:"Voorkeuren onthouden (localStorage) · deel-link ?s= opent dezelfde stand · embed ?embed=1 verbergt kop/voet · voertuig wisselen herberekent direct · voorbeeldcijfers tonen de groene balk tot je iets wijzigt.",
- uitgebreid:"Extra posten aan/uit klappen regels in de verschillenlijst · voorkeuren onthouden · vanuit de homepage kom je met behoud van stand hier.",
- modellen:"Filters (vermogen, actieradius, laadsnelheid, prijs) · sorteren · twee modellen vergelijken · knop 'reken door met dit model' opent de calculator met dat model.",
- trekkers:"Modelkaarten staan vóór JavaScript al in de HTML · filter telt opnieuw · vergelijkbalk onderin.",
- bakwagens:"Idem trekkers · let op N2/N3-filter bij AanZET in de calculator.",
- bestelbussen:"Idem · bestelbus-specifieke posten in de calculator controleren.",
- bussen:"Idem · M3-bus (geen AanZET) in de calculator.",
- nieuws:"Tijdlijn laadt · datums en links kloppen · Engelse versie volledig vertaald.",
- "over-ons":"Links naar calculator en gids werken in beide talen.",
- vlootanalyse:"Formuliervalidatie · verzenden naar Supabase (teststand) · taartgrafiek reageert op aanwijzen/tikken · geen verzending zonder toestemming.",
- restwaarde:"Prijs melden (formulier) · prijsalarm instellen · index blijft zonder JavaScript leesbaar.",
- privacy:"Toestemmingsknoppen werken · zonder toestemming geen GA/Supabase-verkeer (netwerk-tab).",
- "gids-start":"Gidsnavigatie en stapnummering kloppen · taalwissel blijft op de gids.",
- stappenplan:"Afvinken wordt bewaard (localStorage) · voortgang klopt na herladen.",
- netcongestie:"Postcodecheck geeft uitkomst · kaart van Nederland rendert · mobiel bruikbaar.",
- laden:"Interactieve elementen en tabellen kloppen · ERE-uitleg opent.",
- stroom:"Contractvergelijking en zonberekening reageren op invoer.",
- actieradius:"Controle tegen dagrit werkt · winterstand verandert de uitkomst.",
- zones:"Kentekencheck met meerdere kentekens en euroklassen · kaart/tooltip op mobiel.",
- subsidies:"AanZET-bedragen per klasse/omvang kloppen met de tabel · data en rondes actueel.",
- heffing:"Tarieven en korting kloppen · doorrekenen naar de calculator neemt de klasse mee.",
- financiering:"Maandlasten-vergelijking herberekent · risico-tekst per vorm.",
- accu:"SoH/restwaarde-uitleg en doorlink naar restwaarde werken.",
- regels:"Inhoud actueel (rijbewijs B/C, tachograaf) · bronlinks werken.",
- rapport:"Demo-rapport (?demo=1) en echte link (?r=…) openen · tabbladen, varianten wisselen, werkdag afspelen, pdf-knop · noindex blijft staan.",
- vier04:"Onbekende URL toont de 404 in beide talen met werkende links.",
- sitemap:"Na genereren bestaan alle sitemap-URL's op schijf (tests controleren dit automatisch)."
+ calc:["Voorkeuren blijven na herladen (localStorage)","Deel-link ?s= opent exact dezelfde stand","Embed ?embed=1 verbergt kop en voet","Voertuig wisselen herberekent direct","Voorbeeldcijfers tonen de groene balk tot je iets wijzigt","Engelse versie rekent hetzelfde"],
+ uitgebreid:["Extra posten aan/uit klappen regels in de verschillenlijst","Voorkeuren blijven bewaard","Vanuit de homepage kom je hier met behoud van stand"],
+ modellen:["Elke filter (vermogen, actieradius, laadsnelheid, prijs) versmalt de lijst","Sorteren werkt beide richtingen op","Twee modellen vergelijken toont de vergelijking","Knop 'reken door met dit model' opent de calculator met dat model"],
+ trekkers:["Modelkaarten staan vóór JavaScript al in de HTML","Filter telt de kaarten opnieuw","Vergelijkbalk onderin werkt"],
+ bakwagens:["Modelkaarten staan in de HTML","N2/N3-onderscheid klopt bij de modellen","Filter en vergelijkbalk werken"],
+ bestelbussen:["Modelkaarten staan in de HTML","Filter en vergelijkbalk werken","Bestelbus-posten in de calculator kloppen"],
+ bussen:["Modelkaarten staan in de HTML","M3-bus in de calculator (geen AanZET)"],
+ nieuws:["Tijdlijn laadt volledig","Datums en links kloppen","Engelse versie is volledig vertaald"],
+ "over-ons":["Links naar calculator en gids werken (NL en EN)","Tekst leest als onafhankelijk, geen verkooppraat"],
+ vlootanalyse:["Formulier weigert lege verplichte velden","Verzenden gaat naar Supabase (teststand)","Taartgrafiek reageert op aanwijzen en tikken","Zonder toestemming wordt er niets verstuurd"],
+ restwaarde:["Prijs melden met het formulier lukt","Prijsalarm instellen lukt","Index blijft zonder JavaScript leesbaar"],
+ privacy:["Toestemmingsknoppen werken","Zonder toestemming geen GA/Supabase-verkeer (netwerk-tab)","Met toestemming laadt alleen wat is afgesproken"],
+ "gids-start":["Gidsnavigatie opent elke gids","Stapnummering klopt","Taalwissel blijft binnen de gids"],
+ stappenplan:["Stappen afvinken wordt bewaard (localStorage)","Voortgang klopt na herladen","Alle 9 stappen zijn bereikbaar"],
+ netcongestie:["Postcodecheck geeft een uitkomst","Kaart van Nederland rendert","Op mobiel bruikbaar"],
+ laden:["Interactieve elementen reageren","Tabellen zijn leesbaar op mobiel","ERE-uitleg opent volledig"],
+ stroom:["Contractvergelijking herberekent","Zonberekening reageert op invoer"],
+ actieradius:["Controle tegen de dagrit werkt","Winterstand verandert de uitkomst zichtbaar"],
+ zones:["Kentekencheck met meerdere kentekens","Euroklassen geven de juiste uitkomst","Kaart en tooltip werken op mobiel"],
+ subsidies:["AanZET-bedragen kloppen per klasse en omvang","Rondes en data zijn actueel","Doorlink naar de calculator neemt niets verkeerds mee"],
+ heffing:["Tarieven en korting kloppen met de bron","Voertuigklasse kiezen verandert het tarief","Doorlink naar de calculator klopt"],
+ financiering:["Maandlasten-vergelijking herberekent","Risico-tekst past bij de gekozen vorm"],
+ accu:["SoH/uitleg opent volledig","Doorlink naar de restwaardepagina werkt"],
+ regels:["Inhoud is actueel (rijbewijs, tachograaf)","Bronlinks werken"],
+ rapport:["Demo-rapport (?demo=1) opent volledig","Echte link (?r=…) opent het juiste rapport","Tabbladen en varianten wisselen werken","Werkdag afspelen loopt","Pdf-knop maakt een pdf","Pagina blijft noindex"],
+ vier04:["Onbekende URL toont de 404","Beide talen werken","Links op de 404 werken"],
+ sitemap:["Alle sitemap-URL's bestaan op schijf","Robots.txt verwijst naar de sitemap","Apex en www geven dezelfde site (redirect)"]
 };
+const ALGEMEEN = ["Opent zonder fouten in de browserconsole","Taalwissel NL/EN blijft op dezelfde pagina","Mobiel (smal scherm) bruikbaar","Geen netwerkverkeer zonder toestemming"];
 const BACKLOG = [
  ["fix","SPA-shell per pagina snoeien (grootste technische winst)","Elke URL serveert nu ± 860 KB met alle secties verborgen en 24 H1's in de bron. Laat de generator per pagina alleen de eigen sectie houden met één paginaspecifieke H1. In: scripts/seo.mjs."],
  ["idea","Pagina per model","67 modellen, geen model-URL's. Genereer per model een pagina met prijs, actieradius (ook winter), laadtijd en rekenknop, met Product/Offer-schema uit de bestaande catalogus."],
@@ -164,37 +182,54 @@ const BACKLOG = [
 const STAT = {ok:"✅ Op orde",fix:"🔧 Verbeteren",idea:"💡 Idee",bad:"❌ Probleem"};
 const store = JSON.parse(localStorage.getItem('sod-overzicht')||'{}');
 const save = () => localStorage.setItem('sod-overzicht', JSON.stringify(store));
-const esc = t => t.replace(/</g,'&lt;');
+const esc = t => String(t).replace(/</g,'&lt;');
+const catSel = document.getElementById('catfilter');
+for (const [k,v] of CAT){ const o=document.createElement('option'); o.value=k; o.textContent='Notities: '+v; catSel.append(o); }
 function stats(){
-  const telling = {ok:0,fix:0,idea:0,bad:0};
-  document.querySelectorAll('#lijst .kaart').forEach(k=>telling[k.dataset.status]++);
+  const telling = {ok:0,fix:0,idea:0,bad:0}; let tk=0, tt=0;
+  document.querySelectorAll('#lijst .kaart').forEach(k=>{ telling[k.dataset.status]++;
+    k.querySelectorAll('.testlijst input').forEach(i=>{ tt++; if(i.checked) tk++; }); });
   const totaal = Object.values(telling).reduce((a,b)=>a+b,0);
   document.getElementById('stats').innerHTML =
     `<span class="stat"><b>${totaal}</b> pagina's</span>`+
     `<span class="stat">✅ <b>${telling.ok}</b> op orde</span><span class="stat">🔧 <b>${telling.fix}</b> verbeteren</span>`+
     `<span class="stat">💡 <b>${telling.idea}</b> idee</span><span class="stat">❌ <b>${telling.bad}</b> probleem</span>`+
+    `<span class="stat">🧪 Testen<span class="balkje"><i style="width:${tt?Math.round(tk/tt*100):0}%"></i></span><b>${tk}/${tt}</b> afgevinkt</span>`+
     `<span class="stat">Voortgang <b>${totaal?Math.round(telling.ok/totaal*100):0}%</b> op orde</span>`;
 }
 function kaart([id,naam,url,doel,def,verb]){
+  if (store[id]?.n && !store[id]?.notes) store[id] = {...store[id], notes:[{d:'eerder', t:store[id].n, c:'anders'}]};
   const s = store[id]?.s || def;
-  if (store[id]?.n && !store[id]?.notes) store[id] = {...store[id], notes:[{d:'eerder', t:store[id].n}]};
+  const checks = [...(TESTEN[id]||[]), ...ALGEMEEN];
   const el = document.createElement('article'); el.className='kaart'; el.dataset.id=id; el.dataset.status=s;
   const link = url.startsWith('/') ? `<a href="${LIVE}${url}" target="_blank" rel="noopener">${url} ↗</a>` : url;
   el.innerHTML = `<div class="kop"><div><h3>${naam}</h3><div class="url">${link} · ook in het Engels</div></div>`+
-   `<select aria-label="Status">${Object.entries(STAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>`+
-   `<p class="doel">${doel}</p><div class="kolommen"><div class="vak"><b>Te verbeteren</b>${verb||'—'}</div><div class="vak"><b>Testen</b>${TESTEN[id]||'—'}</div></div>`+
-   `<div class="notitieblok"><label>Notities — schrijf vrij, geen vast format</label><div class="invoer"><textarea placeholder="Bijv. 'knop doet raar op mobiel, nakijken' — Ctrl+Enter voegt toe"></textarea><button type="button" class="toevoegen">+ Voeg toe</button></div><div class="notities"></div></div>`;
-  const sel = el.querySelector('select'), ta = el.querySelector('textarea'), log = el.querySelector('.notities'), knop = el.querySelector('.toevoegen');
-  sel.value = s; sel.className = 'st-'+s;
+   `<select class="status" aria-label="Status">${Object.entries(STAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>`+
+   `<p class="doel">${doel}</p><div class="vak" style="margin-top:10px"><b>Te verbeteren</b>${verb||'—'}</div>`+
+   `<div class="sectie"><label>Testen — vink af wat je echt hebt geprobeerd <span class="voortgang"></span></label><div class="balkje"><i></i></div>`+
+   `<ul class="testlijst">${checks.map(t=>`<li><label><input type="checkbox"><span>${t}</span></label></li>`).join('')}</ul></div>`+
+   `<div class="sectie"><label>Notities — kies een categorie en schrijf vrij</label><div class="invoer">`+
+   `<select class="cat" aria-label="Categorie van de notitie">${CAT.map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`+
+   `<textarea placeholder="Bijv. 'knop doet raar op mobiel, nakijken' — Ctrl+Enter voegt toe"></textarea><button type="button" class="toevoegen">+ Voeg toe</button></div><div class="notities"></div></div>`;
+  const sel = el.querySelector('select.status'), cat = el.querySelector('select.cat'), ta = el.querySelector('textarea'),
+        log = el.querySelector('.notities'), knop = el.querySelector('.toevoegen'),
+        vakjes = [...el.querySelectorAll('.testlijst input')], vul = el.querySelector('.balkje i'), teller = el.querySelector('.voortgang');
+  sel.value = s; sel.className = 'status st-'+s;
+  (store[id]?.tests||[]).forEach((v,i)=>{ if(vakjes[i]) vakjes[i].checked = !!v; });
+  const testVoortgang = () => { const klaar = vakjes.filter(i=>i.checked).length;
+    vakjes.forEach(i=>i.closest('li').classList.toggle('klaar', i.checked));
+    vul.style.width = (vakjes.length? klaar/vakjes.length*100 : 0)+'%';
+    teller.textContent = klaar+' van '+vakjes.length+' getest'; };
+  vakjes.forEach((v,i)=>v.onchange=()=>{ (store[id] ??= {}).tests = vakjes.map(x=>x.checked); save(); testVoortgang(); stats(); });
   const teken = () => { const regels = store[id]?.notes || [];
-    log.innerHTML = regels.map((r,i)=>`<div class="notitie"><span class="datum">${r.d}</span>${esc(r.t)}<button type="button" class="wis" data-i="${i}" title="Verwijder notitie">×</button></div>`).join('') || '<div class="notitie leeg">Nog geen notities — schrijf hierboven je eerste.</div>';
+    log.innerHTML = regels.map((r,i)=>`<div class="notitie"><span class="datum">${r.d}</span><span class="catbadge cb-${r.c||'anders'}">${CATNAAM[r.c||'anders']}</span>${esc(r.t)}<button type="button" class="wis" data-i="${i}" title="Verwijder notitie">×</button></div>`).join('') || '<div class="notitie leeg">Nog geen notities — kies een categorie en schrijf je eerste.</div>';
     log.querySelectorAll('.wis').forEach(b=>b.onclick=()=>{ store[id].notes.splice(+b.dataset.i,1); save(); teken(); }); };
-  sel.onchange = () => { store[id] = {...(store[id]||{}), s: sel.value}; el.dataset.status = sel.value; sel.className='st-'+sel.value; save(); stats(); tel(); };
+  sel.onchange = () => { store[id] = {...(store[id]||{}), s: sel.value}; el.dataset.status = sel.value; sel.className='status st-'+sel.value; save(); stats(); tel(); };
   knop.onclick = () => { const t = ta.value.trim(); if(!t) return;
     const d = new Date().toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
-    (store[id] ??= {}).notes = [...(store[id].notes||[]), {d, t}]; ta.value=''; save(); teken(); ta.focus(); };
+    (store[id] ??= {}).notes = [...(store[id].notes||[]), {d, t, c: cat.value}]; ta.value=''; save(); teken(); ta.focus(); };
   ta.addEventListener('keydown', e=>{ if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) knop.click(); });
-  teken(); return el;
+  testVoortgang(); teken(); return el;
 }
 const lijst = document.getElementById('lijst');
 for (const [groep, items] of GROEPEN){
@@ -209,9 +244,10 @@ BACKLOG.forEach(([st, titel, tekst], i)=>{
 });
 let filter = 'alle';
 function tel(){
-  const q = document.getElementById('zoek').value.toLowerCase(); let n = 0;
+  const q = document.getElementById('zoek').value.toLowerCase(), cf = catSel.value; let n = 0;
   document.querySelectorAll('#lijst .kaart').forEach(k=>{
-    const past = (filter==='alle'||k.dataset.status===filter) && k.textContent.toLowerCase().includes(q);
+    const id = k.dataset.id, heeftCat = !cf || (store[id]?.notes||[]).some(r=>(r.c||'anders')===cf);
+    const past = (filter==='alle'||k.dataset.status===filter) && heeftCat && k.textContent.toLowerCase().includes(q);
     k.style.display = past?'':'none'; if(past)n++;
   });
   document.querySelectorAll('#lijst h2').forEach(h=>{ let z=h.nextElementSibling, zicht=false;
@@ -221,7 +257,7 @@ function tel(){
 }
 document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{ filter=b.dataset.filter;
   document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('aan',x===b)); tel(); });
-document.getElementById('zoek').oninput = tel; tel();
+document.getElementById('zoek').oninput = tel; catSel.onchange = tel; tel();
 </script>
 </body>
 </html>
