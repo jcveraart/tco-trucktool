@@ -1,5 +1,13 @@
 // Shared, deterministic presentation calculations. No new optimization takes
 // place in the reader's browser; every selectable plan was solved in the app.
+// Older personal links predate the explicit report type and retain their texts.
+export function analysisTexts(report, variant, scenario = null) {
+  return !scenario && (report.report_type == null || report.report_type === 'gemini') ? variant.texts || {} : {};
+}
+export function adviceSummary(report, variant, fallback, scenario = null) {
+  const ai = analysisTexts(report, variant, scenario);
+  return ai.ai_edit_samenvatting ?? variant.texts?.samenvatting ?? ai.ai_samenvatting ?? fallback;
+}
 export const totalYear = row => Object.entries(row || {}).reduce((sum, [k, v]) => sum + (k !== 'jaar' && typeof v === 'number' ? v : 0), 0);
 export const cumulative = values => { let sum = 0; return values.map(x => sum += x); };
 export function reference(report, variant) {
