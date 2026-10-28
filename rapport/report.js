@@ -99,7 +99,7 @@ async function load() {
       const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token)))].map(x => x.toString(16).padStart(2, '0')).join('');
       response = await fetch(API, { method: 'POST', headers: { apikey: APIKEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_token_hash: hash }), cache: 'no-store', referrerPolicy: 'no-referrer' });
     }
-    if (!response.ok) throw new Error('Het rapport kan nu niet worden geladen. Probeer het later opnieuw.');
+    if (!response.ok) throw new Error((await response.json().catch(() => null))?.fout || 'Het rapport kan nu niet worden geladen. Probeer het later opnieuw.');
     const data = await response.json();
     if (!data) throw new Error('Deze link is verlopen, ingetrokken of niet gevonden. Vraag ons om een nieuwe link.');
     report = validateReport(data);
