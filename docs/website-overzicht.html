@@ -36,7 +36,7 @@ footer{color:var(--ink3);font-size:12px;text-align:center;padding:20px}
 <body>
 <header>
   <h1>Website-overzicht — Stekker of Diesel</h1>
-  <p>Hoe de site is gebouwd, wat elke pagina doet, wat je eraan kunt testen en wat er beter kan. Voor ontwikkeling en testen, niet alleen SEO. Kies per pagina een status en typ je notities erbij; alles wordt automatisch in deze browser bewaard. Niets wordt verstuurd.</p>
+  <p>Hoe de site is gebouwd, wat elke pagina doet, wat je eraan kunt testen en wat er beter kan. Voor ontwikkeling en testen, niet alleen SEO. Kies per pagina een status en schrijf per pagina vrij je notities erbij (kladblok, geen vast format); alles wordt automatisch in deze browser bewaard. Niets wordt verstuurd.</p>
   <div class="balk">
     <button class="chip aan" data-filter="alle">Alles</button>
     <button class="chip" data-filter="ok">✅ Op orde</button>
@@ -149,11 +149,20 @@ function kaart([id,naam,url,doel,def,verb]){
    `<div class="rij"><select aria-label="Status">${Object.entries(STAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`+
    `<div class="verb"><b>Te verbeteren</b>${verb||'—'}</div></div>`+
    `<div class="rij"><div class="verb" style="border-style:solid"><b>Testen</b>${TESTEN[id]||'—'}</div></div>`+
-   `<div class="rij"><textarea placeholder="Eigen notities… (worden automatisch bewaard)"></textarea></div>`;
-  const sel = el.querySelector('select'), ta = el.querySelector('textarea');
-  sel.value = s; sel.className = 'st-'+s; ta.value = n;
+   `<div class="rij"><textarea placeholder="Schrijf hier vrij je notitie over deze pagina… (Ctrl+Enter = toevoegen)"></textarea></div><div class="rij"><button type="button" class="voegtoe chip">+ Voeg notitie toe</button></div><div class="notities"></div>`;
+  const sel = el.querySelector('select'), ta = el.querySelector('textarea'), log = el.querySelector('.notities'), knop = el.querySelector('.voegtoe');
+  sel.value = s; sel.className = 'st-'+s;
+  // Oude enkele notitie (tekstveld van voor deze versie) wordt de eerste logregel.
+  if (n && !(store[id]?.notes)) store[id] = {...(store[id]||{}), notes: [{d:'eerder', t:n}]};
+  const teken = () => { const regels = (store[id]?.notes||[]);
+    log.innerHTML = regels.map((r,i)=>`<div class="notitie"><span class="datum">${r.d}</span> ${r.t.replace(/</g,'&lt;')} <button type="button" class="wis" data-i="${i}" title="Verwijder">×</button></div>`).join('') || '<div class="notitie leeg">Nog geen notities.</div>';
+    log.querySelectorAll('.wis').forEach(b=>b.onclick=()=>{ store[id].notes.splice(+b.dataset.i,1); save(); teken(); }); };
   sel.onchange = () => { store[id] = {...(store[id]||{}), s: sel.value}; el.dataset.status = sel.value; sel.className='st-'+sel.value; save(); tel(); };
-  ta.oninput = () => { store[id] = {...(store[id]||{}), n: ta.value}; save(); };
+  knop.onclick = () => { const t = ta.value.trim(); if(!t) return;
+    const d = new Date().toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
+    (store[id] ??= {}).notes = [...(store[id].notes||[]), {d, t}]; ta.value=''; save(); teken(); };
+  ta.addEventListener('keydown', e=>{ if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) knop.click(); });
+  teken();
   return el;
 }
 const lijst = document.getElementById('lijst');
@@ -184,3 +193,9 @@ document.getElementById('zoek').oninput = tel; tel();
 </script>
 </body>
 </html>
+
+<style>
+.notities{margin-top:8px}.notitie{font-size:13px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 10px;margin:0 0 6px}
+.notitie .datum{font-size:11px;color:var(--ink3);margin-right:6px}.notitie.leeg{color:var(--ink3);border-style:dashed}
+.notitie .wis{float:right;border:0;background:none;cursor:pointer;color:var(--ink3);font-size:15px;line-height:1}
+</style>
