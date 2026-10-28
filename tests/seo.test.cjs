@@ -6,6 +6,7 @@ test('every language route has static localized metadata, a self-canonical and r
  const titles=new Set();for(const r of Object.values(routes))for(const l of ['nl','en']){const p=l==='en'?r.enPath:r.path,h=read(p),c=l==='en'?r.en:r;
  assert.match(h,new RegExp('<html lang="'+l+'"'));assert.ok(h.includes('<title>'+c.title.replace(/&/g,'&amp;')+'</title>'),p);assert.ok(h.includes('<link rel="canonical" href="'+site+p+'">'),p);
  for(const x of ['nl','en','x-default'])assert.ok(h.includes('hreflang="'+x+'" href="'+site+(x==='en'?r.enPath:r.path)+'"'),p+' alternate '+x);
+ assert.ok(h.includes('<meta name="twitter:image" content="'+site+'/og.png">'),p+' twitter:image');assert.ok(c.title.includes('| Stekker of Diesel')||p==='/privacy/'||p==='/en/privacy/','Title zonder merk: '+p+' '+c.title);
  assert.ok(!titles.has(c.title),'Duplicate title '+c.title);titles.add(c.title);
  const data=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);const page=data['@graph'].find(x=>x['@id']===site+p);assert.ok(page);assert.equal(page.inLanguage,l==='nl'?'nl-NL':'en');
  assert.ok(h.includes('href="'+r.path+'" data-lang="nl"'));assert.ok(h.includes('href="'+r.enPath+'" data-lang="en"'));
