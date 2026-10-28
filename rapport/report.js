@@ -835,9 +835,10 @@ function appendix(c) {
 
   return section('bijlage', 'Bijlage', head(E('button', { class: 'btn ghost small', type: 'button', onclick: () => { const all = state.open.size < parts.length; state.open = new Set(all ? parts.map(p => p[0]) : []); render(); } },
     state.open.size < parts.length ? 'Alles openen' : 'Alles sluiten')),
-    E('div', { class: 'appendix' }, parts.map(([id, title, count, body]) => E('details', { class: 'app', id: `bijlage-${id}`, open: state.open.has(id),
+    // Letters follow the parts that are present, so a report without scenarios has no gap.
+    E('div', { class: 'appendix' }, parts.map(([id, title, count, body], n) => E('details', { class: 'app', id: `bijlage-${id}`, open: state.open.has(id),
       ontoggle: e => { e.target.open ? state.open.add(id) : state.open.delete(id); } },
-      E('summary', {}, E('span', { class: 'al' }, id.toUpperCase()), E('b', {}, title), count ? E('small', {}, count) : null), E('div', { class: 'app-body' }, body)))));
+      E('summary', {}, E('span', { class: 'al' }, String.fromCharCode(65 + n)), E('b', {}, title), count ? E('small', {}, count) : null), E('div', { class: 'app-body' }, body)))));
 }
 
 function footer() {

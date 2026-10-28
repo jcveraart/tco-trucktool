@@ -92,8 +92,8 @@ export function pillars(report, plan, ref, m) {
       text: up >= 0 ? `aansluiting naar ${Math.round(plan.net_kw[up])} kW in ${plan.jaren[up]}` : `past op de huidige ${Math.round(kw0)} kW` + (plan.thuisladers?.length ? ` · ${plan.thuisladers.length} laden thuis` : '') },
     { key: 'Geld', big: ref && ref !== plan ? money(round(m.saving / Y)) : money(round(plan.ncw / Y)), unit: ref && ref !== plan ? (m.saving >= 0 ? 'voordeel per jaar' : 'extra per jaar') : 'per jaar',
       text: `investering ${money(round(plan.investering))}` + (m.payback ? ` · terugverdiend in ${report.settings.startjaar + m.payback - 1}` : '') },
-    { key: 'Uitstoot', big: m.co2Pct != null ? `−${pct(Math.max(0, m.co2Pct))}` : '—', unit: 'CO₂',
-      text: (co2 != null ? `${nf(0).format(co2 / 1000)} ton minder in ${Y} jaar · ` : '') + `${pct(plan.ze_aandeel?.at(-1))} van de km elektrisch` },
+    { key: 'Uitstoot', big: m.co2Pct != null ? `${m.co2Pct >= 0 ? '−' : '+'}${pct(Math.abs(m.co2Pct))}` : '—', unit: 'CO₂',
+      text: (co2 != null ? `${nf(0).format(Math.abs(co2) / 1000)} ton ${co2 >= 0 ? 'minder' : 'meer'} in ${Y} jaar · ` : '') + `${pct(plan.ze_aandeel?.at(-1))} van de km elektrisch` },
   ];
 }
 
