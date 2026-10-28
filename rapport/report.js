@@ -1,4 +1,4 @@
-import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport, periodYears, scenarioPlans, scenarioLevel, dayKm, totalKm } from './report-core.mjs';
+import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport, periodYears, scenarioPlans, scenarioLevel, dayKm, totalKm, analysisTexts, adviceSummary } from './report-core.mjs';
 import { moves, reasonFor, stays, verdict, pillars, differenceStory, yearsStory, chargingStory, robustness, CHOICES, SETTINGS, formatValue, GLOSSARY } from './report-explain.mjs';
 
 const API = 'https://zarvyblveyomngypwvhw.supabase.co/rest/v1/rpc/fleet_report_read';
@@ -101,7 +101,7 @@ async function load() {
     if (params.has('preview')) {
       const ids = params.get('preview').split('/');
       if (ids.length !== 2 || ids.some(x => !/^[A-Za-z0-9_-]{1,40}$/.test(x))) throw new Error('Dit voorbeeldadres is ongeldig. Open het rapport vanuit de app.');
-      const query = new URLSearchParams({ variant: params.get('variant') || '', kentekens: params.get('kentekens') || '0', titel: params.get('titel') || '', varianten: params.get('varianten') || '' });
+      const query = new URLSearchParams({ variant: params.get('variant') || '', kentekens: params.get('kentekens') || '0', titel: params.get('titel') || '', varianten: params.get('varianten') || '', rapporttype: params.get('rapporttype') || 'standaard' });
       response = await fetch(`/api/klanten/${ids[0]}/berekeningen/${ids[1]}/online?${query}`, { cache: 'no-store' });
     } else if (params.get('demo') === '1') response = await fetch('./demo.json', { cache: 'no-store' });
     else {
@@ -157,7 +157,7 @@ const sentence = x => x ? x[0].toUpperCase() + x.slice(1) + (/[.!?)]$/.test(x) ?
 // "Waarom": the reasoning behind a chapter, in plain sentences.
 const why = (lines, title = 'Waarom') => { const l = (lines || []).filter(Boolean); return l.length ? E('div', { class: 'why' }, E('b', {}, title), E('ul', {}, l.map(x => E('li', {}, sentence(x))))) : null; };
 // Analyse met Gemini: teksten horen bij de gekozen variant en gelden voor de basis, dus niet bij een scenario.
-const aiTexts = () => report.variants[state.variant].texts || {};
+const aiTexts = () => analysisTexts(report, report.variants[state.variant], state.scenario);
 const aiNote = id => { const t = aiTexts()[`ai_h_${id}`]; return t && !state.scenario ? E('p', { class: 'ai-note' }, E('b', {}, 'Analyse'), t) : null; };
 const aiLines = s => (s || '').split('\n').map(x => x.trim()).filter(Boolean).map(x => { const i = x.indexOf(': '); return i > 0 && i < 90 ? [x.slice(0, i), x.slice(i + 2)] : [null, x]; });
 const legend = items => E('div', { class: 'legend' }, items.map(([label, color, dash]) => E('span', {}, E('i', { style: dash ? { borderTop: `2px dashed ${color}`, background: 'none', height: 0 } : { background: color } }), label)));
@@ -358,7 +358,7 @@ function advice(c) {
   if (kans && plan.variant === 'basis') auto.push(`Grootste kans: ${kans.title.toLowerCase()} levert nog ${money(round(kans.gain))} op.`);
   const points = Object.keys(t).filter(k => /^advies\d+$/.test(k)).sort().map(k => t[k]);
   const notices = [...(plan.notices || []), ...(plan.budget_over || [])];
-  return E('div', { class: 'advice' }, E('div', {}, E('h3', {}, 'Ons advies'), prose(t.samenvatting || defaultSummary(c)), notices.length ? E('ul', { class: 'notices' }, notices.map(n => E('li', {}, n))) : null),
+  return E('div', { class: 'advice' }, E('div', {}, E('h3', {}, 'Ons advies'), prose(adviceSummary(report, plan, defaultSummary(c), state.scenario)), notices.length ? E('ul', { class: 'notices' }, notices.map(n => E('li', {}, n))) : null),
     E('ol', { class: 'points' }, (points.length ? points : auto).map(p => E('li', {}, p))));
   function defaultSummary() {
     if (!ref || plan === ref) return `Dit plan kost ${money(plan.ncw)} over ${report.settings.jaren} jaar.`;
@@ -375,11 +375,11 @@ function analysis() {
   const sources = aiLines(t.ai_bronnen).map(([, x]) => x.split(' | ')).filter(([, url]) => /^https:\/\//.test(url || ''));
   return section('analyse', 'Analyse',
     t.ai_kern ? E('p', { class: 'ai-lead' }, t.ai_kern) : null,
-    t.ai_samenvatting ? E('div', { class: 'ai-prose' }, t.ai_samenvatting.split(/\n{2,}/).map(x => E('p', {}, x))) : null,
+    t.ai_samenvatting && report.variants[state.variant].texts?.samenvatting ? E('div', { class: 'ai-prose' }, t.ai_samenvatting.split(/\n{2,}/).map(x => E('p', {}, x))) : null,
     E('div', { class: 'ai-grid' }, part('ai_punten', 'Kernpunten'), part('ai_stappen', 'Stappen'), part('ai_kansen', 'Kansen'), part('ai_risicos', 'Risico’s')),
     t.ai_context ? E('div', { class: 'why' }, E('b', {}, 'Wat er in Nederland speelt'), E('p', {}, t.ai_context)) : null,
     part('ai_vragen', 'Wat we nog van u willen weten'),
-    E('p', { class: 'ai-by' }, `Opgesteld met ${t.ai_model || 'Gemini'} op basis van deze berekening, gecontroleerd door Stekker of Diesel.`,
+    E('p', { class: 'ai-by' }, `Aanvullende duiding op basis van deze berekening · ${t.ai_model || 'Gemini'}${t.ai_datum ? ' · ' + date(t.ai_datum) : ''}.`,
       sources.length ? [' Bronnen: ', sources.flatMap(([name, url], i) => [i ? ', ' : '', E('a', { href: url, target: '_blank', rel: 'noopener noreferrer' }, name)])] : null));
 }
 
@@ -914,7 +914,7 @@ function appendix(c) {
 
 function footer() {
   return E('footer', { class: 'foot' }, E('div', { class: 'wrap foot-in' }, E('div', {}, E('a', { class: 'brand', href: 'https://stekkerofdiesel.nl/' }, mark(), 'Stekker of Diesel'),
-    E('p', {}, `Opgesteld voor ${report.client.name} · ${date(report.created_at)}${report.publication ? ` · versie ${report.publication.revision}` : ''}`)),
+    E('p', {}, `Opgesteld voor ${report.client.name} · ${date(report.created_at)}${report.report_type === 'gemini' ? ' · Met Gemini-analyse' : ''}${report.publication ? ` · versie ${report.publication.revision}` : ''}`)),
     E('a', { class: 'btn dark', href: `mailto:${report.author?.email || 'info@stekkerofdiesel.nl'}?subject=${encodeURIComponent('Vlootadvies ' + report.client.name)}` }, icon('mail'), 'Vragen? Mail ons')));
 }
 
