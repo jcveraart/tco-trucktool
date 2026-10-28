@@ -324,6 +324,18 @@ function overview(c) {
 function fleetPlan(c) {
   const { plan } = c, rows = fleetLifecycle(report, plan), changes = periodChanges(report, plan, state.period);
   const visible = rows.filter(r => state.fleetFilter === 'all' || (state.fleetFilter === 'electric' ? isEV(r.vehicle) : !isEV(r.vehicle)));
+  // The story of the plan in one line: where the fleet starts, where it ends, how much moves.
+  const mix = plan.jaren.map((_, p) => plan.aantallen?.[p] || { elektrisch: rows.filter(r => r.active[p] && isEV(r.vehicle)).length, diesel: rows.filter(r => r.active[p] && !isEV(r.vehicle)).length });
+  const endMix = mix.at(-1) || { elektrisch: 0, diesel: 0 }, endTotal = endMix.elektrisch + endMix.diesel;
+  const nowEV = report.fleet.filter(isEV).length;
+  const story = [`Van ${nowEV} van de ${report.fleet.length} elektrisch nu`, `naar ${endTotal ? `${endMix.elektrisch} van de ${endTotal}` : '—'} elektrisch in ${plan.jaren.at(-1)}`,
+    `${rows.filter(r => !r.existing && r.first >= 0).length} nieuwe voertuigen erbij`, `${rows.filter(r => r.events.some(e => e.kind === 'exit')).length} eruit`].join(' · ') + '.';
+  const lifecycleText = row => {
+    if (row.first < 0) return 'Meteen uit de vloot';
+    const exit = row.events.find(e => e.kind === 'exit');
+    const from = row.existing ? 'Nu' : plan.jaren[row.first];
+    return exit ? `${from} – ${plan.jaren[row.last]}` : `${from} – einde looptijd`;
+  };
   const pick = (id, period, focus) => {
     set({ vehicle: id === state.vehicle && period === state.period ? null : id, period }, focus);
     if (state.vehicle) document.querySelector('.fleet-detail')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
@@ -335,18 +347,19 @@ function fleetPlan(c) {
       const v = row.vehicle, exit = row.events.find(e => e.kind === 'exit');
       return E('tr', { class: row.id === state.vehicle ? 'selected' : '' },
         E('th', { scope: 'row', class: 'fleet-name' }, E('button', { type: 'button', onclick: () => pick(row.id, Math.max(0, row.first), `fleet-row-${row.id}`), id: `fleet-row-${row.id}` },
-          vehicleIcon(kindOf(v), isEV(v) ? 'e' : 'd'), E('span', {}, E('b', {}, row.label), E('small', {}, [isEV(v) ? 'Elektrisch' : 'Diesel', v.kenteken].filter(Boolean).join(' · '))))),
+          vehicleIcon(kindOf(v), isEV(v) ? 'e' : 'd'), E('span', {}, E('b', {}, row.label), E('small', {}, [isEV(v) ? 'Elektrisch' : 'Diesel', v.kenteken].filter(Boolean).join(' · ')), E('small', { class: 'fleet-life' }, lifecycleText(row))))),
         E('td', { class: 'fleet-now' }, row.existing ? E('span', { class: 'fleet-current' }, 'In uw vloot') : E('span', { class: 'fleet-muted' }, '—')),
         plan.jaren.map((j, p) => {
           const event = row.events.find(e => e.period === p);
           const label = event?.label || (row.active[p] ? 'Rijdt door' : exit && p > exit.period ? 'Uit vloot' : 'Nog niet in vloot');
           const id = `fleet-cell-${row.id}-${p}`;
+          const seg = row.active[p] ? p === row.first && p === row.last ? ' seg-single' : p === row.first ? ' seg-first' : p === row.last ? ' seg-last' : ' seg-mid' : '';
           return E('td', { class: p === state.period ? 'period-on' : '' }, E('button', { id, type: 'button',
-            class: `fleet-cell ${row.active[p] ? isEV(v) ? 'electric' : 'diesel' : 'inactive'}${event?.kind === 'exit' ? ' exit' : ''}${event?.kind === 'start' ? ' arrival' : ''}`,
+            class: `fleet-cell ${row.active[p] ? isEV(v) ? 'electric' : 'diesel' : 'inactive'}${seg}${event?.kind === 'exit' ? ' exit' : ''}${event?.kind === 'start' ? ' arrival' : ''}`,
             'aria-label': `${row.label}, ${j}: ${label}`, 'aria-pressed': row.id === state.vehicle && p === state.period,
             onclick: () => pick(row.id, p, id) },
             event ? E('span', { class: 'fleet-event' }, E('i', { 'aria-hidden': 'true' }, event.kind === 'exit' ? '↗' : '+'), event.label) :
-              row.active[p] ? E('span', { class: 'fleet-running' }, E('i', { 'aria-hidden': 'true' }), 'Rijdt door') : E('span', { class: 'fleet-muted' }, exit && p > exit.period ? 'Uit vloot' : '—')));
+              E('span', { class: 'fleet-bar', 'aria-hidden': 'true' })));
         }));
     })] : null;
   });
@@ -355,18 +368,25 @@ function fleetPlan(c) {
     report.variants.map((v, i) => E('option', { value: i, selected: i === state.variant }, v.naam))));
   const catalogue = scenarioCatalogue(report), checked = catalogue.length;
   return E('div', { id: 'vlootplan', class: 'fleet-planner' },
-    E('div', { class: 'planner-heading' }, E('div', {}, E('h2', {}, 'Uw vloot, van nu tot straks'), E('p', {}, 'Klik op een voertuig of periode voor de keuze, de kosten en de inzet.')), planPicker),
+    E('div', { class: 'planner-heading' }, E('div', {}, E('h2', {}, 'Uw vloot, van nu tot straks'), E('p', { class: 'fleet-story' }, story), E('p', { class: 'fleet-hint' }, 'Klik op een jaar, balk of voertuig voor de keuze, de kosten en de inzet.')), planPicker),
+    E('div', { class: 'fleet-mix', role: 'group', 'aria-label': 'Vlootmix per periode' }, plan.jaren.map((j, p) => {
+      const m = mix[p], total = m.elektrisch + m.diesel;
+      return E('button', { type: 'button', class: `mix-year${p === state.period ? ' on' : ''}`, 'aria-pressed': p === state.period, 'aria-label': `${j}: ${m.elektrisch} elektrisch, ${m.diesel} diesel. Bekijk periode`, onclick: () => set({ period: p }, `fleet-period-${p}`) },
+        E('span', { class: 'mix-top' }, E('b', {}, j), E('span', {}, total ? `${m.elektrisch}/${total} elektrisch` : '—')),
+        E('span', { class: 'mix-bar', 'aria-hidden': 'true' }, total ? [E('i', { class: 'e', style: { width: `${m.elektrisch / total * 100}%` } }), E('i', { class: 'd', style: { width: `${m.diesel / total * 100}%` } })] : null),
+        E('span', { class: 'mix-sub', 'aria-hidden': 'true' }, total ? `${m.elektrisch} elektrisch · ${m.diesel} diesel` : 'geen voertuigen'));
+    })),
     c.key ? E('div', { class: 'scenario-context', role: 'status' }, E('span', {}, E('b', {}, `Scenario: ${scenarioLevel(report, c.key)?.axis.name || ''} · ${scenarioLevel(report, c.key)?.level.label || ''}`), 'Dit hele rapport toont de uitkomst van dit scenario.'),
       E('button', { class: 'btn small', onclick: () => set({ scenario: null }, 'plan-picker') }, 'Terug naar basis')) : null,
-    E('div', { class: 'planner-toolbar' }, E('div', { class: 'fleet-key' }, E('span', {}, E('i', { class: 'electric' }), 'Elektrisch'), E('span', {}, E('i', { class: 'diesel' }), 'Diesel'), E('span', {}, E('i', { class: 'sale' }), 'Verkoop / uit lease')),
+    E('div', { class: 'planner-toolbar' }, E('div', { class: 'fleet-key' }, E('span', {}, E('i', { class: 'electric' }), 'Elektrisch'), E('span', {}, E('i', { class: 'diesel' }), 'Diesel'), E('span', {}, E('i', { class: 'start' }, '+'), 'Nieuw erbij'), E('span', {}, E('i', { class: 'sale' }, '↗'), 'Uit de vloot')),
       segmented([['all', 'Alle'], ['electric', 'Elektrisch'], ['diesel', 'Diesel']], state.fleetFilter, v => set({ fleetFilter: v, vehicle: null }), 'Voertuigen filteren')),
     E('p', { class: 'fleet-mobile-hint' }, 'Veeg naar links om alle jaren te bekijken →'),
     E('div', { class: 'fleet-scroll', id: 'fleet-scroll', tabindex: 0, role: 'region', 'aria-label': 'Interactieve vlootplanning, horizontaal en verticaal te scrollen' },
       E('table', { class: 'fleet-matrix', style: { '--periods': plan.jaren.length } }, E('caption', { class: 'sr-only' }, 'Vlootplanning: huidige vloot, aanschaf, inzet en verkoop per periode'),
         E('thead', {}, E('tr', {}, E('th', { scope: 'col' }, 'Voertuig'), E('th', { scope: 'col', class: 'fleet-now' }, 'Nu'),
-          plan.jaren.map((j, p) => E('th', { scope: 'col', class: p === state.period ? 'period-on' : '' }, E('button', { type: 'button', id: `fleet-period-${p}`, 'aria-pressed': p === state.period, onclick: () => set({ period: p }, `fleet-period-${p}`) }, j, E('small', {}, p === 0 ? 'Start plan' : 'Bekijk periode')))))),
+          plan.jaren.map((j, p) => E('th', { scope: 'col', class: p === state.period ? 'period-on' : '' }, E('button', { type: 'button', id: `fleet-period-${p}`, 'aria-pressed': p === state.period, onclick: () => set({ period: p }, `fleet-period-${p}`) }, j, E('small', {}, `${mix[p].elektrisch}/${mix[p].elektrisch + mix[p].diesel} elektrisch`)))))),
         E('tbody', {}, groups, visible.length ? null : E('tr', {}, E('td', { colspan: cols, class: 'fleet-empty' }, 'Geen voertuigen met dit filter.'))))),
-    E('div', { class: 'planner-footer' }, E('span', {}, '↗ Verkoop staat bij de start van de periode waarin het voertuig uit de vloot gaat.'), E('span', {}, 'Een gekleurde balk betekent: in gebruik.')),
+    E('div', { class: 'planner-footer' }, E('span', {}, '↗ Uit de vloot staat bij de start van de periode waarin het voertuig vertrekt.'), E('span', {}, 'Licht spoor: nog niet of niet meer in de vloot.')),
     selected ? fleetVehicleDetail(plan, selected) : null,
     E('div', { class: 'period-detail', 'aria-live': 'polite' }, E('div', { class: 'period-heading' }, E('span', { class: 'eyebrow' }, 'Op dit beslismoment'), E('h3', {}, plan.jaren[state.period]),
       E('div', { class: 'period-arrows' }, plan.jaren.length > 1 ? E('button', { class: 'btn small ghost', type: 'button', id: 'plan-play', onclick: playPlan, 'aria-label': state.planPlaying ? 'Vlootplan pauzeren' : 'Vlootplan afspelen' }, icon(state.planPlaying ? 'pause' : 'play'), state.planPlaying ? 'Pauze' : 'Speel plan') : null,
@@ -377,7 +397,7 @@ function fleetPlan(c) {
         [changes.sold.length, 'voertuigen uit de vloot', changes.sold.map(e => `${e.row.label} · ${e.label.toLowerCase()}`)],
         [changes.chargers.reduce((s, x) => s + x.added, 0), changes.chargers.reduce((s, x) => s + x.added, 0) === 1 ? 'nieuw laadpunt' : 'nieuwe laadpunten', changes.chargers.map(x => `${x.added}× ${x.name}`)],
       ].map(([n, title, lines]) => E('div', {}, E('b', {}, n), E('span', {}, title), E('p', {}, lines.length ? lines.join(' · ') : 'Geen wijziging')))),
-      E('div', { class: 'period-facts' }, E('span', {}, 'Net ', E('b', {}, `${num(changes.grid)} kW`)), E('span', { title: 'Saldo van aanschaf en opbrengsten in deze periode, inclusief de restwaarde aan het einde van de looptijd.' }, 'Investeringen en opbrengsten ', E('b', {}, money(changes.investment)), ' · incl. eindrestwaarde'), E('span', {}, 'CO₂ per jaar ', E('b', {}, tons(changes.co2))))),
+      E('div', { class: 'period-facts' }, E('span', {}, 'Vloot dan ', E('b', {}, `${mix[state.period].elektrisch} elektrisch · ${mix[state.period].diesel} diesel`)), E('span', {}, 'Net ', E('b', {}, `${num(changes.grid)} kW`)), E('span', { title: 'Saldo van aanschaf en opbrengsten in deze periode, inclusief de restwaarde aan het einde van de looptijd.' }, 'Investeringen en opbrengsten ', E('b', {}, money(changes.investment)), ' · incl. eindrestwaarde'), E('span', {}, 'CO₂ per jaar ', E('b', {}, tons(changes.co2))))),
     checked ? E('button', { class: 'scenario-jump', type: 'button', onclick: () => document.getElementById('scenarios')?.scrollIntoView({ behavior: 'smooth' }) },
       E('span', {}, E('b', {}, `${checked} scenario’s onderzocht`), 'Ontdek wat prijzen, groei of een andere aansluiting veranderen.'), icon('arrow')) : null);
 }
