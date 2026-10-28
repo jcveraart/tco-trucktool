@@ -36,7 +36,7 @@ footer{color:var(--ink3);font-size:12px;text-align:center;padding:20px}
 <body>
 <header>
   <h1>Website-overzicht — Stekker of Diesel</h1>
-  <p>Hoe de site is gebouwd en wat er per pagina beter kan. Kies per pagina een status en typ je notities erbij; alles wordt automatisch in deze browser bewaard. Niets wordt verstuurd.</p>
+  <p>Hoe de site is gebouwd, wat elke pagina doet, wat je eraan kunt testen en wat er beter kan. Voor ontwikkeling en testen, niet alleen SEO. Kies per pagina een status en typ je notities erbij; alles wordt automatisch in deze browser bewaard. Niets wordt verstuurd.</p>
   <div class="balk">
     <button class="chip aan" data-filter="alle">Alles</button>
     <button class="chip" data-filter="ok">✅ Op orde</button>
@@ -50,7 +50,16 @@ footer{color:var(--ink3);font-size:12px;text-align:center;padding:20px}
   <div class="uitleg">
     <b>Zo is de site gebouwd:</b> één groot bronbestand (<b>index.html</b>, ± 860 KB) bevat de hele app. Het script <b>scripts/seo.mjs</b> maakt daar 48 statische pagina's van (23 routes × Nederlands/Engels) met per pagina een eigen titel, omschrijving en canonical. Wijzigen doe je dus altijd in <b>index.html</b>, daarna: <b>node scripts/i18n.cjs</b> → <b>node scripts/seo.mjs</b> → <b>node --test tests/*.test.cjs</b> (27 tests) → commit en push. Publicatie loopt via GitHub Pages. De volledige uitleg en de verbeter-backlog staan in <b>docs/website-overzicht.md</b> en hieronder per pagina.
   </div>
+  <div class="uitleg">
+    <b>Ontwikkelen en testen:</b> draai de site lokaal met <b>python -m http.server 8000</b> in de hoofdmap en open <b>http://127.0.0.1:8000/</b>. Wijzig nooit een gegenereerde pagina met de hand — altijd de bron (<b>index.html</b> of <b>scripts/seo.mjs</b>), daarna i18n → generator → tests (zie hierboven) → commit. De 27 automatische tests dekken metadata, sitemap, taalversies en dat scripts compileren; alles wat je kunt aanklikken moet je zelf testen. Gebruik deze tracker daarvoor: per pagina staat onder <b>Testen</b> wat je minimaal doorloopt na een wijziging.
+  </div>
   <div id="lijst"></div>
+  <h2>Testprotocol (na elke wijziging)</h2>
+  <div class="uitleg">
+    <b>Automatisch (altijd):</b> node scripts/i18n.cjs → node scripts/seo.mjs → node --test tests/*.test.cjs (27/27 groen).<br>
+    <b>Met de hand (per gewijzigde pagina, zie "Testen" op de kaart):</b> pagina opent zonder consolefouten · kernactie werkt (rekenen, filteren, formulier) · taalwissel NL/EN blijft op dezelfde pagina en neemt de stand mee · mobiel (smal scherm) bruikbaar · herladen bewaart voorkeuren waar dat hoort · zonder toestemming geen netwerkverkeer naar GA/Supabase.<br>
+    <b>Bekende valkuilen:</b> gegenereerde pagina's nooit met de hand wijzigen (worden overschreven) · nieuwe tekst ook vertalen, anders blijft hij Nederlands op Engelse pagina's · de SEO-workflow commit zelf gegenereerde pagina's — haal eerst op (git pull) voordat je pusht · de rekenkern heeft een eigen test in de browserconsole-modus van de testsuite; een groene metatest zegt niets over wat je kunt aanklikken.
+  </div>
   <h2>Verbeter-backlog (volgorde van waarde)</h2>
   <div id="backlog"></div>
 </main>
@@ -100,6 +109,36 @@ const BACKLOG = [
  ["idea","6 · Ontbrekende onderwerpen","SPULA/publiek laden en MCS · HVO100/waterstof · Eurovignet → heffing en OBU kiezen · wegenbelasting/BPM en bijtelling · ERE verkopen in stappen."],
  ["ok","7 · Gedaan (oktober 2026)","twitter:image overal · merksuffix in alle titels (test dwingt af) · langere Engelse meta · “TCO berekenen” in homepage-meta · Supabase-preconnect weg · CI draait de tests."]
 ];
+
+const TESTEN = {
+ calc:"Voorkeuren onthouden (localStorage), deel-link ?s= opent dezelfde stand, embed ?embed=1 verbergt kop/voet, voertuig wisselen herberekent direct, voorbeeldcijfers tonen de groene balk tot je iets wijzigt.",
+ uitgebreid:"Alle extra posten aan/uit klappen regels in de verschillenlijst; onthouden voorkeuren; doorsturen vanuit de homepage bewaart de stand.",
+ modellen:"Filters (vermogen, actieradius, laadsnelheid, prijs), sorteren, twee modellen vergelijken, knop 'reken door met dit model' opent de calculator met dat model.",
+ trekkers:"Modelkaarten staan vóór JavaScript al in de HTML; filter telt opnieuw; vergelijkbalk onderin.",
+ bakwagens:"Idem trekkers; let op N2/N3-filter bij AanZET in de calculator.",
+ bestelbussen:"Idem; bestelbus-specifieke posten (BPM) in de calculator controleren.",
+ bussen:"Idem; M3-bus (geen AanZET) in de calculator.",
+ nieuws:"Tijdlijn laadt, datums en links kloppen, Engelse versie volledig vertaald.",
+ "over-ons":"Links naar calculator en gids werken in beide talen.",
+ vlootanalyse:"Formuliervalidatie, verzenden naar Supabase (teststand), taartgrafiek reageert op aanwijzen/tikken, geen verzending zonder toestemming.",
+ restwaarde:"Prijs melden (formulier), prijsalarm instellen, index laadt ook zonder JavaScript leesbaar.",
+ privacy:"Toestemmingsknoppen werken; zonder toestemming geen GA/Supabase-verkeer (netwerk-tab controleren).",
+ "gids-start":"Gidsnavigatie en stappen tellen kloppen; taalwissel blijft op de gids.",
+ stappenplan:"Afvinken wordt bewaard (localStorage); voortgang klopt na herladen.",
+ netcongestie:"Postcodecheck geeft uitkomst; kaart van Nederland rendert; mobiel bruikbaar.",
+ laden:"Interactieve elementen en tabellen kloppen; ERE-uitleg opent.",
+ stroom:"Contractvergelijking en zonberekening reageren op invoer.",
+ actieradius:"Controle tegen dagrit werkt, winterstand verandert de uitkomst.",
+ zones:"Kentekencheck met meerdere kentekens en euroklassen; kaart/tooltip op mobiel.",
+ subsidies:"AanZET-bedragen per klasse/omvang kloppen met de tabel; data en rondes actueel.",
+ heffing:"Tarieven en korting kloppen; doorrekenen naar de calculator neemt de klasse mee.",
+ financiering:"Maandlasten-vergelijking herberekent; accu/risico-tekst per vorm.",
+ accu:"SoH/restwaarde-uitleg en doorlink naar restwaarde werken.",
+ regels:"Inhoud actueel (rijbewijs B/C, tachograaf); links naar regels-bronnen werken.",
+ rapport:"Open een demo-rapport (?demo=1) en een echte link (?r=…): laden, tabbladen, varianten wisselen, werkdag afspelen, pdf-knop. Noindex blijft staan.",
+ vier04:"Onbekende URL toont de 404 in beide talen met werkende links.",
+ sitemap:"Na genereren: sitemap-URL's bestaan op schijf; tests controleren dit automatisch."
+};
 const STAT = {ok:"✅ Op orde",fix:"🔧 Verbeteren",idea:"💡 Idee",bad:"❌ Probleem"};
 const store = JSON.parse(localStorage.getItem('sod-overzicht')||'{}');
 function save(){localStorage.setItem('sod-overzicht',JSON.stringify(store));}
@@ -109,6 +148,7 @@ function kaart([id,naam,url,doel,def,verb]){
   el.innerHTML = `<div class="kop"><h3>${naam}</h3><span class="teller"></span></div><div class="url">${url}</div><p class="doel">${doel}</p>`+
    `<div class="rij"><select aria-label="Status">${Object.entries(STAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`+
    `<div class="verb"><b>Te verbeteren</b>${verb||'—'}</div></div>`+
+   `<div class="rij"><div class="verb" style="border-style:solid"><b>Testen</b>${TESTEN[id]||'—'}</div></div>`+
    `<div class="rij"><textarea placeholder="Eigen notities… (worden automatisch bewaard)"></textarea></div>`;
   const sel = el.querySelector('select'), ta = el.querySelector('textarea');
   sel.value = s; sel.className = 'st-'+s; ta.value = n;
