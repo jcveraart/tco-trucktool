@@ -72,6 +72,27 @@ button.toevoegen:hover{background:#07734A}
 .notitie.leeg{color:var(--ink3);border-style:dashed;background:var(--paper)}
 .wis{float:right;border:0;background:none;cursor:pointer;color:var(--ink3);font-size:16px;line-height:1;padding:0 2px}.wis:hover{color:var(--red)}
 .nummer{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-right:9px;flex:none}
+
+.weergave{display:flex;gap:8px;margin-top:16px}
+.weergave button{border:1px solid #33383F;background:#22262B;color:#CDD2D9;border-radius:999px;padding:8px 18px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.weergave button.aan{background:var(--volt);border-color:var(--volt);color:#fff}
+.taak{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:var(--r);padding:13px 16px;margin:0 0 9px;box-shadow:var(--shadow)}
+.taak[data-tstatus=bezig]{border-left-color:#E8A33D}.taak[data-tstatus=klaar]{border-left-color:var(--volt)}
+.taak[data-tstatus=later]{border-left-color:#C9C9BF}.taak[data-tstatus=todo]{border-left-color:var(--blue)}
+.taak h3{margin:0;font-size:15px}
+.taak .meta{font-size:12px;color:var(--ink3);margin-top:3px}
+.taak .oms{font-size:13.5px;color:var(--ink2);margin:6px 0 0}
+.taak select{border-radius:999px;padding:5px 10px;font-weight:600;cursor:pointer}
+.prio{font-size:10.5px;font-weight:700;border-radius:999px;padding:1.5px 8px;vertical-align:2px;margin-left:7px}
+.prio-hoog{background:var(--redbg);color:#8F1F1F}.prio-middel{background:var(--amberbg);color:#7A5208}.prio-laag{background:var(--paper);color:var(--ink2)}
+.nieuwetaak{background:var(--card);border:1px dashed #B9B9AF;border-radius:var(--r);padding:15px 17px;margin:0 0 14px}
+.nieuwetaak h3{margin:0 0 9px;font-size:15px}
+.formrij{display:flex;gap:8px;flex-wrap:wrap}
+.formrij input[type=text]{flex:1;min-width:210px;font:inherit;font-size:13.5px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;outline:none}
+.formrij input[type=text]:focus{border-color:var(--volt);box-shadow:0 0 0 3px var(--voltbg)}
+.groepkop{display:flex;justify-content:space-between;align-items:baseline}
+.groepkop .aantal{font-size:12px;color:var(--ink3);text-transform:none;letter-spacing:0}
+
 footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px}
 @media print{.hero{background:#fff;color:var(--ink)}.hero p{color:var(--ink2)}.balk-wrap,.invoer,button.toevoegen{display:none}.kaart{break-inside:avoid;box-shadow:none}textarea{display:none}}
 </style>
@@ -81,6 +102,7 @@ footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px
   <div class="merk"><i></i>Stekker of Diesel</div>
   <h1>Website-overzicht</h1>
   <p>Hoe de site is gebouwd, wat elke pagina doet, wat je eraan test en wat er beter kan. Kies per pagina een status, vink testen af en schrijf notities met een categorie erbij. Alles wordt automatisch in deze browser bewaard; niets wordt verstuurd.</p>
+  <div class="weergave"><button id="knop-paginas" class="aan">📄 Pagina’s</button><button id="knop-checklist">✅ Checklist / projecten</button></div>
   <div class="stats" id="stats"></div>
 </div></div>
 <div class="balk-wrap"><div class="balk">
@@ -96,9 +118,32 @@ footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px
 <main>
   <div class="uitleg"><b>Zo is de site gebouwd:</b> één groot bronbestand (<code>index.html</code>, ± 860 KB) bevat de hele app. Het script <code>scripts/seo.mjs</code> maakt daar 48 statische pagina's van (23 routes × Nederlands/Engels) met per pagina een eigen titel, omschrijving en canonical. Wijzigen doe je altijd in de bron, daarna: <code>node scripts/i18n.cjs</code> → <code>node scripts/seo.mjs</code> → <code>node --test tests/*.test.cjs</code> (27 tests) → commit en push. Publicatie loopt via GitHub Pages. De volledige uitleg staat in <code>docs/website-overzicht.md</code>.</div>
   <div class="uitleg"><b>Zo gebruik je dit overzicht:</b> na een wijziging loop je per pagina de testlijst af en vink je af wat je echt hebt geprobeerd. Notities schrijf je vrij — kies er wel een categorie bij (SEO, inspiratie, verbetering, taalgebruik, bug of vraag), dan kun je er later op filteren. De filterbalk hierboven zoekt op paginastatus, notitiecategorie en tekst tegelijk.</div>
-  <div id="lijst"></div>
-  <h2>Verbeter-backlog (volgorde van waarde)</h2>
-  <div id="backlog"></div>
+  <div id="view-paginas"><div id="lijst"></div></div>
+  <div id="view-checklist" style="display:none">
+  <h2 style="margin-top:22px">Checklist — alles wat er te doen is</h2>
+  <div class="nieuwetaak"><h3>+ Nieuwe taak of idee</h3>
+    <div class="formrij">
+      <input type="text" id="nt-titel" placeholder="Wat moet er gebeuren? (bijv. ‘Modelpagina eActros 600 maken’)">
+      <select id="nt-cat" aria-label="Categorie"></select>
+      <select id="nt-prio" aria-label="Prioriteit"><option value="hoog">🔴 Hoog</option><option value="middel" selected>🟡 Middel</option><option value="laag">⚪ Laag</option></select>
+      <select id="nt-pagina" aria-label="Hoort bij pagina"><option value="">Geen pagina (algemeen)</option></select>
+      <button type="button" class="toevoegen" id="nt-knop">+ Voeg toe</button>
+    </div>
+    <div class="formrij" style="margin-top:8px"><input type="text" id="nt-oms" placeholder="Toelichting (optioneel) — wat, waarom, waar moet je op letten?"></div>
+  </div>
+  <div class="balk" style="padding:0 0 10px">
+    <button class="chip tfilter aan" data-tf="alle">Alle taken</button>
+    <button class="chip tfilter" data-tf="todo">📋 Te doen</button>
+    <button class="chip tfilter" data-tf="bezig">🔨 Bezig</button>
+    <button class="chip tfilter" data-tf="klaar">✅ Klaar</button>
+    <button class="chip tfilter" data-tf="later">⏸️ Later</button>
+    <select id="tcatfilter" aria-label="Filter taken op categorie"><option value="">Categorie: alle</option></select>
+    <span class="teller" id="tteller"></span>
+  </div>
+  <div id="takenlijst"></div>
+</div>
+<div id="view-backlog"><h2>Verbeter-backlog (volgorde van waarde)</h2>
+  <div id="backlog"></div></div>
 </main>
 <footer>Bijgewerkt 28 oktober 2026 · Statussen, testvinkjes en notities worden lokaal in je browser bewaard (localStorage), niet in de repository.</footer>
 <script>
@@ -205,9 +250,9 @@ function kaart([id,naam,url,doel,def,verb]){
   const link = url.startsWith('/') ? `<a href="${LIVE}${url}" target="_blank" rel="noopener">${url} ↗</a>` : url;
   el.innerHTML = `<div class="kop"><div><h3>${naam}</h3><div class="url">${link} · ook in het Engels</div></div>`+
    `<select class="status" aria-label="Status">${Object.entries(STAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>`+
-   `<p class="doel">${doel}</p><div class="vak" style="margin-top:10px"><b>Te verbeteren</b>${verb||'—'}</div>`+
-   `<div class="sectie"><label>Testen — vink af wat je echt hebt geprobeerd <span class="voortgang"></span></label><div class="balkje"><i></i></div>`+
-   `<ul class="testlijst">${checks.map(t=>`<li><label><input type="checkbox"><span>${t}</span></label></li>`).join('')}</ul></div>`+
+   `<p class="doel">${doel}</p><div class="vak" style="margin-top:10px"><b>Te verbeteren</b> ${verb||'—'}</div>`+
+   `<div class="sectie"><label><button type="button" class="testknop chip">🧪 Testen tonen</button> <span class="voortgang"></span></label><div class="balkje"><i></i></div>`+
+   `<ul class="testlijst" style="display:none">${checks.map(t=>`<li><label><input type="checkbox"><span>${t}</span></label></li>`).join('')}</ul></div>`+
    `<div class="sectie"><label>Notities — kies een categorie en schrijf vrij</label><div class="invoer">`+
    `<select class="cat" aria-label="Categorie van de notitie">${CAT.map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`+
    `<textarea placeholder="Bijv. 'knop doet raar op mobiel, nakijken' — Ctrl+Enter voegt toe"></textarea><button type="button" class="toevoegen">+ Voeg toe</button></div><div class="notities"></div></div>`;
@@ -229,6 +274,9 @@ function kaart([id,naam,url,doel,def,verb]){
     const d = new Date().toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
     (store[id] ??= {}).notes = [...(store[id].notes||[]), {d, t, c: cat.value}]; ta.value=''; save(); teken(); ta.focus(); };
   ta.addEventListener('keydown', e=>{ if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) knop.click(); });
+  const testknop = el.querySelector('.testknop'), testlijstEl = el.querySelector('.testlijst');
+  testknop.onclick = () => { const open = testlijstEl.style.display !== 'none';
+    testlijstEl.style.display = open ? 'none' : ''; testknop.textContent = open ? '🧪 Testen tonen' : '🧪 Testen verbergen'; };
   testVoortgang(); teken(); return el;
 }
 const lijst = document.getElementById('lijst');
@@ -242,6 +290,79 @@ BACKLOG.forEach(([st, titel, tekst], i)=>{
   el.innerHTML = `<h3><span class="nummer">${i+1}</span>${titel}</h3><p class="doel">${tekst}</p>`;
   bl.append(el);
 });
+
+// ---------------- Checklist / projectmanagement ----------------
+const TSTAT = {todo:"📋 Te doen", bezig:"🔨 Bezig", klaar:"✅ Klaar", later:"⏸️ Later"};
+const START_TAKEN = [
+ ["SPA-shell per pagina snoeien","fix","hoog","","Elke URL serveert ± 860 KB met alle secties verborgen en 24 H1's in de bron. Generator per pagina alleen de eigen sectie laten houden. In scripts/seo.mjs; grootste technische winst.","todo"],
+ ["Pagina per model maken","seo","hoog","modellen","67 modellen, geen model-URL's. Per model: prijs, actieradius (ook winter), laadtijd, rekenknop, Product-schema. Sterkste koopintentie.","todo"],
+ ["Zero-emissiezone per gemeente","seo","middel","zones","Lokale zoekvraag. Per grote gemeente: ingangsdatum, overgang, ontheffing, kentekencheck.","todo"],
+ ["Nieuws splitsen naar artikelen","seo","middel","nieuws","Eigen URL, datum en auteur + NewsArticle-schema. Onderwerpen: AanZET 2027, heffingstarieven 2027, accijns, ETS2 2028.","todo"],
+ ["Restwaarde-bronnen activeren","verbetering","middel","restwaarde","Bronnen in scripts/bronnen.json staan op inactief. Aanzetten of de belofte op de pagina versmallen.","todo"],
+ ["Tweedehands-koopgids schrijven","inspiratie","laag","accu","Elektrische vrachtwagen tweedehands kopen: accucheck (SoH), garantie, waar op letten. Linkt naar de restwaarde-index.","later"],
+ ["Onderwerpen toevoegen: SPULA/MCS, HVO100, OBU, BPM","seo","laag","","Ontbrekende onderwerpen uit de SEO-analyse (0× op de site). Een voor een oppakken.","later"],
+ ["Live controles doen (redirects, rijke resultaten)","bug","middel","sitemap","Eenmalig: curl -I op www/http-varianten, Rich Results-test op een gidsartikel, gerenderde H1 per URL controleren.","todo"],
+ ["SEO quick wins (twitter:image, titels, CI)","seo","hoog","","Gedaan in oktober 2026 (commit a314ae1).","klaar"],
+ ["Website-overzicht als tracker gebouwd","verbetering","middel","","Dit document zelf: statussen, testlijsten, notities met categorie en deze checklist.","klaar"]
+];
+let taken = JSON.parse(localStorage.getItem('sod-taken')||'null');
+if (!taken){ taken = START_TAKEN.map(([titel,c,pagina,oms,st],i)=>({id:'start-'+i, titel, c, prio:p, pagina, oms, st})); localStorage.setItem('sod-taken', JSON.stringify(taken)); }
+const saveTaken = () => localStorage.setItem('sod-taken', JSON.stringify(taken));
+const ntCat = document.getElementById('nt-cat'), ntPag = document.getElementById('nt-pagina'), tCatF = document.getElementById('tcatfilter');
+for (const [k,v] of CAT){ ntCat.add(new Option(v,k)); tCatF.add(new Option('Categorie: '+v,k)); }
+for (const [, items] of GROEPEN) for (const [id,naam] of items) ntPag.add(new Option(naam, id));
+const PAGNAAM = Object.fromEntries(GROEPEN.flatMap(([,items])=>items.map(([id,naam,url])=>[id,naam+' ('+url+')'])));
+let tfilter = 'alle';
+function tekenTaken(){
+  const cf = tCatF.value, lijstEl = document.getElementById('takenlijst');
+  const volgorde = {todo:0, bezig:1, later:2, klaar:3}, prioW = {hoog:0, middel:1, laag:2};
+  const zichtbaar = taken.filter(t => (tfilter==='alle'||t.st===tfilter) && (!cf||t.c===cf))
+                         .sort((a,b)=> volgorde[a.st]-volgorde[b.st] || prioW[a.prio]-prioW[b.prio]);
+  lijstEl.innerHTML = '';
+  let vorigeStatus = null;
+  for (const t of zichtbaar){
+    if (t.st !== vorigeStatus){ vorigeStatus = t.st;
+      const kop = document.createElement('h2'); kop.innerHTML = TSTAT[t.st]+' <span style="float:right;font-size:12px;color:var(--ink3)">'+zichtbaar.filter(x=>x.st===t.st).length+' taken</span>';
+      lijstEl.append(kop); }
+    const el = document.createElement('article'); el.className='taak'; el.dataset.tstatus=t.st;
+    el.innerHTML = `<div class="kop"><h3>${esc(t.titel)}<span class="prio prio-${t.prio}">${t.prio==='hoog'?'🔴 hoog':t.prio==='middel'?'🟡 middel':'⚪ laag'}</span></h3>`+
+      `<select class="tstatus" aria-label="Status">${Object.entries(TSTAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>`+
+      `<div class="meta"><span class="catbadge cb-${t.c}">${CATNAAM[t.c]||t.c}</span>${t.pagina? 'Pagina: '+esc(PAGNAAM[t.pagina]||t.pagina) : 'Algemeen (geen pagina)'}</div>`+
+      (t.oms? `<p class="oms">${esc(t.oms)}</p>`:'')+
+      `<div style="margin-top:8px"><button type="button" class="chip tverwijder">🗑 Verwijder taak</button></div>`;
+    const sel = el.querySelector('.tstatus'); sel.value = t.st;
+    sel.onchange = () => { t.st = sel.value; saveTaken(); tekenTaken(); };
+    el.querySelector('.tverwijder').onclick = () => { if (confirm('Taak verwijderen?')){ taken = taken.filter(x=>x.id!==t.id); saveTaken(); tekenTaken(); } };
+    lijstEl.append(el);
+  }
+  if (!zichtbaar.length) lijstEl.innerHTML = '<div class="uitleg">Geen taken in deze weergave. Voeg hierboven een nieuwe toe.</div>';
+  const klaarN = taken.filter(t=>t.st==='klaar').length;
+  document.getElementById('tteller').textContent = klaarN+' van '+taken.length+' taken klaar';
+}
+document.getElementById('nt-knop').onclick = () => {
+  const titel = document.getElementById('nt-titel').value.trim(); if(!titel) return;
+  taken.unshift({id:'t'+Date.now(), titel, c: ntCat.value, prio: document.getElementById('nt-prio').value,
+                 pagina: ntPag.value, oms: document.getElementById('nt-oms').value.trim(), st:'todo'});
+  document.getElementById('nt-titel').value=''; document.getElementById('nt-oms').value='';
+  saveTaken(); tekenTaken();
+};
+document.querySelectorAll('.tfilter').forEach(b=>b.onclick=()=>{ tfilter=b.dataset.tf;
+  document.querySelectorAll('.tfilter').forEach(x=>x.classList.toggle('aan',x===b)); tekenTaken(); });
+tCatF.onchange = tekenTaken;
+// Weergave wisselen: Pagina's <-> Checklist
+const vPag = document.getElementById('view-paginas'), vChk = document.getElementById('view-checklist'), vBl = document.getElementById('view-backlog');
+function toonChecklist(aan){
+  vPag.style.display = aan?'none':''; vBl.style.display = aan?'none':'';
+  document.querySelectorAll('main > .uitleg').forEach(u=>u.style.display = aan?'none':'');
+  vChk.style.display = aan?'':'none';
+  document.getElementById('knop-paginas').classList.toggle('aan', !aan);
+  document.getElementById('knop-checklist').classList.toggle('aan', aan);
+  if (aan) tekenTaken();
+}
+document.getElementById('knop-paginas').onclick = () => toonChecklist(false);
+document.getElementById('knop-checklist').onclick = () => toonChecklist(true);
+tekenTaken();
+
 let filter = 'alle';
 function tel(){
   const q = document.getElementById('zoek').value.toLowerCase(), cf = catSel.value; let n = 0;
