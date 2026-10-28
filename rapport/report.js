@@ -303,7 +303,8 @@ function dayView(r) {
       E('aside', { class: 'day-aside' }, E('div', { class: 'eyebrow' }, 'Een moment op uw werkdag'), E('div', { class: 'day-clock', id: 'clock-time', 'aria-live': 'off' }, time(r.tijdas[state.clock])), slide,
         E('div', { class: 'clock-controls' }, play, E('span', { id: 'clock-window' }, `${time(r.tijdas[state.clock])}–${time(r.tijdas[state.clock + 1])}`)), readings,
         E('p', { class: 'hint' }, 'De grafiek toont de basiswerkdag. Winter en andere opgenomen scenario’s worden in de modelcontrole meegenomen.'))),
-    E('div', { class: 'day-facts' }, E('div', {}, E('span', {}, 'Hoogste afname'), E('b', {}, `${num(peak, 1)} kW`)), E('div', {}, E('span', {}, 'Ruimte op de aansluiting'), E('b', {}, `${num(margin, 1)} kW`)), E('div', {}, E('span', {}, 'Laden onderweg'), E('b', {}, `${num((day.onderweg_kwh_pj || 0) / 1000, 1)} MWh/jaar`))));
+    E('div', { class: 'day-facts', style: { gridTemplateColumns: `repeat(${day.thuis_kwh_pj || r.thuisladers?.length ? 4 : 3},1fr)` } }, E('div', {}, E('span', {}, 'Hoogste afname'), E('b', {}, `${num(peak, 1)} kW`)), E('div', {}, E('span', {}, 'Ruimte op de aansluiting'), E('b', {}, `${num(margin, 1)} kW`)), E('div', {}, E('span', {}, 'Laden onderweg'), E('b', {}, `${num((day.onderweg_kwh_pj || 0) / 1000, 1)} MWh/jaar`)),
+      day.thuis_kwh_pj || r.thuisladers?.length ? E('div', {}, E('span', {}, 'Thuisladen'), E('b', {}, `${num((day.thuis_kwh_pj || 0) / 1000, 1)} MWh/jaar`)) : null));
   const s = section('laden', 'Laden en energie', heading(4, 'Laden en energie', 'Een werkdag die klopt.', 'Zie wanneer uw voertuigen laden en wat dat vraagt van de aansluiting.'), plan,
     ['laden', 'werkdag'].filter(k => r.texts?.[k]).map(k => textBlock(r.texts[k], 'prose hint')));
   // Populate after insertion, once all referenced DOM elements are mounted.
@@ -363,7 +364,10 @@ function assumptions(r) {
         E('p', { class: 'hint' }, r.texts?.disclaimer || 'Een onderbouwd plan op basis van de aangeleverde gegevens en indicatieve prijzen. Toets de inzet met echte ritgegevens en bevestig offertes en subsidies voordat u beslist.'))),
       E('div', { class: 'trustline' }, E('span', {}, `Optimalisatiemarge: ${r.gap == null ? 'onbekend' : pct(r.gap, 3)} · ${r.status === 'optimaal' ? 'opgelost binnen ingestelde nauwkeurigheid' : 'beste gevonden plan'}`),
         E('span', {}, r.controle?.fout ? 'Modelcontrole meldt een aandachtspunt; bespreek dit met uw adviseur.' : r.controle?.cashflow_npv_reconciled ? 'Energiebalans en kasstromen onafhankelijk nagerekend' : 'Onafhankelijke controle niet volledig beschikbaar')),
-      E('details', { class: 'disclosure' }, E('summary', {}, 'De aangeleverde ritten'), E('div', { class: 'table-wrap' }, dataTable(['Rit', 'Dagafstand', 'Vertrek', 'Terug'], report.trips.map(t => [t.naam, `${num(t.km)} km`, time(t.vertrek * 60), time(t.aankomst * 60)]))))));
+      E('details', { class: 'disclosure' }, E('summary', {}, 'De aangeleverde ritten'), E('div', { class: 'table-wrap' }, dataTable(['Rit', 'Dagafstand', 'Vertrek', 'Terug'], report.trips.map(t => [t.naam, `${num(t.km)} km`, time(t.vertrek * 60), time(t.aankomst * 60)])))),
+      report.policies?.length ? E('details', { class: 'disclosure' }, E('summary', {}, 'Laadbeleid en bedrijfskeuzes'), E('div', { class: 'table-wrap' }, dataTable(['Groep', 'Depot', 'Laden tot', 'Onderweg', 'Thuis'], report.policies.map(p => [p.group, p.depot === 'venster' ? `${time(p.van * 60)}–${time(p.tot * 60)}` : p.depot === 'nooit' ? 'Niet toegestaan' : 'Als aanwezig', pct(p.laad_tot), p.onderweg ? 'Toegestaan' : 'Niet toegestaan', p.thuis ? 'Toegestaan' : 'Niet meegenomen']))),
+        E('div', { class: 'panel-body' }, textBlock(`Meerdere ritten per voertuig: ${report.business?.meerdere_ritten ? 'toegestaan' : 'niet meegenomen'}. Vervroegd vervangen: ${report.business?.eerder_vervangen === false ? 'niet toegestaan' : 'toegestaan'}.`, 'hint'),
+          report.policies.some(p => p.thuis) ? textBlock(`Thuisladen: ${num(report.home_charging?.kw)} kW, ${moneyDecimal(report.home_charging?.prijs)} per kWh. ${r.thuisladers?.length || 0} thuisladers gekozen in dit plan.`, 'hint') : null)) : null));
 }
 function moneyDecimal(x) { return `€ ${num(x, 2)}`; }
 
@@ -397,7 +401,7 @@ async function copyLink() {
 function render() {
   const r = report.variants[state.variant], m = metrics(report, r);
   stopPlayer(); state.observer?.disconnect();
-  const banners = [demo ? E('div', { class: 'demo' }, 'Voorbeeldrapport · fictieve organisatie en voorbeeldberekening') : null, preview ? E('div', { class: 'preview-banner' }, 'Lokaal voorbeeld · dit rapport is nog niet online gepubliceerd') : null];
+  const banners = [demo || report.demo ? E('div', { class: 'demo' }, 'Voorbeeldrapport · fictieve organisatie en voorbeeldberekening') : null, preview ? E('div', { class: 'preview-banner' }, 'Lokaal voorbeeld · dit rapport is nog niet online gepubliceerd') : null];
   const top = E('header', { class: 'top wrap' }, brand(), E('div', { class: 'top-right' }, E('span', { class: 'personal' }, icon('lock'), 'Uw persoonlijke rapport'), !preview && !demo ? button('Deel link', copyLink, '', 'link') : null, button('Bewaar als pdf', () => { stopPlayer(); print(); }, '', 'download')));
   const nav = E('div', { class: 'nav-shell' }, E('nav', { class: 'section-nav wrap', 'aria-label': 'In dit rapport' }, E('div', { class: 'nav-links' }, [['samenvatting', 'Overzicht'], ['vlootplan', 'Vlootplan'], ['kosten', 'Kosten'], ['laden', 'Laden & energie'], ['varianten', 'Vergelijken'], ['impact', 'Impact'], ['stappen', 'Volgende stappen'], ['uitgangspunten', 'Onderbouwing']].map(([id, label]) => anchor(id, label))), E('span', { class: 'nav-client' }, report.client.name)));
   const footer = E('footer', { class: 'footer wrap' }, brand(), E('div', { class: 'footer-right' }, 'Een helder plan voor elke kilometer.', E('span', {}, report.publication?.expires_at ? `Persoonlijke link geldig t/m ${date(report.publication.expires_at)}` : `Opgesteld ${date(report.created_at)} · ${report.client.name}`)));
