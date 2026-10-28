@@ -27,6 +27,19 @@ Structured data describes the organization, website, page, breadcrumb trail, gui
 
 `lastmod` changes only when a page’s content or metadata changes. Repeated builds preserve dates. Font files are self-hosted under `assets/fonts/` with their SIL Open Font License files. Keep those assets when changing deployment. Advertising JavaScript loads only when an ad slot is configured.
 
+## Keyword research (Google Autocomplete, October 2026)
+
+Method: harvested 824 unique Dutch suggestions from Google's own autocomplete endpoint (`suggestqueries.google.com`, hl=nl, gl=nl) from 21 seed terms plus question prefixes and letter expansions. Suggestion order and recurrence are a popularity signal, not exact volumes. Findings applied to titles and guide content:
+
+- **Kilometerheffing dominates.** Searchers say "kilometerheffing", not "vrachtwagenheffing": *kilometerheffing berekenen*, *hoeveel kilometerheffing vrachtwagen*, *wat kost kilometerheffing vrachtwagen*, *kilometerheffing welke wegen*, *hoe wordt kilometerheffing gecontroleerd*. The toll guide now leads with "kilometerheffing" and answers the roads and enforcement questions.
+- **Range is asked per vehicle type, especially vans:** *elektrische bestelbus met grootste actieradius*, *welke elektrische bestelbus heeft de grootste actieradius*. The range guide names the actual longest-range models from the live catalogue.
+- **Subsidy is asked as an amount:** *hoeveel subsidie elektrische vrachtwagen*. The grants guide heading now asks that question above the AanZET table.
+- **Charging is asked as where/cost:** *waar elektrische vrachtwagen laden*, *wat kost het om een elektrische vrachtwagen op te laden*. Covered by the charging guide title and content.
+- **"Vlootanalyse" itself is barely searched** (no autocomplete suggestions; Search Console shows only a handful of impressions). Demand exists as *wagenpark elektrisch* and *tco vrachtwagen*. Keep the fleet page, but let the homepage and calculator carry the TCO wording.
+- Notable unmet demand for later: per-model searches (*elektrische vrachtwagen mercedes*, *actieradius elektrische volvo vrachtwagen*) — these argue for individual model pages, which do not exist yet.
+
+Search Console (first data): queries *vlootanalyse*, *emissieloze vrachtauto laden*, *elektrische vrachtwagen actieradius*, *kilometerheffing vrachtwagens* show impressions but zero clicks, i.e. positions beyond the first results. Thin guide articles (170–250 words) against complete official pages are the main content gap; every generated page also ships the full app shell (~837 KB, content of all pages in every URL), which dilutes per-page relevance until the shell is split per route.
+
 ## Search Console
 
 Submit `https://stekkerofdiesel.nl/sitemap.xml` in the existing property. After a deployment, inspect representative Dutch and English URLs, check the live page and request indexing where useful. A sitemap submission and an indexing request do not guarantee indexing or a position in search results.
