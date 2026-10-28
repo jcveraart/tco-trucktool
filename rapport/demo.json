@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "created_at": "2026-10-28T08:56:55.639546+00:00",
+ "created_at": "2026-10-28T09:21:59.680156+00:00",
  "demo": true,
  "calculated_at": "2026-10-28T10:00:00Z",
  "run_id": "run",
@@ -26,7 +26,15 @@
   "stroom_piek": 0.27,
   "soc_min": 0.1,
   "begin_soc": 0.9,
-  "accu_veroudering": 0.02
+  "accu_veroudering": 0.02,
+  "dal_van": 22,
+  "dal_tot": 7,
+  "teruglevering": 0.04,
+  "piektarief_kw_maand": 3.5,
+  "co2_diesel": 3.27,
+  "co2_stroom": 0.48,
+  "ev_prijsdaling": 0.02,
+  "vervangmomenten": "slim"
  },
  "fleet": [
   {
@@ -42,7 +50,16 @@
    "lease_pj": 0,
    "accu_kwh": 70,
    "verbruik_kwh100": 25,
-   "verbruik_l100": 9.5
+   "verbruik_l100": 9.5,
+   "laadvermogen_kg": 1100,
+   "kenmerken": [],
+   "verkoopwaarde": 9500,
+   "waardedaling": 0.15,
+   "vaste_kosten_pj": 2000,
+   "onderhoud_km": 0.06,
+   "heffing_km": 0,
+   "ac_kw": 11,
+   "dc_kw": 100
   },
   {
    "id": "vb7483a56",
@@ -57,7 +74,16 @@
    "lease_pj": 0,
    "accu_kwh": 70,
    "verbruik_kwh100": 25,
-   "verbruik_l100": 9.5
+   "verbruik_l100": 9.5,
+   "laadvermogen_kg": 1100,
+   "kenmerken": [],
+   "verkoopwaarde": 11500,
+   "waardedaling": 0.15,
+   "vaste_kosten_pj": 2000,
+   "onderhoud_km": 0.06,
+   "heffing_km": 0,
+   "ac_kw": 11,
+   "dc_kw": 100
   },
   {
    "id": "v38c77515",
@@ -72,7 +98,16 @@
    "lease_pj": 0,
    "accu_kwh": 70,
    "verbruik_kwh100": 25,
-   "verbruik_l100": 9.5
+   "verbruik_l100": 9.5,
+   "laadvermogen_kg": 1100,
+   "kenmerken": [],
+   "verkoopwaarde": 11500,
+   "waardedaling": 0.15,
+   "vaste_kosten_pj": 2000,
+   "onderhoud_km": 0.06,
+   "heffing_km": 0,
+   "ac_kw": 11,
+   "dc_kw": 100
   },
   {
    "id": "vda85deb8",
@@ -87,7 +122,16 @@
    "lease_pj": 0,
    "accu_kwh": 70,
    "verbruik_kwh100": 25,
-   "verbruik_l100": 9.5
+   "verbruik_l100": 9.5,
+   "laadvermogen_kg": 1100,
+   "kenmerken": [],
+   "verkoopwaarde": 14000,
+   "waardedaling": 0.15,
+   "vaste_kosten_pj": 2000,
+   "onderhoud_km": 0.06,
+   "heffing_km": 0,
+   "ac_kw": 11,
+   "dc_kw": 100
   },
   {
    "id": "vf213ba63",
@@ -102,7 +146,16 @@
    "lease_pj": 0,
    "accu_kwh": 70,
    "verbruik_kwh100": 25,
-   "verbruik_l100": 9.5
+   "verbruik_l100": 9.5,
+   "laadvermogen_kg": 1100,
+   "kenmerken": [],
+   "verkoopwaarde": 17500,
+   "waardedaling": 0.15,
+   "vaste_kosten_pj": 2000,
+   "onderhoud_km": 0.06,
+   "heffing_km": 0,
+   "ac_kw": 11,
+   "dc_kw": 100
   },
   {
    "id": "v5a532844",
@@ -117,7 +170,16 @@
    "lease_pj": 0,
    "accu_kwh": 300,
    "verbruik_kwh100": 100,
-   "verbruik_l100": 24
+   "verbruik_l100": 24,
+   "laadvermogen_kg": 7000,
+   "kenmerken": [],
+   "verkoopwaarde": 32000,
+   "waardedaling": 0.15,
+   "vaste_kosten_pj": 4500,
+   "onderhoud_km": 0.1,
+   "heffing_km": 0.182,
+   "ac_kw": 22,
+   "dc_kw": 150
   },
   {
    "id": "ve3295027",
@@ -132,7 +194,16 @@
    "lease_pj": 0,
    "accu_kwh": 300,
    "verbruik_kwh100": 100,
-   "verbruik_l100": 24
+   "verbruik_l100": 24,
+   "laadvermogen_kg": 7000,
+   "kenmerken": [],
+   "verkoopwaarde": 52000,
+   "waardedaling": 0.15,
+   "vaste_kosten_pj": 4500,
+   "onderhoud_km": 0.1,
+   "heffing_km": 0.182,
+   "ac_kw": 22,
+   "dc_kw": 150
   }
  ],
  "trips": [
@@ -146,7 +217,12 @@
    "laadvermogen_kg": 800,
    "ze_vanaf": 2028,
    "piek": false,
-   "vaste_wagen": ""
+   "vaste_wagen": "",
+   "stops": [],
+   "charter": false,
+   "charter_kosten": 450,
+   "vereist": [],
+   "heffing_aandeel": 0
   },
   {
    "id": "r1414348a",
@@ -158,7 +234,12 @@
    "laadvermogen_kg": 800,
    "ze_vanaf": null,
    "piek": false,
-   "vaste_wagen": ""
+   "vaste_wagen": "",
+   "stops": [],
+   "charter": false,
+   "charter_kosten": 450,
+   "vereist": [],
+   "heffing_aandeel": 0
   },
   {
    "id": "r3d8e08e5",
@@ -170,7 +251,12 @@
    "laadvermogen_kg": 800,
    "ze_vanaf": null,
    "piek": false,
-   "vaste_wagen": ""
+   "vaste_wagen": "",
+   "stops": [],
+   "charter": false,
+   "charter_kosten": 450,
+   "vereist": [],
+   "heffing_aandeel": 0
   },
   {
    "id": "rc295bd0e",
@@ -182,7 +268,12 @@
    "laadvermogen_kg": 800,
    "ze_vanaf": null,
    "piek": false,
-   "vaste_wagen": ""
+   "vaste_wagen": "",
+   "stops": [],
+   "charter": false,
+   "charter_kosten": 450,
+   "vereist": [],
+   "heffing_aandeel": 0
   },
   {
    "id": "r41c1b32c",
@@ -194,7 +285,12 @@
    "laadvermogen_kg": 800,
    "ze_vanaf": null,
    "piek": false,
-   "vaste_wagen": ""
+   "vaste_wagen": "",
+   "stops": [],
+   "charter": false,
+   "charter_kosten": 450,
+   "vereist": [],
+   "heffing_aandeel": 0
   },
   {
    "id": "r9715f473",
@@ -206,7 +302,18 @@
    "laadvermogen_kg": 5500,
    "ze_vanaf": null,
    "piek": false,
-   "vaste_wagen": ""
+   "vaste_wagen": "",
+   "stops": [
+    {
+     "station": "s1",
+     "van": 9.5,
+     "tot": 10.5
+    }
+   ],
+   "charter": false,
+   "charter_kosten": 450,
+   "vereist": [],
+   "heffing_aandeel": 0.6
   },
   {
    "id": "rb9c6168e",
@@ -218,7 +325,12 @@
    "laadvermogen_kg": 5500,
    "ze_vanaf": null,
    "piek": false,
-   "vaste_wagen": ""
+   "vaste_wagen": "",
+   "stops": [],
+   "charter": false,
+   "charter_kosten": 450,
+   "vereist": [],
+   "heffing_aandeel": 0.6
   }
  ],
  "chargers": [
@@ -227,25 +339,269 @@
    "type": "AC",
    "bestaand": 0,
    "kast_kw": 44,
-   "connectoren": 2
+   "connectoren": 2,
+   "kw_per_connector": 22,
+   "investering": 5000,
+   "jaarkosten": 400,
+   "levensduur": 10,
+   "max_aantal": 4
   },
   {
    "naam": "DC 50 kW",
    "type": "DC",
    "bestaand": 0,
    "kast_kw": 50,
-   "connectoren": 1
+   "connectoren": 1,
+   "kw_per_connector": 50,
+   "investering": 20000,
+   "jaarkosten": 400,
+   "levensduur": 10,
+   "max_aantal": 1
   }
  ],
+ "candidates": [
+  {
+   "id": "m182e28fd",
+   "naam": "Ford E-Transit",
+   "soort": "bestel",
+   "groep": "bestel",
+   "aandrijving": "electric",
+   "prijs": 60000,
+   "accu_kwh": 89,
+   "verbruik_kwh100": 26.1,
+   "verbruik_l100": 9,
+   "laadvermogen_kg": 1300,
+   "restwaarde_pct": 0.2,
+   "afschrijving_jaren": 5,
+   "vaste_kosten_pj": 2500,
+   "onderhoud_km": 0.04,
+   "heffing_km": 0,
+   "koop": true,
+   "lease": true,
+   "lease_pj": 14200,
+   "lease_jaren": 5,
+   "lease_km_pj": 40000,
+   "vanaf_jaar": null,
+   "ac_kw": 11,
+   "dc_kw": 180,
+   "kenmerken": [],
+   "subsidie": {
+    "bedrag": 0,
+    "bevestigd": false
+   }
+  },
+  {
+   "id": "mb0124804",
+   "naam": "Mercedes-Benz eSprinter",
+   "soort": "bestel",
+   "groep": "bestel",
+   "aandrijving": "electric",
+   "prijs": 49900,
+   "accu_kwh": 81,
+   "verbruik_kwh100": 28,
+   "verbruik_l100": 9,
+   "laadvermogen_kg": 1200,
+   "restwaarde_pct": 0.2,
+   "afschrijving_jaren": 5,
+   "vaste_kosten_pj": 2500,
+   "onderhoud_km": 0.04,
+   "heffing_km": 0,
+   "koop": true,
+   "lease": true,
+   "lease_pj": 12900,
+   "lease_jaren": 5,
+   "lease_km_pj": 40000,
+   "vanaf_jaar": null,
+   "ac_kw": 11,
+   "dc_kw": 115,
+   "kenmerken": [],
+   "subsidie": {
+    "bedrag": 0,
+    "bevestigd": false
+   }
+  },
+  {
+   "id": "mf650a914",
+   "naam": "Diesel bestelbus",
+   "soort": "bestel",
+   "groep": "bestel",
+   "aandrijving": "diesel",
+   "prijs": 45000,
+   "accu_kwh": 70,
+   "verbruik_kwh100": 25,
+   "verbruik_l100": 9,
+   "laadvermogen_kg": 1200,
+   "restwaarde_pct": 0.2,
+   "afschrijving_jaren": 5,
+   "vaste_kosten_pj": 2000,
+   "onderhoud_km": 0.06,
+   "heffing_km": 0,
+   "koop": true,
+   "lease": false,
+   "lease_pj": 9722,
+   "lease_jaren": 5,
+   "lease_km_pj": 60000,
+   "vanaf_jaar": null,
+   "ac_kw": 11,
+   "dc_kw": 100,
+   "kenmerken": [],
+   "subsidie": {
+    "bedrag": 0,
+    "bevestigd": false
+   }
+  },
+  {
+   "id": "mdcd1fce3",
+   "naam": "Renault Trucks E-Tech D 16 t",
+   "soort": "bakwagen",
+   "groep": "bakwagen",
+   "aandrijving": "electric",
+   "prijs": 195000,
+   "accu_kwh": 280,
+   "verbruik_kwh100": 95,
+   "verbruik_l100": 25,
+   "laadvermogen_kg": 8000,
+   "restwaarde_pct": 0.1,
+   "afschrijving_jaren": 7,
+   "vaste_kosten_pj": 6500,
+   "onderhoud_km": 0.06,
+   "heffing_km": 0.037,
+   "koop": true,
+   "lease": true,
+   "lease_pj": 42000,
+   "lease_jaren": 5,
+   "lease_km_pj": 50000,
+   "vanaf_jaar": null,
+   "ac_kw": 22,
+   "dc_kw": 150,
+   "kenmerken": [],
+   "subsidie": {
+    "bedrag": 23400,
+    "bevestigd": false
+   }
+  },
+  {
+   "id": "me995d974",
+   "naam": "Diesel bakwagen 16 t",
+   "soort": "bakwagen",
+   "groep": "bakwagen",
+   "aandrijving": "diesel",
+   "prijs": 95000,
+   "accu_kwh": 300,
+   "verbruik_kwh100": 100,
+   "verbruik_l100": 25,
+   "laadvermogen_kg": 8000,
+   "restwaarde_pct": 0.1,
+   "afschrijving_jaren": 7,
+   "vaste_kosten_pj": 4500,
+   "onderhoud_km": 0.1,
+   "heffing_km": 0.182,
+   "koop": true,
+   "lease": false,
+   "lease_pj": 22328,
+   "lease_jaren": 5,
+   "lease_km_pj": 60000,
+   "vanaf_jaar": null,
+   "ac_kw": 22,
+   "dc_kw": 150,
+   "kenmerken": [],
+   "subsidie": {
+    "bedrag": 0,
+    "bevestigd": false
+   }
+  }
+ ],
+ "stations": [
+  {
+   "id": "s1",
+   "naam": "Snellader Nieuwegein",
+   "kw": 150,
+   "connectoren": 2,
+   "prijs": 0.49
+  }
+ ],
+ "choices": {
+  "koop": true,
+  "lease": true,
+  "nieuwe_diesel": true,
+  "elektrisch": true,
+  "max_investering_pj": null,
+  "max_kapitaal": null,
+  "max_nieuw_pj": 4,
+  "max_lease_pm": null,
+  "ze_doel_pct": 60,
+  "ze_doel_jaar": 2030,
+  "reserve_per_groep": 0,
+  "vlootgrootte": {},
+  "netverzwaring": true,
+  "laden_onderweg": true,
+  "omhangen": false,
+  "omhang_personeel": 1,
+  "pv_batterij": true,
+  "subsidies": "bevestigd",
+  "ere_prijs": 0.0,
+  "co2_prijs_ton": 0.0,
+  "winter": true,
+  "winter_kans": 0.2,
+  "winter_extra": 0.25,
+  "risicoweging": 0.0,
+  "piek_weken": 0,
+  "meerdere_ritten": false,
+  "eerder_vervangen": true,
+  "max_leeftijd": null,
+  "lease_eerder_stoppen": false,
+  "lease_boete_maanden": 3,
+  "groei_pct": 0,
+  "groei_vanaf": null,
+  "groei_groep": {},
+  "thuisladen": {
+   "kw": 11,
+   "prijs": 0.3,
+   "investering": 1500,
+   "van": 18,
+   "tot": 7
+  }
+ },
+ "scenario_settings": {
+  "diesel_delta": 0.3,
+  "stroom_pct": 0.3,
+  "groei_laag": -5,
+  "groei_hoog": 10
+ },
  "depot": {
   "naam": "Depot Lage Weide",
   "aansluiting_kw": 55,
+  "aansluiting_jaarkosten": 600,
   "gebouw_dag_kw": 12,
   "gebouw_nacht_kw": 3,
   "pv_bestaand_kw": 0,
   "laad_max_kw": null,
   "laad_max_van": null,
-  "laad_max_tot": null
+  "laad_max_tot": null,
+  "netopties": [
+   {
+    "naam": "3x160A",
+    "kw": 110,
+    "kosten": 14000,
+    "jaarkosten": 1900,
+    "vanaf_jaar": 2028
+   }
+  ],
+  "pv": {
+   "kwp": 10,
+   "max": 4,
+   "investering": 9000,
+   "jaarkosten": 100,
+   "levensduur": 20
+  },
+  "batterij": {
+   "kwh": 50,
+   "kw": 25,
+   "max": 2,
+   "investering": 25000,
+   "jaarkosten": 250,
+   "levensduur": 10
+  }
  },
  "policies": [
   {
@@ -1366,6 +1722,7 @@
     "cashflow_npv_reconciled": true,
     "matrix_rows_checked": 184539
    },
+   "wijzigingen": {},
    "texts": {},
    "notices": [
     "Het kostenverschil is kleiner dan de gezamenlijke optimalisatiemarge. De rangorde van deze plannen staat daarmee niet vast."
@@ -2602,6 +2959,9 @@
     "cashflow_npv_reconciled": true,
     "matrix_rows_checked": 101233
    },
+   "wijzigingen": {
+    "wensen.lease": false
+   },
    "texts": {},
    "notices": []
   },
@@ -3674,6 +4034,9 @@
     "physical_intervals_checked": 7410,
     "cashflow_npv_reconciled": true,
     "matrix_rows_checked": 184532
+   },
+   "wijzigingen": {
+    "wensen.netverzwaring": false
    },
    "texts": {},
    "notices": [
@@ -4966,6 +5329,9 @@
     "cashflow_npv_reconciled": true,
     "matrix_rows_checked": 184539
    },
+   "wijzigingen": {
+    "instellingen.dieselprijs": 2.3
+   },
    "texts": {},
    "notices": [
     "Het kostenverschil is kleiner dan de gezamenlijke optimalisatiemarge. De rangorde van deze plannen staat daarmee niet vast."
@@ -5879,6 +6245,10 @@
     "physical_intervals_checked": 114,
     "cashflow_npv_reconciled": true,
     "matrix_rows_checked": 15769
+   },
+   "wijzigingen": {
+    "wensen.elektrisch": false,
+    "wensen.ze_doel_pct": 0
    },
    "texts": {},
    "notices": []
