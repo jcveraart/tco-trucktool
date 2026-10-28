@@ -110,6 +110,19 @@ button.toevoegen:hover{background:#07734A}
 .kolom .taak .oms{font-size:12.5px}
 .leegkolom{font-size:12.5px;color:var(--ink3);text-align:center;padding:14px 6px;border:1.5px dashed #CFCFC4;border-radius:9px}
 
+
+.zijtab{position:fixed;right:0;top:42%;z-index:40;background:var(--ink);color:#fff;border:0;border-radius:10px 0 0 10px;padding:13px 9px;cursor:pointer;font:inherit;font-size:13px;font-weight:700;writing-mode:vertical-rl;box-shadow:-2px 2px 10px rgba(21,23,26,.25)}
+.zijtab:hover{background:var(--volt)}
+.zijpaneel{position:fixed;top:0;right:0;height:100dvh;width:min(400px,92vw);background:var(--card);z-index:50;box-shadow:-6px 0 28px rgba(21,23,26,.22);transform:translateX(105%);transition:transform .28s;display:flex;flex-direction:column}
+.zijpaneel.open{transform:none}
+.zijpaneel header2{display:block}
+.zijkop{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}
+.zijkop h3{margin:0;font-size:16px}
+.zijsluit{border:1px solid var(--line);background:var(--card);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:15px}
+.zijbody{padding:14px 18px;overflow-y:auto;flex:1}
+.zijbody p.uitleg2{font-size:13px;color:var(--ink2);margin:0 0 10px}
+.zijlog{display:grid;gap:7px;margin-top:12px}
+
 footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px}
 @media print{.hero{background:#fff;color:var(--ink)}.hero p{color:var(--ink2)}.balk-wrap,.invoer,button.toevoegen{display:none}.kaart{break-inside:avoid;box-shadow:none}textarea{display:none}}
 </style>
@@ -162,6 +175,20 @@ footer{color:var(--ink3);font-size:12px;text-align:center;padding:24px 20px 34px
 <div id="view-backlog"><h2>Verbeter-backlog (volgorde van waarde)</h2>
   <div id="backlog"></div></div>
 </main>
+
+<button type="button" class="zijtab" id="zijtab">💬 Algemene notities</button>
+<aside class="zijpaneel" id="zijpaneel" aria-label="Algemene notities">
+  <div class="zijkop"><h3>💬 Algemene notities</h3><button type="button" class="zijsluit" id="zijsluit" title="Sluiten">×</button></div>
+  <div class="zijbody">
+    <p class="uitleg2">Voor alles wat niet bij één pagina hoort: algemene ideeën, opmerkingen over de hele site, dingen om later te bespreken. Kies een categorie en schrijf vrij; het wordt in deze browser bewaard.</p>
+    <div class="invoer">
+      <select class="cat" id="alg-cat" aria-label="Categorie"></select>
+      <textarea id="alg-tekst" placeholder="Bijv. 'kleuren voelen nog wat koud' — Ctrl+Enter voegt toe"></textarea>
+      <button type="button" class="toevoegen" id="alg-knop">+ Voeg toe</button>
+    </div>
+    <div class="zijlog" id="alg-log"></div>
+  </div>
+</aside>
 <footer>Bijgewerkt 28 oktober 2026 · Statussen, testvinkjes en notities worden lokaal in je browser bewaard (localStorage), niet in de repository.</footer>
 <script>
 const LIVE = 'https://stekkerofdiesel.nl';
@@ -384,6 +411,26 @@ function toonChecklist(aan){
 document.getElementById('knop-paginas').onclick = () => toonChecklist(false);
 document.getElementById('knop-checklist').onclick = () => toonChecklist(true);
 tekenTaken();
+
+
+// ---------------- Algemene notities (zijpaneel) ----------------
+let algemeen = JSON.parse(localStorage.getItem('sod-algemeen')||'[]');
+const algLog = document.getElementById('alg-log'), algCat = document.getElementById('alg-cat'), algTekst = document.getElementById('alg-tekst');
+for (const [k,v] of CAT) algCat.add(new Option(v,k));
+function tekenAlgemeen(){
+  algLog.innerHTML = algemeen.map((r,i)=>`<div class="notitie"><span class="datum">${r.d}</span><span class="catbadge cb-${r.c||'anders'}">${CATNAAM[r.c||'anders']}</span>${esc(r.t)}<button type="button" class="wis" data-i="${i}" title="Verwijder">×</button></div>`).join('') || '<div class="notitie leeg">Nog geen algemene notities.</div>';
+  algLog.querySelectorAll('.wis').forEach(b=>b.onclick=()=>{ algemeen.splice(+b.dataset.i,1); localStorage.setItem('sod-algemeen', JSON.stringify(algemeen)); tekenAlgemeen(); });
+}
+function voegAlgemeenToe(){ const t = algTekst.value.trim(); if(!t) return;
+  algemeen.unshift({d: new Date().toLocaleDateString('nl-NL',{day:'numeric',month:'short'}), t, c: algCat.value});
+  algTekst.value=''; localStorage.setItem('sod-algemeen', JSON.stringify(algemeen)); tekenAlgemeen(); algTekst.focus(); }
+document.getElementById('alg-knop').onclick = voegAlgemeenToe;
+algTekst.addEventListener('keydown', e=>{ if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) voegAlgemeenToe(); });
+const paneelEl = document.getElementById('zijpaneel');
+document.getElementById('zijtab').onclick = () => { paneelEl.classList.add('open'); algTekst.focus(); };
+document.getElementById('zijsluit').onclick = () => paneelEl.classList.remove('open');
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') paneelEl.classList.remove('open'); });
+tekenAlgemeen();
 
 let filter = 'alle';
 function tel(){
