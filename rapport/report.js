@@ -78,6 +78,16 @@ const POSTS = {
   'CO₂-prijs': 'De interne CO₂-prijs die u heeft meegegeven.',
   'Zon en batterij': 'Zonnepanelen en een batterij op het depot.',
 };
+const SCENARIO_TEXT = {
+  diesel: 'Een lagere of hogere dieselprijs, bijvoorbeeld door accijns of door ETS2, de CO₂-heffing op brandstof vanaf 2028.',
+  stroom: 'Dal- en normaaltarief allebei hoger of lager.',
+  groei: 'Meer of minder ritten per dag, met de vloot die daarbij past.',
+  net: 'De netbeheerder levert de verzwaring eerder of later dan gepland. Door netcongestie zijn wachttijden van jaren gewoon.',
+  evprijs: 'Elektrische wagens worden sneller of minder snel goedkoper.',
+  subsidie: 'Zonder subsidie, of met alle aangevraagde subsidie toegekend.',
+  rente: 'Een lagere of hogere rekenrente: geld lenen wordt goedkoper of duurder.',
+  heffing: 'De vrachtwagenheffing gaat omhoog of omlaag. Elektrische vrachtwagens betalen een lager tarief.',
+};
 const KIND = { investering: 'Investeringen', voertuig: 'Lease en vaste kosten', gebruik: 'Brandstof, stroom en onderhoud', laden: 'Laden en net', overig: 'Overig' };
 const KIND_COLOR = { investering: '#15171A', voertuig: '#7A8188', gebruik: '#F2A33A', laden: '#0A8F5B', overig: '#C3C3BD' };
 
@@ -234,12 +244,12 @@ function topbar() {
       E('button', { class: 'btn ghost', type: 'button', onclick: downloadCsv }, icon('download'), E('span', {}, 'Cijfers')),
       E('button', { class: 'btn dark', type: 'button', onclick: () => print() }, icon('print'), E('span', {}, 'Bewaar als pdf')))));
 }
-const SECTIONS = [['overzicht', 'Overzicht', 'Advies'], ['verschil', 'Verschil'], ['jaren', 'Jaren'], ['vlootplan', 'Vlootplan', 'Onderbouwing'], ['wagens', 'Per wagen'],
+const SECTIONS = [['overzicht', 'Overzicht', 'Advies'], ['verschil', 'Verschil'], ['jaren', 'Jaren'], ['kansen', 'Kansen'], ['vlootplan', 'Vlootplan', 'Onderbouwing'], ['wagens', 'Per wagen'],
   ['investeringen', 'Investering'], ['laden', 'Laden'], ['werkdag', 'Werkdag'], ['uitstoot', 'Uitstoot'], ['scenarios', 'Scenario’s'], ['varianten', 'Varianten'], ['stappen', 'Stappen'], ['verantwoording', 'Aannames'], ['bijlage', 'Bijlage', 'Bijlage']];
 function nav(c) {
   const lvl = scenarioLevel(report, c.key);
   return E('nav', { class: 'nav', 'aria-label': 'Hoofdstukken' }, E('div', { class: 'wrap nav-in' },
-    E('div', { class: 'nav-links' }, SECTIONS.filter(([id]) => id !== 'scenarios' || report.scenarios).filter(([id]) => id !== 'varianten' || report.variants.length > 2)
+    E('div', { class: 'nav-links' }, SECTIONS.filter(([id]) => id !== 'scenarios' || report.scenarios).filter(([id]) => id !== 'kansen' || report.opportunities?.items?.length).filter(([id]) => id !== 'varianten' || report.variants.length > 2)
       .map(([id, label, group]) => [group ? E('span', { class: 'nav-group' }, group) : null, E('a', { href: `#${id}`, 'data-id': id, onclick: e => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); } }, label)])),
     lvl ? E('button', { class: 'chip', type: 'button', onclick: () => set({ scenario: null }), 'aria-label': 'Terug naar de basis' }, `${lvl.axis.name} ${lvl.level.label}`, icon('close')) : null));
 }
@@ -340,6 +350,8 @@ function advice(c) {
   if (netUp >= 0) auto.push(`De netaansluiting naar ${num(plan.net_kw[netUp])} kW in ${plan.jaren[netUp]}.`);
   else if (plan.laadpunten?.length) auto.push(`Laden past op de huidige aansluiting van ${num(report.depot.aansluiting_kw)} kW.`);
   if (m.co2Saving > 0) auto.push(`De CO₂-uitstoot daalt met ${pct(m.co2Pct)} ten opzichte van diesel blijven.`);
+  const kans = report.opportunities?.items?.find(x => x.kind !== 'eis' && x.gain >= Math.max(1000, Math.abs(report.opportunities.base_ncw) * .0025));
+  if (kans && plan.variant === 'basis') auto.push(`Grootste kans: ${kans.title.toLowerCase()} levert nog ${money(round(kans.gain))} op.`);
   const points = Object.keys(t).filter(k => /^advies\d+$/.test(k)).sort().map(k => t[k]);
   const notices = [...(plan.notices || []), ...(plan.budget_over || [])];
   return E('div', { class: 'advice' }, E('div', {}, E('h3', {}, 'Ons advies'), prose(t.samenvatting || defaultSummary(c)), notices.length ? E('ul', { class: 'notices' }, notices.map(n => E('li', {}, n))) : null),
@@ -369,6 +381,39 @@ function difference(c) {
   function explain(r) { info.replaceChildren(E('b', {}, r ? r.name : 'Totaal'), E('span', {}, r ? POSTS[r.name] || '' : `${money((ref.ncw - plan.ncw) / div)} ${ref.ncw >= plan.ncw ? 'voordeel' : 'nadeel'}`)); }
   return section('verschil', `Waar zit het verschil · ${state.diffMode === 'jaar' ? 'per jaar' : `in ${Y} jaar`}`,
     head(segmented([['jaar', 'Per jaar'], ['totaal', `In ${Y} jaar`]], state.diffMode, v => set({ diffMode: v }), 'Per jaar of totaal')), table, info, why(differenceStory(plan, ref, rows, Y)), prose(plan.texts?.kosten));
+}
+
+// ---------------------------------------------------------------- waar zit de winst
+// Every opportunity was solved separately, starting from the advice, and only loosens a limit: the gain is never negative.
+function opportunities(c) {
+  const o = report.opportunities;
+  if (!o?.items?.length) return null;
+  const Y = report.settings.jaren, base = report.variants.find(v => v.variant === 'basis');
+  const small = x => x.gain < Math.max(1000, Math.abs(o.base_ncw) * .0025);
+  const real = o.items.filter(x => !small(x)), none = o.items.filter(small);
+  const max = Math.max(1, ...real.map(x => x.gain));
+  const unit = x => x.unit && x.gain ? (x.gain / x.unit.aantal < 10 ? `€ ${num(x.gain / x.unit.aantal, 2)}` : money(round(x.gain / x.unit.aantal))) + ` per ${x.unit.per}` : null;
+  const change = x => {
+    const out = [], e0 = base?.aantallen?.at(-1)?.elektrisch, e1 = x.aantallen?.at(-1)?.elektrisch;
+    if (e0 != null && e1 != null && e0 !== e1) out.push(`${e1 > e0 ? '+' : '−'}${Math.abs(e1 - e0)} elektrisch`);
+    if (base && Math.abs((x.investering || 0) - base.investering) > 500) out.push(`investering ${x.investering > base.investering ? '+' : '−'}${money(round(Math.abs(x.investering - base.investering))).slice(2)}`);
+    if (base && x.net_kw && x.net_kw.join() !== base.net_kw.join()) out.push(`net ${x.net_kw.map(k => num(k)).join(' → ')} kW`);
+    if (base && x.co2 && base.co2 && Math.abs(x.co2.at(-1) - base.co2.at(-1)) > 500) out.push(`CO₂ ${x.co2.at(-1) < base.co2.at(-1) ? '−' : '+'}${tons(Math.abs(x.co2.at(-1) - base.co2.at(-1)))}`);
+    return out;
+  };
+  const list_ = (items, title) => items.length ? E('div', { class: 'block' }, E('h3', {}, title), E('div', { class: 'kansen' }, items.map(x => E('div', { class: 'kans', tabindex: 0 },
+    E('div', { class: 'kans-h' }, E('b', {}, x.title), E('span', { class: 'kans-n' }, money(round(x.gain)), E('small', {}, `${money(round(x.gain / Y))} per jaar`))),
+    E('div', { class: 'kans-bar' }, E('i', { class: x.kind === 'eis' ? 'eis' : '', style: { width: `${Math.max(1.5, x.gain / max * 100)}%` } })),
+    E('p', {}, [x.text, unit(x), ...change(x)].filter(Boolean).join(' · ')))))) : null;
+  const top = real[0], eisen = real.filter(x => x.kind === 'eis'), kansen = real.filter(x => x.kind !== 'eis');
+  const reasons = [
+    top ? `het grootste knelpunt is ${top.title.toLowerCase()}: dat levert ${money(round(top.gain))} op over ${Y} jaar, ${money(round(top.gain / Y))} per jaar` : 'geen enkele kleine verandering levert iets wezenlijks op: het advies zit niet vast op budget, net of laden',
+    real[1] ? `daarna komt ${real[1].title.toLowerCase()} met ${money(round(real[1].gain))}` : null,
+    none.length ? `${list(none.map(x => x.title.toLowerCase()))} ${none.length === 1 ? 'levert' : 'leveren'} weinig of niets op; dat ${none.length === 1 ? 'is' : 'zijn'} geen knelpunt${none.length === 1 ? '' : 'en'}` : null,
+    'elke verandering is apart doorgerekend, vanaf het advies; met meer rekentijd kan de opbrengst iets hoger uitvallen, nooit lager dan nul',
+  ];
+  return section('kansen', 'Waar zit de winst', E('div', { class: 'split' }, list_(kansen, 'Wat u kunt doen'), list_(eisen, 'Wat uw eisen kosten') || why(reasons, 'Wat dit zegt')),
+    eisen.length ? why(reasons, 'Wat dit zegt') : null);
 }
 
 // ---------------------------------------------------------------- 3 door de jaren
@@ -738,6 +783,12 @@ const table = (heads, rows, right = []) => E('div', { class: 'tablewrap' }, E('t
 // Definition list: label, value and what it means.
 const defs = items => E('div', { class: 'defs' }, items.map(([label, value, text]) => E('div', { class: 'def' }, E('span', {}, label), E('b', {}, value), text ? E('p', {}, text) : null)));
 const yesno = v => v ? 'ja' : 'nee';
+// A value per year of the horizon; years without their own value show the default.
+function yearRow(title, values, fallback, fmt) {
+  if (!values || !Object.values(values).some(v => v !== null && v !== '')) return null;
+  const s = report.settings, years = Array.from({ length: s.jaren }, (_, i) => s.startjaar + i);
+  return E('div', { class: 'defgroup' }, E('h4', {}, title), table(years, [years.map(j => values[j] != null && values[j] !== '' ? { v: fmt(+values[j]), cls: 'b' } : fallback(j))], years.map((_, i) => i)));
+}
 const hours = h => h == null ? '—' : clock(h * 60);
 function appendix(c) {
   const { plan, ref } = c, s = report.settings, ch = report.choices || {}, groupsOf = d => [...new Set(Object.values(d).map(x => x[0]))];
@@ -747,7 +798,7 @@ function appendix(c) {
   if (choiceItems.length) parts.push(['a', 'Uw keuzes', `${choiceItems.length} keuzes`, groupsOf(CHOICES).map(g => {
     const items = choiceItems.filter(([, d]) => d[0] === g);
     return items.length ? E('div', { class: 'defgroup' }, E('h4', {}, g), defs(items.map(([k, d]) => [d[1], formatValue(d[2], ch[k]), d[3]]))) : null;
-  })]);
+  }), yearRow('Investeringsbudget per jaar', ch.budget_per_jaar, j => ch.max_investering_pj ? money(ch.max_investering_pj) : 'geen grens', money)]);
   // B. Per groep
   const groups = [...new Set([...report.fleet.map(v => v.groep || v.soort), ...report.trips.map(t => t.groep)].filter(Boolean))];
   const pol = report.policies || [];
@@ -793,6 +844,8 @@ function appendix(c) {
       report.chargers.map(x => [x.naam, x.type, `${x.connectoren || 1}× ${num(x.kw_per_connector || x.kast_kw)} kW`, money(x.investering), money(x.jaarkosten), x.levensduur ? `${x.levensduur} jaar` : '—', x.max_aantal ?? '—', got(x.naam) ? { v: `${got(x.naam)}×`, cls: 'pos' } : '—']), [2, 3, 4, 5, 6, 7]) : null,
     table(['Netaansluiting', 'Vermogen', 'Eenmalig', 'Per jaar', 'Vanaf'], [['Huidig', `${num(d.aansluiting_kw)} kW`, '—', money(d.aansluiting_jaarkosten), '—'],
       ...(d.netopties || []).map(o => [o.naam, `${num(o.kw)} kW`, money(o.kosten), money(o.jaarkosten), o.vanaf_jaar || 'direct'])], [1, 2, 3, 4]),
+    yearRow('Huidige aansluiting per jaar', d.aansluiting_per_jaar, () => `${num(d.aansluiting_kw)} kW`, k => `${num(k)} kW`),
+    (d.netopties || []).map(o => yearRow(`${o.naam} per jaar`, o.kw_per_jaar, j => j >= (+o.vanaf_jaar || s.startjaar) ? `${num(o.kw)} kW` : '—', k => k ? `${num(k)} kW` : '—')),
     defs([['Gebouw overdag', `${num(d.gebouw_dag_kw)} kW`, 'Wat het gebouw zelf gebruikt, naast het laden.'], ['Gebouw ’s nachts', `${num(d.gebouw_nacht_kw)} kW`, null],
       d.laad_max_kw ? ['Laden hooguit', `${num(d.laad_max_kw)} kW`, d.laad_max_van != null ? `Van ${hours(d.laad_max_van)} tot ${hours(d.laad_max_tot)}.` : null] : null,
       d.pv?.kwp ? ['Zonnepanelen', `${num(d.pv.kwp)} kWp per blok, hooguit ${d.pv.max}`, `${money(d.pv.investering)} per blok. Gekozen: ${plan.energie?.find(e => /zon/i.test(e.soort))?.omvang || 'geen'}.`] : null,
@@ -813,9 +866,7 @@ function appendix(c) {
   // J. Scenario's
   const sc = report.scenarios, ss = report.scenario_settings || {};
   if (sc?.axes?.length) parts.push(['j', 'Scenario’s', `${sc.axes.length * 2} doorgerekend`, [
-    defs([ss.diesel_delta != null ? ['Dieselprijs', `± ${money(ss.diesel_delta, 2)} per liter`, `Hetzelfde vraagstuk met een dieselprijs van ${sc.axes.find(a => a.id === 'diesel')?.levels.filter(l => l.id !== 'basis').map(l => l.label).join(' en ')}.`] : null,
-      ss.stroom_pct != null ? ['Stroomprijs', `± ${pct(ss.stroom_pct)}`, 'Dal- en normaaltarief allebei hoger of lager.'] : null,
-      ss.groei_laag != null ? ['Groei of krimp', `${num(ss.groei_laag)}% en +${num(ss.groei_hoog)}% per jaar`, 'Meer of minder ritten per dag, met de vloot die daarbij past.'] : null].filter(Boolean)),
+    defs(sc.axes.map(a => [a.name, a.levels.filter(l => l.id !== 'basis').map(l => l.label).join(' · '), SCENARIO_TEXT[a.id] || null])),
     table(['Scenario', 'Advies', 'Diesel blijven', 'Voordeel', 'Investering', 'Elektrisch aan het eind', 'CO₂ laatste jaar'], sc.axes.flatMap(a => a.levels.filter(l => l.id !== 'basis').map(l => {
       const o = sc.outcomes[`${a.id}:${l.id}`]; if (!o) return null; const e = o.advies.aantallen?.at(-1);
       return [`${a.name} ${l.label}`, money(o.advies.ncw), money(o.diesel.ncw), { v: money(o.diesel.ncw - o.advies.ncw), cls: o.diesel.ncw >= o.advies.ncw ? 'pos' : 'neg' }, money(o.advies.investering), e ? `${e.elektrisch} van ${e.elektrisch + e.diesel}` : '—', o.advies.co2 ? tons(o.advies.co2.at(-1)) : '—'];
@@ -853,7 +904,7 @@ function render() {
   q('#app').replaceChildren(
     report.demo ? E('div', { class: 'demo' }, 'Voorbeeldrapport · fictieve organisatie') : null,
     topbar(), nav(c),
-    E('main', { id: 'inhoud', class: 'wrap' }, overview(c), difference(c), years(c), fleetPlan(c), perVehicle(c), investments(c), charging(c), workday(c), emissions(c), scenarios(c), variants(c), roadmap(c), accountability(c), appendix(c)),
+    E('main', { id: 'inhoud', class: 'wrap' }, overview(c), difference(c), years(c), opportunities(c), fleetPlan(c), perVehicle(c), investments(c), charging(c), workday(c), emissions(c), scenarios(c), variants(c), roadmap(c), accountability(c), appendix(c)),
     footer());
   q('#app').setAttribute('aria-busy', 'false');
   scrollTo(0, y); spy();
