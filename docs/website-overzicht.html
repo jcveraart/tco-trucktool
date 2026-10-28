@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website-overzicht — Stekker of Diesel</title>
+<style>
+:root{--paper:#F3F3F0;--card:#fff;--ink:#15171A;--ink2:#565D66;--ink3:#8A9199;--line:#D9D9D2;--volt:#0A8F5B;--volt2:#E4F3EC;--amber:#B97A16;--amberbg:#FBF2DF;--red:#C33;--redbg:#FBEAEA;--r:10px}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,sans-serif}
+header{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--line);padding:16px 20px;z-index:5}
+h1{font-size:21px;margin:0 0 4px;letter-spacing:-.02em}header p{margin:0;color:var(--ink2);font-size:13px;max-width:900px}
+.balk{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+button.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;cursor:pointer;font:inherit;font-size:13px}
+button.chip.aan{background:var(--ink);color:#fff;border-color:var(--ink)}
+input[type=search]{border:1px solid var(--line);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;min-width:220px;background:var(--card)}
+main{max-width:1100px;margin:0 auto;padding:18px 20px 60px}
+h2{font-size:16px;margin:26px 0 8px}
+.uitleg{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;font-size:13px;color:var(--ink2)}
+.uitleg b{color:var(--ink)}
+.kaart{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin:0 0 10px}
+.kaart h3{margin:0 0 2px;font-size:15px}
+.url{font-size:12px;color:var(--ink3);font-family:Consolas,monospace;word-break:break-all}
+.doel{font-size:13.5px;color:var(--ink2);margin:6px 0}
+.rij{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-top:8px}
+select{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--card)}
+select.st-ok{background:var(--volt2)}select.st-fix{background:var(--amberbg)}select.st-idea{background:#EDF1FB}select.st-bad{background:var(--redbg)}
+textarea{flex:1;min-width:260px;min-height:56px;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:8px;resize:vertical}
+.verb{flex:1;min-width:260px;font-size:13px;background:var(--paper);border:1px dashed var(--line);border-radius:8px;padding:8px 10px}
+.verb b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:2px}
+footer{color:var(--ink3);font-size:12px;text-align:center;padding:20px}
+.kop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.teller{font-size:12px;color:var(--ink3)}
+@media print{header{position:static}.balk{display:none}textarea{border:0}.kaart{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Website-overzicht — Stekker of Diesel</h1>
+  <p>Hoe de site is gebouwd en wat er per pagina beter kan. Kies per pagina een status en typ je notities erbij; alles wordt automatisch in deze browser bewaard. Niets wordt verstuurd.</p>
+  <div class="balk">
+    <button class="chip aan" data-filter="alle">Alles</button>
+    <button class="chip" data-filter="ok">✅ Op orde</button>
+    <button class="chip" data-filter="fix">🔧 Verbeteren</button>
+    <button class="chip" data-filter="idea">💡 Idee</button>
+    <input type="search" id="zoek" placeholder="Zoek op pagina of onderwerp…">
+    <span class="teller" id="teller"></span>
+  </div>
+</header>
+<main>
+  <div class="uitleg">
+    <b>Zo is de site gebouwd:</b> één groot bronbestand (<b>index.html</b>, ± 860 KB) bevat de hele app. Het script <b>scripts/seo.mjs</b> maakt daar 48 statische pagina's van (23 routes × Nederlands/Engels) met per pagina een eigen titel, omschrijving en canonical. Wijzigen doe je dus altijd in <b>index.html</b>, daarna: <b>node scripts/i18n.cjs</b> → <b>node scripts/seo.mjs</b> → <b>node --test tests/*.test.cjs</b> (27 tests) → commit en push. Publicatie loopt via GitHub Pages. De volledige uitleg en de verbeter-backlog staan in <b>docs/website-overzicht.md</b> en hieronder per pagina.
+  </div>
+  <div id="lijst"></div>
+  <h2>Verbeter-backlog (volgorde van waarde)</h2>
+  <div id="backlog"></div>
+</main>
+<footer>Bijgewerkt 28 oktober 2026 · Notities en statussen worden lokaal in je browser bewaard (localStorage), niet in de repository.</footer>
+<script>
+const GROEPEN = [
+ ["Hoofdpagina's", [
+  ["calc","Calculator","/ · /en/","Gratis vergelijking diesel vs elektrisch voor één voertuig: kosten per km en jaar, terugverdientijd, kantelpunt, actieradius tegen de dagrit, CO₂. Delen via link en embed.","ok","“TCO berekenen” staat nu in de meta-omschrijving. Homepage concurreert met /uitgebreid/ als calculator — in de gaten houden."],
+  ["uitgebreid","Uitgebreide berekening","/uitgebreid/ · /en/detailed-calculation/","Zelfde rekenkern met alle velden en posten open. Bewust noindex.","ok","Kannibalisatie met de homepage blijven volgen (één calculator geïndexeerd)."],
+  ["modellen","Elektrische modellen (overzicht)","/modellen/ · /en/models/","67 modellen met filters en vergelijkfunctie; doorklikken naar de calculator met het model gekozen.","fix","Geen pagina per model: “eActros 600 prijs” landt nergens. Zie backlog 2."],
+  ["trekkers","Elektrische trekkers","/modellen/trekkers/ · /en/models/tractor-units/","Categoriepagina N3-trekkers met echte modelkaarten vóór JavaScript.","ok","Per-model detailpagina's ontbreken."],
+  ["bakwagens","Elektrische bakwagens","/modellen/bakwagens/ · /en/models/rigid-trucks/","Categoriepagina bakwagens (N2/N3).","ok","Per-model detailpagina's ontbreken."],
+  ["bestelbussen","Elektrische bestelbussen","/modellen/bestelbussen/ · /en/models/vans/","Categoriepagina bestelbussen (N1).","ok","BPM/wegenbelasting-informatie ontbreekt als onderwerp. Zie backlog 6."],
+  ["bussen","Elektrische bussen","/modellen/bussen/ · /en/models/buses/","Categoriepagina bussen (M3).","ok","Per-model detailpagina's ontbreken."],
+  ["nieuws","Nieuws","/nieuws/ · /en/news/","Vijf ontwikkelingen op één tijdlijn-URL (heffing, accijns, ETS2, kantelpunt).","fix","Geen eigen artikel-URL's of NewsArticle-schema; per nieuwszoekvraag niet vindbaar. Zie backlog 4."],
+  ["over-ons","Over ons","/over-ons/ · /en/about/","Wie we zijn, onafhankelijkheid, hoe de cijfers tot stand komen.","ok","Auteurs- en expertisesignalen (E-E-A-T) nog niet gecontroleerd."],
+  ["vlootanalyse","Vlootanalyse (leadpagina)","/vlootanalyse/ · /en/fleet-analysis/","Uitleg en aanvraagformulier voor de betaalde vlootanalyse, met taartgrafiek “waar zit het geld”.","ok","Nu vooral formulier; een inhoudelijke gids “wagenpark doorrekenen” raakt de zoekvraag beter."],
+  ["restwaarde","Restwaarde-index","/restwaarde/ · /en/residual-value/","Marktprijzen van gebruikte elektrische voertuigen, eigen prijs melden, prijsalarm.","fix","Databronnen staan op inactief in scripts/bronnen.json — belofte is dun. Zie backlog 5."],
+  ["privacy","Privacybeleid","/privacy/ · /en/privacy/","Privacy, toestemming, wat er wel en niet wordt opgeslagen.","ok",""]
+ ]],
+ ["Overstapgids (ook Engels onder /en/switching-guide/)", [
+  ["gids-start","Overstapgids (start)","/overstapgids/","Ingang van de gids met veelgestelde vragen.","ok",""],
+  ["stappenplan","Stappenplan","/overstapgids/stappenplan/","Negen stappen van oriëntatie tot rijden, afvinkbaar.","idea","HowTo-schema overwegen — alleen na herziening van het FAQ-beleid in docs/seo.md."],
+  ["netcongestie","Netcongestie en je aansluiting","/overstapgids/netcongestie/","Postcodecheck, wachttijden en alternatieven zoals flexcontract en batterij.","ok","SPULA/publiek laden en MCS-laadpleinen als onderwerp toevoegen."],
+  ["laden","Laden op eigen terrein en onderweg","/overstapgids/laden/","Depotladen tegenover onderweg laden, DC/MCS, ERE's met geijkte meter.","ok","Idem SPULA/MCS."],
+  ["stroom","Stroomcontract en zonnepanelen","/overstapgids/stroom/","Contracten, dal/piek, zonnepanelen en teruglevering.","ok",""],
+  ["actieradius","Actieradius en planning","/overstapgids/actieradius/","Past het bereik bij de dagrit, ook in de winter en met volle lading.","ok",""],
+  ["zones","Zero-emissiezones","/overstapgids/zero-emissiezones/","Kaart en kentekencheck, overgangsregelingen per euroklasse.","fix","Zoekvraag is lokaal: pagina's per gemeente overwegen. Zie backlog 3."],
+  ["subsidies","Subsidies en regelingen","/overstapgids/subsidies/","AanZET-percentages en -maxima, MIA, SPRILA en ERE; rondes en data.","ok","Bedragen elk kwartaal nalopen; controledatums staan in de tekst."],
+  ["heffing","Kilometerheffing en tol","/overstapgids/heffing/","Tarieven per km naar CO₂- en gewichtsklasse, korting, Eurovignet-vervanging.","ok","“Eurovignet → heffing + OBU kiezen” als zoekonderwerp toevoegen."],
+  ["financiering","Kopen, leasen of huren","/overstapgids/financiering/","Vormen vergeleken, inclusief wie het accu- en restwaarderisico draagt.","ok",""],
+  ["accu","Accu, garantie en restwaarde","/overstapgids/accu/","Levensduur, garantie, accuconditie (SoH) en restwaarde.","idea","Koppelen aan een tweedehands-koopgids. Zie backlog 5."],
+  ["regels","Rijbewijs, gewicht en werkplaats","/overstapgids/regels/","Rijbewijzen, gewichten, tachograaf en werkplaatsregels.","ok","Tachograafplicht lichte bedrijfsauto's internationaal (juli 2026) opnemen zodra definitief."]
+ ]],
+ ["Systeempagina's", [
+  ["rapport","Online rapportviewer","/rapport/","Persoonlijke vlootrapporten van klanten (noindex). Bron: Vlootanalyse-repo, export via tools/export_report_viewer.py.","ok","Alleen wijzigen via de export uit de Vlootanalyse-repository."],
+  ["vier04","Foutpagina (404)","404.html","Tweetalige foutpagina met links naar calculator, modellen en gids.","ok",""],
+  ["sitemap","Sitemap, robots, domein","sitemap.xml · robots.txt · CNAME","46 URL's in twee talen; apex-domein met HTTPS via GitHub Pages.","ok","Live redirects (www → apex, http → https) eenmalig controleren met curl -I."]
+ ]]
+];
+const BACKLOG = [
+ ["fix","1 · SPA-shell per pagina snoeien (grootste technische winst)","Elke URL serveert nu ± 860 KB met alle secties verborgen en 24 H1's in de bron. Laat de generator per pagina alleen de eigen sectie houden met één paginaspecifieke H1. In: scripts/seo.mjs."],
+ ["idea","2 · Pagina per model","67 modellen, geen model-URL's. Genereer per model een pagina met prijs, actieradius (ook winter), laadtijd en rekenknop, met Product/Offer-schema uit de bestaande catalogus."],
+ ["idea","3 · Zero-emissiezone per gemeente","Lokale zoekvraag (“mag mijn diesel nog in Utrecht”). Per grote gemeente: ingangsdatum, overgang, ontheffing en kentekencheck."],
+ ["fix","4 · Nieuws splitsen","Artikelen met eigen URL, datum en auteur + NewsArticle-schema (AanZET 2027, heffingstarieven 2027, accijns, ETS2 2028)."],
+ ["fix","5 · Restwaarde-data aanzetten + tweedehands-koopgids","Bronnen in scripts/bronnen.json activeren of de belofte versmallen; daarna koopgids met accucheck en garantie."],
+ ["idea","6 · Ontbrekende onderwerpen","SPULA/publiek laden en MCS · HVO100/waterstof · Eurovignet → heffing en OBU kiezen · wegenbelasting/BPM en bijtelling · ERE verkopen in stappen."],
+ ["ok","7 · Gedaan (oktober 2026)","twitter:image overal · merksuffix in alle titels (test dwingt af) · langere Engelse meta · “TCO berekenen” in homepage-meta · Supabase-preconnect weg · CI draait de tests."]
+];
+const STAT = {ok:"✅ Op orde",fix:"🔧 Verbeteren",idea:"💡 Idee",bad:"❌ Probleem"};
+const store = JSON.parse(localStorage.getItem('sod-overzicht')||'{}');
+function save(){localStorage.setItem('sod-overzicht',JSON.stringify(store));}
+function kaart([id,naam,url,doel,def,verb]){
+  const s = store[id]?.s || def, n = store[id]?.n || '';
+  const el = document.createElement('article'); el.className='kaart'; el.dataset.id=id; el.dataset.status=s;
+  el.innerHTML = `<div class="kop"><h3>${naam}</h3><span class="teller"></span></div><div class="url">${url}</div><p class="doel">${doel}</p>`+
+   `<div class="rij"><select aria-label="Status">${Object.entries(STAT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`+
+   `<div class="verb"><b>Te verbeteren</b>${verb||'—'}</div></div>`+
+   `<div class="rij"><textarea placeholder="Eigen notities… (worden automatisch bewaard)"></textarea></div>`;
+  const sel = el.querySelector('select'), ta = el.querySelector('textarea');
+  sel.value = s; sel.className = 'st-'+s; ta.value = n;
+  sel.onchange = () => { store[id] = {...(store[id]||{}), s: sel.value}; el.dataset.status = sel.value; sel.className='st-'+sel.value; save(); tel(); };
+  ta.oninput = () => { store[id] = {...(store[id]||{}), n: ta.value}; save(); };
+  return el;
+}
+const lijst = document.getElementById('lijst');
+for (const [groep, items] of GROEPEN){
+  const h = document.createElement('h2'); h.textContent = groep; lijst.append(h);
+  for (const it of items) lijst.append(kaart(it));
+}
+const bl = document.getElementById('backlog');
+for (const [st, titel, tekst] of BACKLOG){
+  const el = document.createElement('article'); el.className='kaart'; el.dataset.status=st;
+  el.innerHTML = `<h3>${STAT[st].split(' ')[0]} ${titel}</h3><p class="doel">${tekst}</p>`;
+  bl.append(el);
+}
+let filter = 'alle';
+function tel(){
+  const q = document.getElementById('zoek').value.toLowerCase(); let n = 0;
+  document.querySelectorAll('#lijst .kaart').forEach(k=>{
+    const past = (filter==='alle'||k.dataset.status===filter) && k.textContent.toLowerCase().includes(q);
+    k.style.display = past?'':'none'; if(past)n++;
+  });
+  document.querySelectorAll('#lijst h2').forEach(h=>{ let z=h.nextElementSibling, zicht=false;
+    while(z && z.tagName!=='H2'){ if(z.style.display!=='none') zicht=true; z=z.nextElementSibling; } h.style.display=zicht?'':'none'; });
+  document.getElementById('teller').textContent = n + ' pagina\u2019s';
+}
+document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{ filter=b.dataset.filter;
+  document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('aan',x===b)); tel(); });
+document.getElementById('zoek').oninput = tel; tel();
+</script>
+</body>
+</html>
