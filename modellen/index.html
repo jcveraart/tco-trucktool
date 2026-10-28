@@ -2538,6 +2538,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 .vzt2 path{cursor:pointer;transition:opacity .15s;outline:0}
 .vzt2 svg.on path:not(.on){opacity:.35}
 .vzt2 path:focus-visible{stroke:var(--ink)}
+.vztm{margin:0 0 16px}
 .vzt2 h3{margin:0;font:600 30px/1.2 var(--text);letter-spacing:-.015em;max-width:22ch}
 .vztk{display:flex;flex-wrap:wrap;gap:8px 22px;margin:16px 0 0;color:var(--ink-2);font-size:15px}
 .vztk i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px}
@@ -6652,24 +6653,25 @@ async function syncExtra(){
 
 
 /* Vlootanalyse: waar zit het geld van een dieselvoertuig per jaar. Uit de calculator; de chauffeur zit er niet in en is een vaste aanname. De posten verschijnen bij aanwijzen. */
-const VZ_CHAUF=60000;
+const VZ_CHAUF=60000;let vzM='D';
 function vzTaart(){
- const el=$('vzT');if(!el)return;const r=hAt(uvKm()),w=T().w;
- const rows=[['chf','Chauffeur',VZ_CHAUF,0,'Blijft gelijk, ook als je elektrisch rijdt.'],['ver','Verzekering',r.D.ver,0,'Hangt vooral af van de waarde en de verzekeraar.'],['en','Energie',r.D.en,1,'Laden op het goedkoopste moment, een passend stroomcontract en ERE-opbrengst.'],['afs','Aanschaf',r.D.afs,1,'Subsidie, kopen of leasen en het beste moment om te vervangen.'],['hef','Heffing',r.D.hef,0,'Volgt uit het wettelijke tarief en je kilometers.'],['ond','Onderhoud',r.D.ond,0,'Verschilt weinig, welke keuze je ook maakt.']].filter(x=>x[2]>0).sort((p,q)=>p[3]-q[3]);
+ const el=$('vzT');if(!el)return;const r=hAt(uvKm()),w=T().w,K=r[vzM],dn=vzM==='D'?'Diesel':'Elektrisch',nm=vzM==='D'?'diesel'+w:'elektrische '+w;
+ const rows=[['chf','Chauffeur',VZ_CHAUF,0,'Blijft gelijk, ook als je elektrisch rijdt.'],['ver','Verzekering',K.ver,0,'Hangt vooral af van de waarde en de verzekeraar.'],['en','Energie',K.en,1,vzM==='D'?'Brandstof is de grootste post die je zelf kunt sturen, bijvoorbeeld door over te stappen.':'Slim laden, een passend stroomcontract en ERE-opbrengst.'],['afs','Aanschaf',K.afs,1,'Subsidie, kopen of leasen en het beste moment om te vervangen.'],['hef','Heffing',K.hef,0,'Volgt uit het wettelijke tarief en je kilometers.'],['ond','Onderhoud',K.ond,0,'Verschilt weinig, welke keuze je ook maakt.']].filter(x=>x[2]>0).sort((p,q)=>p[3]-q[3]);
  const tot=rows.reduce((q,x)=>q+x[2],0),help=rows.filter(x=>x[3]).reduce((q,x)=>q+x[2],0),pc=x=>nf(x/tot*100)+'%';
  const cx=200,cy=200,R=190,ri=116,pt=(q,g)=>(cx+q*Math.cos(g)).toFixed(1)+' '+(cy+q*Math.sin(g)).toFixed(1);let a=-Math.PI/2,arcs='',labs='';
  rows.forEach((x,i)=>{const sw=x[2]/tot*2*Math.PI,b=a+sw,lg=sw>Math.PI?1:0,m=a+sw/2;
   arcs+=`<path d="M${pt(R,a)}A${R} ${R} 0 ${lg} 1 ${pt(R,b)}L${pt(ri,b)}A${ri} ${ri} 0 ${lg} 0 ${pt(ri,a)}Z" fill="${x[3]?'var(--volt)':'#9AA0A6'}" stroke="var(--page)" stroke-width="3" data-i="${i}" tabindex="0" aria-label="${x[1]}: ${eur(x[2])} per jaar, ${pc(x[2])}"></path>`;
   if(sw>.32)labs+=`<text x="${(cx+(R+ri)/2*Math.cos(m)).toFixed(1)}" y="${(cy+(R+ri)/2*Math.sin(m)+7).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="21" font-weight="700" font-family="var(--display)" pointer-events="none">${pc(x[2])}</text>`;a=b});
- const idle='<p>Wijs een stuk van de taart aan om te zien welke kosten erin zitten.</p>';
- setH(el,`<svg viewBox="0 0 400 400" role="img" aria-label="Kostenverdeling van een diesel${w} per jaar">${arcs}${labs}<text id="vzTc1" x="${cx}" y="${cy-12}" text-anchor="middle" font-size="15" fill="var(--ink-2)">Diesel per jaar</text><text id="vzTc2" x="${cx}" y="${cy+24}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--ink)" font-family="var(--display)">${eur(tot)}</text></svg>`+
-  `<div><h3>Wat kost een diesel${w} per jaar?</h3><div class="vztk"><span><i style="background:var(--volt)"></i>Hier helpen we besparen</span><span><i style="background:#9AA0A6"></i>Ligt grotendeels vast</span></div><div class="vztd" id="vzTd" aria-live="polite">${idle}</div><p class="vzts">${pc(help)} van je kosten heb je echt zelf in de hand</p><p class="vztx">Chauffeur, verzekering, heffing en onderhoud liggen grotendeels vast. Energie en aanschaf niet: daar beslis jij hoe en wanneer je vervangt, welk voertuig je kiest, of je koopt of least en wanneer je laadt. Omdat alleen deze keuzes het verschil maken, loont het om ze zo goed mogelijk te maken. Dat rekenen we voor je uit.</p><p class="vztn">Bij ${nf(r.km)} km per jaar, met de cijfers uit de <a href="/">calculator</a>. De chauffeur zit niet in de calculator; we rekenen hier met ${eur(VZ_CHAUF)} per jaar.</p></div>`);
+ const idle='<p>Wijs een stuk van de taart aan voor de details.</p>';
+ setH(el,`<svg viewBox="0 0 400 400" role="img" aria-label="Kostenverdeling van een ${nm} per jaar">${arcs}${labs}<text id="vzTc1" x="${cx}" y="${cy-12}" text-anchor="middle" font-size="15" fill="var(--ink-2)">${dn} per jaar</text><text id="vzTc2" x="${cx}" y="${cy+24}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--ink)" font-family="var(--display)">${eur(tot)}</text></svg>`+
+  `<div><div class="seg sm vztm" role="group" aria-label="Aandrijving"><button type="button" data-m="D" aria-pressed="${vzM==='D'}">Diesel</button><button type="button" data-m="E" aria-pressed="${vzM==='E'}">Elektrisch</button></div><h3>Wat kost een ${nm} per jaar?</h3><div class="vztk"><span><i style="background:var(--volt)"></i>Hier helpen we besparen</span><span><i style="background:#9AA0A6"></i>Ligt grotendeels vast</span></div><div class="vztd" id="vzTd" aria-live="polite">${idle}</div><p class="vzts">${pc(help)} van je kosten heb je zelf in de hand</p><p class="vztx">De rest ligt grotendeels vast. Juist daarom loont het om energie en aanschaf zo goed mogelijk te regelen.</p><p class="vztn">Bij ${nf(r.km)} km per jaar, uit de <a href="/">calculator</a>. Chauffeur: aanname ${eur(VZ_CHAUF)} per jaar.</p></div>`);
  const svg=el.querySelector('svg'),d=$('vzTd'),c1=$('vzTc1'),c2=$('vzTc2');
  const show=p=>{svg.querySelectorAll('path').forEach(q=>q.classList.toggle('on',q===p));svg.classList.toggle('on',!!p);
-  if(!p){d.className='vztd';d.innerHTML=idle;c1.textContent='Diesel per jaar';c2.textContent=eur(tot);return}
+  if(!p){d.className='vztd';d.innerHTML=idle;c1.textContent=dn+' per jaar';c2.textContent=eur(tot);return}
   const x=rows[+p.dataset.i];d.className='vztd'+(x[3]?' g':'');d.innerHTML=`<b>${x[1]}</b><em>${eur(x[2])} per jaar · ${pc(x[2])}</em><span>${x[4]}</span>`;c1.textContent=x[1];c2.textContent=eur(x[2])};
  svg.querySelectorAll('path').forEach(p=>{p.addEventListener('pointerenter',()=>show(p));p.addEventListener('focus',()=>show(p));p.addEventListener('click',()=>show(p))});
  svg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')show(null)});svg.addEventListener('focusout',()=>show(null));
+ el.querySelectorAll('.vztm button').forEach(b=>b.addEventListener('click',()=>{if(vzM===b.dataset.m)return;vzM=b.dataset.m;vzTaart();el.querySelector('.vztm [data-m="'+vzM+'"]').focus()}));
 }
 /* ===== Vlootanalyse: aanvraag naar Supabase (tabel fleet_requests, alleen insert) ===== */
 const CONTACT_MAIL='info@stekkerofdiesel.nl';
