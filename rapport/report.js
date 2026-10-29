@@ -284,6 +284,22 @@ function spy() {
   if (active && !active.dataset.seen) { active.dataset.seen = 1; active.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
 }
 
+function kernStrip() {
+  const k = report.kerncijfers;
+  if (!k) return null;
+  const tiles = [];
+  if (k.break_even_jaar) tiles.push(tile('Break-even', `in ${k.break_even_jaar}`, null, 'green'));
+  if (k.ncw_voordeel > 0) tiles.push(tile('Voordeel t.o.v. diesel', money(k.ncw_voordeel), null, 'green'));
+  if (k.co2_besparing_ton > 0) tiles.push(tile('CO2-besparing', `${num(k.co2_besparing_ton)} ton`, null, 'green'));
+  if (k.bomen_per_jaar > 0) tiles.push(tile('Komt overeen met', `${num(k.bomen_per_jaar)} bomen`, 'die dit per jaar opnemen'));
+  const laad = (k.laadvermogen || []).filter(x => x.verschil_kg < 0).sort((a, b) => a.verschil_kg - b.verschil_kg)[0];
+  if (laad) tiles.push(tile('Laadvermogen ' + laad.soort, `${num(laad.verschil_kg)} kg`, `elektrisch ${num(laad.elektrisch_kg)} vs diesel ${num(laad.diesel_kg)} kg`));
+  if (k.netpiek_max && k.netpiek_max.benutting_pct != null) tiles.push(tile('Hoogste netpiek', `${num(k.netpiek_max.piek_kw)} kW`, `${k.netpiek_max.benutting_pct}% van de aansluiting (${num(k.netpiek_max.grens_kw)} kW) in ${k.netpiek_max.periode}`));
+  if (!tiles.length) return null;
+  return E('div', { class: 'block' }, E('div', { class: 'block-head' }, E('h3', {}, 'De vijf kerncijfers')),
+    E('div', { class: 'tiles four' }, tiles));
+}
+
 // ---------------------------------------------------------------- 1 overzicht
 function overview(c) {
   const { plan, ref, m } = c, Y = report.settings.jaren, years = `${report.settings.startjaar}–${report.settings.startjaar + Y - 1}`;
@@ -318,6 +334,7 @@ function overview(c) {
     E('p', { class: 'plan-conclusion' }, verdict(report, plan, ref, m)),
     E('div', { class: 'pillars' }, pillars(report, plan, ref, m).map(x => E('div', { class: 'pillar' }, E('span', {}, x.key), E('b', {}, x.big, E('small', {}, x.unit)), E('p', {}, x.text)))),
     E('div', { class: 'split' }, totals, whatIf(c)),
+    kernStrip(),
     advice(c));
 }
 
