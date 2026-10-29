@@ -10,6 +10,8 @@ concurrency:
   group: vlootmelding
   cancel-in-progress: false
 
+permissions:
+  contents: read
 jobs:
   mail:
     runs-on: ubuntu-latest

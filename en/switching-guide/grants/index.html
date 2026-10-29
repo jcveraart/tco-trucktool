@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <!--seo-->
 <title>Electric truck grants in the Netherlands 2026 | Stekker of Diesel</title>
 <meta name="description" content="AanZET, MIA, SPRILA and ERE credits compared: how much support you get on an electric truck or charger, when to apply and what you can combine.">
@@ -3215,6 +3216,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
  <!-- PDF: eenmalig e-mailadres, daarna het rapport -->
  <dialog class="pdfd" id="pdfD" aria-labelledby="pdfT">
   <form id="pdfF" novalidate>
+<input class="fhp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
    <button class="wzx" type="button" id="pdfX" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
    <h2 id="pdfT">Je berekening als PDF</h2>
    <p>Een overzicht of All costs, de Payback period and je Assumptions, op A4.</p>
@@ -4070,8 +4072,9 @@ function homePaint(){
  hPaint=true;twSet($('home'),()=>setH($('home'),homeHTML()));twIntro($('home'));plPaint();
  $('home').querySelectorAll('[data-vt]').forEach(e=>e.setAttribute('aria-checked',e.dataset.vt===vtype));
  if($('hkm'))hkmPaint(+$('hkm').value);
- const i=PL.D;$('home').querySelectorAll('[data-plate="D"]').forEach(f=>{if(i&&i.k)f.elements.kt.value=plFmt(i.k)});
- $('home').querySelectorAll('[data-hpl]').forEach(p=>{p.innerHTML=!i?'':i.err?i.err:[`<b>${plName(i)}</b>`,i.first&&i.first.getFullYear(),zeTxt(i)&&'zero-emissiezone: '+zeTxt(i).toLowerCase()].filter(Boolean).join(' · ')});
+ const escH=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const i=PL.D;$('home').querySelectorAll('[data-plate="D"]').forEach(f=>{if(i&&i.k)f.elements.kt.value=plFmt(i.k)});
+ $('home').querySelectorAll('[data-hpl]').forEach(p=>{p.innerHTML=!i?'':i.err?escH(i.err):[`<b>${escH(plName(i))}</b>`,i.first&&i.first.getFullYear(),zeTxt(i)&&'zero-emissiezone: '+escH(zeTxt(i).toLowerCase())].filter(Boolean).join(' · ')});
  hPaint=false;
 }
 {const f=render;render=function(){f.apply(this,arguments);if(!hPaint&&isFresh()&&!$('wz').open)homePaint()}}
@@ -4617,7 +4620,7 @@ const PDFK='sod-pdf-email';
 function pdfGo(){rptOn();print()}
 function pdfAsk(){if(store(PDFK)){pdfGo();return}const d=$('pdfD');$('pdfErr').hidden=true;if(!d.open)d.showModal();setTimeout(()=>$('pdfE').focus(),30)}
 $('pdfF').addEventListener('submit',e=>{
- e.preventDefault();const em=$('pdfE').value.trim();
+ e.preventDefault();if(e.target.elements.website&&e.target.elements.website.value)return;const em=$('pdfE').value.trim();
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)||em.length>200){$('pdfErr').hidden=false;$('pdfE').focus();return}
  const nb=$('pdfN').checked;
  /* Link naar de berekening, zonder kenteken */
