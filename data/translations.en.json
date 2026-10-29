@@ -1476,5 +1476,21 @@
   "Leasecontract": "Lease contract",
   "Huidige lease": "Current lease",
   "Lease huidige diesel": "Current diesel lease",
-  "Je contract loopt nog": "Your contract has"
+  "Je contract loopt nog": "Your contract has",
+  "Voertuigen": "Vehicles",
+  "Elektrische voertuigen": "Electric vehicles",
+  "Geen specifiek voertuig": "No specific vehicle",
+  "Kies een voertuig": "Choose a vehicle",
+  "Geen voertuigen met deze filters.": "No vehicles match these filters.",
+  "Geen voertuig gevonden.": "No vehicle found.",
+  "1 voertuig gekozen · kies er nog een": "1 vehicle selected · choose another",
+  "Merk en voertuig": "Make and vehicle",
+  "Zoek merk of voertuig": "Search make or vehicle",
+  "Merk of voertuig": "Make or vehicle",
+  "Welke elektrische voertuigen zijn er?": "Which electric vehicles are available?",
+  "Voertuigen vergelijken op actieradius": "Compare vehicles by range",
+  "Bekijk voertuigen en hun gewichtsklasse": "See vehicles and their weight class",
+  "Stuur me af en toe nieuws over subsidies en nieuwe voertuigen": "Occasionally send me news about grants and new vehicles",
+  "Je kunt de voertuigen en overstapgids ook zonder JavaScript bekijken.": "You can also view the vehicles and switching guide without JavaScript.",
+  "Onderstaande cijfers zijn de fabrieksopgaven van alle 67 voertuigen in onze vergelijker. In de praktijk haal je daar zelden de volle waarde van: tel in de winter en bij zwaar werk gerust 20 tot 30 procent minder, en plan je dagrit op de slechtste dag in plaats van de beste.": "The figures below are the manufacturer figures for all 67 vehicles in our comparison. In practice you rarely get the full value: in winter and with heavy work, count on 20 to 30 percent less, and plan your daily route for the worst day rather than the best."
 }
