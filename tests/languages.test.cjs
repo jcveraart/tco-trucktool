@@ -21,7 +21,7 @@ test('brand names and Dutch source copy are preserved',()=>{
  for(const s of Object.keys(D))assert.equal(nl(s),s);
 });
 test('dynamic outputs read as English with interpolated values intact',()=>{
- assert.equal(en('Wat als'),'What if');assert.equal(en('Omslagpunten'),'Break-even points');assert.equal(en('Periode'),'Period');
+ assert.equal(en('Wat als'),'What if');assert.equal(en('Elektrisch goedkoper vanaf'),'Electric is cheaper from');assert.equal(en('Goedkoper vanaf'),'Cheaper from');assert.equal(en('Periode'),'Period');
  assert.equal(en('Je dagrit past, met 120 km over.'),'Your daily route fits, with 120 km to spare.');
  assert.equal(en('Over 6 jaar betaal je € 5,000 rente, en aan het eind € 2,000 slottermijn. Exclusief btw, onderhoud en verzekering.'),'Over 6 years you pay € 5,000 in interest, plus a € 2,000 final payment. Excludes VAT, maintenance and insurance.');
  assert.equal(en('capaciteit na 6 jaar · actieradius ± 400 km in plaats van 500 km'),'capacity after 6 years · range about 400 km instead of 500 km');

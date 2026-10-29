@@ -27,6 +27,13 @@ test('first paint contains the homepage, local fonts and no unused advertising d
 test('all executable scripts compile on both language entry points',()=>{
  for(const p of ['/','/en/','/modellen/bestelbussen/','/en/models/vans/'])for(const m of read(p).matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){if(/type="application\//.test(m[1]))continue;assert.doesNotThrow(()=>new vm.Script(m[2]),p);}
 });
+test('glossary explains jargon, is linked from the guide index and old terms are gone',()=>{
+ const r=routes['gids/begrippen'];assert.ok(r,'begrippen route ontbreekt');assert.equal(r.path,'/overstapgids/begrippen/');assert.equal(r.enPath,'/en/switching-guide/glossary/');
+ const h=read(r.path);for(const t of ['WLTP','MCS','AanZET','SPRILA','restwaarde','laadvermogen'])assert.ok(h.includes(t),'begrip ontbreekt: '+t);
+ assert.ok(read('/overstapgids/').includes('href="/overstapgids/begrippen/"'),'gidsindex linkt niet naar begrippen');
+ assert.doesNotMatch(source,/card\('Break-even|modellen gekozen|aria-label="Zoek een model"|"excl\. BTW"/);
+ assert.match(source,/card\('Elektrisch goedkoper vanaf'/);
+});
 test('a rebuild preserves dates and produces identical sitemap and canonical entry files',()=>{
  const paths=['sitemap.xml','index.html','en/index.html','modellen/bestelbussen/index.html'],before=paths.map(p=>fs.readFileSync(path.join(ROOT,p),'utf8'));cp.execFileSync(process.execPath,[path.join(ROOT,'scripts/seo.mjs')],{env:{...process.env,SOD_BUILD_DATE:'2099-01-01'}});paths.forEach((p,i)=>assert.equal(fs.readFileSync(path.join(ROOT,p),'utf8'),before[i],p));
 });
