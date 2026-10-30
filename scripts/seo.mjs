@@ -60,7 +60,7 @@ fs.writeFileSync(stateFile,JSON.stringify(buildState,null,2)+'\n');
 for(const {k,l,u,html}of pending){
  const file=path.join(ROOT,new URL(u).pathname,'index.html');
  fs.mkdirSync(path.dirname(file),{recursive:true});
- fs.writeFileSync(file,optimizePage(html,k,shells[l],writeAsset));
+ fs.writeFileSync(file,optimizePage(html,k,shells[l],writeAsset,l));
 }
 fs.writeFileSync(path.join(ROOT,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'+entries.join('\n')+'\n</urlset>\n');
 fs.writeFileSync(path.join(ROOT,'404.html'),`<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Pagina niet gevonden | ${BRAND}</title><style>body{max-width:48rem;margin:15vh auto;padding:24px;font:18px/1.6 system-ui;background:#f3f3f0;color:#15171a}a{color:#07734a}h1{line-height:1.2}</style></head><body><p>${BRAND} · 404</p><h1>Deze pagina bestaat niet</h1><p>Ga naar de <a href="/">calculator</a>, <a href="/modellen/">elektrische modellen</a> of de <a href="/overstapgids/">overstapgids</a>.</p><section lang="en"><h2>Page not found</h2><p>Try the <a href="/en/">calculator</a>, <a href="/en/models/">electric models</a> or <a href="/en/switching-guide/">switching guide</a>.</p></section></body></html>`);

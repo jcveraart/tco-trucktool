@@ -61,3 +61,11 @@ test('article schema matches the on-page heading and advice is represented as a 
   if(k==='vloot')assert(g.some(x=>x['@type']==='Service'&&x.provider['@id']==='https://stekkerofdiesel.nl/#org'));
  }
 });
+
+test('Dutch entry points do not download the English dictionary',()=>{
+ const code=p=>fs.readFileSync(path.join(root,read(p).match(/<script id="sod-i18n" defer src="([^"]+)"/)[1]),'utf8');
+ assert.match(code('/'),/const SOD_EN=\{\};/);
+ assert.ok(Buffer.byteLength(code('/'))<20000);
+ assert.doesNotMatch(code('/en/'),/const SOD_EN=\{\};/);
+ assert.ok(code('/en/').includes('Electric or diesel'));
+});

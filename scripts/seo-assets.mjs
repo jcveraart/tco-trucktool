@@ -22,7 +22,7 @@ export function createShell(html,lang,write,schemas={}){
  return write('shell-'+lang,'js',code);
 }
 
-export function optimizePage(html,key,shell,write){
+export function optimizePage(html,key,shell,write,lang='nl'){
  const page=key.startsWith('gids/')?'gids':key.startsWith('modellen/')?'modellen':key;
  html=html.replace(/<section class="page" data-page="([a-z]+)"[^>]*>[\s\S]*?\n<\/section>/g,(markup,name)=>{
   if(name!==page)return '';
@@ -38,6 +38,9 @@ export function optimizePage(html,key,shell,write){
  });
  html=html.replace(/<script([^>]*)>([\s\S]*?)<\/script>/g,(markup,attrs,code)=>{
   if(/\b(?:src|type)=/.test(attrs)||/id="(?:sod-language|consent-default)"/.test(attrs)||!code.trim())return markup;
+  // Dutch is the source language: it needs the locale handlers, not the entire
+  // English dictionary. Language switches load their dedicated English document.
+  if(lang==='nl'&&/id="sod-i18n"/.test(attrs))code=code.replace(/const SOD_EN=[^\n]+;\n/,'const SOD_EN={};\n');
   const src=write('runtime-'+(++scriptNumber),'js',code.trim());
   return `<script${attrs} defer src="${src}"></script>`;
  });
