@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'_src/index.html'),'utf8');
 const D=JSON.parse(fs.readFileSync(path.join(root,'data/translations.en.json'),'utf8'));
 const runtime=fs.readFileSync(path.join(root,'scripts/locale-runtime.js'),'utf8');
 function translator(lang){const c={document:{documentElement:{lang}},window:{},SOD_EN:D};vm.runInNewContext(runtime.slice(0,runtime.indexOf(' const seen='))+'})();',c);return c.window.sodText;}
@@ -7,7 +7,7 @@ const en=translator('en');
 test('all executable inline scripts compile and reviewed translations are embedded',()=>{
  for(const m of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){if(/type="application\//.test(m[1]))continue;assert.doesNotThrow(()=>new vm.Script(m[2]));}
  const embedded=html.match(/const SOD_EN=([^\n]+);\n/)[1];assert.deepEqual(JSON.parse(embedded),D);
- assert.ok(html.includes(runtime));assert.doesNotMatch(html,/sbp_[a-f0-9]{20}/);
+ assert.ok(html.replace(/\r\n/g,'\n').includes(runtime.replace(/\r\n/g,'\n')));assert.doesNotMatch(html,/sbp_[a-f0-9]{20}/);
 });
 test('both language number formats preserve calculation precision',()=>{
  const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];

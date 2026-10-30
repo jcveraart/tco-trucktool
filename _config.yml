@@ -1,0 +1,8 @@
+# Build helpers, tests and the editable source are not public landing pages.
+exclude:
+  - _src
+  - scripts
+  - tests
+  - docs
+  - README.md
+  - CLAUDE.md

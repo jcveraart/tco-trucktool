@@ -88,7 +88,7 @@ Do not introduce ad-hoc field names, divergent keys, or arbitrary data models.
 1. **Schema Compliance**: Any addition or modification to models must supply the required schema columns. Never omit `category_id`, `brand`, `model`, `range_km`, `status`, or `description`.
 2. **Battery Standard**: Keep gross vs. usable distinction explicit. Do not combine the battery size of one variant with the range or price of another variant.
 3. **Database Migrations**: Any schema evolution must be added as a numbered SQL file under `supabase/migrations/`.
-4. **Client-side Fetching**: When loading data from Supabase, select using canonical column names (`category_id`, `usable_battery_kwh`, `range_km`, etc.). If offline caching or fallback is maintained in `index.html`, keep the data fields mapped 1:1 to the Supabase schema.
+4. **Client-side Fetching**: When loading data from Supabase, select using canonical column names (`category_id`, `usable_battery_kwh`, `range_km`, etc.). If offline caching or fallback is maintained in `_src/index.html`, keep the data fields mapped 1:1 to the Supabase schema.
 5. **Catalog Tests**: Ensure `tests/catalog.test.cjs` passes and validates against the Supabase schema constraints.
 
 ---
@@ -97,8 +97,8 @@ Do not introduce ad-hoc field names, divergent keys, or arbitrary data models.
 
 Elke pagina heeft een echt pad (`/`, `/uitgebreid/`, `/modellen/`, `/overstapgids/`, `/overstapgids/<onderwerp>/`, `/nieuws/`, `/over-ons/`, `/vlootanalyse/`, `/restwaarde/`, `/privacy/`). Oude `#`-links worden in de browser omgezet naar die paden.
 
-- Bron is alleen `index.html`. De mappen per route, `404.html` en `sitemap.xml` worden gegenereerd door `node scripts/seo.mjs`. Bewerk ze nooit met de hand.
+- Bron is alleen `_src/index.html`. De hoofd-`index.html`, mappen per route, `404.html` en `sitemap.xml` worden gegenereerd door `node scripts/seo.mjs`. Bewerk ze nooit met de hand.
 - Titel en beschrijving per route staan in `<script type="application/json" id="seo">` in de head. Een nieuw gidsonderwerp of een nieuwe pagina krijgt daar een regel, anders faalt het script.
 - Interne links schrijf je als pad (`href="/overstapgids/laden/"`), niet als `#`.
-- Na een wijziging aan `index.html`: draai `node scripts/seo.mjs` en commit de uitvoer mee. De workflow `seo.yml` doet het anders achteraf, met een eigen commit op `main`.
+- Na een wijziging aan `_src/index.html`: draai `node scripts/seo.mjs` en commit de uitvoer mee. De workflow `seo.yml` doet het anders achteraf, met een eigen commit op `main`.
 - Geen verborgen tekst of opgevulde zoekwoorden: SEO zit in titels, beschrijvingen, structured data en echte paden, niet in zichtbare tekst.

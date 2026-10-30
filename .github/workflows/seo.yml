@@ -1,10 +1,10 @@
 name: SEO-pagina's bijwerken
 
-# Maakt na elke wijziging aan index.html de losse pagina's per route en sitemap.xml opnieuw (scripts/seo.mjs).
+# Genereert publieke routes, gedeelde assets en sitemap uit _src/index.html.
 on:
   push:
     branches: [main]
-    paths: [index.html, scripts/seo.mjs]
+    paths: ['_src/**', 'scripts/seo*.mjs', 'scripts/seo-render.cjs', 'scripts/i18n.cjs', 'scripts/locale-runtime.js', 'data/translations.en.json']
   workflow_dispatch:
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node scripts/seo.mjs
+      - run: node scripts/i18n.cjs && node scripts/seo.mjs
       - name: Commit als er iets veranderd is
         run: |
           git add -A

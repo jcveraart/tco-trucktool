@@ -12,4 +12,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test tests/*.test.cjs
+      - run: node scripts/i18n.cjs && node scripts/seo.mjs
+      - run: node --test tests/*.test.cjs tests/*.test.mjs
