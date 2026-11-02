@@ -1,0 +1,27 @@
+{
+  "campagne": "introductie",
+  "from": "Stekker of Diesel <info@stekkerofdiesel.nl>",
+  "replyTo": "info@stekkerofdiesel.nl",
+  "variants": {
+    "a": {
+      "subject": "TODO onderwerp variant A voor {{bedrijf}}",
+      "heading": "TODO kop variant A",
+      "paragraphs": [
+        "TODO eerste alinea variant A. Placeholders: {{voornaam}}, {{naam}}, {{bedrijf}}."
+      ],
+      "ctas": [
+        { "link": "calc", "label": "Bereken diesel of elektrisch" }
+      ]
+    },
+    "b": {
+      "subject": "TODO onderwerp variant B voor {{bedrijf}}",
+      "heading": "TODO kop variant B",
+      "paragraphs": [
+        "TODO eerste alinea variant B. Placeholders: {{voornaam}}, {{naam}}, {{bedrijf}}."
+      ],
+      "ctas": [
+        { "link": "vloot", "label": "Bekijk het wagenparkadvies" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>E-maildashboard | Stekker of Diesel</title>
+<style>
+:root{--page:#F3F3F0;--card:#fff;--ink:#15171A;--ink2:#4F565D;--ink3:#7A8188;--line:#DCDCD7;--volt:#0A8F5B;--volt-d:#07734A;--b:#B45309;--red:#B42318;--mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1260px;margin:0 auto;padding:28px 20px 64px}
+header{display:flex;flex-wrap:wrap;align-items:end;gap:14px 22px;margin-bottom:18px}
+h1{font-size:27px;line-height:1.15;margin:0;font-weight:650;letter-spacing:-.01em}
+.sub{color:var(--ink2);font-size:13.5px}
+.sub code{font-family:var(--mono);font-size:12.5px;background:#ECECE8;padding:1px 6px;border-radius:4px}
+.spacer{flex:1}
+button{font:inherit;font-weight:600;font-size:13.5px;padding:9px 15px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:#fff;cursor:pointer}
+button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+button:hover{opacity:.88}
+.filters{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end;background:var(--page);padding:12px 0;border-bottom:1px solid var(--line);margin-bottom:20px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font:500 10.5px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink3)}
+select,input[type=search],input[type=date]{font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);min-width:140px}
+.check{flex-direction:row;align-items:center;gap:7px;font-size:13.5px;padding-bottom:9px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.kpi .n{font:600 27px/1.1 var(--mono);letter-spacing:-.02em}
+.kpi .l{font-size:12px;color:var(--ink2);margin-top:3px}
+.kpi .d{font-size:11.5px;color:var(--ink3);font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 20px;margin-bottom:14px}
+.grid .card{margin-bottom:0}
+.card h2{font-size:16px;margin:0 0 4px;font-weight:650}
+.card .hint{font-size:12.5px;color:var(--ink3);margin:0 0 14px}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.variant{border:1px solid var(--line);border-radius:6px;padding:16px 18px}
+.variant.win{border-color:var(--volt);box-shadow:inset 0 0 0 1px var(--volt)}
+.variant h3{margin:0 0 2px;font-size:15px}
+.badge{display:inline-block;font:600 11px var(--mono);padding:2px 8px;border-radius:99px;background:#E7F4EE;color:var(--volt-d);margin-left:8px;vertical-align:2px}
+.badge.none{background:#ECECE8;color:var(--ink2)}
+.bar-row{display:grid;grid-template-columns:118px 1fr 74px;gap:10px;align-items:center;margin:7px 0;font-size:13px}
+.bar-row .v{font-family:var(--mono);font-size:12.5px;text-align:right;color:var(--ink2)}
+.track{height:10px;background:#ECECE8;border-radius:3px;overflow:hidden}
+.fill{height:100%;border-radius:3px;transition:width .35s ease}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid #ECECE8;vertical-align:top}
+tr.klikbaar{cursor:pointer}
+tr.klikbaar:hover td{background:#F7F7F4}
+tr.actief td{background:#E7F4EE}
+.num{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.stap{display:inline-block;font:600 11.5px var(--mono);padding:2px 8px;border-radius:99px;white-space:nowrap}
+.s-niet{background:#ECECE8;color:var(--ink2)} .s-verstuurd{background:#E2E8F0;color:#334155} .s-geopend{background:#FEF3C7;color:#92400E}
+.s-geklikt{background:#E7F4EE;color:var(--volt-d)} .s-afgemeld,.s-bounce{background:#FDECEA;color:var(--red)}
+.scroll{overflow:auto;max-height:460px}
+.leeg{color:var(--ink3);font-size:13.5px;padding:14px 0}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid #ECECE8;font-size:13.5px}
+.timeline .t{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap;padding-top:2px}
+.dot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:none}
+svg text{font-family:var(--mono)}
+.foot{color:var(--ink3);font-size:12.5px;margin-top:18px}
+@media (max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)} .grid,.ab{grid-template-columns:1fr}}
+@media (max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)} .bar-row{grid-template-columns:88px 1fr 60px}}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>E-maildashboard</h1>
+    <div class="sub">Stekker of Diesel · bijgewerkt __GEN__ · verversen: <code>node scripts/mail/dashboard.mjs</code> · <a href="https://www.notion.so/40cc947c3de3810b9a55e0176be142cf" target="_blank" rel="noopener">E-maildashboard in Notion</a> · <a href="https://www.notion.so/1c5cf07d8338422a8dd63ac4c0abb0dc" target="_blank" rel="noopener">Klanten &amp; leads in Notion</a></div>
+  </div>
+  <div class="spacer"></div>
+  <button class="ghost" id="csvBtn" type="button">Download kliks (CSV)</button>
+</header>
+
+<div class="filters">
+  <div class="field"><label for="fCampagne">Campagne</label><select id="fCampagne"></select></div>
+  <div class="field"><label for="fVariant">Variant</label><select id="fVariant"><option value="">Alle e-mails (A + B)</option><option value="a">E-mail A (·a)</option><option value="b">E-mail B (·b)</option></select></div>
+  <div class="field"><label for="fLink">Knop / link</label><select id="fLink"></select></div>
+  <div class="field"><label for="fVan">Vanaf</label><input type="date" id="fVan"></div>
+  <div class="field"><label for="fTot">Tot</label><input type="date" id="fTot"></div>
+  <div class="field"><label for="fZoek">Zoek klant</label><input type="search" id="fZoek" placeholder="bedrijf, naam, e-mail"></div>
+  <label class="field check"><input type="checkbox" id="fBots"> Scanner-kliks tonen</label>
+</div>
+
+<section class="kpis" id="kpis"></section>
+
+<section class="card" id="geplandCard">
+  <h2>Geplande mails</h2>
+  <p class="hint">Mails die bij Resend ingepland staan. Ze gaan er op het geplande tijdstip automatisch uit.</p>
+  <div id="geplandSamenvatting" class="hint"></div>
+  <div class="scroll" style="max-height:320px"><table><thead><tr><th>Gepland voor</th><th>Bedrijf</th><th>E-mail</th><th>Campagne</th><th>Variant</th><th>Status</th></tr></thead><tbody id="geplandBody"></tbody></table></div>
+</section>
+
+<section class="card">
+  <h2>A/B-test</h2>
+  <p class="hint">Zelfde campagne, twee varianten. Winnaar op klikratio (unieke klikkers / verzonden), met tweezijdige z-toets.</p>
+  <div class="ab" id="ab"></div>
+  <div id="abNote" class="hint" style="margin:12px 0 0"></div>
+</section>
+
+<div class="grid">
+  <section class="card"><h2>Funnel</h2><p class="hint">Verzonden → geopend (Resend) → geklikt → afgemeld.</p><div id="funnel"></div></section>
+  <section class="card"><h2>Kliks per knop</h2><p class="hint">Welke knop in de mail doet het werk.</p><div id="perLink"></div></section>
+</div>
+
+<section class="card">
+  <h2>Kliks over tijd</h2>
+  <p class="hint">Unieke kliks per dag, uitgesplitst naar variant.</p>
+  <div id="tijdlijn"></div>
+</section>
+
+<div class="grid">
+  <section class="card"><h2>Klanten per e-mailstap</h2><p class="hint">Waar elke klant in het mailproces zit.</p><div id="stappen"></div></section>
+  <section class="card"><h2>Klanten per segment</h2><p class="hint">Kliks en klanten per voertuigsegment uit Notion.</p><div id="segmenten"></div></section>
+</div>
+
+<section class="card">
+  <h2>Klanten</h2>
+  <p class="hint">Klik op een klant voor de volledige tijdlijn: verzending, Resend-events, elke klik, afmelding.</p>
+  <div class="scroll"><table><thead><tr><th>Bedrijf</th><th>Contact</th><th>Segment</th><th>Stap</th><th>Variant</th><th>Verzonden</th><th>Kliks</th><th>Laatste klik</th></tr></thead><tbody id="klantenBody"></tbody></table></div>
+</section>
+
+<section class="card" id="detailCard" hidden>
+  <h2 id="detailTitel">Klant</h2>
+  <p class="hint" id="detailSub"></p>
+  <ul class="timeline" id="detailLijst"></ul>
+</section>
+
+<section class="card">
+  <h2>Individuele kliks</h2>
+  <p class="hint">Elke klik afzonderlijk, nieuwste eerst. Scanner-kliks van mailbeveiliging staan apart gemarkeerd.</p>
+  <div class="scroll"><table><thead><tr><th>Tijd</th><th>Klant</th><th>Bedrijf</th><th>Campagne</th><th>Variant</th><th>Knop</th><th>Type</th></tr></thead><tbody id="kliksBody"></tbody></table></div>
+</section>
+
+<p class="foot">Bron: Supabase (verzendingen, kliks, Resend-events) · klantenlijst: Notion “Klanten &amp; leads” · Dit bestand bevat klantgegevens, deel het niet en zet het niet online.</p>
+</div>
+<script>
+const DATA = __DATA__;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Number(n || 0).toLocaleString('nl-NL');
+const pct = (a, b) => b ? (100 * a / b) : 0;
+const fmtPct = (a, b) => pct(a, b).toFixed(1).replace('.', ',') + '%';
+const fmtDatum = s => s ? new Date(s).toLocaleString('nl-NL', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—';
+const dag = s => s ? String(s).slice(0, 10) : '';
+const contactByToken = new Map(DATA.contacten.map(c => [c.token, c]));
+const LINKNAMEN = { calc: 'Calculator', uitgebreid: 'Uitgebreid advies', vloot: 'Vlootanalyse', gids: 'Overstapgids', heffing: 'Heffing', subsidie: 'Subsidies', ze: 'Zero-emissiezones', modellen: 'Modellen', kenteken: 'Kenteken' };
+const linkNaam = k => LINKNAMEN[k] || k || '—';
+const emailLabel = (campagne, variant) => { if (!variant) return '—'; const m = String(campagne || '').match(/(\d+)\s*$/); return m ? m[1] + variant : `${campagne}-${variant}`; };
+const isScanner = k => k.bot || k.klasse === 'scanner' || k.klasse === 'scanner_vermoedelijk';
+const isMens = k => !k.bot && (k.klasse ? k.klasse === 'menselijk' : true);
+const KLEUR = { a: '#0A8F5B', b: '#B45309', neutraal: '#4F565D', licht: '#ECECE8', rood: '#B42318' };
+
+const campagnes = [...new Set([...DATA.verzonden.map(v => v.campagne), ...DATA.kliks.map(k => k.campagne)].filter(Boolean))].sort();
+$('fCampagne').innerHTML = '<option value="">Alle campagnes</option>' + campagnes.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+const links = [...new Set(DATA.kliks.map(k => k.link).filter(Boolean))].sort();
+$('fLink').innerHTML = '<option value="">Alle knoppen</option>' + links.map(l => `<option value="${esc(l)}">${esc(linkNaam(l))}</option>`).join('');
+
+function filters() {
+  return { campagne: $('fCampagne').value, variant: $('fVariant').value, link: $('fLink').value,
+    van: $('fVan').value, tot: $('fTot').value, zoek: $('fZoek').value.trim().toLowerCase(), bots: $('fBots').checked };
+}
+function zoekTokens(f) {
+  if (!f.zoek) return null;
+  const set = new Set();
+  for (const c of DATA.contacten) {
+    if (`${c.bedrijf || ''} ${c.naam || ''} ${c.email || ''}`.toLowerCase().includes(f.zoek)) set.add(c.token);
+  }
+  return set;
+}
+function inPeriode(s, f) {
+  const d = dag(s);
+  return (!f.van || d >= f.van) && (!f.tot || d <= f.tot);
+}
+function gefilterd() {
+  const f = filters(); const zt = zoekTokens(f);
+  const basis = r => (!f.campagne || r.campagne === f.campagne) && (!f.variant || r.variant === f.variant);
+  const verzonden = DATA.verzonden.filter(v => basis(v) && inPeriode(v.verzonden_op, f) && (!zt || zt.has(v.token)));
+  const kliks = DATA.kliks.filter(k => basis(k) && (!f.link || k.link === f.link) && inPeriode(k.ontvangen_op, f) && (f.bots || !isScanner(k)) && (!zt || (k.token && zt.has(k.token)) || (f.zoek && !k.token && false)));
+  const klantKliks = kliks.filter(k => isMens(k) && k.token);
+  const events = DATA.events.filter(e => basis(e) && (!zt || zt.has(e.token)));
+  const afmeldingen = DATA.afmeldingen.filter(a => (!f.campagne || a.campagne === f.campagne) && inPeriode(a.ontvangen_op, f) && (!zt || zt.has(a.token)));
+  return { f, verzonden, kliks, klantKliks, events, afmeldingen };
+}
+function stapVan(token, g) {
+  const c = contactByToken.get(token);
+  if (!c) return 'Niet gemaild';
+  if (c.afgemeld_op) return 'Afgemeld';
+  if (c.bounce_op) return 'Bounce';
+  const eigen = (g ? g.klantKliks : DATA.kliks.filter(isMens)).some(k => k.token === token);
+  if (eigen) return 'Geklikt';
+  if (DATA.events.some(e => e.token === token && e.last_event === 'opened')) return 'Geopend';
+  if (DATA.verzonden.some(v => v.token === token)) return 'Verstuurd';
+  return 'Niet gemaild';
+}
+const STAPKLASSE = { 'Niet gemaild': 's-niet', 'Verstuurd': 's-verstuurd', 'Geopend': 's-geopend', 'Geklikt': 's-geklikt', 'Afgemeld': 's-afgemeld', 'Bounce': 's-bounce' };
+
+function bars(el, rows) {
+  const max = Math.max(1, ...rows.map(r => r.value));
+  $(el).innerHTML = rows.length ? rows.map(r => `
+    <div class="bar-row"><span>${esc(r.label)}</span>
+    <span class="track"><span class="fill" style="display:block;width:${Math.max(2, 100 * r.value / max)}%;background:${r.color || KLEUR.a}"></span></span>
+    <span class="v">${esc(r.text ?? fmt(r.value))}</span></div>`).join('') : '<div class="leeg">Nog geen data.</div>';
+}
+
+function renderKpis(g) {
+  const unieke = new Set(g.klantKliks.map(k => k.token)).size;
+  const geopend = new Set(g.events.filter(e => ['opened', 'clicked'].includes(e.last_event)).map(e => e.token)).size;
+  const bounces = new Set(g.events.filter(e => e.last_event === 'bounced').map(e => e.token)).size;
+  const scanners = g.kliks.filter(isScanner).length;
+  const tiles = [
+    ['Verzonden', g.verzonden.length, campagnes.length ? '' : 'nog geen campagne'],
+    ['Unieke klikkers', unieke, fmtPct(unieke, g.verzonden.length) + ' van verzonden'],
+    ['Kliks totaal', g.klantKliks.length, scanners ? scanners + ' scanner-kliks apart' : 'zonder scanners'],
+    ['Geopend', geopend, 'laatste Resend-stand'],
+    ['Afmeldingen', g.afmeldingen.length, fmtPct(g.afmeldingen.length, g.verzonden.length) + ' van verzonden'],
+    ['Bounces', bounces, 'harde bounces via Resend'],
+  ];
+  $('kpis').innerHTML = tiles.map(t => `<div class="kpi"><div class="n">${fmt(t[1])}</div><div class="l">${t[0]}</div><div class="d">${esc(t[2])}</div></div>`).join('');
+}
+
+function zToets(aKlik, aN, bKlik, bN) {
+  if (!aN || !bN) return null;
+  const p = (aKlik + bKlik) / (aN + bN);
+  const se = Math.sqrt(p * (1 - p) * (1 / aN + 1 / bN));
+  if (!se) return null;
+  const z = (aKlik / aN - bKlik / bN) / se;
+  const t = 1 / (1 + 0.2316419 * Math.abs(z));
+  const phi = Math.exp(-z * z / 2) / Math.sqrt(2 * Math.PI);
+  const cdf = 1 - phi * t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
+  return { z, pWaarde: Math.min(1, Math.max(0, 2 * (1 - cdf))) };
+}
+
+function renderAB(g) {
+  const cijfer = v => {
+    const verz = g.verzonden.filter(x => x.variant === v);
+    const kliks = g.klantKliks.filter(x => x.variant === v);
+    const unieke = new Set(kliks.map(k => k.token)).size;
+    const afm = g.afmeldingen.length && verz.length ? Math.round(g.afmeldingen.length * verz.length / Math.max(1, g.verzonden.length)) : 0;
+    return { verz: verz.length, kliks: kliks.length, unieke, ratio: pct(unieke, verz.length) };
+  };
+  const A = cijfer('a'), B = cijfer('b');
+  const heeftData = A.verz || B.verz;
+  const winnaar = !heeftData || A.ratio === B.ratio ? null : (A.ratio > B.ratio ? 'a' : 'b');
+  const toets = zToets(A.unieke, A.verz, B.unieke, B.verz);
+  const kaart = (v, c) => `
+    <div class="variant ${winnaar === v ? 'win' : ''}">
+      <h3>E-mail ${emailLabel(g.f.campagne || campagnes[0], v)}${winnaar === v ? '<span class="badge">voorlopige winnaar</span>' : ''}${!heeftData ? '<span class="badge none">nog geen data</span>' : ''}</h3>
+      <div class="sub">${fmt(c.verz)} verzonden · ${fmt(c.unieke)} unieke klikkers · ${fmt(c.kliks)} kliks</div>
+      ${barsHtml(c)}
+    </div>`;
+  function barsHtml(c) {
+    const max = Math.max(1, A.ratio, B.ratio);
+    return `<div class="bar-row"><span>Klikratio</span><span class="track"><span class="fill" style="display:block;width:${Math.max(2, 100 * c.ratio / max)}%;background:${c === A ? KLEUR.a : KLEUR.b}"></span></span><span class="v">${c.ratio.toFixed(1).replace('.', ',')}%</span></div>
+    <div class="bar-row"><span>Verzonden</span><span class="track"><span class="fill" style="display:block;width:${Math.max(2, 100 * c.verz / Math.max(1, A.verz, B.verz))}%;background:${c === A ? KLEUR.a : KLEUR.b}"></span></span><span class="v">${fmt(c.verz)}</span></div>`;
+  }
+  $('ab').innerHTML = kaart('a', A) + kaart('b', B);
+  $('abNote').textContent = !heeftData ? 'Er is nog niets verzonden in deze selectie. Zodra de campagne loopt, verschijnt hier de vergelijking.'
+    : toets ? `Verschil: ${(Math.abs(A.ratio - B.ratio)).toFixed(1).replace('.', ',')} procentpunt · z = ${toets.z.toFixed(2)} · p ≈ ${toets.pWaarde.toFixed(3)} ${toets.pWaarde < 0.05 ? '(significant bij 5%)' : '(nog niet significant — meer verzendingen nodig)'}.`
+    : 'Nog te weinig verzendingen voor een toets.';
+}
+
+function renderFunnel(g) {
+  const verz = g.verzonden.length;
+  const geopend = new Set(g.events.filter(e => ['opened', 'clicked'].includes(e.last_event)).map(e => e.token)).size;
+  const geklikt = new Set(g.klantKliks.map(k => k.token)).size;
+  bars('funnel', [
+    { label: 'Verzonden', value: verz, color: KLEUR.neutraal, text: fmt(verz) },
+    { label: 'Geopend', value: geopend, color: '#92400E', text: `${fmt(geopend)} · ${fmtPct(geopend, verz)}` },
+    { label: 'Geklikt', value: geklikt, color: KLEUR.a, text: `${fmt(geklikt)} · ${fmtPct(geklikt, verz)}` },
+    { label: 'Afgemeld', value: g.afmeldingen.length, color: KLEUR.rood, text: `${fmt(g.afmeldingen.length)} · ${fmtPct(g.afmeldingen.length, verz)}` },
+  ]);
+}
+
+function renderPerLink(g) {
+  const per = new Map();
+  for (const k of g.klantKliks) per.set(k.link, (per.get(k.link) || 0) + 1);
+  bars('perLink', [...per.entries()].sort((x, y) => y[1] - x[1]).map(([l, n]) => ({ label: linkNaam(l), value: n, color: KLEUR.a })));
+}
+
+function renderTijd(g) {
+  const perDag = new Map();
+  for (const k of g.klantKliks) {
+    const d = dag(k.ontvangen_op); if (!d) continue;
+    if (!perDag.has(d)) perDag.set(d, { a: new Set(), b: new Set() });
+    if (perDag.get(d)[k.variant]) perDag.get(d)[k.variant].add(k.token);
+  }
+  const dagen = [...perDag.keys()].sort();
+  const el = $('tijdlijn');
+  if (!dagen.length) { el.innerHTML = '<div class="leeg">Nog geen kliks in deze selectie.</div>'; return; }
+  const W = 1080, H = 240, padL = 34, padB = 26, padT = 12;
+  const max = Math.max(1, ...dagen.map(d => Math.max(perDag.get(d).a.size, perDag.get(d).b.size)));
+  const x = i => padL + (dagen.length === 1 ? (W - padL - 10) / 2 : i * (W - padL - 10) / (dagen.length - 1));
+  const y = v => padT + (H - padT - padB) * (1 - v / max);
+  const lijn = v => dagen.map((d, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(perDag.get(d)[v].size).toFixed(1)}`).join(' ');
+  const as = [0, Math.ceil(max / 2), max].map(v => `<line x1="${padL}" y1="${y(v)}" x2="${W - 10}" y2="${y(v)}" stroke="#ECECE8"/><text x="4" y="${y(v) + 4}" font-size="11" fill="#7A8188">${v}</text>`).join('');
+  const labels = dagen.map((d, i) => i % Math.ceil(dagen.length / 8 || 1) === 0 ? `<text x="${x(i)}" y="${H - 6}" font-size="11" fill="#7A8188" text-anchor="middle">${d.slice(5)}</text>` : '').join('');
+  const punten = v => dagen.map((d, i) => `<circle cx="${x(i)}" cy="${y(perDag.get(d)[v].size)}" r="3.5" fill="${KLEUR[v]}"><title>${d} · e-mail ${emailLabel(g.f.campagne || campagnes[0], v)}: ${perDag.get(d)[v].size} unieke klikkers</title></circle>`).join('');
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Kliks over tijd">${as}${labels}
+    <path d="${lijn('a')}" fill="none" stroke="${KLEUR.a}" stroke-width="2.5"/>${punten('a')}
+    <path d="${lijn('b')}" fill="none" stroke="${KLEUR.b}" stroke-width="2.5"/>${punten('b')}
+    <text x="${W - 170}" y="20" font-size="12" fill="${KLEUR.a}">● E-mail ${emailLabel(g.f.campagne || campagnes[0], 'a')}</text><text x="${W - 85}" y="20" font-size="12" fill="${KLEUR.b}">● E-mail ${emailLabel(g.f.campagne || campagnes[0], 'b')}</text></svg>`;
+}
+
+function renderStappen(g) {
+  const stappen = ['Niet gemaild', 'Verstuurd', 'Geopend', 'Geklikt', 'Afgemeld', 'Bounce'];
+  const tel = Object.fromEntries(stappen.map(s => [s, 0]));
+  for (const c of DATA.contacten) tel[stapVan(c.token, g)]++;
+  bars('stappen', stappen.map(s => ({ label: s, value: tel[s], color: s === 'Geklikt' ? KLEUR.a : s === 'Afgemeld' || s === 'Bounce' ? KLEUR.rood : KLEUR.neutraal })));
+}
+
+function renderSegmenten(g) {
+  const per = new Map();
+  for (const c of DATA.contacten) {
+    const s = c.segment || 'onbekend';
+    if (!per.has(s)) per.set(s, { klanten: 0, kliks: 0 });
+    per.get(s).klanten++;
+  }
+  for (const k of g.klantKliks) {
+    const s = contactByToken.get(k.token)?.segment || 'onbekend';
+    if (!per.has(s)) per.set(s, { klanten: 0, kliks: 0 });
+    per.get(s).kliks++;
+  }
+  bars('segmenten', [...per.entries()].sort((x, y) => y[1].kliks - x[1].kliks).map(([s, v]) => ({ label: s, value: v.kliks, text: `${fmt(v.kliks)} kliks · ${fmt(v.klanten)} klanten`, color: KLEUR.a })));
+}
+
+let geselecteerd = null;
+function renderKlanten(g) {
+  const perToken = new Map();
+  const tel = (token, veld) => { if (!perToken.has(token)) perToken.set(token, { verz: 0, kliks: 0, laatste: '', variant: '', campagne: '' }); const r = perToken.get(token); r[veld === 'kliks' ? 'kliks' : 'verz']++; return r; };
+  for (const v of g.verzonden) { const r = tel(v.token); r.variant = v.variant; r.campagne = v.campagne; }
+  for (const k of g.klantKliks) { const r = tel(k.token, 'kliks'); if (k.ontvangen_op > r.laatste) r.laatste = k.ontvangen_op; }
+  const rijen = DATA.contacten.map(c => ({ c, ...(perToken.get(c.token) || { verz: 0, kliks: 0, laatste: '', variant: '' }) }))
+    .filter(r => !g.f.zoek || `${r.c.bedrijf || ''} ${r.c.naam || ''} ${r.c.email || ''}`.toLowerCase().includes(g.f.zoek))
+    .sort((x, y) => y.kliks - x.kliks || String(x.c.bedrijf || '').localeCompare(String(y.c.bedrijf || '')));
+  $('klantenBody').innerHTML = rijen.length ? rijen.map(r => `
+    <tr class="klikbaar ${geselecteerd === r.c.token ? 'actief' : ''}" data-token="${esc(r.c.token)}">
+      <td><strong>${esc(r.c.bedrijf || '—')}</strong><br><span class="num">${esc(r.c.email)}</span></td>
+      <td>${esc(r.c.naam || '—')}</td><td>${esc(r.c.segment || '—')}</td>
+      <td><span class="stap ${STAPKLASSE[stapVan(r.c.token, g)]}">${stapVan(r.c.token, g)}</span></td>
+      <td class="num">${r.variant ? 'e-mail ' + emailLabel(r.campagne, r.variant) : '—'}</td>
+      <td class="num">${fmt(r.verz)}</td><td class="num">${fmt(r.kliks)}</td><td class="num">${fmtDatum(r.laatste)}</td>
+    </tr>`).join('') : '<tr><td colspan="8" class="leeg">Geen klanten in deze selectie. Voeg leads toe in Notion en draai de sync.</td></tr>';
+  document.querySelectorAll('#klantenBody tr.klikbaar').forEach(tr => tr.addEventListener('click', () => { geselecteerd = tr.dataset.token; render(); }));
+}
+
+function renderDetail(g) {
+  const card = $('detailCard');
+  const c = geselecteerd ? contactByToken.get(geselecteerd) : null;
+  if (!c) { card.hidden = true; return; }
+  card.hidden = false;
+  $('detailTitel').textContent = c.bedrijf || c.email;
+  $('detailSub').textContent = `${c.naam || ''} · ${c.email} · segment ${c.segment || 'onbekend'} · stap ${stapVan(c.token, g)}`;
+  const items = [];
+  if (c.toegevoegd_op) items.push([c.toegevoegd_op, KLEUR.neutraal, 'Toegevoegd als klant' + (c.bron ? ` (bron: ${c.bron})` : '')]);
+  for (const v of DATA.verzonden.filter(v => v.token === c.token)) items.push([v.verzonden_op, KLEUR.neutraal, `Mail verzonden · ${v.campagne} · e-mail ${emailLabel(v.campagne, v.variant)}`]);
+  for (const e of DATA.events.filter(e => e.token === c.token)) items.push([e.bijgewerkt_op, '#92400E', `Resend-stand: ${e.last_event} · ${e.campagne} (${emailLabel(e.campagne, e.variant)})`]);
+  for (const k of DATA.kliks.filter(k => k.token === c.token)) items.push([k.ontvangen_op, isScanner(k) ? '#B42318' : KLEUR.a, `${isScanner(k) ? 'Scanner-klik' : 'Klik'} op “${linkNaam(k.link)}” · ${k.campagne} (${emailLabel(k.campagne, k.variant)})`]);
+  for (const a of DATA.afmeldingen.filter(a => a.token === c.token)) items.push([a.ontvangen_op, KLEUR.rood, `Afgemeld${a.campagne ? ' · ' + a.campagne : ''}`]);
+  if (c.afgemeld_op) items.push([c.afgemeld_op, KLEUR.rood, 'Afmelding geregistreerd']);
+  if (c.bounce_op) items.push([c.bounce_op, KLEUR.rood, 'Bounce geregistreerd']);
+  items.sort((x, y) => String(x[0]).localeCompare(String(y[0])));
+  $('detailLijst').innerHTML = items.length ? items.map(i => `<li><span class="t">${fmtDatum(i[0])}</span><span class="dot" style="background:${i[1]}"></span><span>${esc(i[2])}</span></li>`).join('') : '<li class="leeg">Nog geen gebeurtenissen voor deze klant.</li>';
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function renderKliks(g) {
+  const rijen = g.kliks.slice(0, 2000);
+  $('kliksBody').innerHTML = rijen.length ? rijen.map(k => {
+    const c = k.token ? contactByToken.get(k.token) : null;
+    return `<tr class="${c ? 'klikbaar' : ''}" ${c ? `data-token="${esc(k.token)}"` : ''}>
+      <td class="num">${fmtDatum(k.ontvangen_op)}</td>
+      <td>${esc(c?.naam || (k.token ? '—' : 'Onbekend'))}</td>
+      <td>${esc(c?.bedrijf || (k.token ? '—' : 'Verwijderd contact'))}</td>
+      <td>${esc(k.campagne || '—')}</td><td class="num">${k.variant ? emailLabel(k.campagne, k.variant) : '—'}</td>
+      <td>${esc(linkNaam(k.link))}</td>
+      <td>${k.bot || k.klasse === 'scanner' ? '<span class="stap s-afgemeld">Scanner</span>' : k.klasse === 'scanner_vermoedelijk' ? '<span class="stap s-afgemeld">Vermoedelijke scanner</span>' : k.klasse === 'onbekend' ? '<span class="stap s-niet">Onbekend</span>' : '<span class="stap s-geklikt">Klant</span>'}</td></tr>`;
+  }).join('') : '<tr><td colspan="7" class="leeg">Nog geen kliks in deze selectie.</td></tr>';
+  document.querySelectorAll('#kliksBody tr.klikbaar').forEach(tr => tr.addEventListener('click', () => { geselecteerd = tr.dataset.token; render(); }));
+}
+
+function downloadCsv(g) {
+  const kop = 'tijd;klant;bedrijf;email;campagne;variant;knop;type\n';
+  const regels = g.kliks.map(k => { const c = k.token ? contactByToken.get(k.token) : null;
+    return [k.ontvangen_op, c?.naam || '', c?.bedrijf || '', c?.email || '', k.campagne || '', k.variant || '', linkNaam(k.link), k.bot ? 'scanner' : 'klant'].map(v => `"${String(v).replaceAll('"', '""')}"`).join(';'); }).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + kop + regels], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'email-kliks.csv'; a.click(); URL.revokeObjectURL(a.href);
+}
+
+function renderGepland(g) {
+  const eventPerToken = new Map(DATA.events.map(e => [e.token + '|' + e.campagne, e.last_event]));
+  const rijen = DATA.verzonden.filter(v => v.gepland_voor)
+    .filter(v => (!g.f.campagne || v.campagne === g.f.campagne) && (!g.f.variant || v.variant === g.f.variant))
+    .sort((x, y) => String(x.gepland_voor).localeCompare(String(y.gepland_voor)));
+  const nu = new Date();
+  const wachtend = rijen.filter(v => new Date(v.gepland_voor) > nu || eventPerToken.get(v.token + '|' + v.campagne) === 'scheduled').length;
+  $('geplandSamenvatting').textContent = rijen.length
+    ? `${rijen.length} ingeplande mails in deze selectie, waarvan ${wachtend} nog in de wachtrij.`
+    : '';
+  $('geplandBody').innerHTML = rijen.length ? rijen.map(v => {
+    const c = contactByToken.get(v.token);
+    const status = eventPerToken.get(v.token + '|' + v.campagne) || (new Date(v.gepland_voor) > nu ? 'scheduled' : 'sent');
+    const label = status === 'scheduled' ? 'Ingepland' : status === 'delivered' ? 'Verstuurd' : status === 'bounced' ? 'Bounce' : status;
+    const klasse = status === 'scheduled' ? 's-verstuurd' : status === 'delivered' ? 's-geklikt' : status === 'bounced' ? 's-bounce' : 's-geopend';
+    return `<tr><td class="num">${new Date(v.gepland_voor).toLocaleString('nl-NL')}</td><td>${esc(c?.bedrijf || '—')}</td><td class="num">${esc(c?.email || '—')}</td><td>${esc(v.campagne)}</td><td class="num">e-mail ${emailLabel(v.campagne, v.variant)}</td><td><span class="stap ${klasse}">${label}</span></td></tr>`;
+  }).join('') : '<tr><td colspan="6" class="leeg">Geen geplande mails. Inplannen kan met send.mjs --plan &lt;ISO-tijd&gt;.</td></tr>';
+}
+
+function render() {
+  const g = gefilterd();
+  renderKpis(g); renderGepland(g); renderAB(g); renderFunnel(g); renderPerLink(g); renderTijd(g);
+  renderStappen(g); renderSegmenten(g); renderKlanten(g); renderDetail(g); renderKliks(g);
+}
+for (const id of ['fCampagne', 'fVariant', 'fLink', 'fVan', 'fTot', 'fZoek', 'fBots']) $(id).addEventListener('input', render);
+$('csvBtn').addEventListener('click', () => downloadCsv(gefilterd()));
+render();
+</script>
+</body>
+</html>
+
