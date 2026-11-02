@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const html = fs.readFileSync(path.join(__dirname, '..', '_src/index.html'), 'utf8');
 const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const fields = script.slice(script.indexOf('const FIELDS='), script.indexOf('const TOLC='));
 const formatters = script.slice(script.indexOf('const $=id=>'), script.indexOf('const reduced='));

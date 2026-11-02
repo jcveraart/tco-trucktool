@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'_src/index.html'),'utf8');
 const script=id=>html.match(new RegExp('<script id="'+id+'">([\\s\\S]*?)</script>'))[1];
 function browser(saved,{lang='nl',oldIds=false,hostname='example.test',search=''}={}){
  const now=Date.now(),storage=new Map(),elements={},listeners={},network=[],timers=new Map();let nextTimer=0,nextId=0;

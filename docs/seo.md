@@ -1,15 +1,15 @@
 # SEO and publishing
 
-`index.html` remains the source of the application. Its `seo` JSON block defines each page’s Dutch path, English path, titles, descriptions and category. The public site is generated with Node.js, without a server or package installation.
+`_src/index.html` is the editable source of the application. The root `index.html` is generated, just like the other routes. Its `seo` JSON block defines each page’s Dutch path, English path, titles, descriptions and category. The public site is generated with Node.js, without a server or package installation.
 
 ```
 node scripts/i18n.cjs
 node scripts/seo.mjs
-node --test tests/*.test.cjs
+node --test tests/*.test.cjs tests/*.test.mjs
 node scripts/seo.mjs
 ```
 
-Commit the source changes and generated output. The existing SEO workflow also regenerates the pages after changes to `index.html` or `scripts/seo.mjs`; its permissions are unchanged.
+Commit the source changes and generated output. The existing SEO workflow also regenerates the pages after changes to `_src/index.html`, build helpers or translation inputs; its permissions are unchanged.
 
 ## URLs and languages
 
@@ -27,18 +27,21 @@ Structured data describes the organization, website, page, breadcrumb trail, gui
 
 `lastmod` changes only when a page’s content or metadata changes. Repeated builds preserve dates. Font files are self-hosted under `assets/fonts/` with their SIL Open Font License files. Keep those assets when changing deployment. Advertising JavaScript loads only when an ad slot is configured.
 
-## Keyword research (Google Autocomplete, October 2026)
+## Search intent
 
-Method: harvested 824 unique Dutch suggestions from Google's own autocomplete endpoint (`suggestqueries.google.com`, hl=nl, gl=nl) from 21 seed terms plus question prefixes and letter expansions. Suggestion order and recurrence are a popularity signal, not exact volumes. Findings applied to titles and guide content:
+The direct Google Keyword Planner research of 29 October 2026 uses Netherlands volume bands, with Trends, search-result checks and a small Search Console baseline. Autocomplete suggestions are not search-volume measurements. See `docs/content-strategy.md` for the content mapping. Do not infer that one synonym dominates nationally from suggestion order or a few site impressions.
 
-- **Kilometerheffing dominates.** Searchers say "kilometerheffing", not "vrachtwagenheffing": *kilometerheffing berekenen*, *hoeveel kilometerheffing vrachtwagen*, *wat kost kilometerheffing vrachtwagen*, *kilometerheffing welke wegen*, *hoe wordt kilometerheffing gecontroleerd*. The toll guide now leads with "kilometerheffing" and answers the roads and enforcement questions.
-- **Range is asked per vehicle type, especially vans:** *elektrische bestelbus met grootste actieradius*, *welke elektrische bestelbus heeft de grootste actieradius*. The range guide names the actual longest-range models from the live catalogue.
-- **Subsidy is asked as an amount:** *hoeveel subsidie elektrische vrachtwagen*. The grants guide heading now asks that question above the AanZET table.
-- **Charging is asked as where/cost:** *waar elektrische vrachtwagen laden*, *wat kost het om een elektrische vrachtwagen op te laden*. Covered by the charging guide title and content.
-- **"Vlootanalyse" itself is barely searched** (no autocomplete suggestions; Search Console shows only a handful of impressions). Demand exists as *wagenpark elektrisch* and *tco vrachtwagen*. Keep the fleet page, but let the homepage and calculator carry the TCO wording.
-- Notable unmet demand for later: per-model searches (*elektrische vrachtwagen mercedes*, *actieradius elektrische volvo vrachtwagen*) — these argue for individual model pages, which do not exist yet.
+## Technical delivery
 
-Search Console (first data): queries *vlootanalyse*, *emissieloze vrachtauto laden*, *elektrische vrachtwagen actieradius*, *kilometerheffing vrachtwagens* show impressions but zero clicks, i.e. positions beyond the first results. Thin guide articles (170–250 words) against complete official pages are the main content gap; every generated page also ships the full app shell (~837 KB, content of all pages in every URL), which dilutes per-page relevance until the shell is split per route.
+Every generated URL contains its own page content, and guide URLs contain only the selected guide. The editable single-file source remains in `_src/index.html`; it is excluded from GitHub Pages together with build helpers, tests and internal documentation.
+
+Styles, the unchanged calculator code and the existing application shell are emitted as content-hashed files under `assets/site/`. They can be reused from browser cache across routes. Ordered deferred scripts restore missing application sections before initialization. This preserves existing calculator state and client-side navigation, while each initial HTTP response remains route-specific and readable without JavaScript. Hydration still downloads and restores the full application: the smaller HTML response does not mean a 95% reduction in first-visit total transfer or a measured Core Web Vitals improvement.
+
+Canonical URLs, reciprocal language alternatives, social metadata, structured data and index/noindex remain generated for every route. Structured data and Twitter metadata now follow client-side navigation as well. Guide Article headlines match visible headings; the advice page also describes its actual service. No fabricated product offers, ratings or FAQ-rich-result promises are added.
+
+`tests/technical-seo.test.cjs` checks every Dutch and English route, route isolation, real files and fragment targets, asset hashes, executable scripts and HTML byte budgets. CI builds the actual publication and runs both CJS and MJS test suites. Stable line endings keep generated assets consistent between Windows and Linux.
+
+Old published hashed assets should be retained during deployments so cached HTML can still load its matching files. Do not manually edit generated assets. The stable authoring source and build helpers produce them.
 
 ## Search Console
 

@@ -2,26 +2,26 @@
 
 Een rekentool die een nieuw diesel- en een nieuw elektrisch bedrijfsvoertuig vergelijkt: kosten per kilometer, per jaar en over de afschrijftermijn. Voor een trekker, bakwagen, bestelbus of bus.
 
-De site is één statisch bestand (`index.html`) zonder build-stap en zonder framework. Het enige externe bestand is het lettertype (Google Fonts), met een systeemlettertype als terugval.
+De website wordt zonder framework of npm-installatie gegenereerd uit `_src/index.html`. Elke URL krijgt eigen HTML. Stijlen en scripts worden als gedeelde bestanden met een inhoudshash gepubliceerd; lettertypes staan lokaal in `assets/fonts/`. Zie [SEO en publiceren](docs/seo.md).
 
 ## Lokaal openen
 
-Download de map (op GitHub: **Code → Download ZIP**, of `git clone`) en dubbelklik op `index.html`. Er is geen server of installatie nodig.
+Genereer met `node scripts/i18n.cjs` en `node scripts/seo.mjs`. Start daarna bijvoorbeeld `python -m http.server 8765` in de hoofdmap en open `http://127.0.0.1:8765/`. Gebruik een lokale server zodat de gedeelde bestanden en echte URL-paden correct werken.
 
 ## Online zetten
 
-Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main` / root**. Elke andere statische hosting (Netlify, Vercel, een eigen server) werkt ook: het is één bestand.
+Zet GitHub Pages aan via **Settings → Pages → Deploy from a branch → `main` / root**. Elke andere statische hosting (Netlify, Vercel, een eigen server) werkt ook: publiceer de gegenereerde HTML, assets, sitemap, robots.txt en overige publieke bestanden. Publiceer de bronmap `_src`, tests en buildhelpers niet.
 
 ## Pagina's
 
 | Adres | Pagina |
 |---|---|
 | `index.html` | Calculator |
-| `index.html#modellen` | Elektrische modellen |
-| `index.html#faq` | Veelgestelde vragen |
-| `index.html#nieuws` | Nieuws |
-| `index.html#restwaarde` | Restwaarde-index, verkoopprijs melden en prijsalarm |
-| `index.html#over-ons` | Over ons |
+| `/modellen/` | Elektrische modellen |
+| `/overstapgids/` | Veelgestelde vragen |
+| `/nieuws/` | Nieuws |
+| `/restwaarde/` | Restwaarde-index, verkoopprijs melden en prijsalarm |
+| `/over-ons/` | Over ons |
 | `index.html?embed=1` | Calculator als widget voor een andere site |
 
 ## Opbouw van de calculator
@@ -79,7 +79,7 @@ De terugverdientijd is het moment waarop de opgebouwde kosten van elektrisch (ex
 
 ## Aanpassen
 
-Bovenaan het script in `index.html` staan alle velden met bereik en standaardwaarde (`FIELDS`), de voertuigen met hun voorbeeldcijfers (`VT`), de AanZET-tabellen voor N2 en N3 (`AZT`), tolling per land (`TOL`) de stappen van het invulvenster (`STEPS`) en de elektrische modellen (`MODELS`). De berekening staat in `calc()` en `calcX()`. Kleuren en lettertypes staan als variabelen bovenaan de stylesheet (`:root`). De naam van de site staat in `BRAND` en in de kop en voet van de HTML.
+Bovenaan het script in `_src/index.html` staan alle velden met bereik en standaardwaarde (`FIELDS`), de voertuigen met hun voorbeeldcijfers (`VT`), de AanZET-tabellen voor N2 en N3 (`AZT`), tolling per land (`TOL`) de stappen van het invulvenster (`STEPS`) en de elektrische modellen (`MODELS`). De berekening staat in `calc()` en `calcX()`. Kleuren en lettertypes staan als variabelen bovenaan de stylesheet (`:root`). De naam van de site staat in `BRAND` en in de kop en voet van de HTML.
 
 ## Persoonlijke vlootrapporten
 

@@ -678,3 +678,22 @@ button:disabled{cursor:default;opacity:.4;transform:none!important}
 @media print{
   .fleet-scroll{overflow:visible;max-height:none}.fleet-matrix{min-width:0;font-size:9px}.fleet-matrix .fleet-name,.fleet-matrix thead th{position:static}.fleet-matrix thead th:first-child{width:130px}.fleet-matrix th.fleet-now{width:45px}.fleet-matrix td{padding:4px 2px}.fleet-cell{padding:4px;font-size:8px}.fleet-key,.planner-heading,.fleet-mix{break-inside:avoid}.fleet-planner{break-inside:auto}.fleet-matrix tr{break-inside:avoid}.fleet-matrix thead{display:table-header-group}.planner-toolbar .seg,.period-arrows,.scenario-toolbar,.scenario-jump,.plan-picker{display:none}.scenario-case{break-inside:avoid}.scenario-details{display:block}.scenario-context{break-inside:avoid}.scenario-detail-bottom .btn{display:none}
 }
+
+/* Operational evidence must remain readable on a phone and in print. */
+.practical{margin-top:32px}.practical>h3:not(:first-child){margin-top:28px}
+.practical .tbl{table-layout:fixed}.practical .tbl td,.practical .tbl th{white-space:normal;overflow-wrap:anywhere;vertical-align:top}
+.practical .tbl th:first-child{width:56%}.practical li{margin:0 0 12px;line-height:1.6}
+.practical details{margin-top:24px}.practical summary{cursor:pointer}
+@media(max-width:600px){.practical .tbl{font-size:13px}.practical .tbl td,.practical .tbl th{padding:10px 6px}.practical .tbl th:first-child{width:50%}}
+
+/* Persistent cues: no hover needed to understand costs or operating constraints. */
+.glance{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:24px 0 36px}
+.glance-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;color:var(--ink);text-decoration:none;min-width:0}
+.glance-card>span{font-size:12px;color:var(--ink-2)}.glance-card>b{font-size:23px;line-height:1.25;overflow-wrap:anywhere}.glance-card>small{font-size:12px;color:var(--ink-2)}.glance-card>em{font-size:11px;font-style:normal;margin-top:auto;color:var(--volt-ink)}
+.glance-card.saving{border-top:3px solid #0A8F5B}.glance-card.warning{border-top:3px solid #B8700E}.glance-card:focus-visible{outline:3px solid #0A8F5B;outline-offset:3px}
+.reading-note{font-size:14px;line-height:1.6;color:var(--ink-2);max-width:80ch;margin:0 0 24px}.axis-caption{font-size:12px;color:var(--ink-2);margin:0 0 12px}
+.tbl caption{text-align:left;caption-side:bottom;font-size:12px;line-height:1.5;color:var(--ink-2);padding:12px 0;white-space:normal}
+.ai-part li{line-height:1.7;margin-bottom:18px}.ai-part li>b{display:block;margin-bottom:6px}
+@media(max-width:850px){.glance{grid-template-columns:repeat(2,minmax(0,1fr))}.glance-card{padding:16px}.glance-card>b{font-size:19px}}
+@media(max-width:460px){.glance{grid-template-columns:1fr}.glance-card{gap:6px}.glance-card>b{font-size:24px}}
+@media print{.glance{grid-template-columns:repeat(2,minmax(0,1fr))}.glance-card{break-inside:avoid}.reading-note{font-size:10pt}}
