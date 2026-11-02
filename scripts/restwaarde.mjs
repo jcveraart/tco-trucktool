@@ -115,7 +115,7 @@ const eur = (n) => "€ " + Math.round(n).toLocaleString("nl-NL");
 const naam = (v) => [v.brand, v.model].filter(Boolean).join(" ") || "Voertuig";
 
 async function mail(alarm, treffers) {
-  const regels = treffers.map((v) => `<li><a href="${v.url || SITE + "/#restwaarde"}">${naam(v)}</a>${v.year ? `, ${v.year}` : ""}${v.km != null ? `, ${v.km.toLocaleString("nl-NL")} km` : ""}: ${eur(v.price)} excl. btw</li>`).join("");
+  const regels = treffers.map((v) => `<li><a href="${v.url || SITE + "/"}">${naam(v)}</a>${v.year ? `, ${v.year}` : ""}${v.km != null ? `, ${v.km.toLocaleString("nl-NL")} km` : ""}: ${eur(v.price)} excl. btw</li>`).join("");
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, "content-type": "application/json" },

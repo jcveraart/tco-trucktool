@@ -97,19 +97,19 @@
   },
   "https://stekkerofdiesel.nl/overstapgids/financiering/": {
     "date": "2026-11-02",
-    "hash": "6b0ec176cfe0"
+    "hash": "25ba2389cd81"
   },
   "https://stekkerofdiesel.nl/en/switching-guide/buy-lease-or-rent/": {
     "date": "2026-11-02",
-    "hash": "79e23f73c5d8"
+    "hash": "5e224a3e6efe"
   },
   "https://stekkerofdiesel.nl/overstapgids/accu/": {
-    "date": "2026-10-30",
-    "hash": "eaaf8db6573f"
+    "date": "2026-11-02",
+    "hash": "025489baaaf1"
   },
   "https://stekkerofdiesel.nl/en/switching-guide/battery-and-residual-value/": {
-    "date": "2026-10-30",
-    "hash": "23ae0284c85d"
+    "date": "2026-11-02",
+    "hash": "c0acb20800de"
   },
   "https://stekkerofdiesel.nl/overstapgids/regels/": {
     "date": "2026-10-30",
@@ -150,14 +150,6 @@
   "https://stekkerofdiesel.nl/en/fleet-analysis/": {
     "date": "2026-11-02",
     "hash": "ba86db556be1"
-  },
-  "https://stekkerofdiesel.nl/restwaarde/": {
-    "date": "2026-10-30",
-    "hash": "144c68be3a7f"
-  },
-  "https://stekkerofdiesel.nl/en/residual-value/": {
-    "date": "2026-10-30",
-    "hash": "006fefc79143"
   },
   "https://stekkerofdiesel.nl/privacy/": {
     "date": "2026-11-02",
