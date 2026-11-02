@@ -15,7 +15,7 @@
    [/^Je komt (.+) km tekort\. Laad onderweg zo'n (.+) kWh: ongeveer (.+) aan een snellader van 350 kW\.$/,'You are $1 km short. Add about $2 kWh en route: roughly $3 at a 350 kW fast charger.'],
    [/^Met slim laden rekenen we met (.+) per kWh minder: het verschil tussen de goedkope uren en het daggemiddelde op de stroombeurs\.$/,'Smart charging assumes $1 less per kWh: the difference between low-price hours and the daily wholesale average.'],
    [/^Over (.+) jaar betaal je (.+) rente(.*)\. Exclusief btw, onderhoud en verzekering\.$/,'Over $1 years you pay $2 in interest$3. Excludes VAT, maintenance and insurance.'],
-   [/^Ongeveer (.+) volledige laadbeurten per jaar\. Een indicatie: chemie, temperatuur en software maken veel verschil\.$/,'About $1 full charge cycles per year. Indicative only: battery chemistry, temperature and software make a significant difference.'],
+   [/^Ongeveer (.+) volledige laadbeurten per jaar\.$/,'About $1 full charge cycles per year.'],
    [/^capaciteit na (.+) jaar · actieradius ± (.+) km in plaats van (.+) km$/,'capacity after $1 years · range about $2 km instead of $3 km'],
    [/^Met de diesel uit de check hieronder mag je er tot 1 januari (\d+) in\.$/,'The diesel checked below can enter until 1 January $1.'],
    [/^Voor een DC-laadpunt van 50 kW dat (.+) kost: een vast bedrag van (.+), maar maximaal (\d+)% van de kosten\.$/,'For a 50 kW DC charger costing $1: a fixed grant of $2, capped at $3% of costs.'],
