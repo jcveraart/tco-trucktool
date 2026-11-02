@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://zarvyblveyomngypwvhw.supabase.co; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<meta name="theme-color" content="#F3F3F0">
+<title>Afmelden | Stekker of Diesel</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/site/styles-2.65e9f18f3375387a.css">
+<style>
+:root{--page:#F3F3F0;--card:#fff;--ink:#15171A;--ink-2:#4F565D;--ink-3:#7A8188;--line:#DCDCD7;--volt:#0A8F5B;--volt-ink:#07734A}
+*{box-sizing:border-box}
+html{background:var(--page);color:var(--ink);font:16px/1.55 'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 16px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:600;font-size:17px;margin-bottom:40px}
+.brand img{width:40px;height:22px}
+main{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:32px 28px}
+h1{font-size:24px;line-height:1.25;font-weight:600;margin:0 0 12px}
+p{margin:0 0 20px;color:var(--ink-2)}
+label{display:block;font:500 11px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+input{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:6px;margin-bottom:16px;background:#fff;color:var(--ink)}
+input:focus{outline:2px solid var(--volt);outline-offset:1px;border-color:var(--volt)}
+button{width:100%;font:inherit;font-weight:600;padding:12px 16px;border:0;border-radius:6px;background:var(--ink);color:#fff;cursor:pointer}
+button:hover{background:#000}
+button[disabled]{opacity:.6;cursor:default}
+.ok{display:none}
+.klaar .vraag{display:none}.klaar .ok{display:block}
+.fout{color:#B42318;font-size:14px;margin:12px 0 0;display:none}
+.fout.zie{display:block}
+footer{margin-top:28px;font-size:13px;color:var(--ink-3)}
+footer a{color:var(--ink-3)}
+</style>
+<script defer src="/afmelden/afmelden.js"></script>
+</head>
+<body>
+<a class="brand" href="/"><img src="/assets/mail/logo-mark.svg" alt="">Stekker of Diesel</a>
+<main id="app">
+ <div class="vraag">
+  <h1>Afmelden</h1>
+  <p id="tekst">Je krijgt daarna geen mail meer van Stekker of Diesel.</p>
+  <form id="f" novalidate>
+   <div id="adresveld"><label for="e">E-mailadres</label><input id="e" name="e" type="email" autocomplete="email" inputmode="email"></div>
+   <button id="knop" type="submit">Afmelden</button>
+   <p class="fout" id="fout" role="alert">Dat lukte niet. Mail ons op info@stekkerofdiesel.nl, dan regelen we het.</p>
+  </form>
+ </div>
+ <div class="ok" role="status">
+  <h1>Je bent afgemeld</h1>
+  <p>Je krijgt van ons geen mail meer op dit adres.</p>
+ </div>
+</main>
+<footer><a href="/privacy/">Privacy</a> · <a href="mailto:info@stekkerofdiesel.nl">info@stekkerofdiesel.nl</a></footer>
+</body>
+</html>
