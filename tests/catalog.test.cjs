@@ -12,6 +12,13 @@ const records = script.slice(script.indexOf('const MODELS=['), script.indexOf('l
 const functions = script.slice(script.indexOf('const mU='), script.indexOf('const mStat='));
 const catalog = vm.runInNewContext(`${fields}\nconst F={};FIELDS.forEach(f=>F[f[0]]=f);\n${formatters}\n${records}\n${functions}\n({MODELS,F,mU,mAcc,mEnergy,mCapText,mAssumption,mRange})`,{document:{documentElement:{lang:"nl"}}});
 const { MODELS, F, mU, mAcc, mEnergy, mCapText, mAssumption, mRange } = catalog;
+test('every guide route is reachable in the runtime guide list', () => {
+  const routes = JSON.parse(html.match(/<script type="application\/json" id="seo">([\s\S]*?)<\/script>/)[1]).routes;
+  const gids = JSON.parse(html.match(/const GIDS=(\[[\s\S]*?\]);/)[1].replaceAll("'", '"'));
+  const listed = new Set(gids.map(g => g[0]));
+  for (const k of Object.keys(routes).filter(k => k.startsWith('gids/')))
+    assert.ok(listed.has(k.slice(5)), `gidsroute ${k} ontbreekt in GIDS en valt terug op stappenplan`);
+});
 
 test('the complete single-file application has valid JavaScript', () => {
   assert.doesNotThrow(() => new vm.Script(script));

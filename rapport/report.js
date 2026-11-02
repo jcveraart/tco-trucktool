@@ -812,7 +812,7 @@ function workday(c) {
     state.playing = setInterval(() => set({ clock: (state.clock + 1) % 48 }), 450); set({}, 'day-play');
   } }, icon(state.playing ? 'pause' : 'play'), state.playing ? 'Pauze' : 'Afspelen');
   const peak = Math.max(...day.net);
-  return section('werkdag', 'Een werkdag', E('p',{class:'reading-note'}, 'Horizontaal: tijdstip van de dag. Bovenste grafiek: vermogen in kW. Grijs en groen zijn verbruiksvlakken; donker is netafname, de oranje stippellijn is de aansluitgrens. In de ritplanning is de dunne groene lijn de accustand in %, gekleurde blokken zijn ritten.'), head(periodPicker(plan, p => { stopDay(); set({ period: p }); })),
+  return section('werkdag', 'Een werkdag', head(periodPicker(plan, p => { stopDay(); set({ period: p }); })), E('p',{class:'reading-note'}, 'Horizontaal: tijdstip van de dag. Bovenste grafiek: vermogen in kW. Grijs en groen zijn verbruiksvlakken; donker is netafname, de oranje stippellijn is de aansluitgrens. In de ritplanning is de dunne groene lijn de accustand in %, gekleurde blokken zijn ritten.'),
     E('div', { class: 'day' }, E('div', { class: 'day-main' }, E('div', { class: 'chart' }, svg),
       legend([['Gebouw', '#E4E4DF'], ['Laden', '#3FA87799'], ['Van het net', '#15171A'], ['Aansluiting', '#B8700E', true], ...(day.zon?.some(v => v > 0) ? [['Zon', '#E8B33A']] : [])])),
       E('aside', { class: 'day-side' }, E('div', { class: 'big-clock' }, clock(state.clock * 30)), slider, play,

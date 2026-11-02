@@ -42,6 +42,15 @@ test('battery aging shows shrinking range and charging summary totals the instal
   const infra = chargingSummary(fixture, plan);
   assert.ok(infra.pointsEnd >= 1 && infra.installedKw > 0 && infra.connectionEnd === plan.net_kw.at(-1));
 });
+test('no section renders a raw head object as text', () => {
+  const js = fs.readFileSync(new URL('../rapport/report.js', import.meta.url), 'utf8');
+  for (const m of js.matchAll(/section\('([a-z]+)',[^;]*?head\(/g)) {
+    const call = js.slice(m.index, m.index + 700), note = call.indexOf("reading-note");
+    if (note === -1) continue;
+    assert.ok(call.indexOf('head(') < note, `sectie ${m[1]}: head() moet het eerste kind zijn, anders rendert hij als [object Object]`);
+  }
+  assert.doesNotMatch(js, /section\('werkdag', 'Een werkdag', E\('p',\{class:'reading-note'\},[^)]*\), head\(/);
+});
 test('report entry point is isolated, unindexed and free of analytics', () => {
   const html = fs.readFileSync(new URL('../rapport/index.html', import.meta.url), 'utf8');
   assert.match(html, /noindex,nofollow,noarchive/);
