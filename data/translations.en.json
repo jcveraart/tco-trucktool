@@ -951,7 +951,7 @@
   "Ga naar de calculator": "Start calculating",
   "Kenteken van je diesel": "Your diesel registration",
   "Bij weinig kilometers wint diesel vaak nog": "At low mileage, diesel often costs less",
-  "Elektrisch tot": "Electric can save up to",
+  "Elektrisch tot": "Electric up to",
   "per jaar goedkoper": "per year",
   "Voorbeeldberekening voor een": "Example calculation for a",
   "Diesel en elektrisch kosten ongeveer hetzelfde": "Diesel and electric cost about the same",
@@ -1698,5 +1698,6 @@
   "Daar liepen we ook tegenaan toen we het antwoord zochten. Er bestond geen onafhankelijke vergelijking die alles meenam. Daarom zijn we zelf aan de slag gegaan en hebben we een rekenmodel gemaakt dat alles meeneemt.": "We ran into the same thing when we went looking for the answer. There was no independent comparison that took everything into account. So we got to work ourselves and built a calculation model that includes everything.",
   "Ook die vragen rekenen we voor je door": "We work out those questions for you too",
   "Wat als je eigen stroom opwekt?": "What if you generate your own power?",
-  "Wat als diesel duurder wordt door de CO₂-prijs vanaf 2028?": "What if diesel gets more expensive because of the CO₂ price from 2028?"
+  "Wat als diesel duurder wordt door de CO₂-prijs vanaf 2028?": "What if diesel gets more expensive because of the CO₂ price from 2028?",
+  "Diesel tot": "Diesel up to"
 }
