@@ -23,8 +23,8 @@
         "insurance_electric_annual": 9500,
         "maintenance_diesel_per_km": 0.12,
         "maintenance_electric_per_km": 0.08,
-        "toll_diesel_per_km": 0.201,
-        "toll_electric_per_km": 0.038
+        "toll_diesel_per_km": 0.206,
+        "toll_electric_per_km": 0.040
       }
     },
     {
@@ -49,7 +49,7 @@
         "insurance_electric_annual": 6500,
         "maintenance_diesel_per_km": 0.1,
         "maintenance_electric_per_km": 0.06,
-        "toll_diesel_per_km": 0.182,
+        "toll_diesel_per_km": 0.187,
         "toll_electric_per_km": 0.037
       }
     },
