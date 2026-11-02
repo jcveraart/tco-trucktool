@@ -1,3 +1,4 @@
+import { practicalDay } from './report-practical.mjs';
 import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport, periodYears, scenarioPlans, scenarioLevel, dayKm, totalKm, analysisTexts, adviceSummary } from './report-core.mjs';
 import { moves, reasonFor, stays, verdict, pillars, differenceStory, yearsStory, chargingStory, robustness, CHOICES, SETTINGS, formatValue, GLOSSARY } from './report-explain.mjs';
 import { fleetLifecycle, periodChanges, scenarioCatalogue, statusLabel, presentationContext } from './report-planning.mjs';
@@ -206,13 +207,17 @@ function lineChart(series, labels, { height = 300, width = full(), format = mone
     const d = s.values.map((v, i) => `${i ? 'L' : 'M'}${X(i)},${Y(v)}`).join('');
     if (s.area) svg.append(V('path', { d: `${d}L${X(s.values.length - 1)},${Y(Math.max(lo, 0))}L${X(0)},${Y(Math.max(lo, 0))}Z`, fill: s.area }));
     svg.append(V('path', { d, fill: 'none', stroke: s.color, 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'stroke-dasharray': s.dash || null }));
-    s.values.forEach((v, i) => svg.append(V('circle', { cx: X(i), cy: Y(v), r: 3.5, fill: '#fff', stroke: s.color, 'stroke-width': 2 })));
+    s.values.forEach((v, i) => svg.append(V('circle', { cx: X(i), cy: Y(v), r: 3.5, fill: '#fff', stroke: s.color, 'stroke-width': 2,
+      tabindex: 0, role: 'button', 'aria-label': `${s.name}, ${labels[i]}: ${format(v)}`,
+      onfocus: () => tip.show(X(i)/W*box.clientWidth, 8, [E('b',{},labels[i]), E('div',{},s.name,E('strong',{},format(v)))]),
+      onclick: () => tip.show(X(i)/W*box.clientWidth, 8, [E('b',{},labels[i]), E('div',{},s.name,E('strong',{},format(v)))]),
+      onkeydown: e => { if(e.key==='Escape')tip.hide(); if(e.key==='Enter'||e.key===' '){e.preventDefault();e.currentTarget.dispatchEvent(new Event('click'));} } })));
   }
   if (marker != null) { const mx = Math.min(W - R - 62, Math.max(L + 62, X(marker.i)));
     svg.append(V('g', { class: 'marker' }, V('line', { x1: X(marker.i), x2: X(marker.i), y1: T, y2: H - B }), V('rect', { x: mx - 62, y: T - 24, width: 124, height: 24, rx: 12 }), V('text', { x: mx, y: T - 8, 'text-anchor': 'middle' }, marker.label))); }
   const cross = V('line', { class: 'cross', x1: 0, x2: 0, y1: T, y2: H - B, opacity: 0 });
   svg.append(cross);
-  const box = E('div', { class: 'chart' }, svg);
+  const box = E('div', { class: 'chart' }, E('p',{class:'axis-caption'}, 'Verticaal: kosten (€) · horizontaal: kalenderjaar'), svg);
   const tip = tooltip(box);
   const hit = V('rect', { x: L, y: T, width: W - L - R, height: H - T - B, fill: 'transparent',
     onpointermove: e => {
@@ -223,6 +228,7 @@ function lineChart(series, labels, { height = 300, width = full(), format = mone
     },
     onpointerleave: () => { cross.setAttribute('opacity', 0); tip.hide(); } });
   svg.append(hit);
+  svg.querySelectorAll('circle').forEach(point => svg.append(point));
   return box;
 }
 
@@ -235,11 +241,11 @@ function stackChart(stacks, labels, { height = 300, width = full(), format = mon
   const Y = v => T + (1 - (v - lo) / (hi - lo)) * (H - T - B), band = (W - L - R) / labels.length, bw = Math.min(56, band * .56);
   const svg = V('svg', { viewBox: `0 0 ${W} ${H}`, class: 'svgchart', role: 'img', 'aria-label': labels.map((l, i) => `${l}: ${format(tot[i] + neg[i])}`).join(', ') });
   for (const v of tk) svg.append(V('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: v ? 'gridline' : 'zeroline' }), V('text', { x: L - 12, y: Y(v) + 4, 'text-anchor': 'end', class: 'axis' }, axis(v)));
-  const box = E('div', { class: 'chart' }, svg), tip = tooltip(box);
+  const box = E('div', { class: 'chart' }, E('p',{class:'axis-caption'}, 'Verticaal: kosten (€) · horizontaal: kalenderjaar'), svg), tip = tooltip(box);
   labels.forEach((l, i) => {
     const x = L + band * i + (band - bw) / 2;
     let up = 0, down = 0;
-    const g = V('g', { class: 'bar' });
+    const g = V('g', { class: 'bar', tabindex:0, role:'button', 'aria-label': `${l}: ${stacks.map(s=>s.name+' '+format(s.values[i]||0)).join(', ')}${compare ? ', '+compare.name+' '+format(compare.values[i]) : ''}`, onfocus:e=>e.currentTarget.lastElementChild.dispatchEvent(new Event('pointerenter')), onclick:e=>e.currentTarget.lastElementChild.dispatchEvent(new Event('pointerenter')), onkeydown:e=>{if(e.key==='Escape')tip.hide();if(e.key==='Enter'||e.key===' '){e.preventDefault();e.currentTarget.dispatchEvent(new Event('click'));}} });
     for (const s of stacks) {
       const v = s.values[i] || 0; if (!v) continue;
       const y0 = v > 0 ? up : down, y1 = y0 + v;
@@ -301,6 +307,17 @@ function kernStrip() {
 }
 
 // ---------------------------------------------------------------- 1 overzicht
+function glance(c) {
+  const {plan, ref, m} = c, stats = practicalDay(report, plan, state.period);
+  const go = id => e => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}); };
+  const card = (id, label, value, note, cls='') => E('a', { class:'glance-card '+cls, href:'#'+id, onclick:go(id) }, E('span',{},label), E('b',{},value), E('small',{},note), E('em',{},'Bekijk onderbouwing →'));
+  return E('div',{class:'glance','aria-label':'Uw plan in één oogopslag'},
+    card('jaren','Totale kosten van dit plan',money(plan.ncw),`${report.settings.jaren} jaar · contante waarde`),
+    card(ref ? 'verschil' : 'jaren',m.saving<0?'Meerkosten t.o.v. diesel':'Besparing t.o.v. diesel',m.saving==null?'—':money(Math.abs(m.saving)),ref?'Zelfde looptijd · diesel als referentie':'Geen dieselvergelijking',m.saving<0?'warning':'saving'),
+    card('werkdag','Elektrische ritten',stats.total?pct(stats.electric/stats.total):'—',`${stats.electric} van ${stats.total} ritten · ${plan.jaren[state.period]}`),
+    card('werkdag','Extra marge boven accureserve',stats.summaries[5][1],`Krapste voertuigdag · ${plan.jaren[state.period]}`));
+}
+
 function overview(c) {
   const { plan, ref, m } = c, Y = report.settings.jaren, years = `${report.settings.startjaar}–${report.settings.startjaar + Y - 1}`;
   const groups = [...new Set(report.fleet.map(v => v.soort || v.groep))];
@@ -323,13 +340,13 @@ function overview(c) {
   const max = Math.max(...rows.map(x => x[1]));
   const km = totalKm(report, plan), kmRef = ref ? totalKm(report, ref) : 0;
   const kmTiles = km > 0 ? E('div', { class: 'tiles three' }, ref && ref !== plan ? tile('Diesel blijven per km', money(ref.ncw / kmRef, 2)) : null, tile(`${plan.naam} per km`, money(plan.ncw / km, 2)),
-    ref && ref !== plan ? tile('Verschil per km', money(ref.ncw / kmRef - plan.ncw / km, 2), null, 'green') : null) : null;
+    ref && ref !== plan ? tile('Besparing per km', money(ref.ncw / kmRef - plan.ncw / km, 2), '€/km · contante waarde; negatief = meerkosten', ref.ncw / kmRef >= plan.ncw / km ? 'green' : 'amber') : null) : null;
   const totals = E('div', { class: 'block' }, E('div', { class: 'block-head' }, E('h3', {}, state.diffMode === 'jaar' ? 'Totale kosten per jaar' : `Totale kosten in ${Y} jaar`),
     segmented([['jaar', 'Per jaar'], ['totaal', `In ${Y} jaar`]], state.diffMode, v => set({ diffMode: v }), 'Per jaar of totaal')),
     E('div', { class: 'bars' }, rows.map(([label, v, cls]) => E('div', { class: 'barrow' }, E('span', {}, label), E('div', { class: 'track' }, E('i', { class: cls, style: { width: `${Math.max(2, v / max * 100)}%` } })),
       E('b', {}, money(state.diffMode === 'jaar' ? v / Y : v))))), kmTiles);
   return section('overzicht', null,
-    E('div', { class: 'hero' }, left, right),
+    E('div', { class: 'hero' }, left, right), glance(c),
     fleetPlan(c),
     E('p', { class: 'plan-conclusion' }, verdict(report, plan, ref, m)),
     E('div', { class: 'pillars' }, pillars(report, plan, ref, m).map(x => E('div', { class: 'pillar' }, E('span', {}, x.key), E('b', {}, x.big, E('small', {}, x.unit)), E('p', {}, x.text)))),
@@ -510,6 +527,7 @@ function analysis() {
     t.ai_samenvatting && report.variants[state.variant].texts?.samenvatting ? E('div', { class: 'ai-prose' }, t.ai_samenvatting.split(/\n{2,}/).map(x => E('p', {}, x))) : null,
     E('div', { class: 'ai-grid' }, part('ai_punten', 'Kernpunten'), part('ai_stappen', 'Stappen'), part('ai_kansen', 'Kansen'), part('ai_risicos', 'Risico’s')),
     t.ai_context ? E('div', { class: 'why' }, E('b', {}, 'Wat er in Nederland speelt'), E('p', {}, t.ai_context)) : null,
+    part('ai_praktijk', 'Praktijkanalyse: van berekening naar werkdag'),
     part('ai_vragen', 'Wat we nog van u willen weten'),
     E('p', { class: 'ai-by' }, `Aanvullende duiding op basis van deze berekening · ${t.ai_model || 'Gemini'}${t.ai_datum ? ' · ' + date(t.ai_datum) : ''}.`,
       sources.length ? [' Bronnen: ', sources.flatMap(([name, url], i) => [i ? ', ' : '', E('a', { href: url, target: '_blank', rel: 'noopener noreferrer' }, name)])] : null));
@@ -522,17 +540,17 @@ function difference(c) {
   const div = state.diffMode === 'jaar' ? Y : 1;
   const rows = costRows(plan, ref).filter(r => Math.abs(r.saving) >= .5).sort((a, b) => Math.abs(b.saving) - Math.abs(a.saving));
   const max = Math.max(1, ...rows.map(r => Math.abs(r.saving)));
-  const info = E('div', { class: 'diff-info' }, E('b', {}, 'Totaal'), E('span', {}, `${money((ref.ncw - plan.ncw) / div)} ${ref.ncw >= plan.ncw ? 'voordeel' : 'nadeel'}`));
-  const table = E('div', { class: 'diff' }, E('div', { class: 'diff-row head' }, E('span', {}, ''), E('span', {}, ref.naam), E('span', {}, plan.naam), E('span', { class: 'mid' }, E('em', {}, 'duurder'), E('em', {}, 'goedkoper'))),
+  const info = E('div', { class: 'diff-info' }, E('b', {}, 'Totaal'), E('span', {}, `${money(Math.abs(ref.ncw - plan.ncw) / div)} ${ref.ncw >= plan.ncw ? 'besparing' : 'meerkosten'}`));
+  const table = E('div', { class: 'diff' }, E('div', { class: 'diff-row head' }, E('span', {}, ''), E('span', {}, ref.naam), E('span', {}, plan.naam), E('span', { class: 'mid' }, E('em', {}, 'Meerkosten'), E('em', {}, 'Besparing'))),
     rows.map(r => {
       const s = r.saving / div, w = Math.abs(r.saving) / max * 50;
       return E('div', { class: 'diff-row', tabindex: 0, onpointerenter: () => explain(r), onfocus: () => explain(r), onpointerleave: () => explain(null) },
         E('span', {}, r.name), E('span', { class: 'n' }, money(r.base / div)), E('span', { class: 'n' }, money(r.plan / div)),
         E('span', { class: 'mid' }, E('i', { class: s >= 0 ? 'pos' : 'neg', style: s >= 0 ? { left: '50%', width: `${w}%` } : { right: '50%', width: `${w}%` } }), E('b', { class: s >= 0 ? 'pos' : 'neg' }, `${s >= 0 ? '+' : '−'}${money(Math.abs(s)).slice(2)}`)));
     }));
-  function explain(r) { info.replaceChildren(E('b', {}, r ? r.name : 'Totaal'), E('span', {}, r ? POSTS[r.name] || '' : `${money((ref.ncw - plan.ncw) / div)} ${ref.ncw >= plan.ncw ? 'voordeel' : 'nadeel'}`)); }
+  function explain(r) { info.replaceChildren(E('b', {}, r ? r.name : 'Totaal'), E('span', {}, r ? POSTS[r.name] || '' : `${money(Math.abs(ref.ncw - plan.ncw) / div)} ${ref.ncw >= plan.ncw ? 'besparing' : 'meerkosten'}`)); }
   return section('verschil', `Waar zit het verschil · ${state.diffMode === 'jaar' ? 'per jaar' : `in ${Y} jaar`}`,
-    head(segmented([['jaar', 'Per jaar'], ['totaal', `In ${Y} jaar`]], state.diffMode, v => set({ diffMode: v }), 'Per jaar of totaal')), table, info, why(differenceStory(plan, ref, rows, Y)), aiNote('verschil'), prose(plan.texts?.kosten));
+    head(segmented([['jaar', 'Per jaar'], ['totaal', `In ${Y} jaar`]], state.diffMode, v => set({ diffMode: v }), 'Per jaar of totaal')), E('p',{class:'reading-note'}, 'Dit zijn besparingen: dieselkosten min kosten van dit plan. Rechts/groen en positief = goedkoper; links/oranje en negatief = meerkosten. '+(state.diffMode === 'jaar' ? 'Per jaar is hier het gemiddelde van de contante waarde over de looptijd; geen nominale jaarfactuur.' : 'Bedragen over de hele looptijd, in contante waarde.')), table, info, why(differenceStory(plan, ref, rows, Y)), aiNote('verschil'), prose(plan.texts?.kosten));
 }
 
 // ---------------------------------------------------------------- waar zit de winst
@@ -578,8 +596,8 @@ function years(c) {
   const a = plan.per_jaar.map(totalYear), b = ref && ref !== plan ? ref.per_jaar.map(totalYear) : null;
   let chart;
   if (state.costMode === 'cum') {
-    const s = [{ name: plan.naam, values: cumulative(a), color: '#0A8F5B', area: '#0A8F5B10' }];
-    if (b) s.unshift({ name: ref.naam, values: cumulative(b), color: '#F2A33A' });
+    const s = [{ name: 'Kosten · '+plan.naam, values: cumulative(a), color: '#0A8F5B', area: '#0A8F5B10' }];
+    if (b) s.unshift({ name: 'Kosten · '+ref.naam, values: cumulative(b), color: '#F2A33A', dash: '7 5' });
     chart = lineChart(s, labels, { marker: m.payback ? { i: m.payback - 1, label: `Omslagpunt ${labels[m.payback - 1]}` } : null });
   } else {
     const kinds = Object.keys(KIND).filter(k => plan.per_jaar.some(r => r[k]));
@@ -588,11 +606,11 @@ function years(c) {
   }
   const cumA = cumulative(a), cumB = b ? cumulative(b) : null;
   return section('jaren', 'Kosten door de jaren',
-    head(segmented([['cum', 'Opgeteld'], ['jaar', 'Per jaar']], state.costMode, v => set({ costMode: v }), 'Weergave')), chart,
-    state.costMode === 'cum' ? legend([[ref && ref !== plan ? ref.naam : null, '#F2A33A'], [plan.naam, '#0A8F5B']].filter(x => x[0])) : legend([...Object.keys(KIND).filter(k => plan.per_jaar.some(r => r[k])).map(k => [KIND[k], KIND_COLOR[k]]), ...(b ? [[ref.naam, '#F2A33A']] : [])]),
+    head(segmented([['cum', 'Opgeteld'], ['jaar', 'Per jaar']], state.costMode, v => set({ costMode: v }), 'Weergave')), E('p', {class:'reading-note'}, state.costMode === 'cum' ? 'Opgetelde nominale kosten in €. Elke lijn toont kosten; lager is goedkoper. Doorgetrokken groen = gekozen plan, gestippeld oranje = dieselreferentie. De tabel volgt deze weergave.' : 'Nominale kosten per kalenderjaar in €. Elke kleur is een kostenpost; de oranje dwarsstreep is het totaal van de dieselreferentie. Bedragen onder nul verlagen de totale kosten.'), chart,
+    state.costMode === 'cum' ? legend([[ref && ref !== plan ? 'Kosten · '+ref.naam+' (stippellijn)' : null, '#F2A33A', true], ['Kosten · '+plan.naam+' (doorgetrokken)', '#0A8F5B']].filter(x => x[0])) : legend([...Object.keys(KIND).filter(k => plan.per_jaar.some(r => r[k])).map(k => [KIND[k], KIND_COLOR[k]]), ...(b ? [[ref.naam, '#F2A33A']] : [])]),
     E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' }, E('thead', {}, E('tr', {}, E('th', {}, ''), labels.map(l => E('th', { class: 'n' }, l)))),
-      E('tbody', {}, b ? E('tr', {}, E('td', {}, ref.naam), b.map(v => E('td', { class: 'n' }, money(v)))) : null, E('tr', {}, E('td', {}, plan.naam), a.map(v => E('td', { class: 'n' }, money(v)))),
-        b ? E('tr', { class: 'sum' }, E('td', {}, 'Verschil opgeteld'), cumB.map((v, i) => E('td', { class: 'n ' + (v - cumA[i] >= 0 ? 'pos' : 'neg') }, money(v - cumA[i])))) : null))),
+      E('tbody', {}, b ? E('tr', {}, E('td', {}, `Kosten · ${ref.naam}`), (state.costMode === 'cum' ? cumB : b).map(v => E('td', { class: 'n' }, money(v)))) : null, E('tr', {}, E('td', {}, `Kosten · ${plan.naam}`), (state.costMode === 'cum' ? cumA : a).map(v => E('td', { class: 'n' }, money(v)))),
+        b ? E('tr', { class: 'sum' }, E('td', {}, state.costMode === 'cum' ? 'Besparing t.o.v. diesel · opgeteld' : 'Besparing t.o.v. diesel · dit jaar'), (state.costMode === 'cum' ? cumB.map((v,i)=>v-cumA[i]) : b.map((v,i)=>v-a[i])).map((v, i) => E('td', { class: 'n ' + (v >= 0 ? 'pos' : 'neg') }, money(v)))) : null))),
     why(yearsStory(plan, ref, m)), aiNote('jaren'), prose(plan.texts?.financiering));
 }
 
@@ -661,7 +679,7 @@ function investments(c) {
   return section('investeringen', 'Investeringen en financiering',
     E('div', { class: 'tiles four' }, tile('Investering totaal', money(plan.investering)), tile('Hoogste kapitaalbehoefte', money(plan.kapitaal)),
       tile('Subsidie', sub ? money(-sub.ncw) : '—', sub ? 'contante waarde' : null), tile('Nieuwe voertuigen', String(nieuw.length), `${koop.length} koop · ${lease.length} lease`)),
-    E('div', { class: 'split' }, E('div', { class: 'block' }, E('h3', {}, 'Investeringen per jaar'),
+    E('div', { class: 'split' }, E('div', { class: 'block' }, E('h3', {}, 'Investeringen per jaar'), E('p',{class:'reading-note'}, 'Balk = netto investeringskosten van het gekozen plan (aanschaf minus verrekeningen, alleen positieve saldi). Oranje dwarsstreep = dieselreferentie. Bedragen in € per kalenderjaar.'),
       stackChart([{ name: 'Investeringen', color: '#15171A', values: plan.per_jaar.map(r => Math.max(0, r.investering || 0)) }], labels,
         { height: 300, width: half(), compare: ref && ref !== plan ? { name: ref.naam, color: '#F2A33A', values: ref.per_jaar.map(r => Math.max(0, r.investering || 0)) } : null })),
       E('div', { class: 'block' }, E('h3', {}, 'Wat er wordt aangeschaft'), E('table', { class: 'tbl' }, E('tbody', {}, rows.map(r => E('tr', {}, E('td', {}, r[0]), E('td', { class: 'n' }, r[1]), E('td', { class: 'n' }, r[2]))))))),
@@ -693,7 +711,7 @@ function charging(c) {
   const pol = report.policies || [];
   const depotText = p => p.depot === 'nooit' ? 'niet op het depot' : p.depot === 'venster' ? `depot ${clock(p.van * 60)}–${clock(p.tot * 60)}` : 'depot, als hij er staat';
   const maxKw = Math.max(1, ...plan.net_kw, report.depot.aansluiting_kw || 0);
-  return section('laden', 'Laden en netaansluiting',
+  return section('laden', 'Laden en netaansluiting', E('p',{class:'reading-note'}, 'Per beslisperiode: aansluiting in kW, laadpunten in aantallen en laadenergie in MWh per jaar. 1 MWh = 1.000 kWh. Dit zijn capaciteiten en energievolumes, geen kosten.'),
     plan.net_kw.some(k => k !== report.depot.aansluiting_kw) && E('div', { class: 'netbars' }, plan.net_kw.map((k, p) => E('div', { class: 'netbar' }, E('div', { class: 'nb-track' }, E('i', { style: { height: `${k / maxKw * 100}%` } }),
       E('em', { style: { bottom: `${(report.depot.aansluiting_kw || 0) / maxKw * 100}%` } })), E('b', {}, `${num(k)} kW`), E('span', {}, plan.jaren[p])))),
     E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' }, E('thead', {}, E('tr', {}, E('th', {}, ''), plan.jaren.map(j => E('th', { class: 'n' }, j)))),
@@ -703,6 +721,19 @@ function charging(c) {
 }
 
 // ---------------------------------------------------------------- 8 werkdag
+function practicalBlock(plan) {
+  const stats = practicalDay(report, plan, state.period);
+  const table = (headers, rows) => E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' },
+    E('thead', {}, E('tr', {}, headers.map(x => E('th', {}, x)))),
+    E('tbody', {}, rows.map(row => E('tr', {}, row.map(x => E('td', {}, x)))))));
+  return E('div', { class: 'block practical' }, E('h3', {}, 'Praktische inzetbaarheid'),
+    E('p', { class: 'prose' }, `Berekende werkdag in ${plan.jaren[state.period]}`),
+    table(['Kengetal', 'Berekende werkdag'], stats.summaries),
+    E('h3', {}, 'Ritten naar laadwijze van de voertuigdag'), table(['Inzet', 'Ritten', 'Aandeel van alle ritten'], stats.breakdown),
+    E('h3', {}, 'Wat betekent dit voor de planning?'), E('ul', {}, stats.examples.map(x => E('li', {}, x))),
+    E('details', { class: 'app' }, E('summary', {}, 'Zo leest u deze cijfers'), stats.notes.map(x => E('p', { class: 'prose' }, x))));
+}
+
 function workday(c) {
   const { plan } = c, day = plan.dagen[state.period], axis = plan.tijdas, T = axis.length - 1;
   const at = minutes => Math.max(0, axis.findIndex((a, i) => a <= minutes && minutes < axis[i + 1]));
@@ -754,14 +785,14 @@ function workday(c) {
     state.playing = setInterval(() => set({ clock: (state.clock + 1) % 48 }), 450); set({}, 'day-play');
   } }, icon(state.playing ? 'pause' : 'play'), state.playing ? 'Pauze' : 'Afspelen');
   const peak = Math.max(...day.net);
-  return section('werkdag', 'Een werkdag', head(periodPicker(plan, p => { stopDay(); set({ period: p }); })),
+  return section('werkdag', 'Een werkdag', E('p',{class:'reading-note'}, 'Horizontaal: tijdstip van de dag. Bovenste grafiek: vermogen in kW. Grijs en groen zijn verbruiksvlakken; donker is netafname, de oranje stippellijn is de aansluitgrens. In de ritplanning is de dunne groene lijn de accustand in %, gekleurde blokken zijn ritten.'), head(periodPicker(plan, p => { stopDay(); set({ period: p }); })),
     E('div', { class: 'day' }, E('div', { class: 'day-main' }, E('div', { class: 'chart' }, svg),
       legend([['Gebouw', '#E4E4DF'], ['Laden', '#3FA87799'], ['Van het net', '#15171A'], ['Aansluiting', '#B8700E', true], ...(day.zon?.some(v => v > 0) ? [['Zon', '#E8B33A']] : [])])),
       E('aside', { class: 'day-side' }, E('div', { class: 'big-clock' }, clock(state.clock * 30)), slider, play,
         E('dl', {}, E('dt', {}, 'Van het net'), E('dd', {}, `${num(day.net[i], 1)} kW`), E('dt', {}, 'Laden'), E('dd', {}, `${num(day.laden[i], 1)} kW`),
           E('dt', {}, 'Onderweg'), E('dd', {}, `${onRoad} ${onRoad === 1 ? 'wagen' : 'wagens'}`), E('dt', {}, 'Hoogste afname'), E('dd', {}, `${num(peak, 0)} kW`),
           E('dt', {}, 'Ruimte op aansluiting'), E('dd', {}, `${num((day.grens || 0) - peak, 0)} kW`)))),
-    gantt, why(dayReasons()), aiNote('werkdag'), prose(plan.texts?.werkdag));
+    gantt, practicalBlock(plan), why(dayReasons()), aiNote('werkdag'), prose(plan.texts?.werkdag));
   function dayReasons() {
     const pk = day.net.indexOf(peak), low = (day.accu || []).filter(a => a.capaciteit).map(a => Math.min(...a.kwh) / a.capaciteit);
     const evening = day.laden.reduce((s, kw, j) => s + ((axis[j] >= 17 * 60 || axis[j] < 7 * 60) ? kw * (axis[j + 1] - axis[j]) : 0), 0), all = day.laden.reduce((s, kw, j) => s + kw * (axis[j + 1] - axis[j]), 0);
@@ -789,7 +820,7 @@ function emissions(c) {
     svg.append(V('rect', { x: has ? x + 3 : x - bw / 2, width: bw, y: Y(plan.co2[p]), height: Y(0) - Y(plan.co2[p]), fill: '#0A8F5B', rx: 2 }));
     svg.append(V('text', { x, y: H - 8, 'text-anchor': 'middle', class: 'axis' }, j));
   });
-  return section('uitstoot', 'Uitstoot en zero-emissie',
+  return section('uitstoot', 'Uitstoot en zero-emissie', E('p',{class:'reading-note'}, 'Balken tonen CO₂-uitstoot per jaar, in ton (t). Groen = gekozen plan; oranje = dieselreferentie. Lager betekent minder uitstoot; dit is geen kostengrafiek.'),
     E('div', { class: 'tiles four' }, tile('CO₂ minder over de looptijd', saved != null ? tons(saved) : '—', saved != null ? 'ten opzichte van diesel blijven' : null, 'green'),
       tile(`CO₂ in ${plan.jaren.at(-1)}`, tons(plan.co2.at(-1)), 'per jaar'), tile('Minder dan diesel blijven', m.co2Pct != null ? pct(m.co2Pct) : '—'),
       tile('Kilometers elektrisch', pct(plan.ze_aandeel?.at(-1)), `in ${plan.jaren.at(-1)}`)),
@@ -1082,6 +1113,10 @@ function render() {
     topbar(), nav(c),
     E('main', { id: 'inhoud', class: 'wrap' }, overview(c), scenarios(c), analysis(c), difference(c), years(c), opportunities(c), fleetRationale(c), perVehicle(c), investments(c), charging(c), workday(c), emissions(c), variants(c), roadmap(c), accountability(c), appendix(c)),
     footer());
+  for (const table of document.querySelectorAll('#app table')) {
+    if (!table.textContent.includes('€') || table.querySelector('caption')) continue;
+    table.prepend(E('caption',{},'Bedragen in euro. Negatieve kosten verlagen het totaal. Besparing = dieselkosten min plankosten; een negatieve besparing betekent meerkosten.'));
+  }
   q('#app').setAttribute('aria-busy', 'false');
   const restored = document.getElementById('fleet-scroll');
   if (restored) { restored.scrollLeft = savedScroll[0]; restored.scrollTop = savedScroll[1]; }
