@@ -3171,8 +3171,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 </svg></div>
   <aside class="vzf">
    <form class="ffm" id="fForm" novalidate>
-    <div class="vzfh"><h2>Plan een kennismaking</h2><span><i></i>Reactie binnen 1 werkdag</span></div>
-    <p class="vcl" id="fCl" hidden><span>Je berekening gaat mee</span><button type="button" id="fClX" aria-label="Berekening niet meesturen">×</button></p>
+    <div class="vzfh"><h2>Plan een kennismaking</h2></div>
     <label class="ff"><span>Naam</span><input name="contact_name" required maxlength="200" autocomplete="name"></label>
     <label class="ff"><span>Bedrijf</span><input name="company" required maxlength="200" autocomplete="organization"></label>
     <label class="ff"><span>E-mail</span><input name="email" type="email" required maxlength="200" autocomplete="email"></label>
@@ -6551,9 +6550,7 @@ document.addEventListener('click',e=>{
  const c=e.target.closest('[data-fleet]');if(!c)return;
  const from=c.dataset.fleet;track('fleet_cta_click',{from});
  if(from==='calc'){try{fCalc=shareURL()}catch(x){}}
- $('fCl').hidden=!fCalc;
 });
-$('fClX').addEventListener('click',()=>{fCalc='';$('fCl').hidden=true});
 /* Kaart en lijst wijzen elkaar aan; de regels van het vlootplan lichten hun deel van de tekening op */
 const vzPair=(at,f)=>document.querySelectorAll('.vz ['+at+']').forEach(e=>{const k=e.getAttribute(at),set=x=>{document.querySelectorAll('.vz ['+at+']').forEach(y=>y.classList.toggle('on',x!==null&&y.getAttribute(at)===x));f&&f(x)};e.addEventListener('mouseenter',()=>set(k));e.addEventListener('mouseleave',()=>set(null));e.addEventListener('focusin',()=>set(k));e.addEventListener('focusout',()=>set(null))});
 vzPair('data-s');vzPair('data-p',x=>document.querySelector('.vzpd').classList.toggle('hl',x!==null));
