@@ -6443,7 +6443,7 @@ function modelApply(id,keepOwnPrice=false){
  const m=MI[id];if(!m)return false;
  if(m.c!==vtype){applyType(m.c);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
  $('calcModel').value=id;mpList();
- const P=VT[m.c].p;setNum($('acc'),mAcc(m));setNum($('le'),mEnergy(m));if(m.price||!keepOwnPrice)setNum($('pE'),m.price||P.pE);if(m.bel)setNum($('wE'),m.bel);const dz=mDiesel(m);if($('dw').value!=='h'){setNum($('pD'),dz.pD);setNum($('ld'),dz.ld)}
+ const P=VT[m.c].p;setNum($('acc'),mAcc(m));setNum($('le'),mEnergy(m));if(m.price||!keepOwnPrice)setNum($('pE'),m.price||P.pE);if(m.bel&&!VT[m.c].truck)setNum($('wE'),m.bel);/* vrachtauto: mrb hangt niet af van de brandstof, dus geen apart bedrag voor elektrisch */const dz=mDiesel(m);if($('dw').value!=='h'){setNum($('pD'),dz.pD);setNum($('ld'),dz.ld)}
  fitRanges();
  if(m.c==='bakwagen'){$('cls').value=(m.vc||'n3').toUpperCase();if(m.gvw&&m.gvw<10000)$('reg').value='geen'}
  /* Gebruikt of huidige diesel: prijs, accu en verzekering volgen het gekozen model, niet de nieuwprijs */
