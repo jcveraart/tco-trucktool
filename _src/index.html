@@ -2197,7 +2197,11 @@ html{touch-action:manipulation}
 .ooqd li{display:flex;gap:14px;align-items:center;font-size:17px;line-height:1.5;color:var(--ink)}
 .ooqd svg{flex:none;width:34px;height:34px;padding:7px;border-radius:10px;background:var(--volt-soft);stroke:var(--volt-ink)}
 .ooth{margin:56px 0 18px;font:600 26px/1.2 var(--text);letter-spacing:-.01em}
-.oots{max-width:900px}.oots .oof{padding:22px 24px}.oots .ooh{margin-bottom:14px}.oots .oom{width:46px;height:46px;font-size:16px}
+.oots{max-width:900px}/* Jan en Max open naast elkaar, zonder kaart, met een lijn ertussen; zo staat er maar één vak (de vragen) op de pagina */
+.oots{gap:0}
+.oots .oof{padding:4px 28px 4px 0;background:none;box-shadow:none;border-radius:0}
+.oots .oof+.oof{padding:4px 0 4px 28px;border-left:1px solid var(--line)}
+@media (max-width:860px){.oots .oof,.oots .oof+.oof{padding:0 0 18px;border-left:0}.oots .oof+.oof{padding-top:18px;border-top:1px solid var(--line)}}.oots .ooh{margin-bottom:14px}.oots .oom{width:46px;height:46px;font-size:16px}
 .ooh h3{margin:0;font:600 20px/1.2 var(--text);letter-spacing:-.01em}
 .oof .oox{margin:4px 0 14px;font-size:13px;line-height:1.5;color:var(--ink-3)}
 .oolead{max-width:760px;margin:0 0 40px;font:500 21px/1.5 var(--text);color:var(--ink)}
