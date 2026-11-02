@@ -732,6 +732,8 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .vspec th,.vspec td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .vspec th{font-size:13px;color:var(--ink-3);font-weight:600}
 .vspec td{font-variant-numeric:tabular-nums}
+.vwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.vwrap .vspec{min-width:560px}
 .vlinks{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:18px}
 a.mci{text-decoration:none}
 .mci{margin-left:auto;border:0;background:none;padding:4px 0;font:600 14px var(--text);color:var(--ink-3);cursor:pointer}
@@ -6349,7 +6351,7 @@ function vPaint(slug){const g=mGroupBySlug(slug);if(!g)return;const top=g.top,nm
  $('vTitle').textContent=nm;$('vIntro').textContent=top.n;
  setH($('vCrumb'),`<a href="${pathOf('modellen')}">Voertuigen</a><span aria-hidden="true">/</span><a href="${pathOf('modellen',top.c)}">${catName}</a><span aria-hidden="true">/</span><span aria-current="page">${nm}</span>`);
  const rows=g.vs.map(m=>`<tr><td><b>${mEsc(m.vl||m.m)}</b></td><td>${mAccLine(m)}</td><td>${m.rt||nf(m.r)} km</td><td>${mCharge(m)}</td><td>${m.price?eur(m.price):'Op aanvraag'}</td><td><button class="cta" type="button" data-muse="${m.id}">Reken hiermee ${arrow}</button></td></tr>`).join('');
- setH($('vBody'),`<table class="vspec"><thead><tr><th>Uitvoering</th><th>Accu</th><th>Actieradius</th><th>Snelladen</th><th>Prijs excl. btw</th><th></th></tr></thead><tbody>${rows}</tbody></table><p class="mdisc">De cijfers zijn opgaven van de fabrikant. In de winter en met zware lading ligt de actieradius lager.</p><div class="vlinks"><a href="${pathOf('modellen',top.c)}">Alle ${catName.toLowerCase()}</a><a href="/">Vergelijk dit voertuig met diesel in de calculator</a>${g.vs.map(m=>`<a href="${mEsc(m.s[1])}" target="_blank" rel="noopener">Bron: ${mEsc(m.s[0])} <span aria-hidden="true">↗</span></a>`).join('')}</div>`)}
+ setH($('vBody'),`<div class="vwrap"><table class="vspec"><thead><tr><th>Uitvoering</th><th>Accu</th><th>Actieradius</th><th>Snelladen</th><th>Prijs excl. btw</th><th></th></tr></thead><tbody>${rows}</tbody></table></div><p class="mdisc">De cijfers zijn opgaven van de fabrikant. In de winter en met zware lading ligt de actieradius lager.</p><div class="vlinks"><a href="${pathOf('modellen',top.c)}">Alle ${catName.toLowerCase()}</a><a href="/">Vergelijk dit voertuig met diesel in de calculator</a>${g.vs.map(m=>`<a href="${mEsc(m.s[1])}" target="_blank" rel="noopener">Bron: ${mEsc(m.s[0])} <span aria-hidden="true">↗</span></a>`).join('')}</div>`)}
 const mSpan=(a,b,f=mFmt)=>a===b?f(a):`${f(a)}–${f(b)}`;
 const mBar=(m,mx)=>`<span class="mbar" aria-hidden="true"><i style="width:${Math.min(100,m.r/mx*100)}%"></i></span>`;
 const mBatt=m=>m.u||m.ue?`${m.ut||mFmt(m.u||m.ue)} kWh ${m.u?'bruikbaar':'(afgeleid)'}`:'Niet opgegeven';

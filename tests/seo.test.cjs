@@ -25,7 +25,7 @@ test('every vehicle family has its own indexable page linked from the category c
  for(const g of modelGroups)for(const l of ['nl','en']){const route=routes['modellen/'+g.top.c],p=(l==='en'?route.enPath:route.path)+g.slug+'/',h=read(p),name=g.top.b+' '+(g.top.fam||g.top.m),shown=l==='en'?name.replace(/\b([RSLP])-serie elektrisch\b/g,'$1-series Electric').replace(/nieuwe generatie/g,'next generation').replace('(Europa)','(Europe)'):name;
   assert.ok(h.includes('<link rel="canonical" href="'+site+p+'">'),p);
   assert.ok(h.includes('>'+shown+'</h1>'),p+' h1');
-  assert.match(h,/class="vspec"/,p+' specificaties');
+  assert.match(h,/class="vwrap"><table class="vspec"/,p+' specificaties in scrollbare tabel');
   assert.ok(h.includes(g.top.s[1]),p+' bron');
   const json=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);assert.ok(json['@graph'].some(x=>x['@type']==='Vehicle'&&x.name===name),p+' Vehicle-schema');}
  const cat=read(routes['modellen/bestel'].path);for(const g of modelGroups.filter(g=>g.top.c==='bestel'))assert.ok(cat.includes('href="'+routes['modellen/bestel'].path+g.slug+'/"'),'kaart linkt niet naar '+g.slug);
