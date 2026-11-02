@@ -43,7 +43,7 @@ test('expired, future-dated or malformed choices are ignored, while valid saved 
 });
 test('English settings use English immediately, and reading privacy does not imply consent',()=>{
  const b=browser(undefined,{lang:'en'});assert.equal(b.e.ckSet.textContent,'Settings');b.click('set');assert.equal(b.e.ckSet.textContent,'Save choices');b.click(null,'privacy');assert.equal(b.e.ck.open,false);assert.equal(b.state().consent,null);assert.equal(b.storage.has('sod-consent'),false);
- const en=fs.readFileSync(path.join(root,'en/index.html'),'utf8').match(/<dialog class="ck"[\s\S]*?<\/dialog>/)[0];for(const s of ['Your privacy choices','Reject optional cookies','Accept all','Read our privacy policy','/en/privacy/'])assert.ok(en.includes(s),s);assert.doesNotMatch(en,/Jouw privacykeuze|Alleen noodzakelijk|Alles accepteren/);
+ const en=fs.readFileSync(path.join(root,'en/index.html'),'utf8').match(/<dialog class="ck"[\s\S]*?<\/dialog>/)[0];for(const s of ['Your privacy choices','Reject all','Accept all','Read our privacy policy','/en/privacy/'])assert.ok(en.includes(s),s);assert.doesNotMatch(en,/Jouw privacykeuze|Alles afwijzen|Alles accepteren/);
 });
 
 test('GA4 loads once after statistics consent on the production host and is disabled immediately on withdrawal',()=>{
