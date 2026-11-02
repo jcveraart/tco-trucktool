@@ -4239,7 +4239,7 @@ document.addEventListener('input',e=>{if(e.target.id==='hkm')hkmPaint(+e.target.
 /* Bereik van de voorbeeldschuif per voertuig (km per jaar) */
 const HKM={trekker:[40000,150000],bakwagen:[20000,120000],bestel:[15000,100000],bus:[40000,150000]};
 /* Kop bij de gekozen kilometers: wie is goedkoper en hoeveel, gelijk aan het verschil eronder */
-const hxKop=d=>Math.abs(d)<500?'Diesel en elektrisch kosten ongeveer hetzelfde':`${d>0?'Elektrisch':'Diesel'} tot <b data-tw="hx"${d<0?' class="d"':''}>${eur(Math.abs(d))}</b> goedkoper per jaar`;
+const hxKop=d=>Math.abs(d)<500?'Diesel en elektrisch kosten ongeveer hetzelfde':`${d>0?'Elektrisch':'Diesel'} tot <b data-tw="hx"${d<0?' class="d"':''}>${eur(Math.abs(d))}</b> goedkoper`;
 function homeHTML(){
  const [k0,k1]=HKM[vtype]||[15000,150000],r1=hAt(k1),mx=Math.max(r1.td,r1.te),k=Math.min(k1,Math.max(k0,v('km'))),rk=hAt(k);
  const tot=`<p class="hxh">${hxKop(rk.td-rk.te)}</p>`;
