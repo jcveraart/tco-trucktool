@@ -1,6 +1,6 @@
 # Modelgegevens en presets
 
-Uitbreiding en broncontrole: 21 oktober 2026. De catalogus telt 67 modellen: 31 bestelbussen, 14 bakwagens, 11 trekkers en 11 bussen. De website blijft zelfstandig werken vanuit `index.html`; dit document is alleen onderhoudsinformatie.
+Uitbreiding en broncontrole: 21 oktober 2026, aangevuld 2 november 2026. De catalogus telt 76 modellen: 35 bestelbussen, 17 bakwagens, 12 trekkers en 12 bussen. Toegevoegd op 2 november 2026: Kia PV5 Cargo (51,5 en 71,2 kWh), Nissan Interstar-e, Mercedes eVito, eArocs 400, Renault E-Tech D 14T, IVECO S-eWay Rigid, DAF XG Electric en Mercedes eIntouro. De eActros 300/400 (generatie 1) is vervangen door de eActros 400 (generatie 2). De website blijft zelfstandig werken vanuit `index.html`; dit document is alleen onderhoudsinformatie.
 
 ## Selectie van gegevens
 
@@ -33,7 +33,7 @@ Een modelprijs wordt alleen ingevuld als die voor dezelfde uitvoering is onderbo
 - **Scania R-serie:** 560 kWh bruikbaar en 515 km bij 42 ton. De afzonderlijke 720 km-configuratie heeft extra batterijen achter de cabine en wordt niet aan hetzelfde pakket gekoppeld.
 - **MAN eTGX:** huidige generatie en aangekondigde 2027-generatie zijn aparte records. De 660 km-versie wordt niet als nu leverbaar gepresenteerd; de fabrikant plant verkoop vanaf april 2027 en productie in de zomer.
 - **Solaris:** de fabrikant noemt meer dan 600 respectievelijk 800 kWh. De groter-dan-tekens en SORT-cycli blijven zichtbaar. De calculator gebruikt een expliciete schatting vanaf die numerieke referentie.
-- **Niet toegevoegd:** Nissan Interstar-e is hier nog niet toegevoegd omdat de gebruikte Nederlandse bron N1/N2-bereik bundelt. IVECO E-WAY 416 kWh is uitgesteld omdat de gevonden 400 km-opgave voor een generatie gold en niet eenduidig voor die configuratie.
+- **Nissan Interstar-e:** op 2 november 2026 alsnog toegevoegd als N1-referentie (87 kWh, 410 km, € 44.900 excl. btw via Nissan Nederland); de 460 km van de 4-tonuitvoering wordt niet als N1-bereik gebruikt. IVECO E-WAY 416 kWh is uitgesteld omdat de gevonden 400 km-opgave voor een generatie gold en niet eenduidig voor die configuratie.
 
 ## Controle
 

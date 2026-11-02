@@ -196,7 +196,7 @@
       "rate_diesel": 0.509
     }
   ],
-  "total_models": 67,
+  "total_models": 76,
   "models": [
     {
       "c": "trekker",
@@ -351,26 +351,18 @@
     {
       "c": "bakwagen",
       "b": "Mercedes-Benz",
-      "m": "eActros 300/400",
-      "g": 448,
-      "gt": "336–448",
-      "u": 388,
-      "ut": "291–388",
-      "r": 400,
-      "rt": "330–400",
-      "dc": 160,
+      "m": "eActros 400",
+      "g": 414,
+      "r": 480,
+      "rt": "tot 480",
+      "dc": 400,
       "st": "nu",
-      "n": "Drie (300) of vier (400) accupakketten van 112 kWh, waarvan elk 97 kWh bruikbaar. De 400 km is gemeten in distributie zonder aanhanger bij 20 °C.",
+      "n": "Tweede generatie eActros 400: twee LFP-accupakketten van samen 414 kWh, tot circa 480 km in distributie-inzet en CCS-laden tot 400 kW. De eerste generatie eActros 300/400 is eind 2025 uit productie gegaan.",
       "s": [
         "Mercedes-Benz Trucks",
-        "https://www.mercedes-benz-trucks.com/en_GB/emobility/world/your-benefits/usability.html"
+        "https://www.daimlertruck.com/en/newsroom/pressrelease/electric-portfolio-grows-mercedes-benz-trucks-starts-production-of-new-eactros-400-generation-at-woerth-plant-53288035"
       ],
-      "price": 300000,
-      "ps": [
-        "boerse-online.de",
-        "https://www.boerse-online.de/dpa-afx/roundup-mercedes-startet-serienproduktion-von-e-lkw-128851.html"
-      ],
-      "pt": "reported"
+      "checked": "2026-11-02"
     },
     {
       "c": "bakwagen",
@@ -467,7 +459,7 @@
       "rt": "268",
       "dc": 115,
       "st": "nu",
-      "n": "N1-voorbeeld: gesloten bestelwagen L2 met 81 kWh bruikbare accu en 3,5 ton toegestane massa. Mercedes-Benz publiceert voor deze Nederlandse L2-configuratie 268 km WLTP. De grotere 113 kWh-uitvoering met hogere toegestane massa heeft andere waarden; laaduitrusting verschilt per uitvoering.",
+      "n": "N1-voorbeeld: gesloten bestelbus L2 met 81 kWh bruikbare accu en 3,5 ton toegestane massa. Mercedes-Benz publiceert voor deze Nederlandse L2-configuratie 268 km WLTP. De grotere 113 kWh-uitvoering met hogere toegestane massa heeft andere waarden; laaduitrusting verschilt per uitvoering.",
       "s": [
         "Mercedes-Benz Nederland",
         "https://certified.vans.mercedes-benz.nl/mercedes-benz/esprinter/esprinter-320-bestelwagen-l2/occ21613999"
@@ -490,7 +482,7 @@
       "rt": "341",
       "dc": 180,
       "st": "nu",
-      "n": "N1-bestelwagen 350 L3H2 Trend met 89 kWh bruikbaar en 135 kW motor. De Europese prijslijst noemt 341 km WLTP gecombineerd en 26,1 kWh/100 km voor deze 3,5-tonuitvoering. De eerder genoemde 402 km hoort bij een zwaardere, op 90 km/u begrensde uitvoering. DC tot 180 kW.",
+      "n": "N1-bestelbus 350 L3H2 Trend met 89 kWh bruikbaar en 135 kW motor. De Europese prijslijst noemt 341 km WLTP gecombineerd en 26,1 kWh/100 km voor deze 3,5-tonuitvoering. De eerder genoemde 402 km hoort bij een zwaardere, op 90 km/u begrensde uitvoering. DC tot 180 kW.",
       "s": [
         "Ford Europa (Finland)",
         "https://www.ford.fi/content/dam/guxeu/fi/documents/pricelists/cv/transit-van/PL-ford-e-transit.pdf"
@@ -538,7 +530,7 @@
       "rt": "378",
       "dc": 150,
       "st": "nu",
-      "n": "N1 L3H2 gesloten bestelwagen van 3,5 ton. De Nederlandse prijslijst van 1 september 2026 noemt 110,6 kWh geïnstalleerd, 97,8 kWh bruikbaar, 378 km WLTP gecombineerd en 29,4 kWh/100 km. Catalogusprijs € 53.700 excl. btw en opties. De 424 km van de 4,25-tonversie wordt hier niet gebruikt. AC standaard 22 kW.",
+      "n": "N1 L3H2 gesloten bestelbus van 3,5 ton. De Nederlandse prijslijst van 1 september 2026 noemt 110,6 kWh geïnstalleerd, 97,8 kWh bruikbaar, 378 km WLTP gecombineerd en 29,4 kWh/100 km. Catalogusprijs € 53.700 excl. btw en opties. De 424 km van de 4,25-tonversie wordt hier niet gebruikt. AC standaard 22 kW.",
       "s": [
         "Fiat Professional Nederland",
         "https://www.fiat.nl/professional/modellen/e-ducato/prijslijst"
@@ -635,7 +627,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Compacte elektrische bestelwagen. De actuele Nederlandse modelpagina noemt 54 kWh en maximaal 337 km WLTP gecombineerd; de uitvoering en uitrusting bepalen het werkelijke homologatiebereik.",
+      "n": "Compacte elektrische bestelbus. De actuele Nederlandse modelpagina noemt 54 kWh en maximaal 337 km WLTP gecombineerd; de uitvoering en uitrusting bepalen het werkelijke homologatiebereik.",
       "s": [
         "Citroën Nederland",
         "https://www.citroen.nl/modellen/bedrijfswagens/e-berlingo-van.html"
@@ -658,7 +650,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Middelgrote bestelwagen met de 75 kWh-accu. Citroën noemt voor Comfort Range maximaal 356 km WLTP gecombineerd. Ook verkrijgbaar als Urban Range met een kleinere accu.",
+      "n": "Middelgrote bestelbus met de 75 kWh-accu. Citroën noemt voor Comfort Range maximaal 356 km WLTP gecombineerd. Ook verkrijgbaar als Urban Range met een kleinere accu.",
       "s": [
         "Citroën Nederland",
         "https://www.citroen.nl/modellen/bedrijfswagens/e-jumpy.html"
@@ -681,7 +673,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Compacte bestelwagen met een 50 kWh-accu. Peugeot noemt maximaal 343 km WLTP; beschikbare lengtes, uitrusting en belading beïnvloeden de actieradius.",
+      "n": "Compacte bestelbus met een 50 kWh-accu. Peugeot noemt maximaal 343 km WLTP; beschikbare lengtes, uitrusting en belading beïnvloeden de actieradius.",
       "s": [
         "Peugeot Nederland",
         "https://www.peugeot.nl/showroom/peugeot-partner/elektrisch.html"
@@ -704,7 +696,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Middelgrote elektrische bestelwagen met de 75 kWh-accu en maximaal 352 km WLTP gecombineerd. De kleinere 49 kWh-uitvoering haalt volgens Peugeot tot 223 km.",
+      "n": "Middelgrote elektrische bestelbus met de 75 kWh-accu en maximaal 352 km WLTP gecombineerd. De kleinere 49 kWh-uitvoering haalt volgens Peugeot tot 223 km.",
       "s": [
         "Peugeot Nederland",
         "https://www.peugeot.nl/showroom/peugeot-expert/faq.html"
@@ -727,7 +719,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Compacte elektrische bestelwagen met een 50 kWh-accu. De Nederlandse modelpagina noemt maximaal 343 km; de gekozen uitvoering en opties bepalen het homologatiebereik. Leverbaar in twee lengtes.",
+      "n": "Compacte elektrische bestelbus met een 50 kWh-accu. De Nederlandse modelpagina noemt maximaal 343 km; de gekozen uitvoering en opties bepalen het homologatiebereik. Leverbaar in twee lengtes.",
       "s": [
         "Opel Nederland",
         "https://www.opel.nl/bedrijfswagens/combo-modellen/nieuwe-combo-electric/overzicht.html"
@@ -756,7 +748,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Middelgrote elektrische bestelwagen met de 75 kWh-accu. Opel noemt in zijn elektrische modellenoverzicht maximaal 350 km WLTP. Leverbaar in twee lengtes en meerdere carrosserievarianten.",
+      "n": "Middelgrote elektrische bestelbus met de 75 kWh-accu. Opel noemt in zijn elektrische modellenoverzicht maximaal 350 km WLTP. Leverbaar in twee lengtes en meerdere carrosserievarianten.",
       "s": [
         "Opel Nederland",
         "https://www.opel.nl/elektrisch-rijden/elektrische-bedrijfswagens.html"
@@ -779,7 +771,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Compacte elektrische bestelwagen met de 50 kWh-accu en maximaal 343 km WLTP gecombineerd. Verkrijgbaar in de lengtes M en XL; volgens Fiat is laden tot 80% in circa 30 minuten mogelijk.",
+      "n": "Compacte elektrische bestelbus met de 50 kWh-accu en maximaal 343 km WLTP gecombineerd. Verkrijgbaar in de lengtes M en XL; volgens Fiat is laden tot 80% in circa 30 minuten mogelijk.",
       "s": [
         "Fiat Professional Nederland",
         "https://www.fiat.nl/professional/modellen/e-doblo"
@@ -802,7 +794,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Middelgrote bestelwagen met de 75 kWh-accu. Fiat noemt maximaal 352 km WLTP gecombineerd en circa 45 minuten snelladen tot 80%. Het bereik verschilt per carrosserie en uitvoering.",
+      "n": "Middelgrote bestelbus met de 75 kWh-accu. Fiat noemt maximaal 352 km WLTP gecombineerd en circa 45 minuten snelladen tot 80%. Het bereik verschilt per carrosserie en uitvoering.",
       "s": [
         "Fiat Professional Nederland",
         "https://www.fiat.nl/professional/modellen/e-scudo/features"
@@ -825,7 +817,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Compacte elektrische bestelwagen met de 50 kWh-accu. Toyota noemt in zijn Nederlandse bereikoverzicht en FAQ maximaal 330 km WLTP gecombineerd. Verkrijgbaar als L1 en Long L2.",
+      "n": "Compacte elektrische bestelbus met de 50 kWh-accu. Toyota noemt in zijn Nederlandse bereikoverzicht en FAQ maximaal 330 km WLTP gecombineerd. Verkrijgbaar als L1 en Long L2.",
       "s": [
         "Toyota Nederland",
         "https://www.toyota.nl/modellen/proace-city"
@@ -848,7 +840,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 100,
       "st": "nu",
-      "n": "Middelgrote elektrische bestelwagen met de 75 kWh-accu en maximaal 350 km WLTP gecombineerd. Ook leverbaar met een kleinere accu van 50 kWh; carrosserie en uitrusting beïnvloeden het bereik.",
+      "n": "Middelgrote elektrische bestelbus met de 75 kWh-accu en maximaal 350 km WLTP gecombineerd. Ook leverbaar met een kleinere accu van 50 kWh; carrosserie en uitrusting beïnvloeden het bereik.",
       "s": [
         "Toyota Nederland",
         "https://www.toyota.nl/modellen/proace"
@@ -871,7 +863,7 @@
       "rc": "WLTP gecombineerd",
       "dc": 80,
       "st": "nu",
-      "n": "Compacte bestelwagen met 45 kWh bruikbare accucapaciteit. De actuele Nederlandse modelpagina noemt maximaal 295 km WLTP, afhankelijk van uitvoering, uitrusting en lader. DC-snelladen is afhankelijk van de gekozen laaduitrusting.",
+      "n": "Compacte bestelbus met 45 kWh bruikbare accucapaciteit. De actuele Nederlandse modelpagina noemt maximaal 295 km WLTP, afhankelijk van uitvoering, uitrusting en lader. DC-snelladen is afhankelijk van de gekozen laaduitrusting.",
       "s": [
         "Renault Nederland",
         "https://bedrijfswagens.renault.nl/modellen/kangoo-e-tech-electric.html?bodyTypeCode=PT1261_kastenwagen"
@@ -894,7 +886,7 @@
       "rt": "tot 301",
       "rc": "WLTP gecombineerd",
       "st": "nu",
-      "n": "Compacte elektrische bestelwagen in de lengtes L1 en L2. De actuele Nederlandse aandrijflijnpagina noemt 44 kWh en maximaal 301 km WLTP gecombineerd. Laaduitrusting en bereik verschillen per versie.",
+      "n": "Compacte elektrische bestelbus in de lengtes L1 en L2. De actuele Nederlandse aandrijflijnpagina noemt 44 kWh en maximaal 301 km WLTP gecombineerd. Laaduitrusting en bereik verschillen per versie.",
       "s": [
         "Nissan Nederland",
         "https://www.nissan.nl/voertuigen/nieuw/townstar/motor.html"
@@ -918,12 +910,12 @@
       "rc": "WLTP gecombineerd",
       "dc": 75,
       "st": "nu",
-      "n": "Compacte gesloten bestelwagen met een 45 kWh-accu en maximaal 284 km WLTP gecombineerd. Mercedes-Benz Nederland noemt DC-snelladen tot 75 kW als optie. Beschikbaarheid en laaduitrusting verschillen per versie.",
+      "n": "Compacte gesloten bestelbus met een 45 kWh-accu en maximaal 284 km WLTP gecombineerd. Uitlopend model: Mercedes-Benz stopt de Citan/eCitan medio 2026; levering daarna uit voorraad. Beschikbaarheid en laaduitrusting verschillen per versie.",
       "s": [
         "Mercedes-Benz Nederland",
         "https://www.mercedes-benz.nl/vans/models/ecitan/panel-van/overview.html"
       ],
-      "checked": "2026-10-21",
+      "checked": "2026-11-02",
       "price": 34300,
       "ps": [
         "laadpunt.nl",
@@ -958,16 +950,16 @@
       "b": "Ford",
       "m": "E-Transit Courier",
       "a": 46,
-      "r": 325,
-      "rt": "tot 325",
+      "r": 334,
+      "rt": "tot 334",
       "dc": 100,
       "st": "nu",
-      "n": "Bijgewerkte 46 kWh-uitvoering uit 2026. Tot 325 km WLTP en AC-laden met 11 kW; 10–80% DC-laden in minder dan 30 minuten.",
+      "n": "Bijgewerkte 46 kWh-uitvoering uit 2026. Tot 334 km WLTP en AC-laden met 11 kW; 10-80% DC-laden in minder dan 30 minuten.",
       "s": [
         "Ford Nederland",
         "https://fordmediacenter.nl/ford-e-transit-courier-krijgt-grotere-batterij-meer-actieradius-verbeterde-connectiviteit-en-inzetbaarheid/"
       ],
-      "checked": "2026-10-21",
+      "checked": "2026-11-02",
       "price": 28410,
       "ps": [
         "Ford Nederland",
@@ -1018,7 +1010,7 @@
         "Volkswagen Bedrijfswagens Nederland",
         "https://nieuws.vwbedrijfswagens.nl/betere-specificaties-voor-e-transporter-en-e-caravelle/"
       ],
-      "pt": "Vanafprijs voor bestelwagen met 70,9 kWh netto-accu. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 8 januari 2026, fabrikantbericht. Gecontroleerd op 23 oktober 2026."
+      "pt": "Vanafprijs voor bestelbus met 70,9 kWh netto-accu. Nederlandse catalogusprijs excl. btw en eventuele afleveringskosten; geen tijdelijke korting of subsidie afgetrokken. Prijslijst: 8 januari 2026, fabrikantbericht. Gecontroleerd op 23 oktober 2026."
     },
     {
       "c": "bestel",
@@ -1134,7 +1126,7 @@
       "rt": "tot 265",
       "dc": 80,
       "st": "nu",
-      "n": "35S-bestelwagen (3,5 ton) met twee geïnstalleerde 37 kWh-modules. WLTP-opgave 265 km voor H1 met wielbasis 3.520 mm onder de testvoorwaarden uit de brochure. De vaak genoemde 400 km is een stedelijke simulatie voor andere configuraties.",
+      "n": "35S-bestelbus (3,5 ton) met twee geïnstalleerde 37 kWh-modules. WLTP-opgave 265 km voor H1 met wielbasis 3.520 mm onder de testvoorwaarden uit de brochure. De vaak genoemde 400 km is een stedelijke simulatie voor andere configuraties.",
       "s": [
         "IVECO Nederland",
         "https://info.iveco.nl/hubfs/Brochure%20IVECO%20eDaily.pdf?hsLang=nl-nl"
@@ -1149,7 +1141,7 @@
       "r": 227,
       "dc": 57,
       "st": "nu",
-      "n": "Gesloten bestelwagen L1 met 50 kWh-accu volgens de actuele Nederlandse prijslijst: 227 km WLTP gecombineerd, 322 km in de stad. Laadvolume 4,8 m³. De chassis-cabine heeft andere waarden.",
+      "n": "Gesloten bestelbus L1 met 50 kWh-accu volgens de actuele Nederlandse prijslijst: 227 km WLTP gecombineerd, 322 km in de stad. Laadvolume 4,8 m³. De chassis-cabine heeft andere waarden.",
       "s": [
         "Maxus Nederland",
         "https://www.maxus-motors.nl/assets/Uploads/Brochures/Prijslijst-eDeliver-3-v3.pdf"
@@ -1375,7 +1367,7 @@
       "rt": "> 600",
       "rc": "SORT 2",
       "st": "nu",
-      "n": "Stadsbus van 12 meter met modulaire aandrijving. Solaris noemt zes dakpakketten met samen meer dan 600 kWh en een bereik boven 600 km op basis van SORT 2-verbruik. Exacte bruto/netto-capaciteit en laadvermogen worden op deze pagina niet gespecificeerd. Ook pantograafladen is mogelijk.",
+      "n": "Stadsbus van 12 meter met modulaire aandrijving. Solaris noemt zes dakpakketten met samen meer dan 600 kWh en een bereik boven 600 km op basis van SORT 2-verbruik. Exacte bruto/netto-capaciteit en laadsnelheid worden op deze pagina niet gespecificeerd. Ook pantograafladen is mogelijk.",
       "s": [
         "Solaris Bus & Coach",
         "https://www.solarisbus.com/en/urbino-12-electric-with-modular-drive"
@@ -1392,7 +1384,7 @@
       "rt": "tot 600",
       "rc": "e-SORT 2",
       "st": "nu",
-      "n": "Gelede stadsbus van 18 meter. De grootste accuconfiguratie bevat meer dan 800 kWh; Solaris geeft 600 km op, berekend uit het e-SORT 2-verbruik. Exacte bruto/netto-capaciteit en laadvermogen worden op deze pagina niet gespecificeerd. Laden via stekker of pantograaf.",
+      "n": "Gelede stadsbus van 18 meter. De grootste accuconfiguratie bevat meer dan 800 kWh; Solaris geeft 600 km op, berekend uit het e-SORT 2-verbruik. Exacte bruto/netto-capaciteit en laadsnelheid worden op deze pagina niet gespecificeerd. Laden via stekker of pantograaf.",
       "s": [
         "Solaris Bus & Coach",
         "https://www.solarisbus.com/en/urbino-18-electric"
@@ -1458,7 +1450,7 @@
       "r": 600,
       "rt": "tot 600",
       "st": "nu",
-      "n": "Stadsbus van 12 meter met Blade Battery in het chassis en plaats voor maximaal 105 reizigers. BYD noemt maximaal 500 kWh en tot 600 km op één lading. De bron specificeert de testcyclus, bruto/netto-capaciteit en het laadvermogen niet.",
+      "n": "Stadsbus van 12 meter met Blade Battery in het chassis en plaats voor maximaal 105 reizigers. BYD noemt maximaal 500 kWh en tot 600 km op één lading. De bron specificeert de testcyclus, bruto/netto-capaciteit en de laadsnelheid niet.",
       "s": [
         "BYD Europe",
         "https://bydeurope.com/byd-ebus-b12"
@@ -1540,6 +1532,166 @@
         "https://www.renault-trucks.com/en/newsroom/press-releases/long-haul-operations-now-within-reach-renault-trucks-electric-tractors"
       ],
       "checked": "2026-10-21"
+    },
+    {
+      "c": "bestel",
+      "b": "Kia",
+      "m": "PV5 Cargo",
+      "fam": "PV5 Cargo",
+      "a": 51.5,
+      "r": 291,
+      "rt": "tot 291",
+      "st": "nu",
+      "n": "Elektrische bestelwagen van Kia op een eigen PBV-platform. 51,5 kWh-uitvoering met tot 291 km WLTP; DC-laden 10-80% in circa 30 minuten.",
+      "s": [
+        "Kia Nederland",
+        "https://www.kia.com/nl/pbv/modellen/pv5-cargo/ontdekken/"
+      ],
+      "gvw": 3500,
+      "checked": "2026-11-02",
+      "price": 29895,
+      "ps": [
+        "Kia Nederland",
+        "https://www.kia.com/nl/pbv/modellen/pv5-cargo/ontdekken/"
+      ],
+      "pt": "Vanafprijs voor PV5 Cargo 51,5 kWh. Nederlandse catalogusprijs excl. btw. Gecontroleerd op 2 november 2026."
+    },
+    {
+      "c": "bestel",
+      "b": "Kia",
+      "m": "PV5 Cargo 71.2 kWh",
+      "fam": "PV5 Cargo",
+      "vl": "71.2 kWh",
+      "a": 71.2,
+      "r": 416,
+      "rt": "tot 416",
+      "st": "nu",
+      "n": "Long-range-uitvoering van de Kia PV5 Cargo met 71,2 kWh en tot 416 km WLTP; DC-laden 10-80% in circa 30 minuten.",
+      "s": [
+        "Kia Nederland",
+        "https://www.kia.com/nl/pbv/modellen/pv5-cargo/ontdekken/"
+      ],
+      "gvw": 3500,
+      "checked": "2026-11-02"
+    },
+    {
+      "c": "bestel",
+      "b": "Nissan",
+      "m": "Interstar-e",
+      "a": 87,
+      "r": 410,
+      "rt": "tot 410",
+      "dc": 130,
+      "st": "nu",
+      "n": "Grote bestelwagen, technisch verwant aan de Renault Master E-Tech. N1-referentie met 87 kWh en tot 410 km WLTP; de 460 km-opgave hoort bij de 4-tonuitvoering. DC-laden tot 130 kW.",
+      "s": [
+        "Nissan Nederland",
+        "https://www.nissan.nl/voertuigen/nieuw/interstar.html"
+      ],
+      "gvw": 3500,
+      "checked": "2026-11-02",
+      "price": 44900,
+      "ps": [
+        "Nissan Nederland",
+        "https://www.nissan.nl/voertuigen/nieuw/interstar.html"
+      ],
+      "pt": "Vanafprijs excl. btw volgens Nissan Nederland. Gecontroleerd op 2 november 2026."
+    },
+    {
+      "c": "bestel",
+      "b": "Mercedes-Benz",
+      "m": "eVito",
+      "a": 66,
+      "r": 286,
+      "rt": "tot 286",
+      "st": "nu",
+      "n": "Midsize gesloten bestelwagen met 66 kWh en tot 286 km WLTP. Er is ook een 90 kWh-uitvoering aangekondigd. Nederlandse prijslijst in deze controle niet openbaar bevestigd, daarom geen prijs ingevuld.",
+      "s": [
+        "Automotive World",
+        "https://www.automotiveworld.com/news-releases/even-more-miles-mercedes-benz-evito-panel-van-now-available-with-90-kwh-battery-capacity/"
+      ],
+      "gvw": 3500,
+      "checked": "2026-11-02"
+    },
+    {
+      "c": "bakwagen",
+      "b": "Mercedes-Benz",
+      "m": "eArocs 400",
+      "g": 414,
+      "r": 240,
+      "rt": "200-240",
+      "st": "nu",
+      "n": "Elektrische bouwtruck (8x4) met 414 kWh LFP. Circa 200 km als mixer en 240 km als kipper, afhankelijk van opbouw en inzet.",
+      "s": [
+        "electrive",
+        "https://www.electrive.com/2026/03/30/sales-launch-for-mercedes-earocs-400-construction-truck/"
+      ],
+      "checked": "2026-11-02"
+    },
+    {
+      "c": "bakwagen",
+      "b": "Renault Trucks",
+      "m": "E-Tech D 14T",
+      "a": 176,
+      "r": 220,
+      "rt": "tot 220",
+      "st": "nu",
+      "n": "Lichte distributietruck van 14 ton met 176 kWh LFP en tot 220 km. Ook als 12-tons uitvoering leverbaar.",
+      "s": [
+        "Renault Trucks",
+        "https://www.renault-trucks.com/en/newsroom/press-releases/gamme-electrique-complete-iaa"
+      ],
+      "checked": "2026-11-02"
+    },
+    {
+      "c": "bakwagen",
+      "b": "IVECO",
+      "m": "S-eWay Rigid",
+      "g": 490,
+      "r": 400,
+      "rt": "tot 400",
+      "dc": 350,
+      "st": "nu",
+      "n": "Bakwagenversie van de S-eWay met tot 490 kWh en tot 400 km. De trekkeruitvoering staat apart in de catalogus.",
+      "s": [
+        "electrive",
+        "https://www.electrive.com/2025/06/13/iveco-to-start-fitting-the-s-eway-with-lfp-batteries-from-2026/"
+      ],
+      "checked": "2026-11-02"
+    },
+    {
+      "c": "trekker",
+      "b": "DAF",
+      "m": "XG Electric",
+      "g": 525,
+      "gt": "210-525",
+      "u": 462,
+      "ut": "185-462",
+      "r": 500,
+      "rt": "tot 500",
+      "dc": 350,
+      "st": "nu",
+      "n": "Grote trekker boven de XF, in serieproductie sinds mei 2026. Accu in stappen tot 525 kWh; XG+ laadt tot 350 kW.",
+      "s": [
+        "Electric Cars Report",
+        "https://electriccarsreport.com/2026/05/daf-begins-series-production-of-xg-electric-and-xg-electric-trucks/"
+      ],
+      "checked": "2026-11-02"
+    },
+    {
+      "c": "bus",
+      "b": "Mercedes-Benz",
+      "m": "eIntouro",
+      "a": 414,
+      "r": 500,
+      "rt": "tot 500",
+      "st": "nu",
+      "n": "Elektrische intercitybus met LFP-accu tot 414 kWh en tot 500 km. Eerste leveringen in 2026.",
+      "s": [
+        "Electric Cars Report",
+        "https://www.electriccarsreport.com/2024/11/daimler-buses-unveils-mercedes-benz-eintouro-intercity-electric-bus/"
+      ],
+      "checked": "2026-11-02"
     }
   ]
 }

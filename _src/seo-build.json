@@ -17,11 +17,11 @@
   },
   "https://stekkerofdiesel.nl/modellen/": {
     "date": "2026-11-02",
-    "hash": "6f3f0ade8e95"
+    "hash": "52dd5fdfb6cc"
   },
   "https://stekkerofdiesel.nl/en/models/": {
     "date": "2026-11-02",
-    "hash": "f4564e403fa4"
+    "hash": "0c55d8c450a0"
   },
   "https://stekkerofdiesel.nl/overstapgids/": {
     "date": "2026-10-30",
@@ -169,35 +169,35 @@
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/": {
     "date": "2026-11-02",
-    "hash": "e321ac492436"
+    "hash": "56865c39ef48"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/": {
     "date": "2026-11-02",
-    "hash": "87397469a802"
+    "hash": "8020cbd8484b"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/": {
     "date": "2026-11-02",
-    "hash": "e16c9f6a662b"
+    "hash": "59c5c803a316"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/": {
     "date": "2026-11-02",
-    "hash": "490d0969bad3"
+    "hash": "3ecb1555aea7"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/": {
     "date": "2026-11-02",
-    "hash": "20b6e846615d"
+    "hash": "9c39dada481a"
   },
   "https://stekkerofdiesel.nl/en/models/vans/": {
     "date": "2026-11-02",
-    "hash": "3db3083b641d"
+    "hash": "ca8da0ab8dae"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/": {
     "date": "2026-11-02",
-    "hash": "5e0d5f3ac2f4"
+    "hash": "768679816bc2"
   },
   "https://stekkerofdiesel.nl/en/models/buses/": {
     "date": "2026-11-02",
-    "hash": "5e134866668f"
+    "hash": "b68d75bfe06e"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/volvo-fh-aero-electric/": {
     "date": "2026-11-02",
@@ -311,6 +311,14 @@
     "date": "2026-11-02",
     "hash": "5c90f34399ac"
   },
+  "https://stekkerofdiesel.nl/modellen/trekkers/daf-xg-electric/": {
+    "date": "2026-11-02",
+    "hash": "ee8bdc496ec5"
+  },
+  "https://stekkerofdiesel.nl/en/models/tractor-units/daf-xg-electric/": {
+    "date": "2026-11-02",
+    "hash": "354d18d8d7f6"
+  },
   "https://stekkerofdiesel.nl/modellen/bussen/karsan-e-ata-12/": {
     "date": "2026-11-02",
     "hash": "3a510dee8ee8"
@@ -327,6 +335,14 @@
     "date": "2026-11-02",
     "hash": "641bd214a564"
   },
+  "https://stekkerofdiesel.nl/modellen/bussen/mercedes-benz-eintouro/": {
+    "date": "2026-11-02",
+    "hash": "d54b562e52a8"
+  },
+  "https://stekkerofdiesel.nl/en/models/buses/mercedes-benz-eintouro/": {
+    "date": "2026-11-02",
+    "hash": "de4d5d6cd9ce"
+  },
   "https://stekkerofdiesel.nl/modellen/bakwagens/man-etgm-4-accupakketten/": {
     "date": "2026-11-02",
     "hash": "892e43497180"
@@ -334,6 +350,14 @@
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/man-etgm-4-accupakketten/": {
     "date": "2026-11-02",
     "hash": "d48092d6e155"
+  },
+  "https://stekkerofdiesel.nl/modellen/bakwagens/mercedes-benz-eactros-400/": {
+    "date": "2026-11-02",
+    "hash": "16dc0320958f"
+  },
+  "https://stekkerofdiesel.nl/en/models/rigid-trucks/mercedes-benz-eactros-400/": {
+    "date": "2026-11-02",
+    "hash": "7372351cabd7"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/mercedes-benz-ecitaro-g/": {
     "date": "2026-11-02",
@@ -415,6 +439,22 @@
     "date": "2026-11-02",
     "hash": "9d095d822c0f"
   },
+  "https://stekkerofdiesel.nl/modellen/bestelbussen/kia-pv5-cargo/": {
+    "date": "2026-11-02",
+    "hash": "2732546e231c"
+  },
+  "https://stekkerofdiesel.nl/en/models/vans/kia-pv5-cargo/": {
+    "date": "2026-11-02",
+    "hash": "d74658ac7f60"
+  },
+  "https://stekkerofdiesel.nl/modellen/bestelbussen/nissan-interstar-e/": {
+    "date": "2026-11-02",
+    "hash": "df317123fb83"
+  },
+  "https://stekkerofdiesel.nl/en/models/vans/nissan-interstar-e/": {
+    "date": "2026-11-02",
+    "hash": "087de64cbf7f"
+  },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/renault-master-e-tech/": {
     "date": "2026-11-02",
     "hash": "000c8ecd70a2"
@@ -423,13 +463,13 @@
     "date": "2026-11-02",
     "hash": "4b8bddaab4fe"
   },
-  "https://stekkerofdiesel.nl/modellen/bakwagens/mercedes-benz-eactros-300-400/": {
+  "https://stekkerofdiesel.nl/modellen/bakwagens/iveco-s-eway-rigid/": {
     "date": "2026-11-02",
-    "hash": "75c2f1b0786a"
+    "hash": "685b40537664"
   },
-  "https://stekkerofdiesel.nl/en/models/rigid-trucks/mercedes-benz-eactros-300-400/": {
+  "https://stekkerofdiesel.nl/en/models/rigid-trucks/iveco-s-eway-rigid/": {
     "date": "2026-11-02",
-    "hash": "74ab5991c273"
+    "hash": "bb31d6ad1214"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/man-lion-s-city-12-e/": {
     "date": "2026-11-02",
@@ -591,6 +631,14 @@
     "date": "2026-11-02",
     "hash": "51a593b2b89b"
   },
+  "https://stekkerofdiesel.nl/modellen/bestelbussen/ford-e-transit-courier/": {
+    "date": "2026-11-02",
+    "hash": "05501ccc3a8f"
+  },
+  "https://stekkerofdiesel.nl/en/models/vans/ford-e-transit-courier/": {
+    "date": "2026-11-02",
+    "hash": "a0aabe853b9d"
+  },
   "https://stekkerofdiesel.nl/modellen/bakwagens/renault-trucks-e-tech-d-16-t/": {
     "date": "2026-11-02",
     "hash": "d07d31aea1a8"
@@ -606,14 +654,6 @@
   "https://stekkerofdiesel.nl/en/models/vans/toyota-proace-city-electric/": {
     "date": "2026-11-02",
     "hash": "91c3e9496b41"
-  },
-  "https://stekkerofdiesel.nl/modellen/bestelbussen/ford-e-transit-courier/": {
-    "date": "2026-11-02",
-    "hash": "e13f4877e58e"
-  },
-  "https://stekkerofdiesel.nl/en/models/vans/ford-e-transit-courier/": {
-    "date": "2026-11-02",
-    "hash": "1e0bcc5f9f8d"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/renault-trucks-e-tech-d-wide-375/": {
     "date": "2026-11-02",
@@ -647,13 +687,21 @@
     "date": "2026-11-02",
     "hash": "623f8a7c545b"
   },
+  "https://stekkerofdiesel.nl/modellen/bestelbussen/mercedes-benz-evito/": {
+    "date": "2026-11-02",
+    "hash": "2e169b77d4e3"
+  },
+  "https://stekkerofdiesel.nl/en/models/vans/mercedes-benz-evito/": {
+    "date": "2026-11-02",
+    "hash": "4c043b2edc0f"
+  },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/mercedes-benz-ecitan/": {
     "date": "2026-11-02",
-    "hash": "5d1da111ad7c"
+    "hash": "15c5c327c635"
   },
   "https://stekkerofdiesel.nl/en/models/vans/mercedes-benz-ecitan/": {
     "date": "2026-11-02",
-    "hash": "ab6673c52364"
+    "hash": "faf5cb1db6c6"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/volvo-fe-electric/": {
     "date": "2026-11-02",
@@ -679,6 +727,14 @@
     "date": "2026-11-02",
     "hash": "a77a77636601"
   },
+  "https://stekkerofdiesel.nl/modellen/bakwagens/mercedes-benz-earocs-400/": {
+    "date": "2026-11-02",
+    "hash": "198ee9a2536c"
+  },
+  "https://stekkerofdiesel.nl/en/models/rigid-trucks/mercedes-benz-earocs-400/": {
+    "date": "2026-11-02",
+    "hash": "68c480563a62"
+  },
   "https://stekkerofdiesel.nl/modellen/bakwagens/man-etgl/": {
     "date": "2026-11-02",
     "hash": "5f92a6e7b263"
@@ -694,6 +750,14 @@
   "https://stekkerofdiesel.nl/en/models/vans/maxus-edeliver-3/": {
     "date": "2026-11-02",
     "hash": "691884690366"
+  },
+  "https://stekkerofdiesel.nl/modellen/bakwagens/renault-trucks-e-tech-d-14t/": {
+    "date": "2026-11-02",
+    "hash": "9725695b7c90"
+  },
+  "https://stekkerofdiesel.nl/en/models/rigid-trucks/renault-trucks-e-tech-d-14t/": {
+    "date": "2026-11-02",
+    "hash": "aacd4472ba62"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/fuso-ecanter-9c18e-l/": {
     "date": "2026-11-02",
