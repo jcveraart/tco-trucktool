@@ -2431,6 +2431,13 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
  .mca{flex-wrap:wrap}
  .mca .cta{flex:1 1 100%;justify-content:center}
 }
+/* Kentekenknop in de zero-emissiezonecheck zwart, zoals de kentekenknop op de homepage */
+#gtZe .plate button{background:var(--ink)}#gtZe .plate button:hover{background:#000}
+/* Neem contact op: dezelfde groene gloed bij aanwijzen als de grote knop op de calculator */
+#fSend{position:relative;isolation:isolate}
+#fSend::before{content:"";position:absolute;inset:-3px;z-index:-1;border:1.5px solid #B4F7D4;border-radius:7px;box-shadow:0 0 8px 0 rgba(180,247,212,.5);opacity:0;pointer-events:none}
+#fSend:is(:hover,:focus-visible)::before{animation:pulse2 2.2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){#fSend:is(:hover,:focus-visible)::before{animation:none;opacity:.4}}
 </style>
 <link rel="preload" href="/assets/fonts/e2291e842cf5af.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/01d285447409c8.woff2" as="font" type="font/woff2" crossorigin>
