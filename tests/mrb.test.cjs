@@ -46,6 +46,29 @@ test('lease-schatting neemt wegenbelasting mee als hij in de leaseprijs zit, zon
   assert.ok(Math.abs(ctx.leaseEst('E', {}, 0) - expected) < 1, `got ${ctx.leaseEst('E', {}, 0)}, want ${expected}`);
 });
 
+test('kentekenlookup schat wegenbelasting uit RDW-gewicht per voertuigsoort', () => {
+  const blok = SOURCE.slice(SOURCE.indexOf('const MRB='), SOURCE.indexOf('/* Waardeverloop'));
+  const ctx = {};
+  vm.createContext(ctx);
+  const mrbJaar = vm.runInContext(blok + '\nmrbJaar;', ctx);
+  ctx.mrbJaar = mrbJaar;
+  assert.equal(ctx.mrbJaar('bestel', 1850, 2800, false), 475); // ledig gewicht telt, grijs kenteken
+  assert.equal(ctx.mrbJaar('bestel', 1850, 2800, true), 330);
+  assert.equal(ctx.mrbJaar('bestel', 0, 2800, false), 0); // geen ledig gewicht: niet overschrijven
+  assert.equal(ctx.mrbJaar('bakwagen', 0, 16000, false), 800);
+  assert.equal(ctx.mrbJaar('trekker', 0, 40000, false), 1100);
+  assert.equal(ctx.mrbJaar('trekker', 0, 40000, true), 1000);
+  assert.equal(ctx.mrbJaar('bus', 0, 19000, false), 1200);
+  assert.match(SOURCE, /mrbJaar\(i\.vt,i\.ledig,i\.mass,false\)/);
+  assert.match(SOURCE, /mrbJaar\(i\.vt,i\.ledig,i\.mass,true\)/);
+  assert.match(SOURCE, /ledig:num\(r\.massa_ledig_voertuig\)/);
+});
+
+test('elektrische modellen nemen hun wegenbelasting uit de database mee', () => {
+  assert.match(SOURCE, /r\.roadtax_annual_eur != null\) m\.bel = parseFloat\(r\.roadtax_annual_eur\)/);
+  assert.match(SOURCE, /if\(m\.bel\)setNum\(\$\('wE'\),m\.bel\)/);
+});
+
 test('wegenbelasting staat in velden, voorbeeldwaarden, stappen en terugverdientijd', () => {
   assert.match(SOURCE, /\['wD','Wegenbelasting'/);
   assert.match(SOURCE, /\['wE','Wegenbelasting'/);

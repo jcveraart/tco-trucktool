@@ -6418,7 +6418,7 @@ function modelApply(id,keepOwnPrice=false){
  const m=MI[id];if(!m)return false;
  if(m.c!==vtype){applyType(m.c);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
  $('calcModel').value=id;mpList();
- const P=VT[m.c].p;setNum($('acc'),mAcc(m));setNum($('le'),mEnergy(m));if(m.price||!keepOwnPrice)setNum($('pE'),m.price||P.pE);const dz=mDiesel(m);if($('dw').value!=='h'){setNum($('pD'),dz.pD);setNum($('ld'),dz.ld)}
+ const P=VT[m.c].p;setNum($('acc'),mAcc(m));setNum($('le'),mEnergy(m));if(m.price||!keepOwnPrice)setNum($('pE'),m.price||P.pE);if(m.bel)setNum($('wE'),m.bel);const dz=mDiesel(m);if($('dw').value!=='h'){setNum($('pD'),dz.pD);setNum($('ld'),dz.ld)}
  fitRanges();
  if(m.c==='bakwagen'){$('cls').value=(m.vc||'n3').toUpperCase();if(m.gvw&&m.gvw<10000)$('reg').value='geen'}
  /* Gebruikt of huidige diesel: prijs, accu en verzekering volgen het gekozen model, niet de nieuwprijs */
@@ -6585,6 +6585,14 @@ const plateForm=k=>`<form class="plate" data-plate="${k}" novalidate><input name
 const HEF=[[12000,.113,.025],[18000,.160,.035],[32000,.182,.037],[Infinity,.201,.038]];
 const hefRow=kg=>HEF.find(h=>kg<=h[0]);
 const hefBand=kg=>kg<=12000?'3,5 tot 12 ton':kg<=18000?'12 tot 18 ton':kg<=32000?'18 tot 32 ton':'boven 32 ton';
+/* Wegenbelasting per jaar uit RDW-gegevens: bestelbus op ledig gewicht (grijs kenteken,
+   ondernemer tarief), vrachtwagen en bus op toegestane maximummassa. Indicatief:
+   het exacte tarief hangt ook af van provincie en vering; de schuif blijft aanpasbaar. */
+const MRB={bestel:[[1200,300,210],[1600,390,270],[2000,475,330],[2500,560,390],[3000,650,450],[1e9,740,520]],
+ bakwagen:[[7500,450,400],[12000,650,575],[18000,800,725],[26000,950,850],[1e9,1100,1000]],
+ trekker:[[18000,800,725],[32000,950,875],[1e9,1100,1000]],
+ bus:[[10000,700,625],[15000,950,850],[1e9,1200,1100]]};
+const mrbJaar=(vt,ledig,mass,el)=>{const t=MRB[vt];if(!t)return 0;const kg=vt==='bestel'?(ledig||0):(mass||0);if(!kg)return 0;const r=t.find(x=>kg<=x[0]);return r?(el?r[2]:r[1]):0};
 /* Waardeverloop: eerste jaar, daarna per jaar. Elektrisch daalt voorlopig sneller. */
 const VCURVE={d:{trekker:[.80,.86],bakwagen:[.80,.87],bestel:[.82,.87],bus:[.78,.88]},e:{trekker:[.75,.85],bakwagen:[.75,.85],bestel:[.78,.85],bus:[.74,.86]}};
 const valPct=(f,vt,age)=>{if(age<=0)return 1;const c=VCURVE[f][vt]||VCURVE[f].bakwagen;return age<1?1-(1-c[0])*age:c[0]*Math.pow(c[1],age-1)};
@@ -6605,7 +6613,7 @@ async function rdwGet(k){
  let euro=0;(b||[]).forEach(f=>{const t=String(f.uitlaatemissieniveau||f.emissiecode_omschrijving||'').toUpperCase(),m=t.match(/\b(VI|V|IV|III|[3-6])\b/);if(m){const e={VI:6,V:5,IV:4,III:3}[m[1]]||+m[1];euro=Math.max(euro,e)}});
  if(!euro&&first&&!el){const y=first.getFullYear()+first.getMonth()/12;euro=vt==='bestel'?(y>=2016.7?6:y>=2011?5:4):(y>=2014?6:y>=2009.8?5:4)}
  const lpk=(b||[]).map(f=>num(f.brandstofverbruik_gecombineerd)).find(Boolean)||0;
- return{k,vt,eu,merk:String(r.merk||'').trim(),model:String(r.handelsbenaming||'').trim(),first,mass,combo,euro,el,diesel,lpk,cat:num(r.catalogusprijs)};
+ return{k,vt,eu,merk:String(r.merk||'').trim(),model:String(r.handelsbenaming||'').trim(),first,mass,combo,euro,el,diesel,lpk,cat:num(r.catalogusprijs),ledig:num(r.massa_ledig_voertuig)};
 }
 const tcase=s=>s.length<=3?s:s.toLowerCase().replace(/(^|[\s-])\S/g,c=>c.toUpperCase());
 const plName=i=>{let t=i.model;if(t.toUpperCase().startsWith(i.merk.toUpperCase()))t=t.slice(i.merk.length).trim();return(tcase(i.merk)+' '+tcase(t)).trim()};
@@ -6632,7 +6640,8 @@ function plApplyD(i){
  if(i.vt==='bestel'&&i.lpk)setNum($('ld'),Math.round(i.lpk*1.15*10)/10);
  if(i.vt==='bakwagen'&&i.mass)setNum($('ld'),i.mass<=12000?17:i.mass<=18000?22:27);
  if(T().truck){const h=hefRow(i.vt==='trekker'&&i.combo?Math.max(i.combo,i.mass):i.mass||40000);setNum($('tD'),h[1]);setNum($('tE'),h[2])}
- $('dw').value='h';setNum($('dag'),Math.min(20,Math.max(1,Math.round(ageOf(i.first)))));dieselAuto(true);touched=true;
+ const mrbD=mrbJaar(i.vt,i.ledig,i.mass,false);if(mrbD)setNum($('wD'),mrbD);
+$('dw').value='h';setNum($('dag'),Math.min(20,Math.max(1,Math.round(ageOf(i.first)))));dieselAuto(true);touched=true;
 }
 /* Kenteken van een gebruikt elektrisch voertuig: leeftijd en, als we hem kennen, het model */
 function plApplyE(i){
@@ -6640,7 +6649,8 @@ function plApplyE(i){
  const w=s=>mNorm(s).split(' ').filter(Boolean),bw=w(i.merk)[0]||'',tw=w(i.model);
  let best=null,sc=0;MODELS.filter(m=>mNorm(m.b).split(' ')[0]===bw).forEach(m=>{const mw=w(m.m+' '+(m.fam||'')),s=tw.filter(t=>mw.includes(t)).length+(m.c===i.vt?.5:0);if(s>sc){sc=s;best=m}});
  if(best&&sc>=1)modelApply(best.id,true);else if(i.vt&&i.vt!==vtype){applyType(i.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0)}
- $('nw').value='g';setNum($('eag'),age);usedAuto(true);touched=true;
+ const mrbE=mrbJaar(i.vt,i.ledig,i.mass,true);if(mrbE)setNum($('wE'),mrbE);
+$('nw').value='g';setNum($('eag'),age);usedAuto(true);touched=true;
 }
 async function plLookup(kind,k,apply){
  if(!k){PL[kind]=null;$(kind==='E'?'plkE':'plk').value='';if(kind==='D'&&$('dw').value==='h'){$('dw').value='n';dieselAuto(true)}render();return}
@@ -6943,7 +6953,7 @@ async function syncSupabase() {
      if (r.diesel_ref_price_eur != null) m.pD = parseFloat(r.diesel_ref_price_eur);
      if (r.diesel_ref_consumption_l_per_100km != null) m.ld = parseFloat(r.diesel_ref_consumption_l_per_100km);
      if (r.diesel_price_source_name) m.pDs = [r.diesel_price_source_name, r.diesel_price_source_url || ''];
-     if (r.gvw_kg != null) m.gvw = parseInt(r.gvw_kg, 10);
+     if (r.gvw_kg != null) m.gvw = parseInt(r.gvw_kg, 10);      if (r.roadtax_annual_eur != null) m.bel = parseFloat(r.roadtax_annual_eur);
      if (r.gvw_class) m.vc = String(r.gvw_class).toLowerCase();
      if (m.b === 'Iveco') m.b = 'IVECO';
      if (r.description) m.n = r.description;
