@@ -1288,7 +1288,10 @@ html.embed .intro{padding-top:20px}
 .gcl{display:inline-flex;align-items:center;gap:10px;margin:28px 0 0;color:var(--ink);font:600 16px var(--text);text-decoration:none}
 .gcl::after{content:"";width:8px;height:8px;border-top:2px solid var(--volt);border-right:2px solid var(--volt);transform:rotate(45deg)}
 .gcl:hover{color:var(--volt-ink)}
-p.gcl{display:block}p.gcl::after{display:inline-block;margin-left:10px;vertical-align:.12em}
+/* Gidsen: "Meerdere voertuigen of locaties?" als gewone zin, de pijl hangt direct aan de link. */
+p.gcl{display:block}p.gcl::after{content:none}
+p.gcl a{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+p.gcl a::after{content:"";width:7px;height:7px;margin-top:1px;border-top:2px solid var(--volt);border-right:2px solid var(--volt);transform:rotate(45deg)}
 .gnx{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:64px 0 0}
 .gnx a{display:flex;flex-direction:column;gap:4px;padding:14px 18px;border-radius:6px;box-shadow:0 0 0 1px var(--line);background:var(--card);color:var(--ink);text-decoration:none;font:600 16px/1.3 var(--text)}
 .gnx a:hover{box-shadow:0 0 0 1px var(--ink)}
