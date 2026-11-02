@@ -79,6 +79,50 @@ export function validateReport(data) {
   return data;
 }
 
+// Battery aging made visible: the solver already ages the battery
+// (settings.accu_veroudering per year), but the report only listed it as an
+// assumption. Here the chosen electric candidates get a SoH/range path and a
+// margin against the longest regular day trip in their group.
+export function batteryAging(report, plan) {
+  const rate = report.settings.accu_veroudering || 0;
+  const horizon = report.settings.jaren || plan.jaren.length;
+  const socMin = report.settings.soc_min ?? .1, socStart = report.settings.begin_soc ?? .9;
+  const window = Math.max(.05, socStart - socMin);
+  const longest = new Map();
+  for (const t of report.trips || []) if (!t.piek) longest.set(t.groep, Math.max(longest.get(t.groep) || 0, +t.km || 0));
+  const chosen = new Map();
+  for (const v of plan.vloot || []) {
+    if (v.bestaand || v.aandrijving !== 'electric') continue;
+    const cand = (report.candidates || []).find(x => x.naam === v.naam && x.aandrijving === 'electric');
+    if (cand && cand.accu_kwh > 0 && cand.verbruik_kwh100 > 0) chosen.set(cand.id, cand);
+  }
+  return [...chosen.values()].map(cand => {
+    const rangeNew = Math.round(cand.accu_kwh / cand.verbruik_kwh100 * 100);
+    const years = [];
+    for (let age = 0; age <= horizon; age++) {
+      const soh = Math.pow(1 - rate, age);
+      years.push({ age, soh, range: Math.round(rangeNew * soh), usable: Math.round(rangeNew * soh * window) });
+    }
+    const trip = longest.get(cand.groep) || 0;
+    const tightYear = years.find(y => trip > 0 && y.usable < trip)?.age ?? null;
+    return { name: cand.naam, group: cand.groep, batteryKwh: cand.accu_kwh, useKwh100: cand.verbruik_kwh100,
+      rangeNew, longestTrip: trip, years, tightYear, endSoh: years.at(-1).soh };
+  });
+}
+// Charging infrastructure totals at the end of the plan, from the chargers
+// the solver picked (laadpunten per period) and the depot connection path.
+export function chargingSummary(report, plan) {
+  const types = new Map((report.chargers || []).map(x => [x.naam, x]));
+  let pointsEnd = 0, installedKw = 0;
+  for (const l of plan.laadpunten || []) {
+    const end = l.aantal?.at(-1) || 0, spec = types.get(l.naam);
+    pointsEnd += end;
+    if (spec) installedKw += end * (spec.kast_kw || (spec.kw_per_connector || 0) * (spec.connectoren || 1));
+  }
+  const connectionEnd = plan.net_kw?.at(-1) ?? report.depot.aansluiting_kw;
+  return { pointsEnd, installedKw, connectionStart: report.depot.aansluiting_kw, connectionEnd,
+    upgradeNeeded: connectionEnd > (report.depot.aansluiting_kw || 0) };
+}
 // Years per decision period (the last period can be shorter).
 export function periodYears(report, variant) {
   const pj = report.settings.periode_jaren || 1, Y = report.settings.jaren;

@@ -1,5 +1,5 @@
 import { practicalDay } from './report-practical.mjs';
-import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport, periodYears, scenarioPlans, scenarioLevel, dayKm, totalKm, analysisTexts, adviceSummary } from './report-core.mjs';
+import { totalYear, cumulative, metrics, costRows, fleetSlots, steps, validateReport, periodYears, scenarioPlans, scenarioLevel, dayKm, totalKm, analysisTexts, adviceSummary, batteryAging, chargingSummary } from './report-core.mjs';
 import { moves, reasonFor, stays, verdict, pillars, differenceStory, yearsStory, chargingStory, robustness, CHOICES, SETTINGS, formatValue, GLOSSARY } from './report-explain.mjs';
 import { fleetLifecycle, periodChanges, scenarioCatalogue, statusLabel, presentationContext } from './report-planning.mjs';
 
@@ -275,7 +275,7 @@ function topbar() {
       E('button', { class: 'btn dark', type: 'button', onclick: () => print() }, icon('print'), E('span', {}, 'Bewaar als pdf')))));
 }
 const SECTIONS = [['overzicht', 'Overzicht'], ['vlootplan', 'Vlootplan'], ['scenarios', 'Scenario’s'], ['analyse', 'Analyse'], ['verschil', 'Kosten'], ['jaren', 'Door de jaren'], ['kansen', 'Kansen'], ['keuzes', 'Keuzes'], ['wagens', 'Per wagen'],
-  ['investeringen', 'Investering'], ['laden', 'Laden'], ['werkdag', 'Werkdag'], ['uitstoot', 'Uitstoot'], ['varianten', 'Plannen'], ['stappen', 'Stappen'], ['verantwoording', 'Aannames'], ['bijlage', 'Bijlage']];
+  ['investeringen', 'Investering'], ['laden', 'Laden'], ['accu', 'Accu'], ['werkdag', 'Werkdag'], ['uitstoot', 'Uitstoot'], ['varianten', 'Plannen'], ['stappen', 'Stappen'], ['verantwoording', 'Aannames'], ['bijlage', 'Bijlage']];
 function nav(c) {
   const lvl = scenarioLevel(report, c.key);
   return E('nav', { class: 'nav', 'aria-label': 'Hoofdstukken' }, E('div', { class: 'wrap nav-in' },
@@ -711,7 +711,12 @@ function charging(c) {
   const pol = report.policies || [];
   const depotText = p => p.depot === 'nooit' ? 'niet op het depot' : p.depot === 'venster' ? `depot ${clock(p.van * 60)}–${clock(p.tot * 60)}` : 'depot, als hij er staat';
   const maxKw = Math.max(1, ...plan.net_kw, report.depot.aansluiting_kw || 0);
+  const infra = chargingSummary(report, plan);
   return section('laden', 'Laden en netaansluiting', E('p',{class:'reading-note'}, 'Per beslisperiode: aansluiting in kW, laadpunten in aantallen en laadenergie in MWh per jaar. 1 MWh = 1.000 kWh. Dit zijn capaciteiten en energievolumes, geen kosten.'),
+    E('div', { class: 'tiles three' },
+      tile('Laadpunten aan het einde', `${infra.pointsEnd}×`, `${num(infra.installedKw)} kW geïnstalleerd laadvermogen`),
+      tile('Netaansluiting aan het einde', `${num(infra.connectionEnd)} kW`, infra.upgradeNeeded ? `verzwaring vanaf ${num(infra.connectionStart)} kW nodig` : `past op de huidige ${num(infra.connectionStart)} kW`),
+      tile('Controleer subsidie', 'SPRILA', 'voor laadpunten op eigen terrein; voorwaarden en openstelling bij RVO')),
     plan.net_kw.some(k => k !== report.depot.aansluiting_kw) && E('div', { class: 'netbars' }, plan.net_kw.map((k, p) => E('div', { class: 'netbar' }, E('div', { class: 'nb-track' }, E('i', { style: { height: `${k / maxKw * 100}%` } }),
       E('em', { style: { bottom: `${(report.depot.aansluiting_kw || 0) / maxKw * 100}%` } })), E('b', {}, `${num(k)} kW`), E('span', {}, plan.jaren[p])))),
     E('div', { class: 'tablewrap' }, E('table', { class: 'tbl' }, E('thead', {}, E('tr', {}, E('th', {}, ''), plan.jaren.map(j => E('th', { class: 'n' }, j)))),
@@ -720,6 +725,28 @@ function charging(c) {
     why(chargingStory(report, plan)), aiNote('laden'), prose(plan.texts?.laden));
 }
 
+// ---------------------------------------------------------------- 7b accu
+function battery(c) {
+  const { plan } = c;
+  const rows = batteryAging(report, plan);
+  if (!rows.length) return null;
+  const rate = report.settings.accu_veroudering || 0;
+  const ages = rows[0].years.filter(y => y.age % 2 === 0 || y.age === (report.settings.jaren || 0));
+  const blocks = rows.map(r => {
+    const cells = ages.map(a => { const y = r.years[a.age]; return [y.age === 0 ? 'nieuw' : `jaar ${y.age}`, `${pct(y.soh, 0)} · ${num(y.range)} km`]; });
+    const notes = [];
+    if (r.tightYear !== null) notes.push(r.tightYear === 0
+      ? `De langste dagrit (${num(r.longestTrip)} km) past al nieuw niet zonder onderweg laden; dat is in dit plan al zo ingerekend.`
+      : `Vanaf jaar ${r.tightYear} past de langste dagrit (${num(r.longestTrip)} km) niet meer zonder onderweg laden, als je tot de accureserve leegrijdt.`);
+    if (r.endSoh < .8) notes.push(`Aan het einde van de looptijd zit de accu rond ${pct(r.endSoh, 0)} van nieuw. Neem accugarantie of vervanging mee in de onderhandeling; vervangingskosten zijn hier niet in euro's gezet.`);
+    return E('div', { class: 'block' }, E('div', { class: 'block-head' }, E('h3', {}, r.name)),
+      E('p', { class: 'prose' }, `${num(r.batteryKwh)} kWh, ${num(r.useKwh100, 1)} kWh/100 km, nieuw circa ${num(r.rangeNew)} km. Langste gewone dagrit in deze groep: ${num(r.longestTrip)} km.`),
+      E('div', { class: 'tiles three' }, cells.slice(0, 3).map(([l, v]) => tile(l === 'nieuw' ? 'Actieradius nieuw' : `Actieradius ${l}`, v.split(' · ')[1], `accu ${v.split(' · ')[0]} van nieuw`))),
+      notes.length ? E('ul', {}, notes.map(n => E('li', {}, n))) : E('p', { class: 'prose' }, 'De dagrit blijft ook aan het einde van de looptijd binnen de krimpende actieradius.'));
+  });
+  return section('accu', 'Accu door de jaren', E('p', { class: 'reading-note' }, `De accu veroudert in deze berekening met ${pct(rate, 1)} per jaar. Actieradius krimpt mee; de bruikbare marge rekent tot de accureserve van ${pct(report.settings.soc_min ?? .1)}.`),
+    ...blocks, aiNote('accu'), prose(plan.texts?.accu));
+}
 // ---------------------------------------------------------------- 8 werkdag
 function practicalBlock(plan) {
   const stats = practicalDay(report, plan, state.period);
@@ -1111,7 +1138,7 @@ function render() {
   q('#app').replaceChildren(
     report.demo ? E('div', { class: 'demo' }, 'Voorbeeldrapport · fictieve organisatie') : null,
     topbar(), nav(c),
-    E('main', { id: 'inhoud', class: 'wrap' }, overview(c), scenarios(c), analysis(c), difference(c), years(c), opportunities(c), fleetRationale(c), perVehicle(c), investments(c), charging(c), workday(c), emissions(c), variants(c), roadmap(c), accountability(c), appendix(c)),
+    E('main', { id: 'inhoud', class: 'wrap' }, overview(c), scenarios(c), analysis(c), difference(c), years(c), opportunities(c), fleetRationale(c), perVehicle(c), investments(c), charging(c), battery(c), workday(c), emissions(c), variants(c), roadmap(c), accountability(c), appendix(c)),
     footer());
   for (const table of document.querySelectorAll('#app table')) {
     if (!table.textContent.includes('€') || table.querySelector('caption')) continue;

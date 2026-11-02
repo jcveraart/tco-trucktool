@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { validateReport, metrics, totalYear, fleetSlots } from '../rapport/report-core.mjs';
+import { validateReport, metrics, totalYear, fleetSlots, batteryAging, chargingSummary } from '../rapport/report-core.mjs';
 import { scenarioCatalogue, fleetLifecycle } from '../rapport/report-planning.mjs';
 const fixture = JSON.parse(fs.readFileSync(new URL('../rapport/demo.json', import.meta.url), 'utf8'));
 
@@ -28,6 +28,19 @@ test('the public demo is explicitly fictional and every plan reconciles', () => 
   }
   const m = metrics(fixture, fixture.variants[0]);
   assert.ok(m.ref && m.saving > 0);
+});
+test('battery aging shows shrinking range and charging summary totals the installed infrastructure', () => {
+  const plan = fixture.variants[0];
+  const rows = batteryAging(fixture, plan);
+  assert.ok(rows.length >= 1);
+  for (const r of rows) {
+    assert.ok(r.rangeNew > 0 && r.years[0].range === r.rangeNew);
+    assert.ok(r.years.at(-1).soh < 1 && r.years.at(-1).range < r.rangeNew, 'range krimpt over de looptijd');
+    assert.ok(Math.abs(r.years[1].soh - Math.pow(1 - fixture.settings.accu_veroudering, 1)) < 1e-9);
+    assert.ok(r.longestTrip > 0);
+  }
+  const infra = chargingSummary(fixture, plan);
+  assert.ok(infra.pointsEnd >= 1 && infra.installedKw > 0 && infra.connectionEnd === plan.net_kw.at(-1));
 });
 test('report entry point is isolated, unindexed and free of analytics', () => {
   const html = fs.readFileSync(new URL('../rapport/index.html', import.meta.url), 'utf8');
