@@ -1,11 +1,11 @@
 {
   "https://stekkerofdiesel.nl/": {
     "date": "2026-11-02",
-    "hash": "f37a58a99967"
+    "hash": "8d9e803cf4e0"
   },
   "https://stekkerofdiesel.nl/en/": {
     "date": "2026-11-02",
-    "hash": "fab806e9b1bf"
+    "hash": "7eac622ca1a0"
   },
   "https://stekkerofdiesel.nl/uitgebreid/": {
     "date": "2026-11-02",
@@ -17,19 +17,19 @@
   },
   "https://stekkerofdiesel.nl/modellen/": {
     "date": "2026-11-02",
-    "hash": "52dd5fdfb6cc"
+    "hash": "e737511f3b84"
   },
   "https://stekkerofdiesel.nl/en/models/": {
     "date": "2026-11-02",
-    "hash": "0c55d8c450a0"
+    "hash": "a11f535a4340"
   },
   "https://stekkerofdiesel.nl/overstapgids/": {
-    "date": "2026-10-30",
-    "hash": "3849827be35b"
+    "date": "2026-11-02",
+    "hash": "c2e0ee6a6856"
   },
   "https://stekkerofdiesel.nl/en/switching-guide/": {
-    "date": "2026-10-30",
-    "hash": "ef54d5859c7c"
+    "date": "2026-11-02",
+    "hash": "e5217f215591"
   },
   "https://stekkerofdiesel.nl/overstapgids/stappenplan/": {
     "date": "2026-10-30",
@@ -72,12 +72,12 @@
     "hash": "a9091f1153bd"
   },
   "https://stekkerofdiesel.nl/overstapgids/zero-emissiezones/": {
-    "date": "2026-10-30",
-    "hash": "a7b484ecdd81"
+    "date": "2026-11-02",
+    "hash": "8d0c6a6f5e8f"
   },
   "https://stekkerofdiesel.nl/en/switching-guide/zero-emission-zones/": {
-    "date": "2026-10-30",
-    "hash": "eb1571283b92"
+    "date": "2026-11-02",
+    "hash": "d1eff61c7e9c"
   },
   "https://stekkerofdiesel.nl/overstapgids/subsidies/": {
     "date": "2026-10-30",
@@ -88,8 +88,8 @@
     "hash": "4947aafc57a6"
   },
   "https://stekkerofdiesel.nl/overstapgids/heffing/": {
-    "date": "2026-10-30",
-    "hash": "d08bc19425e3"
+    "date": "2026-11-02",
+    "hash": "cf2facbf1ccd"
   },
   "https://stekkerofdiesel.nl/en/switching-guide/truck-toll/": {
     "date": "2026-10-30",
@@ -169,11 +169,11 @@
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/": {
     "date": "2026-11-02",
-    "hash": "56865c39ef48"
+    "hash": "9ada40cce6e9"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/": {
     "date": "2026-11-02",
-    "hash": "8020cbd8484b"
+    "hash": "e195593dbacb"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/": {
     "date": "2026-11-02",
