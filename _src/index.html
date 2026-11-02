@@ -4625,6 +4625,12 @@ function route(first){
  if(!first&&(p!==prevP||p==='gids'&&gid!==prevG)){scrollTo(0,0);const h1=[...document.querySelectorAll(`.page[data-page="${p}"] h1`)].find(e=>!e.closest('[hidden]'));if(h1)h1.focus({preventScroll:true})}
  mini();ads();
 }
+/* Voertuigen in het menu opent meteen de soort die je in de calculator hebt gekozen; 'Alle' blijft een klik verder */
+document.addEventListener('click',e=>{
+ if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||!e.target.closest)return;
+ const a=e.target.closest('a[data-nav="modellen"]');if(!a||!MCAT.some(c=>c[0]===vtype&&c[0]!=='all'))return;
+ e.preventDefault();navTo(pathOf('modellen',vtype));
+});
 /* Interne links openen zonder herladen */
 document.addEventListener('click',e=>{
  if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||!e.target.closest)return;
