@@ -1269,7 +1269,6 @@ html.embed .intro{padding-top:20px}
 .gtl a:hover{box-shadow:0 0 0 1px var(--ink);color:var(--ink)}
 .gtl small{font:500 12px var(--mono);letter-spacing:.06em;color:var(--ink-3)}
 .gtl b{margin-top:auto;font:600 19px/1.25 var(--text)}
-.gtl li:first-child{grid-column:span 2}
 .gtl a.gsp{background:var(--asph);box-shadow:none;color:var(--on-asph)}
 .gtl a.gsp small,.gtl a.gsp span{color:var(--on-asph-2)}
 .gtl a.gsp b{font-size:24px}
@@ -1558,7 +1557,7 @@ html.embed .intro{padding-top:20px}
  .gtl a{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:4px 14px;min-height:0;padding:15px 16px}
  .gtl b{margin:0;flex:1;font-size:17px}
  .gtl a.gsp b{font-size:20px}
- .gtl a.gsp span{flex-basis:100%;padding-left:34px}
+ .gtl a.gsp span{flex-basis:100%}
  .gfh{margin:48px 0 16px;font-size:23px}
  .gw{padding-top:22px}
  .ga h1{font-size:30px}
@@ -2823,7 +2822,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 <section class="page" data-page="faq" hidden>
  <div class="wrap">
   <div class="phead"><h1 tabindex="-1">Overstappen op elektrisch: kosten, laden en regels</h1><p class="seo-intro">Van een elektrische bestelbus tot een compleet wagenpark: begin bij je kosten en dagelijkse inzet. Gebruik de gidsen om laden, actieradius, subsidies en toegang tot zero-emissiezones te beoordelen.</p></div>
-  <ol class="gtl" id="gTl"><li><a href="/overstapgids/stappenplan/"><small>01</small><b>Stappenplan</b></a></li><li><a href="/overstapgids/netcongestie/"><small>02</small><b>Netcongestie en je aansluiting</b></a></li><li><a href="/overstapgids/laden/"><small>03</small><b>Laden op eigen terrein en onderweg</b></a></li><li><a href="/overstapgids/stroom/"><small>04</small><b>Stroomcontract en zonnepanelen</b></a></li><li><a href="/overstapgids/actieradius/"><small>05</small><b>Actieradius en planning</b></a></li><li><a href="/overstapgids/zero-emissiezones/"><small>06</small><b>Zero-emissiezones</b></a></li><li><a href="/overstapgids/subsidies/"><small>07</small><b>Subsidies en regelingen</b></a></li><li><a href="/overstapgids/heffing/"><small>08</small><b>Kilometerheffing en tol</b></a></li><li><a href="/overstapgids/financiering/"><small>09</small><b>Kopen, leasen of huren</b></a></li><li><a href="/overstapgids/accu/"><small>10</small><b>Accu, garantie en restwaarde</b></a></li><li><a href="/overstapgids/regels/"><small>11</small><b>Rijbewijs, gewicht en werkplaats</b></a></li><li><a href="/overstapgids/begrippen/"><small>12</small><b>Begrippen</b></a></li></ol>
+  <ol class="gtl" id="gTl"><li><a href="/overstapgids/stappenplan/"><b>Stappenplan</b></a></li><li><a href="/overstapgids/netcongestie/"><small>01</small><b>Netcongestie en je aansluiting</b></a></li><li><a href="/overstapgids/laden/"><small>02</small><b>Laden op eigen terrein en onderweg</b></a></li><li><a href="/overstapgids/stroom/"><small>03</small><b>Stroomcontract en zonnepanelen</b></a></li><li><a href="/overstapgids/actieradius/"><small>04</small><b>Actieradius en planning</b></a></li><li><a href="/overstapgids/zero-emissiezones/"><small>05</small><b>Zero-emissiezones</b></a></li><li><a href="/overstapgids/subsidies/"><small>06</small><b>Subsidies en regelingen</b></a></li><li><a href="/overstapgids/heffing/"><small>07</small><b>Kilometerheffing en tol</b></a></li><li><a href="/overstapgids/financiering/"><small>08</small><b>Kopen, leasen of huren</b></a></li><li><a href="/overstapgids/accu/"><small>09</small><b>Accu, garantie en restwaarde</b></a></li><li><a href="/overstapgids/regels/"><small>10</small><b>Rijbewijs, gewicht en werkplaats</b></a></li><li><a href="/overstapgids/begrippen/"><b>Begrippen</b></a></li></ol>
   <h2 class="gfh" id="vragen">Veelgestelde vragen</h2>
   <div class="faqw">
    <aside class="rail">
@@ -7179,7 +7178,7 @@ function gSet(k){const el=document.querySelector(`[data-gr="${k}"]`);if(!el)retu
 const gSig=()=>{const i=gPl();return JSON.stringify([gDef(),i&&i.k,$('cls').value,v('gr'),v('kmH'),v('tD'),v('tE'),$('calcModel').value])};
 function gTool(id){const el=$(id),t=GT[id];if(!el||!t)return;const sg=id==='gtMap'||id==='gtZm'?'1':gSig();if(el.dataset.on!==sg){el.dataset.on=sg;el.innerHTML=t.init();el.querySelectorAll('[data-gr]').forEach(gFill);el.querySelectorAll('[data-plate]').forEach(f=>{const i=PL[f.dataset.plate];if(i&&i.k)f.elements.kt.value=plFmt(i.k);plPaint()})}t.paint(el)}
 function gStPaint(){const d=gDone();setH($('gSt'),GSTEPS.map((s,i)=>`<li class="${d.has(i)?'done':''}"><button type="button" class="gck" data-gst="${i}" aria-pressed="${d.has(i)}" aria-label="${s[0]}: ${d.has(i)?'gedaan':'nog doen'}"></button><div><b>${s[0]}</b><p>${s[1]}</p><a href="${s[2]}">${s[3]}</a></div></li>`).join(''));gHub()}
-function gHub(){const el=$('gTl');if(!el)return;const n=gDone().size;setH(el,GIDS.map(([k,t],i)=>`<li><a href="/overstapgids/${k}/"${i?'':' class="gsp"'}><small>${String(i+1).padStart(2,'0')}</small><b>${t}</b>${i?'':`<span>${n?`${n} van ${GSTEPS.length} gedaan`:`${GSTEPS.length} stappen`}</span>`}</a></li>`).join(''))}
+function gHub(){const el=$('gTl');if(!el)return;const n=gDone().size;setH(el,GIDS.map(([k,t],i)=>`<li><a href="/overstapgids/${k}/"${i?'':' class="gsp"'}>${i&&i<GIDS.length-1?`<small>${String(i).padStart(2,'0')}</small>`:''}<b>${t}</b>${i?'':`<span>${n?`${n} van ${GSTEPS.length} gedaan`:`${GSTEPS.length} stappen`}</span>`}</a></li>`).join(''))}
 function gShow(k){
  if(!GIDS.some(g=>g[0]===k))k='stappenplan';gid=k;
  document.querySelectorAll('.ga').forEach(a=>a.hidden=a.dataset.g!==k);
