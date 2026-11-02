@@ -7,7 +7,7 @@ const SB = process.env.SUPABASE_URL || "https://zarvyblveyomngypwvhw.supabase.co
 const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const RESEND = process.env.RESEND_API_KEY;
 const TO = process.env.MAIL_TO || "info@stekkerofdiesel.nl";
-const FROM = process.env.MAIL_FROM || "Stekker of Diesel <aanvraag@stekkerofdiesel.nl>";
+const FROM = process.env.MAIL_FROM || "Stekker of Diesel <info@stekkerofdiesel.nl>";
 
 if (!SB_KEY || !RESEND) {
   console.log("SUPABASE_SERVICE_ROLE_KEY of RESEND_API_KEY ontbreekt, niets verstuurd.");
