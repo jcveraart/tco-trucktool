@@ -13,14 +13,17 @@ function translateHTML(html,t,routes){
  // static copy too, while keeping its runtime opt-out and protecting brand names.
  const skip=/\bdata-no-translate\b|\bdata-lang=|class="[^"]*\bmbrand\b/.test(tag)&&! /\bid="uv"/.test(tag),parentSkip=stack.some(x=>x.skip);
  tag=tag.replace(/\b(href|aria-label|title|placeholder|data-tt|alt)="([^"]*)"/g,(_,a,v)=>a+'="'+esc(a==='href'?localHref(v,routes,'en'):skip||parentSkip?decode(v):t(decode(v)))+'"');
- out+=tag;if(!voids.has(name)&&!tag.endsWith('/>'))stack.push({name,skip,model:/class="[^"]*\bmcn\b/.test(tag)});
+ out+=tag;if(!voids.has(name)&&!tag.endsWith('/>'))stack.push({name,skip,model:/class="[^"]*\bmcn\b/.test(tag)||/\bid="vTitle"/.test(tag)});
  }return out+text(html.slice(last));
 }
+const MODELPATH={nl:{all:'/modellen/',trekker:'/modellen/trekkers/',bakwagen:'/modellen/bakwagens/',bestel:'/modellen/bestelbussen/',bus:'/modellen/bussen/'},en:{all:'/en/models/',trekker:'/en/models/tractor-units/',bakwagen:'/en/models/rigid-trucks/',bestel:'/en/models/vans/',bus:'/en/models/buses/'}};
 function modelRenderer(src,lang){
  const app=src.match(/<script>([\s\S]*?)<\/script>/)[1],fields=app.slice(app.indexOf('const FIELDS='),app.indexOf('const TOLC=')),format=app.slice(app.indexOf('const $=id=>'),app.indexOf('const reduced=')),records=app.slice(app.indexOf('const MODELS=['),app.indexOf('let mCat=')),helpers=app.slice(app.indexOf('const mU='),app.indexOf('function modelOptions')),cards=app.slice(app.indexOf('const mNorm='),app.indexOf('function mInfo'));
- const code=fields+'\nconst F={};FIELDS.forEach(f=>F[f[0]]=f);\n'+format+'\n'+records+'\n'+helpers+'\nlet mVar={},mSel=[];\n'+cards+'\n({MODELS,mGroups,mCard})';
+ const code=fields+'\nconst F={};FIELDS.forEach(f=>F[f[0]]=f);\n'+format+'\n'+records+'\nconst pathOf=(p,g)=>{const M='+JSON.stringify(MODELPATH[lang])+';return g&&M[g]?M[g]:M.all};\n'+helpers+'\nlet mVar={},mSel=[];\n'+cards+'\n({MODELS,mGroups,mCard,mSlugOf,mName,mAccLine,mCharge,mEsc,eur,nf})';
  const c=vm.runInNewContext(code,{document:{documentElement:{lang}}});
- return cat=>{const list=c.MODELS.filter(m=>!cat||m.c===cat).sort((a,b)=>b.r-a.r||(a.b+' '+a.m).localeCompare(b.b+' '+b.m));const groups=c.mGroups(list),max=Math.max(...list.map(m=>m.r));return{models:list,groups,cards:groups.map(g=>c.mCard(g.k,g.vs,g.top,max)).join('')}};
+ const render=cat=>{const list=c.MODELS.filter(m=>!cat||m.c===cat).sort((a,b)=>b.r-a.r||(a.b+' '+a.m).localeCompare(b.b+' '+b.m));const groups=c.mGroups(list).map(g=>({...g,slug:c.mSlugOf(g.top)})),max=Math.max(...list.map(m=>m.r));return{models:list,groups,cards:groups.map(g=>c.mCard(g.k,g.vs,g.top,max)).join('')}};
+ render.detail=g=>{const rows=g.vs.map(m=>`<tr><td><b>${c.mEsc(m.vl||m.m)}</b></td><td>${c.mAccLine(m)}</td><td>${m.rt||c.nf(m.r)} km</td><td>${c.mCharge(m)}</td><td>${m.price?c.eur(m.price):'Op aanvraag'}</td><td><a class="cta" href="${lang==='en'?'/en/':'/'}">Reken hiermee</a></td></tr>`).join('');return`<table class="vspec"><thead><tr><th>Uitvoering</th><th>Accu</th><th>Actieradius</th><th>Snelladen</th><th>Prijs excl. btw</th><th></th></tr></thead><tbody>${rows}</tbody></table><p class="mdisc">De cijfers zijn opgaven van de fabrikant. In de winter en met zware lading ligt de actieradius lager.</p><div class="vlinks"><a href="${MODELPATH[lang][g.top.c]}">Alle voertuigen in deze categorie</a><a href="${lang==='en'?'/en/':'/'}">Vergelijk dit voertuig met diesel in de calculator</a>${g.vs.map(m=>`<a href="${c.mEsc(m.s[1])}" target="_blank" rel="noopener">Bron: ${c.mEsc(m.s[0])} <span aria-hidden="true">↗</span></a>`).join('')}</div>`};
+ return render;
 }
 function homeRenderer(src){
  const a=src.match(/<script>([\s\S]*?)<\/script>/)[1],fields=a.slice(a.indexOf('const FIELDS='),a.indexOf('const TOLC=')),defs=a.slice(a.indexOf('const VT='),a.indexOf('const $=id=>')),format=a.slice(a.indexOf('const $=id=>'),a.indexOf('const reduced=')),support=a.slice(a.indexOf('const T=()=>'),a.indexOf('const TIPS=')),calc=a.slice(a.indexOf('const CAT='),a.indexOf('const CATX=')),home=a.slice(a.indexOf('const HICON='),a.indexOf('let hPaint='));

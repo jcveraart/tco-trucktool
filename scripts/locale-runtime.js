@@ -55,7 +55,7 @@
  const seen=new WeakMap(),attrs=new WeakMap();
  const skip=e=>!e||e.closest('script,style,title,noscript,textarea,pre,code,[data-no-translate],[data-lang],.mbrand');
  const modelText=s=>s.replace(/\b([RSLP])-serie elektrisch\b/g,'$1-series Electric').replace(/nieuwe generatie/g,'next generation').replace(/\(Europa\)/g,'(Europe)');
- const text=n=>{if(skip(n.parentElement)||seen.get(n)===n.data)return;if(window.SOD_STATIC_TEXT?.get(n)===n.data){seen.set(n,n.data);return}const model=n.parentElement.closest('.mcn,#mpN,.mpo b');const t=model?modelText(n.data):translate(n.data);if(t!==n.data)n.data=t;seen.set(n,n.data)};
+ const text=n=>{if(skip(n.parentElement)||seen.get(n)===n.data)return;if(window.SOD_STATIC_TEXT?.get(n)===n.data){seen.set(n,n.data);return}const model=n.parentElement.closest('.mcn,#mpN,.mpo b,#vTitle');const t=model?modelText(n.data):translate(n.data);if(t!==n.data)n.data=t;seen.set(n,n.data)};
  const attributes=e=>{if(e.matches('a[href^="/"]')&&!e.hasAttribute('data-lang')&&window.sodLocalizedURL){const h=e.getAttribute('href'),u=window.sodLocalizedURL(h);if(u!==h)e.setAttribute('href',u)}if(skip(e))return;let prev=attrs.get(e)||{};const names=['aria-label','title','placeholder','data-tt','alt'];for(const a of names){const v=e.getAttribute(a);if(v&&prev[a]!==v){if(window.SOD_STATIC_ATTR?.get(e)?.[a]===v){prev[a]=v;continue}const t=translate(v);if(t!==v)e.setAttribute(a,t);prev[a]=t}}attrs.set(e,prev)};
  const visit=root=>{if(root.nodeType===3){text(root);return}if(root.nodeType!==1||skip(root))return;attributes(root);const w=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.nodeType===3)text(n);else attributes(n)}};
  if(en){

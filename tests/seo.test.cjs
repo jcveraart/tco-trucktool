@@ -11,12 +11,24 @@ test('every language route has static localized metadata, a self-canonical and r
  const data=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);const page=data['@graph'].find(x=>x['@id']===site+p);assert.ok(page);assert.equal(page.inLanguage,l==='nl'?'nl-NL':'en');
  assert.ok(h.includes('href="'+r.path+'" data-lang="nl"'));assert.ok(h.includes('href="'+r.enPath+'" data-lang="en"'));
  }});
+const modelGroups=(()=>{const models=JSON.parse(source.match(/const MODELS=(\[[\s\S]*?\]);/)[1]),slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),G=new Map();for(const m of models){m.id=slug(m.b+' '+m.m);const k=m.fam?slug(m.c+' '+m.b+' '+m.fam):m.id;if(!G.has(k))G.set(k,[]);G.get(k).push(m)}return[...G.values()].map(vs=>({vs,top:vs[0],slug:vs[0].fam?slug(vs[0].b+' '+vs[0].fam):vs[0].id}))})();
 test('sitemap contains exactly the indexable canonical routes and all language pairs',()=>{
- const sm=fs.readFileSync(path.join(ROOT,'sitemap.xml'),'utf8'),urls=[...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);assert.equal(urls.length,Object.values(routes).filter(r=>!r.noindex).length*2);assert.equal(new Set(urls).size,urls.length);assert.match(sm,/xmlns:xhtml="http:\/\/www.w3.org\/1999\/xhtml"/);
+ const sm=fs.readFileSync(path.join(ROOT,'sitemap.xml'),'utf8'),urls=[...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);assert.equal(urls.length,Object.values(routes).filter(r=>!r.noindex).length*2+modelGroups.length*2);
+ for(const g of modelGroups)for(const p of [routes['modellen/'+g.top.c].path+g.slug+'/',routes['modellen/'+g.top.c].enPath+g.slug+'/'])assert.ok(urls.includes(site+p),'sitemap mist voertuig '+p);assert.equal(new Set(urls).size,urls.length);assert.match(sm,/xmlns:xhtml="http:\/\/www.w3.org\/1999\/xhtml"/);
  for(const r of Object.values(routes))for(const p of [r.path,r.enPath]){assert.equal(urls.includes(site+p),!r.noindex);if(r.noindex)assert.match(read(p),/name="robots" content="noindex,follow"/);}assert.doesNotMatch(sm,/\?s=|\?lang=|#/);
 });
 test('category pages contain the actual model cards before JavaScript and matching structured data',()=>{
  for(const r of Object.values(routes).filter(r=>r.category))for(const l of ['nl','en']){const p=l==='en'?r.enPath:r.path,h=read(p),visible=h.match(/<section class="page" data-page="modellen">([\s\S]*?)\n<\/section>/)[1],n=(visible.match(/<article class="mc/g)||[]).length;assert.ok(n>=8,p);const json=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);assert.equal(json['@graph'].find(x=>x['@type']==='CollectionPage').mainEntity.numberOfItems,n);assert.ok(visible.includes(l==='en'?r.en.name:r.name));assert.ok(visible.includes(l==='en'?r.en.advice:r.advice),p+' initial advice');}
+});
+test('every vehicle family has its own indexable page linked from the category cards',()=>{
+ assert.ok(modelGroups.length>=60);
+ for(const g of modelGroups)for(const l of ['nl','en']){const route=routes['modellen/'+g.top.c],p=(l==='en'?route.enPath:route.path)+g.slug+'/',h=read(p),name=g.top.b+' '+(g.top.fam||g.top.m),shown=l==='en'?name.replace(/\b([RSLP])-serie elektrisch\b/g,'$1-series Electric').replace(/nieuwe generatie/g,'next generation').replace('(Europa)','(Europe)'):name;
+  assert.ok(h.includes('<link rel="canonical" href="'+site+p+'">'),p);
+  assert.ok(h.includes('>'+shown+'</h1>'),p+' h1');
+  assert.match(h,/class="vspec"/,p+' specificaties');
+  assert.ok(h.includes(g.top.s[1]),p+' bron');
+  const json=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);assert.ok(json['@graph'].some(x=>x['@type']==='Vehicle'&&x.name===name),p+' Vehicle-schema');}
+ const cat=read(routes['modellen/bestel'].path);for(const g of modelGroups.filter(g=>g.top.c==='bestel'))assert.ok(cat.includes('href="'+routes['modellen/bestel'].path+g.slug+'/"'),'kaart linkt niet naar '+g.slug);
 });
 test('first paint contains the homepage, local fonts and no unused advertising download',()=>{
  const explainer=read('/en/').match(/<div class="wrap home uv"[\s\S]*?<div class="wrap">/)[0];
