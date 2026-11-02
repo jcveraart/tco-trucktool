@@ -2548,7 +2548,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 .vzf{position:static;align-self:stretch}
 .vzf>.ffm{position:sticky;top:84px}
 @media(max-width:900px){.vzf>.ffm{position:relative;top:auto}}
-.vzt2{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:28px 64px;align-items:center}
+.vzt2{display:grid;grid-template-columns:minmax(0,640px) minmax(0,1fr);gap:28px 64px;align-items:center}
 .vzt2 svg{width:100%;height:auto;display:block;overflow:visible}
 .vzt2 path{cursor:pointer;transition:opacity .15s;outline:0}
 .vzt2 svg.on path:not(.on){opacity:.35}
@@ -2556,7 +2556,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 .vztm{margin:0 0 16px}
 .vzt2 h3{margin:0;font:600 30px/1.2 var(--text);letter-spacing:-.015em;max-width:22ch}
 .vztk{display:flex;flex-wrap:wrap;gap:8px 22px;margin:16px 0 0;color:var(--ink-2);font-size:15px}
-.vztk i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px}
+.vztk i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px}.vztk i+i{margin-left:-4px}
 .vztd{margin:22px 0 0;min-height:104px;padding:16px 18px;border-radius:8px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
 .vztd p{margin:0;color:var(--ink-3);font-size:15px}
 .vztd b{display:block;font:600 18px var(--text)}
@@ -2567,7 +2567,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 .vztx{margin:8px 0 0;color:var(--ink-2);font-size:16px;line-height:1.55;max-width:62ch}
 .vztn{margin:10px 0 0;color:var(--ink-3);font-size:13px;line-height:1.5;max-width:60ch}
 @media(max-width:900px){.vz{grid-template-areas:"h" "f" "s" "v" "p" "r" "t" "k" "c"}}
-@media(max-width:760px){.vzt2{grid-template-columns:minmax(0,1fr);gap:18px}.vzt2 svg{max-width:320px;margin:0 auto}.vzt2 h3{font-size:24px}}
+@media(max-width:760px){.vzt2{grid-template-columns:minmax(0,1fr);gap:18px}.vzt2 svg{max-width:520px;margin:0 auto}.vzt2 h3{font-size:24px}}
 </style>
 </head>
 <body>
@@ -6519,28 +6519,34 @@ async function syncExtra(){
 
 
 /* Vlootanalyse: waar zit het geld van een dieselvoertuig per jaar. Uit de calculator; de chauffeur zit er niet in en is een vaste aanname. De posten verschijnen bij aanwijzen. */
-const VZ_CHAUF=60000;let vzM='D';
+const VZ_CHAUF=60000;
+/* Diesel en elektrisch naast elkaar, op schaal: de oppervlakte van elke ring volgt de kosten per jaar. */
 function vzTaart(){
- const el=$('vzT');if(!el)return;const r=hAt(uvKm()),w=T().w,K=r[vzM],e=vzM==='E',
-  /* Zo bedacht: afs is alleen afschrijving (prijs min restwaarde, na subsidie, over de looptijd). Bij koop komt daar de rente en
-     de rendementseis op eigen geld bij, met de instellingen van de uitgebreide berekening; bij lease zit die al in de leaseprijs. */
-  fin=(e?r.lE:r.lD)?0:e?finY(v('pE'),v('rwE')/100,{},r.sub):finY(v('pD'),v('rw')/100),dn=vzM==='D'?'Diesel':'Elektrisch',nm=vzM==='D'?'diesel'+w:'elektrische '+w,hc=e?'var(--volt)':'var(--amber)',hi=e?'var(--volt-ink)':'var(--amber-ink)';
- const rows=[['chf','Chauffeur',VZ_CHAUF,0,'Blijft gelijk, ook als je elektrisch rijdt.'],['ver','Verzekering',K.ver,0,'Hangt vooral af van de waarde en de verzekeraar.'],['en','Energie',K.en,1,vzM==='D'?'Brandstof is de grootste post die je zelf kunt sturen, bijvoorbeeld door over te stappen.':'Slim laden, een passend stroomcontract en ERE-opbrengst.'],['afs','Aanschaf en financiering',K.afs+fin,1,'Subsidie, kopen of leasen en het beste moment om te vervangen.'],['hef','Heffing',K.hef,0,'Volgt uit het wettelijke tarief en je kilometers.'],['ond','Onderhoud',K.ond,0,'Verschilt weinig, welke keuze je ook maakt.']].filter(x=>x[2]>0).sort((p,q)=>p[3]-q[3]);
- const tot=rows.reduce((q,x)=>q+x[2],0),help=rows.filter(x=>x[3]).reduce((q,x)=>q+x[2],0),pc=x=>nf(x/tot*100)+'%';
- const cx=200,cy=200,R=190,ri=116,pt=(q,g)=>(cx+q*Math.cos(g)).toFixed(1)+' '+(cy+q*Math.sin(g)).toFixed(1);let a=-Math.PI/2,arcs='',labs='';
- rows.forEach((x,i)=>{const sw=x[2]/tot*2*Math.PI,b=a+sw,lg=sw>Math.PI?1:0,m=a+sw/2;
-  arcs+=`<path d="M${pt(R,a)}A${R} ${R} 0 ${lg} 1 ${pt(R,b)}L${pt(ri,b)}A${ri} ${ri} 0 ${lg} 0 ${pt(ri,a)}Z" fill="${x[3]?hc:'#9AA0A6'}" stroke="var(--page)" stroke-width="3" data-i="${i}" tabindex="0" aria-label="${x[1]}: ${eur(x[2])} per jaar, ${pc(x[2])}"></path>`;
-  if(sw>.32)labs+=`<text x="${(cx+(R+ri)/2*Math.cos(m)).toFixed(1)}" y="${(cy+(R+ri)/2*Math.sin(m)+7).toFixed(1)}" text-anchor="middle" fill="${x[3]&&!e?'var(--ink)':'#fff'}" font-size="21" font-weight="700" font-family="var(--display)" pointer-events="none">${pc(x[2])}</text>`;a=b});
- const idle='<p>Tik op een stuk om te zien welke kosten het zijn.</p>';
- setH(el,`<svg viewBox="0 0 400 400" role="img" aria-label="Kostenverdeling van een ${nm} per jaar">${arcs}${labs}<text id="vzTc1" x="${cx}" y="${cy-12}" text-anchor="middle" font-size="15" fill="var(--ink-2)">${dn} per jaar</text><text id="vzTc2" x="${cx}" y="${cy+24}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--ink)" font-family="var(--display)">${eur(tot)}</text></svg>`+
-  `<div><div class="seg sm vztm" role="group" aria-label="Aandrijving"><button type="button" data-m="D" aria-pressed="${vzM==='D'}">Diesel</button><button type="button" data-m="E" aria-pressed="${vzM==='E'}">Elektrisch</button></div><h3>Wat kost een ${nm} per jaar?</h3><div class="vztk"><span><i style="background:${hc}"></i>Hier heb je invloed op</span><span><i style="background:#9AA0A6"></i>Ligt grotendeels vast</span></div><div class="vztd" id="vzTd" aria-live="polite">${idle}</div><p class="vzts" style="color:${hi}">${pc(help)} van je kosten heb je zelf in de hand</p><p class="vztx">De rest ligt grotendeels vast. Juist daarom loont het om energie, aanschaf en financiering zo goed mogelijk te regelen. Daar zit de ruimte om je winstmarge te verhogen.</p><p class="vztn">Bij ${nf(r.km)} km per jaar, uit de <a href="/">calculator</a>. Chauffeur: aanname ${eur(VZ_CHAUF)} per jaar.</p></div>`);
- const svg=el.querySelector('svg'),d=$('vzTd'),c1=$('vzTc1'),c2=$('vzTc2');
+ const el=$('vzT');if(!el)return;const r=hAt(uvKm()),w=T().w;
+ /* Zo bedacht: afs is alleen afschrijving (prijs min restwaarde, na subsidie, over de looptijd). Bij koop komt daar de rente en
+    de rendementseis op eigen geld bij, met de instellingen van de uitgebreide berekening; bij lease zit die al in de leaseprijs. */
+ const side=m=>{const K=r[m],e=m==='E',fin=(e?r.lE:r.lD)?0:e?finY(v('pE'),v('rwE')/100,{},r.sub):finY(v('pD'),v('rw')/100);
+  const rows=[['chf','Chauffeur',VZ_CHAUF,0,'Blijft gelijk, ook als je elektrisch rijdt.'],['ver','Verzekering',K.ver,0,'Hangt vooral af van de waarde en de verzekeraar.'],['en','Energie',K.en,1,e?'Slim laden, een passend stroomcontract en ERE-opbrengst.':'Brandstof is de grootste post die je zelf kunt sturen, bijvoorbeeld door over te stappen.'],['afs','Aanschaf en financiering',K.afs+fin,1,'Subsidie, kopen of leasen en het beste moment om te vervangen.'],['hef','Heffing',K.hef,0,'Volgt uit het wettelijke tarief en je kilometers.'],['ond','Onderhoud',K.ond,0,'Verschilt weinig, welke keuze je ook maakt.']].filter(x=>x[2]>0).sort((p,q)=>p[3]-q[3]);
+  const tot=rows.reduce((q,x)=>q+x[2],0);
+  return{m,e,rows,tot,help:rows.filter(x=>x[3]).reduce((q,x)=>q+x[2],0),dn:e?'Elektrisch':'Diesel',hc:e?'var(--volt)':'var(--amber)',hi:e?'var(--volt-ink)':'var(--amber-ink)'}};
+ const S=[side('D'),side('E')],mx=Math.max(S[0].tot,S[1].tot),RM=190,cy=200;
+ let svgs='',ox=0;
+ S.forEach((q,si)=>{const R=RM*Math.sqrt(q.tot/mx),ri=R*.61,cx=ox+R,k=R/RM,pt=(d,g)=>(cx+d*Math.cos(g)).toFixed(1)+' '+(cy+d*Math.sin(g)).toFixed(1);q.cx=cx;q.k=k;
+  let a=-Math.PI/2;q.rows.forEach((x,i)=>{const sw=x[2]/q.tot*2*Math.PI,b=a+sw,lg=sw>Math.PI?1:0,m=a+sw/2;
+   svgs+=`<path d="M${pt(R,a)}A${R} ${R} 0 ${lg} 1 ${pt(R,b)}L${pt(ri,b)}A${ri} ${ri} 0 ${lg} 0 ${pt(ri,a)}Z" fill="${x[3]?q.hc:'#9AA0A6'}" stroke="var(--page)" stroke-width="3" data-s="${si}" data-i="${i}" tabindex="0" aria-label="${q.dn}, ${x[1]}: ${eur(x[2])} per jaar, ${nf(x[2]/q.tot*100)}%"></path>`;
+   if(sw>.32)svgs+=`<text x="${(cx+(R+ri)/2*Math.cos(m)).toFixed(1)}" y="${(cy+(R+ri)/2*Math.sin(m)+6*k).toFixed(1)}" text-anchor="middle" fill="${x[3]&&!q.e?'var(--ink)':'#fff'}" font-size="${(19*Math.max(k,.8)).toFixed(1)}" font-weight="700" font-family="var(--display)" pointer-events="none">${nf(x[2]/q.tot*100)}%</text>`;a=b});
+  svgs+=`<text id="vzTa${si}" x="${cx}" y="${cy-10*k}" text-anchor="middle" font-size="${(15*Math.max(k,.85)).toFixed(1)}" fill="var(--ink-2)">${q.dn} per jaar</text><text id="vzTb${si}" x="${cx}" y="${cy+22*k}" text-anchor="middle" font-size="${(30*k).toFixed(1)}" font-weight="700" fill="var(--ink)" font-family="var(--display)">${eur(q.tot)}</text>`;
+  ox=cx+R+36});
+ const W=ox-36,idle='<p>Tik op een stuk om te zien welke kosten het zijn.</p>',D=S[0],E=S[1],dif=D.tot-E.tot;
+ setH(el,`<svg viewBox="0 0 ${W.toFixed(0)} 400" role="img" aria-label="Kosten per jaar van een diesel${w} en een elektrische ${w}, op schaal">${svgs}</svg>`+
+  `<div><h3>Wat kost een ${w} per jaar?</h3><div class="vztk"><span><i style="background:var(--amber)"></i><i style="background:var(--volt)"></i>Hier heb je invloed op</span><span><i style="background:#9AA0A6"></i>Ligt grotendeels vast</span></div><div class="vztd" id="vzTd" aria-live="polite">${idle}</div><p class="vzts" style="color:${dif>0?'var(--volt-ink)':'var(--amber-ink)'}">${dif>0?`Elektrisch is ${eur(dif)} per jaar goedkoper`:`Diesel is ${eur(-dif)} per jaar goedkoper`}</p><p class="vztx">Chauffeur, heffing en verzekering liggen grotendeels vast. Energie, aanschaf en financiering heb je zelf in de hand. Daar zit de ruimte om je winstmarge te verhogen.</p><p class="vztn">Bij ${nf(r.km)} km per jaar, uit de <a href="/">calculator</a>. Chauffeur: aanname ${eur(VZ_CHAUF)} per jaar.</p></div>`);
+ const svg=el.querySelector('svg'),d=$('vzTd');
  const show=p=>{svg.querySelectorAll('path').forEach(q=>q.classList.toggle('on',q===p));svg.classList.toggle('on',!!p);
-  if(!p){d.className='vztd';d.innerHTML=idle;c1.textContent=dn+' per jaar';c2.textContent=eur(tot);return}
-  const x=rows[+p.dataset.i];d.className='vztd'+(x[3]?' g':'');d.style.setProperty('--hi',hi);d.innerHTML=`<b>${x[1]}</b><em>${eur(x[2])} per jaar · ${pc(x[2])}</em><span>${x[4]}</span>`;c1.textContent=x[1];c2.textContent=eur(x[2])};
+  S.forEach((q,si)=>{$('vzTa'+si).textContent=q.dn+' per jaar';$('vzTb'+si).textContent=eur(q.tot)});
+  if(!p){d.className='vztd';d.innerHTML=idle;return}
+  const q=S[+p.dataset.s],x=q.rows[+p.dataset.i],si=p.dataset.s;d.className='vztd'+(x[3]?' g':'');d.style.setProperty('--hi',q.hi);d.innerHTML=`<b>${x[1]} · ${q.dn.toLowerCase()}</b><em>${eur(x[2])} per jaar · ${nf(x[2]/q.tot*100)}%</em><span>${x[4]}</span>`;$('vzTa'+si).textContent=x[1];$('vzTb'+si).textContent=eur(x[2])};
  svg.querySelectorAll('path').forEach(p=>{p.addEventListener('pointerenter',()=>show(p));p.addEventListener('focus',()=>show(p));p.addEventListener('click',()=>show(p))});
  svg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')show(null)});svg.addEventListener('focusout',()=>show(null));
- el.querySelectorAll('.vztm button').forEach(b=>b.addEventListener('click',()=>{if(vzM===b.dataset.m)return;vzM=b.dataset.m;vzTaart();el.querySelector('.vztm [data-m="'+vzM+'"]').focus()}));
 }
 /* ===== Vlootanalyse: aanvraag naar Supabase (tabel fleet_requests, alleen insert) ===== */
 const CONTACT_MAIL='info@stekkerofdiesel.nl';
