@@ -1,8 +1,8 @@
 // Wekelijkse verzamelaar voor de restwaarde-index van stekkerofdiesel.nl.
 // Leest de pagina's uit bronnen.json, laat Claude de voertuigen met prijs eruit halen,
-// bewaart ze in Supabase (residual_listings) en mailt prijsalarmen voor nieuwe treffers.
+// bewaart ze in Supabase (residual_listings).
 //
-// Nodig: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY. Optioneel: RESEND_API_KEY, MAIL_FROM.
+// Nodig: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 // Proefdraaien zonder iets op te slaan of te mailen: node restwaarde.mjs --droog
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -73,7 +73,7 @@ function paginaTekst(html, basis) {
 }
 
 async function haalOp(bron) {
-  const r = await fetch(bron.url, { headers: { "user-agent": "stekkerofdiesel.nl restwaarde-index (+https://stekkerofdiesel.nl/#restwaarde)", "accept-language": "nl" } });
+  const r = await fetch(bron.url, { headers: { "user-agent": "stekkerofdiesel.nl restwaarde-index (+https://stekkerofdiesel.nl/)", "accept-language": "nl" } });
   if (!r.ok) throw new Error(`${bron.naam}: HTTP ${r.status}`);
   const tekst = paginaTekst(await r.text(), bron.url);
   const stream = claude.messages.stream({
@@ -111,23 +111,6 @@ async function sb(pad, opties = {}) {
   return tekst ? JSON.parse(tekst) : null;
 }
 
-const eur = (n) => "€ " + Math.round(n).toLocaleString("nl-NL");
-const naam = (v) => [v.brand, v.model].filter(Boolean).join(" ") || "Voertuig";
-
-async function mail(alarm, treffers) {
-  const regels = treffers.map((v) => `<li><a href="${v.url || SITE + "/"}">${naam(v)}</a>${v.year ? `, ${v.year}` : ""}${v.km != null ? `, ${v.km.toLocaleString("nl-NL")} km` : ""}: ${eur(v.price)} excl. btw</li>`).join("");
-  const r = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, "content-type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.MAIL_FROM || "Stekker of Diesel <info@stekkerofdiesel.nl>",
-      to: alarm.email,
-      subject: treffers.length === 1 ? `Prijsalarm: ${naam(treffers[0])} voor ${eur(treffers[0].price)}` : `Prijsalarm: ${treffers.length} voertuigen onder ${eur(alarm.max_price)}`,
-      html: `<p>Deze voertuigen passen bij je prijsalarm:</p><ul>${regels}</ul><p style="color:#666;font-size:13px">Geen mail meer? <a href="${SITE}/?afmelden=${alarm.token}">Zet het prijsalarm uit</a>.</p>`,
-    }),
-  });
-  if (!r.ok) throw new Error(`Resend: HTTP ${r.status} ${await r.text()}`);
-}
 
 let nieuw = [];
 for (const bron of bronnen) {
@@ -149,22 +132,5 @@ for (const bron of bronnen) {
 }
 console.log(`Nieuw opgeslagen: ${nieuw.length}`);
 
-if (!DROOG && nieuw.length && process.env.RESEND_API_KEY) {
-  const alarmen = await sb("price_alerts?active=eq.true&select=id,token,email,category,fuel,max_price,model");
-  for (const alarm of alarmen) {
-    const zoek = (alarm.model || "").toLowerCase().trim();
-    const passend = nieuw.filter((v) => v.category === alarm.category && v.fuel === alarm.fuel && v.price <= alarm.max_price && (!zoek || naam(v).toLowerCase().includes(zoek)));
-    if (!passend.length) continue;
-    const al = await sb(`price_alert_hits?alert_id=eq.${alarm.id}&listing_id=in.(${passend.map((v) => v.id).join(",")})&select=listing_id`);
-    const treffers = passend.filter((v) => !al.some((h) => h.listing_id === v.id)).slice(0, 10);
-    if (!treffers.length) continue;
-    try {
-      await mail(alarm, treffers);
-      await sb("price_alert_hits", { method: "POST", headers: { prefer: "return=minimal" }, body: JSON.stringify(treffers.map((v) => ({ alert_id: alarm.id, listing_id: v.id }))) });
-      console.log(`Prijsalarm verstuurd: ${treffers.length} treffers`);
-    } catch (e) {
-      console.error(e.message);
-      process.exitCode = 1;
-    }
-  }
-}
+// Zo bedacht: de prijsalarm-mail is op 2 november 2026 gestopt, samen met de restwaardepagina.
+// De verzamelaar vult alleen nog de restwaarde-index voor de calculator.
