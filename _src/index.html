@@ -1766,7 +1766,8 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
     sticky onderaan: hij blijft onderaan het scherm hangen en stopt vanzelf boven de footer, zonder scroll-code.
     De knop zit met #uv in .hgw, dat pas onder het zwarte voorbeeldblok begint. Sticky kan niet boven de bovenrand van .hgw komen,
     dus de knop verschijnt pas net onder het zwarte blok en schuift er nooit overheen. */
- html.fresh .hA{padding-bottom:12px}
+ html.fresh .hA{padding-bottom:10px}
+ html.fresh #home{min-height:0}
  .hA>.hgo{display:none}
  html.fresh .cta.big.hgm{display:flex;position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:25;width:calc(100% - 32px);margin:0 16px 16px;padding:17px 20px!important;font-size:18px!important}
  html.fresh .uvend{display:none}
