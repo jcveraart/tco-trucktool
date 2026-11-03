@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { splitVariant, trackedUrl, unsubscribeUrl, renderText, buildEmail, LINKS, templateVariables, emailLabel } from '../scripts/mail/core.mjs';
+import { splitVariant, trackedUrl, unsubscribeUrl, renderText, buildEmail, LINKS, templateVariables, emailLabel, verzendingRecord } from '../scripts/mail/core.mjs';
 
 const contact = { token: '123e4567-e89b-12d3-a456-426614174000', bedrijf: 'Jansen Transport', naam: 'Piet Jansen' };
 
@@ -54,6 +54,15 @@ test('email labels are specific: campagne-1 + a = 1a', () => {
   assert.equal(emailLabel('campagne-12', 'b'), '12b');
   assert.equal(emailLabel('introductie', 'a'), 'introductie-a');
   assert.equal(emailLabel('campagne-1', ''), '');
+});
+
+test('verzendingen worden gelogd, testmails apart gemarkeerd', () => {
+  const testRec = verzendingRecord({ token: contact.token, campagne: 'campagne-1', variant: 'a', resendId: 're_test', test: true });
+  assert.equal(testRec.test, true);
+  assert.equal(testRec.resend_id, 're_test');
+  const echt = verzendingRecord({ token: contact.token, campagne: 'campagne-1', variant: 'b', resendId: 're_echt' });
+  assert.equal(echt.test, false);
+  assert.equal(echt.gepland_voor, null);
 });
 
 test('resend template variables are filled per customer, never bestelwagen', () => {

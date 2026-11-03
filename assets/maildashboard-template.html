@@ -97,6 +97,13 @@ svg text{font-family:var(--mono)}
   <div class="scroll" style="max-height:320px"><table><thead><tr><th>Gepland voor</th><th>Bedrijf</th><th>E-mail</th><th>Campagne</th><th>Variant</th><th>Status</th></tr></thead><tbody id="geplandBody"></tbody></table></div>
 </section>
 
+
+<section class="card">
+  <h2>Testmails</h2>
+  <p class="hint">Testverzendingen (send.mjs --test). Ze tellen niet mee in de campagnecijfers hierboven.</p>
+  <div class="scroll" style="max-height:320px"><table><thead><tr><th>Verzonden</th><th>Naar</th><th>Campagne</th><th>Variant</th><th>Status</th><th>Kliks</th></tr></thead><tbody id="testBody"></tbody></table></div>
+</section>
+
 <section class="card">
   <h2>A/B-test</h2>
   <p class="hint">Zelfde campagne, twee varianten. Winnaar op klikratio (unieke klikkers / verzonden), met tweezijdige z-toets.</p>
@@ -157,7 +164,7 @@ const isScanner = k => k.bot || k.klasse === 'scanner' || k.klasse === 'scanner_
 const isMens = k => !k.bot && (k.klasse ? k.klasse === 'menselijk' : true);
 const KLEUR = { a: '#0A8F5B', b: '#B45309', neutraal: '#4F565D', licht: '#ECECE8', rood: '#B42318' };
 
-const campagnes = [...new Set([...DATA.verzonden.map(v => v.campagne), ...DATA.kliks.map(k => k.campagne)].filter(Boolean))].sort();
+const campagnes = [...new Set([...DATA.verzonden.filter(v => !v.test).map(v => v.campagne), ...DATA.kliks.map(k => k.campagne)].filter(Boolean))].sort();
 $('fCampagne').innerHTML = '<option value="">Alle campagnes</option>' + campagnes.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
 const links = [...new Set(DATA.kliks.map(k => k.link).filter(Boolean))].sort();
 $('fLink').innerHTML = '<option value="">Alle knoppen</option>' + links.map(l => `<option value="${esc(l)}">${esc(linkNaam(l))}</option>`).join('');
@@ -181,7 +188,7 @@ function inPeriode(s, f) {
 function gefilterd() {
   const f = filters(); const zt = zoekTokens(f);
   const basis = r => (!f.campagne || r.campagne === f.campagne) && (!f.variant || r.variant === f.variant);
-  const verzonden = DATA.verzonden.filter(v => basis(v) && inPeriode(v.verzonden_op, f) && (!zt || zt.has(v.token)));
+  const verzonden = DATA.verzonden.filter(v => !v.test && basis(v) && inPeriode(v.verzonden_op, f) && (!zt || zt.has(v.token)));
   const kliks = DATA.kliks.filter(k => basis(k) && (!f.link || k.link === f.link) && inPeriode(k.ontvangen_op, f) && (f.bots || !isScanner(k)) && (!zt || (k.token && zt.has(k.token)) || (f.zoek && !k.token && false)));
   const klantKliks = kliks.filter(k => isMens(k) && k.token);
   const events = DATA.events.filter(e => basis(e) && (!zt || zt.has(e.token)));
@@ -317,7 +324,7 @@ function renderStappen(g) {
 
 function renderSegmenten(g) {
   const per = new Map();
-  for (const c of DATA.contacten) {
+  for (const c of DATA.contacten.filter(c => c.bron !== 'test')) {
     const s = c.segment || 'onbekend';
     if (!per.has(s)) per.set(s, { klanten: 0, kliks: 0 });
     per.get(s).klanten++;
@@ -336,7 +343,7 @@ function renderKlanten(g) {
   const tel = (token, veld) => { if (!perToken.has(token)) perToken.set(token, { verz: 0, kliks: 0, laatste: '', variant: '', campagne: '' }); const r = perToken.get(token); r[veld === 'kliks' ? 'kliks' : 'verz']++; return r; };
   for (const v of g.verzonden) { const r = tel(v.token); r.variant = v.variant; r.campagne = v.campagne; }
   for (const k of g.klantKliks) { const r = tel(k.token, 'kliks'); if (k.ontvangen_op > r.laatste) r.laatste = k.ontvangen_op; }
-  const rijen = DATA.contacten.map(c => ({ c, ...(perToken.get(c.token) || { verz: 0, kliks: 0, laatste: '', variant: '' }) }))
+  const rijen = DATA.contacten.filter(c => c.bron !== 'test').map(c => ({ c, ...(perToken.get(c.token) || { verz: 0, kliks: 0, laatste: '', variant: '' }) }))
     .filter(r => !g.f.zoek || `${r.c.bedrijf || ''} ${r.c.naam || ''} ${r.c.email || ''}`.toLowerCase().includes(g.f.zoek))
     .sort((x, y) => y.kliks - x.kliks || String(x.c.bedrijf || '').localeCompare(String(y.c.bedrijf || '')));
   $('klantenBody').innerHTML = rijen.length ? rijen.map(r => `
@@ -359,7 +366,7 @@ function renderDetail(g) {
   $('detailSub').textContent = `${c.naam || ''} · ${c.email} · segment ${c.segment || 'onbekend'} · stap ${stapVan(c.token, g)}`;
   const items = [];
   if (c.toegevoegd_op) items.push([c.toegevoegd_op, KLEUR.neutraal, 'Toegevoegd als klant' + (c.bron ? ` (bron: ${c.bron})` : '')]);
-  for (const v of DATA.verzonden.filter(v => v.token === c.token)) items.push([v.verzonden_op, KLEUR.neutraal, `Mail verzonden · ${v.campagne} · e-mail ${emailLabel(v.campagne, v.variant)}`]);
+  for (const v of DATA.verzonden.filter(v => v.token === c.token)) items.push([v.verzonden_op, KLEUR.neutraal, `Mail verzonden${v.test ? ' (test)' : ''} · ${v.campagne} · e-mail ${emailLabel(v.campagne, v.variant)}`]);
   for (const e of DATA.events.filter(e => e.token === c.token)) items.push([e.bijgewerkt_op, '#92400E', `Resend-stand: ${e.last_event} · ${e.campagne} (${emailLabel(e.campagne, e.variant)})`]);
   for (const k of DATA.kliks.filter(k => k.token === c.token)) items.push([k.ontvangen_op, isScanner(k) ? '#B42318' : KLEUR.a, `${isScanner(k) ? 'Scanner-klik' : 'Klik'} op “${linkNaam(k.link)}” · ${k.campagne} (${emailLabel(k.campagne, k.variant)})`]);
   for (const a of DATA.afmeldingen.filter(a => a.token === c.token)) items.push([a.ontvangen_op, KLEUR.rood, `Afgemeld${a.campagne ? ' · ' + a.campagne : ''}`]);
@@ -396,7 +403,7 @@ function downloadCsv(g) {
 
 function renderGepland(g) {
   const eventPerToken = new Map(DATA.events.map(e => [e.token + '|' + e.campagne, e.last_event]));
-  const rijen = DATA.verzonden.filter(v => v.gepland_voor)
+  const rijen = DATA.verzonden.filter(v => v.gepland_voor && !v.test)
     .filter(v => (!g.f.campagne || v.campagne === g.f.campagne) && (!g.f.variant || v.variant === g.f.variant))
     .sort((x, y) => String(x.gepland_voor).localeCompare(String(y.gepland_voor)));
   const nu = new Date();
@@ -413,10 +420,25 @@ function renderGepland(g) {
   }).join('') : '<tr><td colspan="6" class="leeg">Geen geplande mails. Inplannen kan met send.mjs --plan &lt;ISO-tijd&gt;.</td></tr>';
 }
 
+
+function renderTests() {
+  const eventPerId = new Map(DATA.events.map(e => [e.resend_id, e.last_event]));
+  const rijen = DATA.verzonden.filter(v => v.test)
+    .sort((x, y) => String(y.verzonden_op).localeCompare(String(x.verzonden_op)));
+  $('testBody').innerHTML = rijen.length ? rijen.map(v => {
+    const c = contactByToken.get(v.token);
+    const status = eventPerId.get(v.resend_id) || 'sent';
+    const kliks = DATA.kliks.filter(k => k.token === v.token && k.campagne === v.campagne && isMens(k)).length;
+    const label = status === 'delivered' ? 'Bezorgd' : status === 'opened' ? 'Geopend' : status === 'clicked' ? 'Geklikt' : status === 'bounced' ? 'Bounce' : status === 'complained' ? 'Klacht' : 'Verstuurd';
+    const klasse = status === 'bounced' || status === 'complained' ? 's-bounce' : status === 'clicked' || status === 'opened' ? 's-geklikt' : 's-verstuurd';
+    return `<tr><td class="num">${fmtDatum(v.verzonden_op)}</td><td>${esc(c?.bedrijf || '—')}<br><span class="num">${esc(c?.email || '')}</span></td><td>${esc(v.campagne)}</td><td class="num">e-mail ${emailLabel(v.campagne, v.variant)}</td><td><span class="stap ${klasse}">${label}</span></td><td class="num">${fmt(kliks)}</td></tr>`;
+  }).join('') : '<tr><td colspan="6" class="leeg">Nog geen testmails gelogd.</td></tr>';
+}
+
 function render() {
   const g = gefilterd();
   renderKpis(g); renderGepland(g); renderAB(g); renderFunnel(g); renderPerLink(g); renderTijd(g);
-  renderStappen(g); renderSegmenten(g); renderKlanten(g); renderDetail(g); renderKliks(g);
+  renderStappen(g); renderSegmenten(g); renderKlanten(g); renderDetail(g); renderKliks(g); renderTests();
 }
 for (const id of ['fCampagne', 'fVariant', 'fLink', 'fVan', 'fTot', 'fZoek', 'fBots']) $(id).addEventListener('input', render);
 $('csvBtn').addEventListener('click', () => downloadCsv(gefilterd()));

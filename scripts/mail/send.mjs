@@ -11,7 +11,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { splitVariant, buildEmail, sqlStr, templateVariables, unsubscribeUrl, emailLabel } from './core.mjs';
+import { splitVariant, buildEmail, sqlStr, templateVariables, unsubscribeUrl, emailLabel, verzendingRecord } from './core.mjs';
 import { sql } from './supabase-sql.mjs';
 
 const args = process.argv.slice(2);
@@ -32,9 +32,14 @@ if (hasTodo && (doSend || testTo)) { console.error('Versturen geweigerd: vul eer
 
 async function recipients() {
   if (testTo) {
-    const rows = await sql(`select token, email, bedrijf, naam, segment from public.email_contacten where email = ${sqlStr(String(testTo).toLowerCase())}`);
-    if (rows.length) return rows;
-    return [{ token: '123e4567-e89b-12d3-a456-426614174000', email: String(testTo).toLowerCase(), bedrijf: 'Testbedrijf', naam: 'Test Persoon', segment: null }];
+    // Testontvanger krijgt een echt contact (bron 'test'), zodat de
+    // testmail gelogd kan worden en in het dashboard verschijnt zonder
+    // ooit in de echte verzendlijst te belanden.
+    const email = String(testTo).toLowerCase();
+    const bestaand = await sql(`select token, email, bedrijf, naam, segment from public.email_contacten where email = ${sqlStr(email)}`);
+    if (bestaand.length) return bestaand;
+    await sql(`insert into public.email_contacten (email, bron) values (${sqlStr(email)}, 'test') on conflict (email) do nothing`);
+    return sql(`select token, email, bedrijf, naam, segment from public.email_contacten where email = ${sqlStr(email)}`);
   }
   const list = await sql(`select l.token, l.email, l.bedrijf, l.naam, l.segment from analytics.email_verzendlijst l
     where not exists (select 1 from public.email_verzonden v where v.token = l.token and v.campagne = ${sqlStr(campagne)})
@@ -117,7 +122,8 @@ for (const contact of list) {
   const variant = splitVariant(contact.token);
   try {
     const resendId = await sendOne(contact, variant);
-    if (!testTo) await sql(`insert into public.email_verzonden (token, campagne, variant, resend_id, gepland_voor) values (${sqlStr(contact.token)}, ${sqlStr(campagne)}, ${sqlStr(variant)}, ${sqlStr(resendId)}, ${planTijd ? sqlStr(planTijd) : 'null'}) on conflict (token, campagne) do update set resend_id = excluded.resend_id, gepland_voor = excluded.gepland_voor`);
+    const rec = verzendingRecord({ token: contact.token, campagne, variant, resendId, geplandVoor: planTijd || null, test: !!testTo });
+    await sql(`insert into public.email_verzonden (token, campagne, variant, resend_id, gepland_voor, test) values (${sqlStr(rec.token)}, ${sqlStr(rec.campagne)}, ${sqlStr(rec.variant)}, ${sqlStr(rec.resend_id)}, ${rec.gepland_voor ? sqlStr(rec.gepland_voor) : 'null'}, ${rec.test}) on conflict (token, campagne) do update set resend_id = excluded.resend_id, gepland_voor = excluded.gepland_voor, test = excluded.test`);
     sent++;
     console.log(`${planTijd ? `ingepland voor ${planTijd}` : 'verstuurd'} (${emailLabel(campagne, variant)}) ${contact.email} ${resendId}`);
     await sleep(550); // onder de Resend-rate-limit (2/sec) blijven

@@ -100,6 +100,13 @@ export function templateVariables(contact, campagne) {
   };
 }
 
+// Eén verzendrecord voor public.email_verzonden. Testmails (--test) worden
+// ook gelogd, maar met test=true: zo staan ze apart in het dashboard en
+// vervuilen ze de campagnestatistieken niet.
+export function verzendingRecord({ token, campagne, variant, resendId, geplandVoor = null, test = false }) {
+  return { token, campagne, variant, resend_id: resendId, gepland_voor: geplandVoor, test: !!test };
+}
+
 // SQL-literal voor de Management-API-syncscripts. Alleen voor waarden die uit
 // onze eigen tabellen/Notion komen; spiegel van het invoerbeleid elders.
 export function sqlStr(value) {
