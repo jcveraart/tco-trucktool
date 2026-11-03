@@ -1774,6 +1774,13 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
  html.fresh .uv{padding-bottom:24px}
  html.fresh body #calc.page:not([hidden]){padding-bottom:0}
  .cta.big.hgm::before{animation:none!important;opacity:0!important}
+ /* Zo bedacht: Safari op iOS 26 kleurt de adresbalk naar een vaste of sticky knop vlak bij de onderrand, dus hier werd hij groen.
+    Een strookje van 1px in de paginakleur, vast tegen de onderrand, wordt door Safari als eerste gezien; dan blijft de balk neutraal.
+    Bovenaan doet body::before hetzelfde. In de calculator (dialoog in de bovenste laag) zit hetzelfde strookje in de kaartkleur. */
+ html.fresh body:has(#calc:not([hidden]))::after{content:"";position:fixed;left:0;right:0;bottom:0;height:1px;z-index:24;background:var(--page);pointer-events:none}
+ dialog.wz::after{content:"";position:fixed;left:0;right:0;bottom:0;height:1px;background:var(--card);pointer-events:none}
+ /* Geen schaduw onder de knoppen die onderaan blijven hangen: op de telefoon gaf dat een donkere waas */
+ .cta.big.hgm,.rhgo,.fcta{box-shadow:none!important}
  .hAg{gap:14px}
  .hAl{gap:10px;padding:0;background:none;box-shadow:none}
  .hx{gap:14px;padding:18px}
