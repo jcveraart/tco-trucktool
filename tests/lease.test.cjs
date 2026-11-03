@@ -25,3 +25,33 @@ test('estimated lease charges the 7% markup only on financing, not on maintenanc
 test('the new-lease form includes insurance by default, like market operational lease', () => {
   assert.match(SOURCE, /id="lv\$\{s\}" checked>Verzekering/);
 });
+
+function finance(values) {
+  const fn = SOURCE.slice(SOURCE.indexOf('function flLoan'), SOURCE.indexOf('/* Meerkosten voor STour'));
+  const ctx = { v: k => values[k], Math };
+  vm.createContext(ctx);
+  vm.runInContext(fn, ctx);
+  return ctx;
+}
+
+test('financial lease pays off the price after grant with the residual value as balloon payment', () => {
+  const f = finance({ jr: 6, xri: 6, xfs: 80, xre: 4 });
+  const q = f.flLoan(285000, .2, {}, 59850);
+  const P = (285000 - 59850) * .8, S = 57000, i = .005, n = 72;
+  const pm = (P - S / Math.pow(1 + i, n)) * i / (1 - Math.pow(1 + i, -n));
+  assert.ok(Math.abs(q.P - P) < .01 && q.S === S && Math.abs(q.pm - pm) < .01);
+  const own = ((285000 - 59850 - P) + 0) / 2 * .04;
+  assert.ok(Math.abs(f.finY(285000, .2, {}, 59850) - ((pm * n + S - P) / 6 + own)) < .01);
+});
+
+test('without a loan the capital cost is the return on the average of value now and residual value', () => {
+  const f = finance({ jr: 6, xri: 6, xfs: 0, xre: 4 });
+  assert.ok(Math.abs(f.finY(60000, .2) - .04 * (60000 + 12000) / 2) < .01);
+});
+
+test('MIA never lowers an operating lease price; trucks default to financial lease', () => {
+  assert.match(SOURCE, /const lsSub=p=>reg\(\)\.startsWith\('mia'\)\?0:subsidy\(p\);/);
+  assert.doesNotMatch(SOURCE, /leaseEst\(s,\{\},s==='E'\?subsidy\(/);
+  assert.match(SOURCE, /trekker:\{[^}]*fl:1,/);
+  assert.match(SOURCE, /bakwagen:\{[^}]*fl:1,/);
+});
