@@ -420,16 +420,11 @@ function render() {
 }
 for (const id of ['fCampagne', 'fVariant', 'fLink', 'fVan', 'fTot', 'fZoek', 'fBots']) $(id).addEventListener('input', render);
 $('csvBtn').addEventListener('click', () => downloadCsv(gefilterd()));
-$('refreshBtn').addEventListener('click', async () => {
-  const code = sessionStorage.getItem('sod_dash_code');
-  if (!code) { location.reload(); return; }
-  const knop = $('refreshBtn');
-  knop.disabled = true; knop.textContent = 'Bezig…';
-  try {
-    const r = await fetch('https://zarvyblveyomngypwvhw.supabase.co/functions/v1/email-dashboard', {
-      method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ code }),
-    });
+$('refreshBtn').addEventListener('click', () => {
+  // Online (code in sessie): herladen brengt je via de gate terug met verse
+  // data. Lokaal: herladen tekent opnieuw met de ingebakken data.
+  location.reload();
+});
     if (!r.ok) throw new Error(r.status);
     const html = await r.text();
     document.open(); document.write(html); document.close();

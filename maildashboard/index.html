@@ -30,6 +30,12 @@ button:disabled{opacity:.6;cursor:wait}
   </form>
 </main>
 <script>
+const bewaard = sessionStorage.getItem('sod_dash_code');
+if (bewaard) {
+  document.getElementById('code').value = bewaard;
+  document.getElementById('knop').textContent = 'Dashboard openen…';
+  setTimeout(() => document.getElementById('f').requestSubmit(), 50);
+}
 document.getElementById('f').addEventListener('submit', async e => {
   e.preventDefault();
   const knop = document.getElementById('knop'), fout = document.getElementById('fout');
