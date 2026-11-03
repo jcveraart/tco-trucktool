@@ -12,8 +12,10 @@ test('every language route has static localized metadata, a self-canonical and r
  assert.ok(h.includes('href="'+r.path+'" data-lang="nl"'));assert.ok(h.includes('href="'+r.enPath+'" data-lang="en"'));
  }});
 const modelGroups=(()=>{const models=JSON.parse(source.match(/const MODELS=(\[[\s\S]*?\]);/)[1]),slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),G=new Map();for(const m of models){m.id=slug(m.b+' '+m.m);const k=m.fam?slug(m.c+' '+m.b+' '+m.fam):m.id;if(!G.has(k))G.set(k,[]);G.get(k).push(m)}return[...G.values()].map(vs=>({vs,top:vs[0],slug:vs[0].fam?slug(vs[0].b+' '+vs[0].fam):vs[0].id}))})();
+const zones=[...source.match(/const ZES=\[([\s\S]*?)\]\];/)[1].matchAll(/\[(['"])(.+?)\1,\d/g)].map(m=>m[2].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
 test('sitemap contains exactly the indexable canonical routes and all language pairs',()=>{
- const sm=fs.readFileSync(path.join(ROOT,'sitemap.xml'),'utf8'),urls=[...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);assert.equal(urls.length,Object.values(routes).filter(r=>!r.noindex).length*2+modelGroups.length*2);
+ const sm=fs.readFileSync(path.join(ROOT,'sitemap.xml'),'utf8'),urls=[...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);assert.equal(urls.length,Object.values(routes).filter(r=>!r.noindex).length*2+modelGroups.length*2+zones.length*2);
+ assert.ok(zones.length>=25&&zones.every(z=>urls.includes(site+'/zero-emissiezone/'+z+'/')&&urls.includes(site+'/en/zero-emission-zone/'+z+'/')),'zero-emissiezone per gemeente');
  for(const g of modelGroups)for(const p of [routes['modellen/'+g.top.c].path+g.slug+'/',routes['modellen/'+g.top.c].enPath+g.slug+'/'])assert.ok(urls.includes(site+p),'sitemap mist voertuig '+p);assert.equal(new Set(urls).size,urls.length);assert.match(sm,/xmlns:xhtml="http:\/\/www.w3.org\/1999\/xhtml"/);
  for(const r of Object.values(routes))for(const p of [r.path,r.enPath]){assert.equal(urls.includes(site+p),!r.noindex);if(r.noindex)assert.match(read(p),/name="robots" content="noindex,follow"/);}assert.doesNotMatch(sm,/\?s=|\?lang=|#/);
 });

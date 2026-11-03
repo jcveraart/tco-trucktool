@@ -730,6 +730,14 @@ body:has(#fcta:not([hidden])) .page:not([hidden]){padding-bottom:96px}
 .mcv input:disabled{cursor:not-allowed;opacity:.35}
 .mcn a{color:inherit;text-decoration:none}
 .mcn a:hover{text-decoration:underline}
+/* Zero-emissiezone per gemeente */
+.zwr{max-width:860px;padding-top:30px}
+.zkg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;max-width:760px;margin:28px 0 0;border-radius:8px;overflow:hidden;background:var(--line);box-shadow:0 0 0 1px var(--line)}
+.zkg div{padding:14px 18px;background:var(--card)}
+.zkg dt{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.zkg dd{margin:4px 0 0;font:600 17px/1.4 var(--text);color:var(--ink)}
+.ga .zno{max-width:700px;margin:16px 0 0;padding:12px 16px;border-left:3px solid var(--volt);background:var(--card);color:var(--ink-2)}
+@media(max-width:560px){.zkg{grid-template-columns:minmax(0,1fr)}}
 .vcrumb{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;font-size:14px;color:var(--ink-3)}
 .vcrumb a{color:var(--ink-2)}
 .vspec{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
@@ -2842,6 +2850,14 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
  </div>
 </section>
 
+<!-- ===== Zero-emissiezone per gemeente: inhoud komt uit ZES (zPage), statisch gevuld door scripts/seo.mjs ===== -->
+<section class="page" data-page="zone" hidden>
+ <div class="wrap zwr" data-no-translate>
+  <nav class="vcrumb" id="zCrumb" aria-label="Kruimelpad"></nav>
+  <article class="ga zga" id="zArt"></article>
+ </div>
+</section>
+
 <!-- ===== Veelgestelde vragen ===== -->
 <section class="page" data-page="faq" hidden>
  <div class="wrap">
@@ -4695,10 +4711,11 @@ const PAGES={'':'calc',simpel:'calc',calculator:'calc',top:'calc',uitgebreid:'ui
 const SEO=(()=>{try{return JSON.parse($('seo').textContent)}catch(e){return{routes:{}}}})();
 const PATHS={calc:'/',uitgebreid:'/uitgebreid/',modellen:'/modellen/',faq:'/overstapgids/',nieuws:'/nieuws/',over:'/over-ons/',privacy:'/privacy/',vloot:'/vlootanalyse/'};
 const routeEntry=(p,g)=>SEO.routes[p==='gids'?'gids/'+g:p==='modellen'&&g&&g!=='all'?'modellen/'+g:p]||SEO.routes[p]||SEO.routes.calc;
-const pathForLanguage=(p,g,l)=>{if(p==='model'){const gr=mGroupBySlug(g);if(gr)return(l==='en'?SEO.routes['modellen/'+gr.top.c].enPath:SEO.routes['modellen/'+gr.top.c].path)+g+'/'}const r=routeEntry(p,g);return l==='en'?r.enPath:r.path};
+const zPath=(s,l)=>(l==='en'?'/en/zero-emission-zone/':'/zero-emissiezone/')+s+'/';
+const pathForLanguage=(p,g,l)=>{if(p==='zone')return zPath(g,l);if(p==='model'){const gr=mGroupBySlug(g);if(gr)return(l==='en'?SEO.routes['modellen/'+gr.top.c].enPath:SEO.routes['modellen/'+gr.top.c].path)+g+'/'}const r=routeEntry(p,g);return l==='en'?r.enPath:r.path};
 const pathOf=(p,g)=>pathForLanguage(p,g,document.documentElement.lang);
 const routeFromKey=k=>k.startsWith('gids/')?['gids',k.slice(5)]:k.startsWith('modellen/')?['modellen',k.slice(9)]:[k,null];
-function parsePath(pn){const p=pn.replace(/\/index\.html$/,'/').replace(/\/?$/,'/');const mm=p.match(/^\/(?:modellen\/(?:trekkers|bakwagens|bestelbussen|bussen)|en\/models\/(?:tractor-units|rigid-trucks|vans|buses))\/([a-z0-9-]+)\/$/);if(mm&&mGroupBySlug(mm[1]))return['model',mm[1]];const k=Object.keys(SEO.routes).find(k=>SEO.routes[k].path===p||SEO.routes[k].enPath===p);return k?routeFromKey(k):null}
+function parsePath(pn){const p=pn.replace(/\/index\.html$/,'/').replace(/\/?$/,'/');const mm=p.match(/^\/(?:modellen\/(?:trekkers|bakwagens|bestelbussen|bussen)|en\/models\/(?:tractor-units|rigid-trucks|vans|buses))\/([a-z0-9-]+)\/$/);if(mm&&mGroupBySlug(mm[1]))return['model',mm[1]];const zm=p.match(/^\/(?:zero-emissiezone|en\/zero-emission-zone)\/([a-z0-9-]+)\/$/);if(zm&&zBySlug(zm[1]))return['zone',zm[1]];const k=Object.keys(SEO.routes).find(k=>SEO.routes[k].path===p||SEO.routes[k].enPath===p);return k?routeFromKey(k):null}
 function localizedURL(href,language=document.documentElement.lang){const u=new URL(href,location.href);if(u.origin!==location.origin)return href;const r=parsePath(u.pathname);if(!r)return href;u.pathname=pathForLanguage(...r,language);return u.pathname+u.search+u.hash}
 window.sodLocalizedURL=localizedURL;
 function parseHash(){let h='';try{h=decodeURIComponent(location.hash.slice(1))}catch(e){}
@@ -4708,7 +4725,7 @@ function navTo(url){history.pushState(null,'',localizedURL(url));route(false)}
 /* Grapje: klik op de schakelaar in het logo en hij springt naar diesel */
 document.addEventListener('click',e=>{if(!e.target.closest('.top .bmark,.foot .bmark'))return;e.preventDefault();e.stopPropagation();const d=document.documentElement.classList.toggle('sod-d');track('logo_toggle',{diesel:d})},true);
 function setMeta(p,g){
- const entry=p==='model'?{noindex:false}:routeEntry(p,g),r=p==='model'?vMeta(g):document.documentElement.lang==='en'?entry.en:entry,u='https://stekkerofdiesel.nl'+pathOf(p,g);
+ const entry=p==='model'||p==='zone'?{noindex:false}:routeEntry(p,g),r=p==='zone'?zMeta(zBySlug(g),document.documentElement.lang==='en'):p==='model'?vMeta(g):document.documentElement.lang==='en'?entry.en:entry,u='https://stekkerofdiesel.nl'+pathOf(p,g);
  document.title=r.title||BRAND;
  const set=(sel,a,v)=>{const e=document.querySelector(sel);if(e&&v)e.setAttribute(a,v)};
  set('meta[name=description]','content',r.desc);set('link[rel=canonical]','href',u);
@@ -4731,13 +4748,14 @@ function route(first){
  if(p!=='calc'&&p!=='uitgebreid'&&$('wz').open)$('wz').close();
  if(p!=='modellen'&&$('mDlg').open)$('mDlg').close();
  document.querySelectorAll('.page').forEach(s=>s.hidden=s.dataset.page!==p);
- document.querySelectorAll('[data-nav]').forEach(a=>a.dataset.nav===(p==='uitgebreid'?'calc':p==='model'?'modellen':p)?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ document.querySelectorAll('[data-nav]').forEach(a=>a.dataset.nav===(p==='uitgebreid'?'calc':p==='model'?'modellen':p==='zone'?'faq':p)?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
  if(p==='calc'||p==='uitgebreid')setView();
  if(p==='gids')gShow(g);
  setMeta(p,p==='gids'?gid:g);
  menu(false);tipClose(false);
  if(p==='modellen'){mCat=g||'all';mPaint()}else $('mBar').hidden=true;
  if(p==='model')vPaint(g);
+ if(p==='zone')zPaint(g);
  if(p==='vloot')vzTaart();
  if(!first&&(p!==prevP||p==='gids'&&gid!==prevG)){scrollTo(0,0);const h1=[...document.querySelectorAll(`.page[data-page="${p}"] h1`)].find(e=>!e.closest('[hidden]'));if(h1)h1.focus({preventScroll:true})}
  mini();ads();
@@ -6477,6 +6495,11 @@ function mSlugOf(top){return top.fam?(top.b+' '+top.fam).toLowerCase().normalize
 function mHref(k,vs,top){return pathOf('modellen',top.c)+mSlugOf(top)+'/'}
 function mGroupBySlug(slug){if(typeof MODELS==='undefined')return null;const g=mGroups(MODELS).find(x=>mSlugOf(x.top)===slug);return g||null}
 function vMeta(slug){const g=mGroupBySlug(slug);if(!g)return{title:BRAND,desc:''};const top=g.top,nm=top.b+' '+(top.fam||top.m),en=document.documentElement.lang==='en';return{title:en?nm+' electric: range, battery and price | Stekker of Diesel':nm+' elektrisch: actieradius, accu en prijs | Stekker of Diesel',desc:top.n}}
+/* Zero-emissiezone per gemeente: dezelfde zPage als de statische pagina */
+function zPaths(en){const l=en?'en':'nl';return{calc:pathForLanguage('calc',null,l),gids:pathForLanguage('gids','zero-emissiezones',l),zone:s=>zPath(s,l)}}
+function zCrumb(z,en){return`<a href="${pathForLanguage('faq',null,en?'en':'nl')}">${en?'Switching guide':'Overstapgids'}</a><span aria-hidden="true">/</span><a href="${pathForLanguage('gids','zero-emissiezones',en?'en':'nl')}">${en?'Zero-emission zones':'Zero-emissiezones'}</a><span aria-hidden="true">/</span><span aria-current="page">${zEsc(z[0])}</span>`}
+function zPaint(slug){const z=zBySlug(slug);if(!z)return;const en=document.documentElement.lang==='en',o=zPage(z,en,zPaths(en)),a=$('zArt');
+ setH($('zCrumb'),zCrumb(z,en));setH(a,`<h1 tabindex="-1">${o.h1}</h1>`+o.body);a.hidden=false}
 function vPaint(slug){const g=mGroupBySlug(slug);if(!g)return;const top=g.top,nm=top.b+' '+(top.fam||top.m),cat=SEO.routes['modellen/'+top.c],catName=document.documentElement.lang==='en'?cat.en.name:cat.name;
  $('vTitle').textContent=nm;$('vIntro').textContent=top.n;
  setH($('vCrumb'),`<a href="${pathOf('modellen')}">Voertuigen</a><span aria-hidden="true">/</span><a href="${pathOf('modellen',top.c)}">${catName}</a><span aria-hidden="true">/</span><span aria-current="page">${nm}</span>`);
@@ -7080,12 +7103,62 @@ function zeRule(){
    else{if(y>=2017){end=2030;why='Euro VI-trekkers die op 1 januari 2025 hooguit acht jaar oud waren, mogen tot 1 januari 2030 de zone in.'}else why='Euro VI-trekkers die op 1 januari 2025 ouder waren dan acht jaar, vallen buiten de overgangsregeling.'}
  return[end,why];
 }
-/* Zero-emissiezones: [gemeente, lengtegraad, breedtegraad, jaar, maand, bijzonderheid], stand oktober 2026 (Op weg naar ZES, gemeenten) */
+/* ZONEPAGINAS: deze blok draait ook in scripts/seo.mjs, dus hier alleen data en pure functies, zonder DOM. */
+/* Zero-emissiezones: [gemeente, lengtegraad, breedtegraad, jaar, maand, bijzonderheid, bijzonderheid in het Engels], stand oktober 2026 (Op weg naar ZES, gemeenten).
+   Dordrecht: raadsvoorstel juli 2025 schuift de start naar 1 juli 2026. Arnhem: verkeersbesluit 21 oktober 2025 noemt 1 juni 2026. */
 const ZES=[['Amersfoort',5.387,52.156,2025,1],['Amsterdam',4.9,52.373,2025,1],['Assen',6.562,52.993,2025,1],['Delft',4.357,52.012,2025,1],['Den Haag',4.3,52.078,2025,1],['Eindhoven',5.479,51.441,2025,1],['Gouda',4.708,52.012,2025,1],['Leiden',4.497,52.16,2025,1],['Maastricht',5.691,50.851,2025,1],['Nijmegen',5.852,51.842,2025,1],['Rotterdam',4.479,51.922,2025,1],['Tilburg',5.084,51.555,2025,1],['Utrecht',5.121,52.091,2025,1],['Zwolle',6.094,52.512,2025,1],
  ["'s-Hertogenbosch",5.304,51.69,2025,3],['Groningen',6.567,53.219,2025,4],['Haarlem',4.636,52.381,2025,6],['Enschede',6.894,52.221,2025,7],
- ['Schiphol',4.764,52.308,2026,1,'Op Schiphol-Centrum mogen bestelbussen met Euro 6 tot 1 januari 2029 in, een jaar langer dan in de meeste gemeenten.'],['Dordrecht',4.69,51.813,2026,1,'Bronnen noemen 1 januari of 1 juli 2026 als start.'],['Arnhem',5.898,51.985,2026,7,'Bronnen noemen 1 juni of 1 juli 2026 als start.'],
- ['Alphen aan den Rijn',4.657,52.13,2027,1],['Venlo',6.172,51.37,2027,1],['Hilversum',5.176,52.223,2027,1,'De ingangsdatum is nog niet definitief; bronnen noemen 2027.'],['Almere',5.222,52.371,2028,1],['Deventer',6.163,52.255,2028,1],['Breda',4.776,51.589,2029,1],['Apeldoorn',5.969,52.211,2030,1,'De gemeente bespreekt uitstel van de ingangsdatum.'],['Ede',5.665,52.04,2030,1,'De gemeente bespreekt uitstel van de ingangsdatum.'],['Zaanstad',4.826,52.457,2030,1]];
-const ZEM=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+ ['Schiphol',4.764,52.308,2026,1,'Op Schiphol-Centrum mogen bestelbussen met Euro 6 tot 1 januari 2029 in, een jaar langer dan in de meeste gemeenten.','At Schiphol-Centrum, Euro 6 vans may enter until 1 January 2029, a year longer than in most municipalities.'],['Dordrecht',4.69,51.813,2026,7,'De gemeente schoof de start op van 1 januari naar 1 juli 2026.','The municipality moved the start from 1 January to 1 July 2026.'],['Arnhem',5.898,51.985,2026,6,'Het verkeersbesluit noemt 1 juni 2026; sommige overzichten noemen 1 juli 2026.','The traffic decision states 1 June 2026; some overviews mention 1 July 2026.'],
+ ['Alphen aan den Rijn',4.657,52.13,2027,1],['Venlo',6.172,51.37,2027,1],['Hilversum',5.176,52.223,2027,1,'De ingangsdatum is nog niet definitief; bronnen noemen 2027.','The start date is not final yet; sources mention 2027.'],['Almere',5.222,52.371,2028,1],['Deventer',6.163,52.255,2028,1],['Breda',4.776,51.589,2029,1],['Apeldoorn',5.969,52.211,2030,1,'De gemeente bespreekt uitstel van de ingangsdatum.','The municipality is discussing postponing the start date.'],['Ede',5.665,52.04,2030,1,'De gemeente bespreekt uitstel van de ingangsdatum.','The municipality is discussing postponing the start date.'],['Zaanstad',4.826,52.457,2030,1]];
+const ZEM=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'],ZEMEN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const zSlug=n=>n.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const zBySlug=s=>ZES.find(z=>zSlug(z[0])===s);
+const zDate=(z,en)=>'1 '+(en?ZEMEN:ZEM)[z[4]-1]+' '+z[3];
+const zEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* Zo bedacht: de overgangsregeling is landelijk en loopt op vaste data af, ook in een zone die later begint.
+   Begint een zone in 2028, dan kan een Euro 6-bestelbus er dus vanaf de start niet in (tenzij de voorgestelde verlenging tot 2029 doorgaat). */
+/* De tekst hangt bewust niet af van de datum van vandaag: 'geldt vanaf' klopt voor en na de start, en een nieuwe build verandert de pagina niet. */
+function zMeta(z,en){const d=zDate(z,en),n=z[0];
+ return en?{title:'Zero-emission zone '+n+': start date and rules | Stekker of Diesel',desc:n+' has a zero-emission zone for vans and trucks from '+d+'. See which diesels may still enter, until when, and what electric costs you.',name:'Zero-emission zone '+n}
+  :{title:'Zero-emissiezone '+n+': ingangsdatum en regels | Stekker of Diesel',desc:'In '+n+' geldt vanaf '+d+' een zero-emissiezone voor bestel- en vrachtauto\'s. Zie welke diesels er nog in mogen, tot wanneer, en wat elektrisch kost.',name:'Zero-emissiezone '+n};}
+function zPage(z,en,P){
+ const d=zDate(z,en),n=zEsc(z[0]),zs=z[3]+(z[4]-1)/12,sch=z[0]==='Schiphol';
+ const T=en?{bs:'Van',bk:'Rigid truck',tr:'Tractor unit',low:'Lower Euro class, or diesel registered from 2025'}:{bs:'Bestelbus',bk:'Bakwagen',tr:'Trekker',low:'Lagere euroklasse, of diesel op kenteken vanaf 2025'};
+ const rows=[[T.bs+' Euro 5','',2027],[T.bs+' Euro 6','',sch?2029:2028,!sch],[T.bk+' Euro VI','2017–2019',2028],[T.bk+' Euro VI','2020–2024',2030],[T.tr+' Euro VI','2017–2024',2030],[T.low,'',0]];
+ const cell=([,,end,ext])=>{if(!end)return en?'No access':'Geen toegang';
+  if(end>zs)return(en?'Until 1 January ':'Tot 1 januari ')+end+(ext?(en?', extension to 2029 proposed':', verlenging tot 2029 voorgesteld'):'');
+  if(ext&&2029>zs)return en?'No access at the start; until 1 January 2029 if the proposed extension goes ahead':'Geen toegang bij de start; tot 1 januari 2029 als de voorgestelde verlenging doorgaat';
+  return en?'No access: the transition ends before the zone starts':'Geen toegang: de overgangsregeling is al voorbij als de zone begint'};
+ const lead=en?`${n} has a zero-emission zone for city logistics from ${d}. Vans and trucks driving there must be emission-free, unless a transition rule or exemption applies.`
+  :`In ${n} geldt vanaf ${d} een zero-emissiezone voor stadslogistiek. Bestelauto's en vrachtauto's die er rijden, moeten uitstootvrij zijn, tenzij een overgangsregeling of ontheffing geldt.`;
+ const note=z[en?6:5],L=en?{
+  h1:`Zero-emission zone ${n}: what applies to your van or truck`,start:'Start date',nd:'New diesel (registered from 2025)',ndV:'No access',who:'Applies to',whoV:'Vans (N1) and trucks (N2, N3). Cars and buses are not covered.',ev:'Electric or hydrogen',evV:'Always allowed',hT:`Transition rules in ${n}`,hV:'Diesel',hY:'First registration',hE:`In ${n}`,
+  tp:'These dates are national. A zone that starts later does not get longer transition periods.',hP:'What this means for replacing your diesel',
+  p1:`Does your diesel lose access to ${n} soon? Then calculate now what an electric van or truck costs you per km, including grants and truck toll. That way you replace at the moment that pays off most.`,
+  c1:'Calculate electric vs diesel',c2:'Check your number plate in the guide',hB:'Zone boundary and exemptions',
+  pb:`The municipality of ${n} sets the boundary of the zone and grants exemptions, for example a day exemption or for special vehicles. Check the map and your number plate on Op weg naar ZES before you plan a route.`,
+  k1:'Map and number plate check (Op weg naar ZES)'}
+ :{h1:`Zero-emissiezone ${n}: wat geldt voor je bestelbus en vrachtwagen`,start:'Ingangsdatum',nd:'Nieuwe diesel (kenteken vanaf 2025)',ndV:'Geen toegang',who:'Geldt voor',whoV:'Bestelauto\'s (N1) en vrachtauto\'s (N2, N3). Personenauto\'s en bussen vallen er niet onder.',ev:'Elektrisch of waterstof',evV:'Altijd toegang',hT:`Overgangsregeling in ${n}`,hV:'Diesel',hY:'Eerste toelating',hE:`In ${n}`,
+  tp:'Deze data zijn landelijk. Een zone die later begint, krijgt geen langere overgangstermijn.',hP:'Wat dit betekent voor het vervangen van je diesel',
+  p1:`Mag je diesel binnenkort ${n} niet meer in? Reken dan nu uit wat een elektrische bestelbus of vrachtwagen je per km kost, met subsidie en vrachtwagenheffing. Zo vervang je op het moment dat het meeste oplevert.`,
+  c1:'Reken elektrisch tegen diesel door',c2:'Check je kenteken in de gids',hB:'Zonegrens en ontheffingen',
+  pb:`De gemeente ${n} bepaalt de grens van de zone en geeft ontheffingen, bijvoorbeeld een dagontheffing of voor bijzondere voertuigen. Bekijk de kaart en je kenteken op Op weg naar ZES voordat je een route plant.`,
+  k1:'Kaart en kentekencheck (Op weg naar ZES)'};
+ return{h1:L.h1,body:`<p class="glead">${lead}</p>
+<dl class="zkg"><div><dt>${L.start}</dt><dd>${d}</dd></div><div><dt>${L.ev}</dt><dd>${L.evV}</dd></div><div><dt>${L.who}</dt><dd>${L.whoV}</dd></div><div><dt>${L.nd}</dt><dd>${L.ndV}</dd></div></dl>
+${note?`<p class="zno">${zEsc(note)}</p>`:''}
+<h2>${L.hT}</h2>
+<div class="gtb"><table class="gtt gwr"><thead><tr><th>${L.hV}</th><th>${L.hY}</th><th>${L.hE}</th></tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td><td>${cell(r)}</td></tr>`).join('')}</tbody></table></div>
+<p>${L.tp}</p>
+<h2>${L.hP}</h2>
+<p>${L.p1}</p>
+<a class="gcl" href="${P.calc}">${L.c1}</a><br><a class="gcl" href="${P.gids}">${L.c2}</a>
+<h2>${L.hB}</h2>
+<p>${L.pb}</p>
+<div class="glk"><a href="https://www.opwegnaarzes.nl/bedrijven/waar-komen-de-ze-zones" target="_blank" rel="noopener">${L.k1}</a></div>
+`};
+}
+/* /ZONEPAGINAS */
 let zeSel=null;
 /* Rekenhulpen: bouw de bediening één keer, daarna alleen de uitkomst opnieuw */
 const GT={
@@ -7217,7 +7290,7 @@ document.addEventListener('click',e=>{
  const t=e.target;if(!t.closest)return;let x;
  if(x=t.closest('[data-gs]')){const k=x.dataset.gs,raw=x.dataset.v;G[k]=isNaN(+raw)?raw:+raw;x.parentNode.querySelectorAll('[data-gs]').forEach(b=>b.setAttribute('aria-pressed',b===x));const tl=x.closest('.gtool'),T=GT[tl.id];if(T.seg)T.seg(k);T.paint(tl);return}
  if(x=t.closest('[data-gst]')){const d=gDone(),i=+x.dataset.gst;d.has(i)?d.delete(i):d.add(i);try{localStorage.setItem(GKEY,JSON.stringify([...d]))}catch(err){}gStPaint();return}
- if(x=t.closest('[data-zc],[data-zsel]')){const i=+(x.dataset.zc??x.dataset.zsel);zeSel=i<0||i===zeSel?null:i;GT.gtZm.paint($('gtZm'));return}
+ if(x=t.closest('[data-zc],[data-zsel]')){const i=+(x.dataset.zc??x.dataset.zsel);if(i>=0&&ZES[i]){navTo(pathOf('zone',zSlug(ZES[i][0])));return}zeSel=i<0||i===zeSel?null:i;GT.gtZm.paint($('gtZm'));return}
  if(x=t.closest('[data-pv]')){nlSel=nlSel===x.dataset.pv?null:x.dataset.pv;nlPlace='';$('gDot').setAttribute('hidden','');nlPaint()}
 });
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[data-pv],[data-zc]')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});

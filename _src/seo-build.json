@@ -766,5 +766,245 @@
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/volvo-fm-low-entry/": {
     "date": "2026-11-02",
     "hash": "293519235507"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/amersfoort/": {
+    "date": "2026-11-03",
+    "hash": "19d5ba29d559"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/amersfoort/": {
+    "date": "2026-11-03",
+    "hash": "ef861e10fb89"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/amsterdam/": {
+    "date": "2026-11-03",
+    "hash": "bebe11d6e21e"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/amsterdam/": {
+    "date": "2026-11-03",
+    "hash": "eeb7bd4f20f8"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/assen/": {
+    "date": "2026-11-03",
+    "hash": "fb44d6fbedd9"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/assen/": {
+    "date": "2026-11-03",
+    "hash": "b9e5b6cb0008"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/delft/": {
+    "date": "2026-11-03",
+    "hash": "910598f9e1df"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/delft/": {
+    "date": "2026-11-03",
+    "hash": "212347fddbbb"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/den-haag/": {
+    "date": "2026-11-03",
+    "hash": "129416475124"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/den-haag/": {
+    "date": "2026-11-03",
+    "hash": "24ba1343b9c0"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/eindhoven/": {
+    "date": "2026-11-03",
+    "hash": "1dfd5ca99f8f"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/eindhoven/": {
+    "date": "2026-11-03",
+    "hash": "2c0ebc520ea5"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/gouda/": {
+    "date": "2026-11-03",
+    "hash": "b3c70c98f100"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/gouda/": {
+    "date": "2026-11-03",
+    "hash": "52e5140149f5"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/leiden/": {
+    "date": "2026-11-03",
+    "hash": "8f2ec308a7de"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/leiden/": {
+    "date": "2026-11-03",
+    "hash": "c0feedf39731"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/maastricht/": {
+    "date": "2026-11-03",
+    "hash": "83fc38f85d59"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/maastricht/": {
+    "date": "2026-11-03",
+    "hash": "284783d94a18"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/nijmegen/": {
+    "date": "2026-11-03",
+    "hash": "0c75a2fc5579"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/nijmegen/": {
+    "date": "2026-11-03",
+    "hash": "ed9abb17522c"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/rotterdam/": {
+    "date": "2026-11-03",
+    "hash": "bef6bc03f9ad"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/rotterdam/": {
+    "date": "2026-11-03",
+    "hash": "480fc7e26280"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/tilburg/": {
+    "date": "2026-11-03",
+    "hash": "65ef1f0cc2ac"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/tilburg/": {
+    "date": "2026-11-03",
+    "hash": "84f5dd889ab0"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/utrecht/": {
+    "date": "2026-11-03",
+    "hash": "bbac025e2462"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/utrecht/": {
+    "date": "2026-11-03",
+    "hash": "5146a190eca2"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/zwolle/": {
+    "date": "2026-11-03",
+    "hash": "c4e5785b261e"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/zwolle/": {
+    "date": "2026-11-03",
+    "hash": "03773171d5b4"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/s-hertogenbosch/": {
+    "date": "2026-11-03",
+    "hash": "8164bea97d47"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/s-hertogenbosch/": {
+    "date": "2026-11-03",
+    "hash": "ad35b8311820"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/groningen/": {
+    "date": "2026-11-03",
+    "hash": "42eb5f36f217"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/groningen/": {
+    "date": "2026-11-03",
+    "hash": "2b8413dbcb4e"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/haarlem/": {
+    "date": "2026-11-03",
+    "hash": "ef0614068cfe"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/haarlem/": {
+    "date": "2026-11-03",
+    "hash": "bda2a51f9cd9"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/enschede/": {
+    "date": "2026-11-03",
+    "hash": "201dcb522c45"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/enschede/": {
+    "date": "2026-11-03",
+    "hash": "6e1de266ffd1"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/schiphol/": {
+    "date": "2026-11-03",
+    "hash": "45379941a14d"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/schiphol/": {
+    "date": "2026-11-03",
+    "hash": "c0163e908d74"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/dordrecht/": {
+    "date": "2026-11-03",
+    "hash": "4a974ef52acd"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/dordrecht/": {
+    "date": "2026-11-03",
+    "hash": "f8bc34f7b33f"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/arnhem/": {
+    "date": "2026-11-03",
+    "hash": "d1345668b3a1"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/arnhem/": {
+    "date": "2026-11-03",
+    "hash": "a14289656670"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/alphen-aan-den-rijn/": {
+    "date": "2026-11-03",
+    "hash": "40de04a3a5b8"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/alphen-aan-den-rijn/": {
+    "date": "2026-11-03",
+    "hash": "a09bf0f98bc6"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/venlo/": {
+    "date": "2026-11-03",
+    "hash": "53f5f2b70acb"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/venlo/": {
+    "date": "2026-11-03",
+    "hash": "dd91113cd4ab"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/hilversum/": {
+    "date": "2026-11-03",
+    "hash": "1632175022b8"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/hilversum/": {
+    "date": "2026-11-03",
+    "hash": "a646a4262786"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/almere/": {
+    "date": "2026-11-03",
+    "hash": "4c9b1afd0306"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/almere/": {
+    "date": "2026-11-03",
+    "hash": "e60daab35192"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/deventer/": {
+    "date": "2026-11-03",
+    "hash": "76dd9edd6ac9"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/deventer/": {
+    "date": "2026-11-03",
+    "hash": "0338c67bce1b"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/breda/": {
+    "date": "2026-11-03",
+    "hash": "27769893afe5"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/breda/": {
+    "date": "2026-11-03",
+    "hash": "d498a268bc5b"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/apeldoorn/": {
+    "date": "2026-11-03",
+    "hash": "83e32df5d564"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/apeldoorn/": {
+    "date": "2026-11-03",
+    "hash": "40877526df29"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/ede/": {
+    "date": "2026-11-03",
+    "hash": "b3405f8e2d3e"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/ede/": {
+    "date": "2026-11-03",
+    "hash": "609629d1f7fa"
+  },
+  "https://stekkerofdiesel.nl/zero-emissiezone/zaanstad/": {
+    "date": "2026-11-03",
+    "hash": "38ea173695b7"
+  },
+  "https://stekkerofdiesel.nl/en/zero-emission-zone/zaanstad/": {
+    "date": "2026-11-03",
+    "hash": "b8b1a344aa01"
   }
 }

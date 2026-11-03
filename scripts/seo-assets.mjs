@@ -23,7 +23,7 @@ export function createShell(html,lang,write,schemas={}){
 }
 
 export function optimizePage(html,key,shell,write,lang='nl'){
- const page=key.startsWith('gids/')?'gids':key.startsWith('modellen/')?'modellen':key.startsWith('model/')?'model':key;
+ const page=key.startsWith('gids/')?'gids':key.startsWith('modellen/')?'modellen':key.startsWith('model/')?'model':key.startsWith('zone/')?'zone':key;
  html=html.replace(/<section class="page" data-page="([a-z]+)"[^>]*>[\s\S]*?\n<\/section>/g,(markup,name)=>{
   if(name!==page)return '';
   if(page==='gids')return markup.replace(/<article class="ga" data-g="([a-z-]+)"[^>]*>[\s\S]*?<\/article>/g,(article,guide)=>guide===key.slice(5)?article:'');
