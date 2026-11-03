@@ -425,11 +425,6 @@ $('refreshBtn').addEventListener('click', () => {
   // data. Lokaal: herladen tekent opnieuw met de ingebakken data.
   location.reload();
 });
-    if (!r.ok) throw new Error(r.status);
-    const html = await r.text();
-    document.open(); document.write(html); document.close();
-  } catch { knop.disabled = false; knop.textContent = 'Vernieuw data'; alert('Vernieuwen mislukt. Probeer opnieuw.'); }
-});
 render();
 </script>
 </body>
