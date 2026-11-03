@@ -1698,6 +1698,7 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hA h1{margin:0;outline:0;font:700 clamp(34px,4vw,52px)/1.05 var(--text);letter-spacing:-.03em;text-wrap:balance}
 .hgo{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5;width:100%;justify-content:center;gap:12px;padding:20px 30px!important;border-radius:14px!important;background:var(--volt)!important;color:#fff!important;font-size:20px!important;box-shadow:0 10px 24px -14px rgba(10,143,91,.8)!important}
 .hgo:hover{background:var(--volt-ink)!important}
+.cta.big.hgm{display:none}
 .hgo svg{width:22px;height:22px}
 .hAg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:stretch}
 .hAl,.hx{display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:20px}
@@ -1760,12 +1761,15 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 @media(max-width:640px){
  .hA{gap:14px;padding-top:20px;padding-bottom:28px}
  .hA h1{font-size:30px}
- /* Zo bedacht: de knop stond als sticky bedoeld, maar .cta.big zette hem terug op relative, dus hij scrolde mee en schokte op telefoons mee met de inklappende adresbalk.
-    Nu vast onderaan het scherm, op een eigen laag, zonder scroll-code. De pagina krijgt onderaan ruimte zodat niets eronder verdwijnt. */
- .cta.big.hgo{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:25;width:auto;padding:17px 20px!important;font-size:18px!important;transform:translateZ(0);backface-visibility:hidden}
- html.fresh body:has(#calc:not([hidden]) .hgo){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ /* Zo bedacht: de knop stond als sticky bedoeld, maar .cta.big zette hem terug op relative, dus hij scrolde mee en schokte.
+    Daarna stond hij fixed, maar dan schoof hij over de zwarte footer. Nu staat een tweede knop als laatste kind van #calc,
+    sticky onderaan: hij blijft onderaan het scherm hangen en stopt vanzelf boven de footer, zonder scroll-code. */
+ .hA>.hgo{display:none}
+ html.fresh .cta.big.hgm{display:flex;position:sticky;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:25;width:calc(100% - 32px);margin:0 16px 16px;padding:17px 20px!important;font-size:18px!important}
  html.fresh .uvend{display:none}
- .cta.big.hgo::before{animation:none!important;opacity:0!important}
+ html.fresh .uv{padding-bottom:24px}
+ html.fresh body #calc.page:not([hidden]){padding-bottom:0}
+ .cta.big.hgm::before{animation:none!important;opacity:0!important}
  .hAg{gap:14px}
  .hAl{gap:10px;padding:0;background:none;box-shadow:none}
  .hx{gap:14px;padding:18px}
@@ -2691,6 +2695,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 <section class="uvS"><header><h2>Welke bedrijfswagen past bij je werk?</h2></header><div><h3><a href="/vlootanalyse/">Je wagenpark elektrificeren</a></h3><p>Laat kosten, laadcapaciteit en vervangingsmomenten per voertuig samen beoordelen. Vraag een kennismaking aan voor een plan op basis van je eigen ritten.</p></div></section>
   <div class="uvend"><button class="cta" type="button" data-start>Ga naar de calculator <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>
  </div>
+ <button class="cta big hgo hgm" type="button" data-start>Ga naar de calculator <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
  <div class="wrap">
   <div class="intro">
    <h1 tabindex="-1">Diesel of elektrisch? Bereken je kosten per km</h1>
