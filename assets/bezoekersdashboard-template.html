@@ -6,48 +6,65 @@
 <meta name="robots" content="noindex,nofollow">
 <title>Bezoekers | Stekker of Diesel</title>
 <style>
-:root{--page:#F3F3F0;--card:#fff;--ink:#15171A;--ink2:#4F565D;--ink3:#7A8188;--line:#DCDCD7;--soft:#ECECE8;--volt:#0A8F5B;--volt-d:#07734A;--volt-l:#E7F4EE;--b:#B45309;--red:#B42318;--mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+:root{--page:#F3F3F0;--card:#fff;--ink:#15171A;--ink2:#4F565D;--ink3:#7A8188;--line:#DCDCD7;--soft:#ECECE8;--volt:#0A8F5B;--volt-d:#07734A;--volt-l:#E7F4EE;--volt-m:#9BCBB4;--blue:#2F6FD6;--oranje:#D97706;--paars:#8B5CF6;--red:#B42318;--geel:#B45309;--mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit}
-.wrap{max-width:1260px;margin:0 auto;padding:28px 20px 64px}
-header{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-bottom:6px}
+.wrap{max-width:1320px;margin:0 auto;padding:26px 20px 64px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-bottom:8px}
 h1{font-size:27px;line-height:1.15;margin:0;font-weight:650;letter-spacing:-.01em}
-nav.tabs{display:flex;gap:4px;font-size:13.5px}
-nav.tabs a{padding:6px 12px;border-radius:99px;text-decoration:none;color:var(--ink2)}
-nav.tabs a.on{background:var(--ink);color:#fff}
+nav.app{display:flex;gap:4px;font-size:13.5px}
+nav.app a{padding:6px 12px;border-radius:99px;text-decoration:none;color:var(--ink2)}
+nav.app a.on{background:var(--ink);color:#fff}
 .spacer{flex:1}
 .gen{font:12px var(--mono);color:var(--ink3)}
+.live{display:inline-flex;align-items:center;gap:7px;font:12.5px var(--mono);color:var(--ink2)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--volt);box-shadow:0 0 0 3px var(--volt-l)}
 button{font:inherit;font-weight:600;font-size:13.5px;padding:8px 14px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:#fff;cursor:pointer}
 button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
 button.mini{font-size:12px;padding:3px 9px;font-weight:500}
 button:hover{opacity:.88}
-.filters{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:end;background:var(--page);padding:12px 0;border-bottom:1px solid var(--line);margin-bottom:20px}
+.top{position:sticky;top:0;z-index:5;background:var(--page);border-bottom:1px solid var(--line);margin-bottom:18px}
+.filters{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:end;padding:12px 0 10px}
 .field{display:flex;flex-direction:column;gap:4px}
 .field>span{font:500 10.5px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink3)}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden}
-.seg button{border:0;border-radius:0;background:#fff;color:var(--ink2);font-weight:500;padding:7px 12px}
+.seg button{border:0;border-radius:0;background:#fff;color:var(--ink2);font-weight:500;padding:6px 11px}
 .seg button+button{border-left:1px solid var(--line)}
 .seg button.on{background:var(--ink);color:#fff}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
-.kpi .n{font:600 27px/1.1 var(--mono);letter-spacing:-.02em}
-.kpi .l{font-size:12.5px;color:var(--ink2);margin-top:4px}
-.kpi .d{font:11.5px var(--mono);color:var(--ink3)}
+.zoek{font:inherit;font-size:13.5px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;min-width:190px}
+.focus{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:99px;padding:4px 6px 4px 12px;font-size:13px}
+.focus button{background:#fff;color:var(--ink);border:0;border-radius:99px;padding:1px 8px;font-size:12px}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs button{background:none;border:0;border-bottom:2px solid transparent;border-radius:0;color:var(--ink2);font-weight:500;padding:9px 12px 8px;white-space:nowrap}
+nav.tabs button.on{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+.tab[hidden]{display:none}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:13px 15px 10px;min-width:0}
+.kpi .l{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.kpi .n{font:600 25px/1.15 var(--mono);letter-spacing:-.02em;margin-top:5px}
+.kpi .d{font:11.5px var(--mono);color:var(--ink3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .d b{font-weight:600}
+.up{color:var(--volt-d)} .down{color:var(--red)}
+.kpi svg{display:block;width:100%;height:30px;margin-top:6px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 20px;margin-bottom:14px;min-width:0}
-.grid .card,.grid3 .card{margin-bottom:0}
-.card h2{font-size:15.5px;margin:0 0 12px;font-weight:650}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:17px 19px;margin-bottom:14px;min-width:0}
+:is(.grid,.grid3,.g21)>.card{margin-bottom:0}
+.card h2{font-size:15px;margin:0 0 12px;font-weight:650;display:flex;align-items:baseline;gap:10px}
+.card h2 small{font:400 12px var(--mono);color:var(--ink3);margin-left:auto}
 .card h3{font:500 10.5px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);margin:16px 0 4px}
 .card h3:first-of-type{margin-top:0}
-.bar-row{display:grid;grid-template-columns:minmax(90px,150px) 1fr 64px;gap:10px;align-items:center;margin:6px 0;font-size:13px}
+.bar-row{display:grid;grid-template-columns:minmax(80px,160px) 1fr 70px;gap:10px;align-items:center;margin:5px 0;font-size:13px}
 .bar-row .k{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bar-row .v{font-family:var(--mono);font-size:12.5px;text-align:right;color:var(--ink2)}
-.track{height:10px;background:var(--soft);border-radius:3px;overflow:hidden}
+.bar-row .v{font-family:var(--mono);font-size:12.5px;text-align:right;color:var(--ink2);white-space:nowrap}
+.track{height:10px;background:var(--soft);border-radius:3px;overflow:hidden;display:flex;gap:2px}
 .fill{height:100%;background:var(--volt);border-radius:0 3px 3px 0}
+.track .seg1{height:100%}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
-th{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0;background:#fff}
 th.r,td.r{text-align:right}
 td{padding:7px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
 tr.klik{cursor:pointer}
@@ -57,123 +74,223 @@ tr.actief td{background:var(--volt-l)}
 .scroll{overflow:auto;max-height:480px}
 .leeg{color:var(--ink3);font-size:13.5px;padding:10px 0}
 .tag{display:inline-block;font:600 11px var(--mono);padding:1px 7px;border-radius:99px;white-space:nowrap}
-.t-echt{background:var(--volt-l);color:var(--volt-d)} .t-intern{background:#E2E8F0;color:#334155} .t-bot{background:#FDECEA;color:var(--red)} .t-anon{background:var(--soft);color:var(--ink2)}
+.t-echt{background:var(--volt-l);color:var(--volt-d)} .t-intern{background:#E2E8F0;color:#334155} .t-bot{background:#FDECEA;color:var(--red)}
+.r-goed{background:var(--volt-l);color:var(--volt-d)} .r-matig{background:#FEF3C7;color:#92400E} .r-slecht{background:#FDECEA;color:var(--red)}
 .route{font-size:12.5px;color:var(--ink2)}
 .route b{font-weight:500;color:var(--ink)}
-.chart{position:relative}
-.chart svg{display:block;width:100%;height:auto;overflow:visible}
-svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
-.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font:12px/1.45 var(--mono);padding:7px 9px;border-radius:5px;white-space:nowrap;transform:translate(-50%,-100%);margin-top:-8px;display:none;z-index:3}
-.timeline{list-style:none;margin:0;padding:0}
-.timeline li{display:flex;gap:12px;padding:6px 0;border-bottom:1px solid var(--soft);font-size:13px}
-.timeline .t{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap;min-width:64px}
-.timeline .e{font-family:var(--mono);font-size:12px;min-width:120px}
-.timeline .p{color:var(--ink2)}
-.zoek{font:inherit;font-size:13.5px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;min-width:200px}
-.focus{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:99px;padding:5px 6px 5px 12px;font-size:13px}
-.focus button{background:#fff;color:var(--ink);border:0;border-radius:99px;padding:1px 8px;font-size:12px}
 .bedrijf{font-weight:500}
 .gok{color:var(--ink3);font-size:11.5px;font-family:var(--mono)}
 .vink{color:var(--volt-d);font-weight:600}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font:12px/1.45 var(--mono);padding:7px 9px;border-radius:5px;white-space:nowrap;transform:translate(-50%,-100%);margin-top:-10px;display:none;z-index:3}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--ink2);margin-top:8px;flex-wrap:wrap}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-@media (max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)} .grid,.grid3{grid-template-columns:1fr}}
-@media (max-width:620px){.bar-row{grid-template-columns:90px 1fr 54px} .wrap{padding:20px 16px 48px} .kpi .n{font-size:22px}}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:flex;gap:12px;padding:6px 0;border-bottom:1px solid var(--soft);font-size:13px}
+.timeline .t{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap;min-width:64px}
+.timeline .e{font-family:var(--mono);font-size:12px;min-width:150px}
+.timeline .p{color:var(--ink2);overflow-wrap:anywhere}
+.funnel .stap{display:grid;grid-template-columns:200px 1fr 120px;gap:12px;align-items:center;margin:7px 0;font-size:13px}
+.funnel .balk{height:22px;background:var(--volt);border-radius:0 4px 4px 0;min-width:2px}
+.funnel .v{font-family:var(--mono);font-size:12.5px;color:var(--ink2);text-align:right;white-space:nowrap}
+.funnel .val{font-family:var(--mono);font-size:11.5px;color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:12px}
+.stat{border:1px solid var(--soft);border-radius:6px;padding:9px 11px}
+.stat .n{font:600 19px var(--mono)}
+.stat .l{font-size:12px;color:var(--ink2)}
+.livelijst{font-size:13px}
+.livelijst div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--soft)}
+.livelijst .t{font:12px var(--mono);color:var(--ink3);min-width:44px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:1000px){.grid,.grid3,.g21{grid-template-columns:1fr} .funnel .stap{grid-template-columns:130px 1fr 96px}}
+@media (max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)} .bar-row{grid-template-columns:90px 1fr 56px} .wrap{padding:18px 16px 48px} .kpi .n{font-size:20px} .top{position:static}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
   <h1>Bezoekers</h1>
-  <nav class="tabs"><a href="/maildashboard/">E-mail</a><a class="on" href="/maildashboard/bezoekers/">Bezoekers</a></nav>
+  <nav class="app"><a href="/maildashboard/">E-mail</a><a class="on" href="/maildashboard/bezoekers/">Bezoekers</a></nav>
   <div class="spacer"></div>
+  <span class="live" id="live"></span>
   <span class="gen" id="gen"></span>
   <button class="ghost" id="ververs" type="button">Vernieuw</button>
 </header>
 
-<div class="filters">
-  <div class="field"><span>Periode</span><div class="seg" id="fPeriode">
-    <button data-v="0">Vandaag</button><button data-v="1">Gisteren</button><button data-v="7" class="on">7 dagen</button><button data-v="30">30 dagen</button><button data-v="90">90 dagen</button>
-  </div></div>
-  <div class="field"><span>Wie</span><div class="seg" id="fWie">
-    <button data-v="echt" class="on">Echte bezoekers</button><button data-v="intern">Intern</button><button data-v="bot">Bots en tests</button><button data-v="alles">Alles</button>
-  </div></div>
-  <div class="field"><span>Apparaat</span><div class="seg" id="fApp">
-    <button data-v="" class="on">Alle</button><button data-v="desktop">Desktop</button><button data-v="mobiel">Mobiel</button>
-  </div></div>
-  <div class="field"><span>Bron</span><div class="seg" id="fBron">
-    <button data-v="" class="on">Alle</button><button data-v="email">E-mail</button><button data-v="zoek">Zoekmachine</button><button data-v="direct">Direct</button><button data-v="overig">Overig</button>
-  </div></div>
-  <div class="field"><span>Zoek</span><input class="zoek" type="search" id="fZoek" placeholder="bedrijf, naam of bezoeker"></div>
-  <div class="field" id="focusVeld" hidden><span>Alleen</span><div class="focus"><span id="focusNaam"></span><button type="button" id="focusUit">×</button></div></div>
+<div class="top">
+  <div class="filters">
+    <div class="field"><span>Periode</span><div class="seg" id="fPeriode">
+      <button data-v="0">Vandaag</button><button data-v="1">Gisteren</button><button data-v="7" class="on">7 dagen</button><button data-v="30">30 dagen</button><button data-v="90">90 dagen</button>
+    </div></div>
+    <div class="field"><span>Wie</span><div class="seg" id="fWie">
+      <button data-v="echt" class="on">Echte bezoekers</button><button data-v="intern">Intern</button><button data-v="bot">Bots en tests</button><button data-v="alles">Alles</button>
+    </div></div>
+    <div class="field"><span>Apparaat</span><div class="seg" id="fApp">
+      <button data-v="" class="on">Alle</button><button data-v="desktop">Desktop</button><button data-v="mobiel">Mobiel</button>
+    </div></div>
+    <div class="field"><span>Bron</span><div class="seg" id="fBron">
+      <button data-v="" class="on">Alle</button><button data-v="email">E-mail</button><button data-v="zoek">Zoekmachine</button><button data-v="direct">Direct</button><button data-v="overig">Overig</button>
+    </div></div>
+    <div class="field"><span>Zoek</span><input class="zoek" type="search" id="fZoek" placeholder="bedrijf, naam of bezoeker"></div>
+    <div class="field" id="focusVeld" hidden><span>Alleen</span><div class="focus"><span id="focusNaam"></span><button type="button" id="focusUit">×</button></div></div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button data-tab="overzicht" class="on">Overzicht</button><button data-tab="paginas">Pagina's</button><button data-tab="gedrag">Gedrag</button><button data-tab="calculator">Calculator</button><button data-tab="herkomst">Herkomst</button><button data-tab="techniek">Apparaat en snelheid</button><button data-tab="email">E-mail</button><button data-tab="sessies">Sessies</button>
+  </nav>
 </div>
 
-<section class="kpis" id="kpis"></section>
-
-<section class="card">
-  <h2>Per dag</h2>
-  <div class="chart" id="perDag"></div>
-  <div class="legend"><span><i style="background:var(--volt)"></i>Met cookies</span><span><i style="background:#9BCBB4"></i>Zonder cookies</span></div>
-</section>
-
-<section class="card">
-  <h2>Uit e-mail</h2>
-  <div id="mailKpi" class="legend" style="margin:0 0 12px"></div>
-  <div class="scroll"><table><thead><tr><th>Bedrijf</th><th>Contact</th><th>Segment</th><th class="r">Kliks</th><th>Eerste klik</th><th class="r">Sessies</th><th class="r">Tijd</th><th class="r">Pagina's</th><th>Berekend</th><th>Laatst op de site</th></tr></thead><tbody id="mailBody"></tbody></table></div>
-</section>
-
-<section class="card">
-  <h2>Pagina's</h2>
-  <div class="scroll"><table><thead><tr><th>Pagina</th><th class="r">Weergaven</th><th class="r">Sessies</th><th class="r">Gem. tijd</th><th class="r">Gescrold</th><th class="r">Instap</th><th class="r">Uitstap</th><th class="r">Uitstap %</th></tr></thead><tbody id="paginas"></tbody></table></div>
-</section>
-
-<div class="grid">
-  <section class="card"><h2>Routes</h2><div id="routes"></div></section>
-  <section class="card"><h2>Van pagina naar pagina</h2><div id="stappen"></div></section>
+<!-- ===== Overzicht ===== -->
+<div class="tab" data-tab="overzicht">
+  <section class="kpis" id="kpis"></section>
+  <section class="card"><h2>Paginaweergaven<small id="perDagSub"></small></h2><div class="chart" id="perDag"></div>
+    <div class="legend"><span><i style="background:var(--volt)"></i>Met cookies</span><span><i style="background:var(--volt-m)"></i>Zonder cookies</span></div></section>
+  <div class="g21">
+    <section class="card"><h2>Sessies naar bron</h2><div class="chart" id="bronDag"></div><div class="legend" id="bronLegend"></div></section>
+    <section class="card"><h2>Nu op de site<small>laatste 30 min</small></h2><div id="nu"></div></section>
+  </div>
+  <div class="grid">
+    <section class="card"><h2>Wanneer</h2><div class="chart" id="heat"></div></section>
+    <section class="card"><h2>Populairste pagina's</h2><div id="topPaginas"></div></section>
+  </div>
+  <div class="grid3">
+    <section class="card"><h2>Bron</h2><div id="oBron"></div></section>
+    <section class="card"><h2>Land</h2><div id="oLand"></div></section>
+    <section class="card"><h2>Apparaat</h2><div id="oApp"></div></section>
+  </div>
 </div>
 
-<div class="grid3">
-  <section class="card"><h2>Herkomst</h2><h3>Bron</h3><div id="bron"></div><h3>Campagne</h3><div id="campagne"></div></section>
-  <section class="card"><h2>Apparaat</h2><h3>Type</h3><div id="type"></div><h3>Schermbreedte</h3><div id="scherm"></div><h3>Browser</h3><div id="browser"></div><h3>Systeem</h3><div id="os"></div></section>
-  <section class="card"><h2>Verblijf</h2><h3>Tijd per sessie</h3><div id="duur"></div><h3>Pagina's per sessie</h3><div id="diepte"></div><h3>Nieuw of terug</h3><div id="terug"></div><h3>Taal</h3><div id="taal"></div></section>
+<!-- ===== Pagina's ===== -->
+<div class="tab" data-tab="paginas" hidden>
+  <section class="card"><h2>Alle pagina's</h2>
+    <div class="scroll"><table><thead><tr><th>Pagina</th><th class="r">Weergaven</th><th class="r">Sessies</th><th class="r">Gem. tijd</th><th class="r">Mediaan</th><th class="r">Gescrold</th><th class="r">Instap</th><th class="r">Uitstap %</th><th class="r">Laadtijd</th></tr></thead><tbody id="paginas"></tbody></table></div></section>
+  <div class="grid">
+    <section class="card"><h2>Gemiddelde tijd per pagina</h2><div id="tijdPagina"></div></section>
+    <section class="card"><h2>Hoe ver ze scrollen</h2><div id="scrollPagina"></div><div class="legend" id="scrollLegend"></div></section>
+  </div>
+  <div class="grid">
+    <section class="card"><h2>Instappagina</h2><div id="instap"></div></section>
+    <section class="card"><h2>Laatste pagina</h2><div id="uitstap"></div></section>
+  </div>
+  <section class="card"><h2>Gidsonderwerpen en modellen</h2><div class="grid" style="margin:0"><div><h3>Overstapgids</h3><div id="gidsen"></div></div><div><h3>Modellen bekeken</h3><div id="modellen"></div></div></div></section>
 </div>
 
-<div class="grid">
-  <section class="card"><h2>Wanneer</h2><div class="chart" id="heat"></div></section>
-  <section class="card"><h2>Wat ze doen</h2><div id="acties"></div></section>
+<!-- ===== Gedrag ===== -->
+<div class="tab" data-tab="gedrag" hidden>
+  <div class="grid">
+    <section class="card"><h2>Tijd per sessie</h2><div class="chart" id="duurHist"></div></section>
+    <section class="card"><h2>Pagina's per sessie</h2><div class="chart" id="diepteHist"></div></section>
+  </div>
+  <section class="card"><h2>Van pagina naar pagina</h2><div class="chart" id="matrix"></div></section>
+  <div class="grid">
+    <section class="card"><h2>Meest gevolgde routes</h2><div id="routes"></div></section>
+    <section class="card"><h2>Wat ze doen<small>% van sessies</small></h2><div id="acties"></div></section>
+  </div>
+  <div class="g21">
+    <section class="card"><h2>Waar ze op klikken</h2><div class="scroll" style="max-height:420px"><table><thead><tr><th>Pagina</th><th>Element</th><th class="r">Kliks</th><th class="r">Sessies</th><th class="r">Plek</th></tr></thead><tbody id="kliks"></tbody></table></div></section>
+    <section class="card"><h2>Hoogte van kliks<small>% van de pagina</small></h2><div class="chart" id="klikHoogte"></div></section>
+  </div>
+  <div class="grid3">
+    <section class="card"><h2>Frustratiekliks</h2><div id="rage"></div></section>
+    <section class="card"><h2>Externe links</h2><div id="outbound"></div></section>
+    <section class="card"><h2>Terugkerend</h2><div id="terug"></div><h3>Tekst gekopieerd</h3><div id="copy"></div></section>
+  </div>
 </div>
 
-<section class="card">
-  <h2>Sessies</h2>
-  <div class="scroll"><table><thead><tr><th>Start</th><th>Wie</th><th>Bedrijf</th><th class="r">Tijd</th><th class="r">Pagina's</th><th>Route</th><th>Bron</th><th>Apparaat</th></tr></thead><tbody id="sessies"></tbody></table></div>
-</section>
+<!-- ===== Calculator ===== -->
+<div class="tab" data-tab="calculator" hidden>
+  <section class="card"><h2>Trechter<small>sessies</small></h2><div class="funnel" id="trechter"></div></section>
+  <div class="grid">
+    <section class="card"><h2>Berekeningen per dag</h2><div class="chart" id="calcDag"></div><div class="legend"><span><i style="background:var(--volt)"></i>Elektrisch goedkoper</span><span><i style="background:var(--oranje)"></i>Diesel goedkoper</span></div></section>
+    <section class="card"><h2>Afhaken in het invulvenster</h2><div id="afhaken"></div></section>
+  </div>
+  <div class="grid3">
+    <section class="card"><h2>Voertuig</h2><div id="cVt"></div><h3>Modus</h3><div id="cModus"></div></section>
+    <section class="card"><h2>Uitkomst per voertuig</h2><div id="cUitkomst"></div><div class="legend"><span><i style="background:var(--volt)"></i>Elektrisch</span><span><i style="background:var(--oranje)"></i>Diesel</span></div></section>
+    <section class="card"><h2>Kilometers per jaar<small>× 1.000</small></h2><div class="chart" id="cKm"></div></section>
+  </div>
+  <div class="grid">
+    <section class="card"><h2>Verschil per jaar</h2><div class="chart" id="cVerschil"></div><div class="legend"><span><i style="background:var(--oranje)"></i>Diesel goedkoper</span><span><i style="background:var(--volt)"></i>Elektrisch goedkoper</span></div></section>
+    <section class="card"><h2>Gekozen modellen</h2><div id="cModel"></div></section>
+  </div>
+</div>
 
-<section class="card" id="detail" hidden>
-  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px"><h2 id="detailTitel" style="margin:0"></h2><span class="spacer"></span><button class="ghost mini" id="detailFocus" type="button">Alleen deze bezoeker</button></div>
-  <ul class="timeline" id="detailLijst"></ul>
-</section>
+<!-- ===== Herkomst ===== -->
+<div class="tab" data-tab="herkomst" hidden>
+  <div class="grid">
+    <section class="card"><h2>Bron</h2><div id="hBron"></div></section>
+    <section class="card"><h2>Verwijzende sites</h2><div id="hRef"></div></section>
+  </div>
+  <div class="grid3">
+    <section class="card"><h2>Land</h2><div id="hLand"></div></section>
+    <section class="card"><h2>Taal browser</h2><div id="hTaal"></div><h3>Taal site</h3><div id="hSiteTaal"></div></section>
+    <section class="card"><h2>Campagne</h2><div id="hCamp"></div><h3>Tijdzone</h3><div id="hTz"></div></section>
+  </div>
+  <section class="card"><h2>Instappagina per bron</h2><div class="chart" id="hInstap"></div></section>
+</div>
 
-<section class="card">
-  <h2>Browsers met cookies</h2>
-  <div class="scroll"><table><thead><tr><th>Bezoeker</th><th>Wie</th><th>Bedrijf</th><th>Eerst</th><th>Laatst</th><th class="r">Sessies</th><th class="r">Weergaven</th><th class="r">Tijd</th><th>Scherm · taal</th><th></th></tr></thead><tbody id="bezoekers"></tbody></table></div>
-</section>
+<!-- ===== Techniek ===== -->
+<div class="tab" data-tab="techniek" hidden>
+  <div class="grid3">
+    <section class="card"><h2>Type</h2><div id="tType"></div><h3>Schermbreedte</h3><div id="tScherm"></div></section>
+    <section class="card"><h2>Browser</h2><div id="tBrowser"></div><h3>Systeem</h3><div id="tOs"></div></section>
+    <section class="card"><h2>Scherm</h2><div id="tDpr"></div><h3>Donkere modus</h3><div id="tDark"></div><h3>Verbinding</h3><div id="tNet"></div></section>
+  </div>
+  <section class="card"><h2>Laadsnelheid per pagina<small>75e percentiel</small></h2>
+    <div class="scroll"><table><thead><tr><th>Pagina</th><th class="r">Metingen</th><th class="r">Server (TTFB)</th><th class="r">Grootste deel (LCP)</th><th class="r">Reactie (INP)</th><th class="r">Verspringen (CLS)</th><th class="r">Volledig geladen</th></tr></thead><tbody id="snelheid"></tbody></table></div></section>
+  <div class="grid">
+    <section class="card"><h2>Grootste deel zichtbaar (LCP)</h2><div class="chart" id="lcpHist"></div></section>
+    <section class="card"><h2>Fouten op de site</h2><div class="scroll" style="max-height:300px"><table><thead><tr><th>Laatst</th><th>Melding</th><th class="r">Aantal</th></tr></thead><tbody id="fouten"></tbody></table></div></section>
+  </div>
+</div>
+
+<!-- ===== E-mail ===== -->
+<div class="tab" data-tab="email" hidden>
+  <section class="stats" id="mailKpi"></section>
+  <section class="card"><h2>Ontvangers die klikten of kwamen</h2>
+    <div class="scroll"><table><thead><tr><th>Bedrijf</th><th>Contact</th><th>Segment</th><th class="r">Kliks</th><th>Eerste klik</th><th class="r">Sessies</th><th class="r">Tijd</th><th class="r">Pagina's</th><th>Berekend</th><th>Laatst op de site</th></tr></thead><tbody id="mailBody"></tbody></table></div></section>
+  <div class="grid">
+    <section class="card"><h2>Kliks per dag</h2><div class="chart" id="mailDag"></div><div class="legend"><span><i style="background:var(--volt)"></i>Mens</span><span><i style="background:var(--volt-m)"></i>Scanner</span></div></section>
+    <section class="card"><h2>Kliks per link</h2><div id="mailLink"></div></section>
+  </div>
+</div>
+
+<!-- ===== Sessies ===== -->
+<div class="tab" data-tab="sessies" hidden>
+  <section class="card"><h2>Sessies<small id="sesAantal"></small></h2>
+    <div class="scroll"><table><thead><tr><th>Start</th><th>Wie</th><th>Bedrijf</th><th class="r">Tijd</th><th class="r">Pagina's</th><th>Route</th><th>Bron</th><th>Land</th><th>Apparaat</th></tr></thead><tbody id="sessies"></tbody></table></div></section>
+  <section class="card" id="detail" hidden>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px"><h2 id="detailTitel" style="margin:0"></h2><span class="spacer"></span><button class="ghost mini" id="detailFocus" type="button">Alleen deze bezoeker</button></div>
+    <div class="stats" id="detailStats"></div>
+    <ul class="timeline" id="detailLijst"></ul>
+  </section>
+  <section class="card"><h2>Browsers met cookies</h2>
+    <div class="scroll"><table><thead><tr><th>Bezoeker</th><th>Wie</th><th>Bedrijf</th><th>Eerst</th><th>Laatst</th><th class="r">Sessies</th><th class="r">Weergaven</th><th class="r">Tijd</th><th>Scherm · taal</th><th></th></tr></thead><tbody id="bezoekers"></tbody></table></div></section>
+</div>
 </div>
 
 <script>
 const RAW = __DATA__;
 const FN = 'https://zarvyblveyomngypwvhw.supabase.co/functions/v1/bezoekers-dashboard';
 const TZ = 'Europe/Amsterdam';
+const KLEUR = { volt: '#0A8F5B', voltM: '#9BCBB4', blue: '#2F6FD6', oranje: '#D97706', paars: '#8B5CF6', grijs: '#A3A3A3' };
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const nf = new Intl.NumberFormat('nl-NL');
 const fmtDag = new Intl.DateTimeFormat('nl-NL', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
 const fmtKort = new Intl.DateTimeFormat('nl-NL', { timeZone: TZ, day: 'numeric', month: 'short' });
 const fmtTijd = new Intl.DateTimeFormat('nl-NL', { timeZone: TZ, hour: '2-digit', minute: '2-digit' });
+const fmtSec = new Intl.DateTimeFormat('nl-NL', { timeZone: TZ, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 const fmtVol = new Intl.DateTimeFormat('nl-NL', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 const fmtUur = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', hourCycle: 'h23', weekday: 'short' });
+const landNaam = new Intl.DisplayNames(['nl'], { type: 'region' });
 const dagKey = t => { const p = fmtDag.formatToParts(t); const g = k => p.find(x => x.type === k).value; return `${g('year')}-${g('month')}-${g('day')}`; };
 const duur = s => { s = Math.round(s || 0); if (s < 60) return s + ' s'; const m = Math.floor(s / 60); if (m < 60) return m + ' m ' + String(s % 60).padStart(2, '0') + ' s'; return Math.floor(m / 60) + ' u ' + String(m % 60).padStart(2, '0') + ' m'; };
 const pct = (a, b) => b ? Math.round(100 * a / b) + '%' : '–';
+const ms = v => v == null ? '–' : v >= 1000 ? (v / 1000).toFixed(1).replace('.', ',') + ' s' : Math.round(v) + ' ms';
+const kwantiel = (arr, q) => { if (!arr.length) return null; const a = [...arr].sort((x, y) => x - y); return a[Math.min(a.length - 1, Math.floor(q * a.length))]; };
+const tel = (arr, f) => { const m = new Map(); for (const x of arr) { const k = f(x); if (k == null || k === '') continue; m.set(k, (m.get(k) || 0) + 1); } return [...m].sort((a, b) => b[1] - a[1]); };
 $('gen').textContent = 'bijgewerkt ' + fmtTijd.format(new Date(RAW.gegenereerd));
 
 const NAMEN = { calc: 'Calculator', calculator: 'Calculator', vloot: 'Vlootanalyse', vlootanalyse: 'Vlootanalyse', modellen: 'Modellen', model: 'Model', faq: 'Overstapgids', nieuws: 'Nieuws', over: 'Over ons', 'over-ons': 'Over ons', uitgebreid: 'Uitgebreid', privacy: 'Privacy', restwaarde: 'Restwaarde', gids: 'Gids' };
@@ -181,15 +298,33 @@ const paginaNaam = (page, hash) => {
   if (hash && hash.startsWith('gids/')) return 'Gids · ' + hash.slice(5).replace(/-/g, ' ');
   return NAMEN[page] || NAMEN[hash] || page || '–';
 };
-const ACTIES = { wizard_open: 'Invulvenster geopend', wizard_complete: 'Berekening afgerond', wizard_close: 'Invulvenster gesloten', vehicle_select: 'Voertuig gekozen', model_open: 'Model bekeken', model_apply: 'Model gebruikt', model_compare: 'Modellen vergeleken', model_filter: 'Modellen gefilterd', model_search: 'Model gezocht', cta_click: 'Hoofdknop', fleet_cta_click: 'Knop vlootanalyse', fleet_request_sent: 'Vlootanalyse aangevraagd', quote_sent: 'Offerte aangevraagd', pdf_email: 'PDF gemaild', print: 'PDF / print', share: 'Gedeeld', outbound: 'Externe link', plate_lookup: 'Kenteken opgezocht', tip_open: 'Uitleg geopend', details_open: 'Uitklapper geopend', logo_toggle: 'Logo omgezet', js_error: 'Fout op de pagina', nav: 'Menu gebruikt', scenario_save: 'Scenario bewaard' };
+const ACTIES = { wizard_open: 'Invulvenster geopend', wizard_complete: 'Berekening afgerond', wizard_close: 'Invulvenster gesloten', vehicle_select: 'Voertuig gekozen', model_open: 'Model bekeken', model_apply: 'Model gebruikt', model_compare: 'Modellen vergeleken', model_filter: 'Modellen gefilterd', model_search: 'Model gezocht', cta_click: 'Hoofdknop', fleet_cta_click: 'Knop vlootanalyse', fleet_request_sent: 'Vlootanalyse aangevraagd', quote_sent: 'Offerte aangevraagd', quote_open: 'Offerte geopend', pdf_email: 'PDF gemaild', print: 'PDF / print', share: 'Gedeeld', outbound: 'Externe link', plate_lookup: 'Kenteken opgezocht', tip_open: 'Uitleg geopend', details_open: 'Uitklapper geopend', logo_toggle: 'Logo omgezet', js_error: 'Fout op de pagina', nav: 'Menu gebruikt', scenario_save: 'Scenario bewaard', reset: 'Opnieuw begonnen', unit: 'Eenheid gewisseld', faq_jump: 'Gids-navigatie', embed_copy: 'Insluitcode gekopieerd', consent: 'Cookiekeuze', rage: 'Frustratieklik', copy: 'Tekst gekopieerd' };
+const STAPPEN = { use: 'Gebruik', buy: 'Aanschaf', sub: 'Subsidie', en: 'Energie', up: 'Onderhoud', lease: 'Lease', lad: 'Laden', fin: 'Financiering', zon: 'Zonnepanelen' };
+const VT = { trekker: 'Trekker', bakwagen: 'Bakwagen', bestel: 'Bestelbus', bus: 'Bus' };
+const bronNaam = (ref, utm) => {
+  if (utm === 'email') return 'E-mailcampagne';
+  if (utm) return utm;
+  if (!ref) return 'Direct';
+  const h = ref.replace(/^www\./, '');
+  if (/google\./.test(h)) return 'Google'; if (/bing\./.test(h)) return 'Bing'; if (/duckduckgo/.test(h)) return 'DuckDuckGo';
+  if (/linkedin|lnkd/.test(h)) return 'LinkedIn'; if (/facebook|fb\./.test(h)) return 'Facebook'; if (/chatgpt|openai/.test(h)) return 'ChatGPT';
+  return h;
+};
+const bronSoort = (ref, utm) => { const b = bronNaam(ref, utm); return b === 'E-mailcampagne' ? 'email' : b === 'Direct' ? 'direct' : ['Google', 'Bing', 'DuckDuckGo'].includes(b) ? 'zoek' : 'overig'; };
+const BRONNEN = [['direct', 'Direct', KLEUR.blue], ['zoek', 'Zoekmachine', KLEUR.volt], ['email', 'E-mail', KLEUR.oranje], ['overig', 'Overig', KLEUR.paars]];
+const schermNaam = vw => vw == null ? null : vw < 640 ? 'Telefoon (< 640)' : vw < 1024 ? 'Tablet (640–1023)' : vw < 1440 ? 'Laptop (1024–1439)' : 'Groot (1440+)';
+const landLabel = c => { if (!c) return null; try { return landNaam.of(c) || c; } catch { return c; } };
 
 /* ===== Data voorbereiden ===== */
 const intern = new Set(RAW.intern || []);
-const EV = RAW.events.map(r => ({ t: new Date(r[0]), ev: r[1], page: r[2], consent: r[3], vid: r[4], sid: r[5], p: r[6] || {}, ua: r[7], browser: r[8], os: r[9] }));
-const CALC = (RAW.calc || []).map(r => ({ t: new Date(r[0]), vid: r[1], sid: r[2], vt: r[3], goedkoper: r[4] }));
+const EV = RAW.events.map(r => ({ t: new Date(r[0]), ev: r[1], page: r[2], consent: r[3], vid: r[4], sid: r[5], p: r[6] || {}, ua: r[7], browser: r[8], os: r[9], land: r[10] }));
+const CALC = (RAW.calc || []).map(r => ({ t: new Date(r[0]), vid: r[1], sid: r[2], vt: r[3], goedkoper: r[4], trigger: r[5], modus: r[6], model: r[7], km: r[8], jaren: r[9], verschil: r[10] }));
 
-// Anonieme weergaven: bots via user-agent/webdriver, of als ze in een salvo binnenkomen (8+ binnen een minuut zonder verwijzer)
+// Anonieme events (zonder cookies): weergaven, tijd op pagina en laadsnelheid
 const anon = EV.filter(e => e.consent === 'anon' && e.ev === 'page_view');
+const anonLeave = EV.filter(e => e.consent === 'anon' && e.ev === 'page_leave');
+const anonPerf = EV.filter(e => e.consent === 'anon' && e.ev === 'perf');
+// Salvo: 8+ anonieme weergaven binnen een minuut zonder verwijzer = automatisch
 for (let i = 0, j = 0, k = 0; i < anon.length; i++) {
   const t = anon[i].t.getTime();
   while (anon[j].t.getTime() < t - 30000) j++;
@@ -203,91 +338,91 @@ const sessies = new Map();
 for (const e of EV) {
   if (e.consent !== 'stat' || !e.sid) continue;
   let s = sessies.get(e.sid);
-  if (!s) { s = { id: e.sid, vid: e.vid, start: e.t, eind: e.t, ev: [], views: [], sec: 0, land: null, bot: false, intern: false, mobile: null, vw: null, lang: null, ref: '', utm: null, camp: null, n: null, browser: null, os: null }; sessies.set(e.sid, s); }
+  if (!s) { s = { id: e.sid, vid: e.vid, start: e.t, eind: e.t, ev: [], views: [], sec: 0, bot: false, intern: false, mobile: null, vw: null, vh: null, lang: null, taal: null, tz: null, dpr: null, dark: null, net: null, ref: '', utm: null, camp: null, n: null, land: null, land0: null, browser: null, os: null, perf: [] }; sessies.set(e.sid, s); }
   s.ev.push(e); s.eind = e.t;
   if (e.ua === 'bot' || e.p.wd) s.bot = true;
   if (e.p.intern) s.intern = true;
   if (e.browser && !s.browser) { s.browser = e.browser; s.os = e.os; }
-  if (e.ev === 'session_start') { s.mobile = !!e.p.mobile; s.vw = e.p.vw; s.lang = e.p.lang; s.ref = e.p.ref || ''; s.utm = e.p.utm_source || null; s.camp = e.p.utm_campaign || null; s.n = e.p.n; }
-  if (e.ev === 'page_view') { const naam = paginaNaam(e.page, e.p.hash); s.views.push({ naam, t: e.t, sec: 0, depth: 0 }); }
+  if (e.land && !s.land) s.land = e.land;
+  if (e.ev === 'session_start') Object.assign(s, { mobile: !!e.p.mobile, vw: e.p.vw, vh: e.p.vh, lang: e.p.lang, taal: e.p.taal, tz: e.p.tz, dpr: e.p.dpr, dark: e.p.dark, net: e.p.net, ref: e.p.ref || '', utm: e.p.utm_source || null, camp: e.p.utm_campaign || null, n: e.p.n, land0: e.p.land });
+  if (e.ev === 'page_view') s.views.push({ naam: paginaNaam(e.page, e.p.hash), hash: e.p.hash, t: e.t, sec: 0, depth: 0, leave: false });
   if (e.ev === 'page_leave') {
-    s.sec += Math.min(+e.p.sec || 0, 3600);
-    const v = s.views[s.views.length - 1]; // page_leave hoort bij de laatst geopende pagina
-    if (v) { v.sec += Math.min(+e.p.sec || 0, 3600); v.depth = Math.max(v.depth, +e.p.depth || 0); }
+    const sec = Math.min(+e.p.sec || 0, 3600); s.sec += sec;
+    const v = s.views[s.views.length - 1]; // hoort bij de laatst geopende pagina
+    if (v) { v.sec += sec; v.depth = Math.max(v.depth, +e.p.depth || 0); v.leave = true; }
   }
+  if (e.ev === 'perf') s.perf.push(e);
 }
-// Sessie zonder session_start: apparaat uit eerdere sessie van dezelfde browser
 const perVid = new Map();
 for (const s of sessies.values()) { if (!perVid.has(s.vid)) perVid.set(s.vid, []); perVid.get(s.vid).push(s); }
-for (const lijst of perVid.values()) { const bron = lijst.find(s => s.vw); if (bron) for (const s of lijst) if (s.vw == null) { s.vw = bron.vw; s.mobile = bron.mobile; s.lang = bron.lang; } }
-// Bot-gedrag: 5+ pagina's met gemiddeld minder dan 1,5 seconde ertussen
-for (const s of sessies.values()) {
-  if (s.views.length >= 5 && (s.eind - s.start) / s.views.length < 1500) s.bot = true;
-  s.sec = Math.max(s.sec, 0);
-}
+for (const lijst of perVid.values()) { const bron = lijst.find(s => s.vw); if (bron) for (const s of lijst) if (s.vw == null) Object.assign(s, { vw: bron.vw, mobile: bron.mobile, lang: bron.lang, vh: bron.vh, dpr: bron.dpr, tz: bron.tz, dark: bron.dark }); }
+for (const s of sessies.values()) if (s.views.length >= 5 && (s.eind - s.start) / s.views.length < 1500) s.bot = true; // 5+ pagina's in een paar seconden
 const vidIntern = new Set([...sessies.values()].filter(s => s.intern).map(s => s.vid));
-const sessieKlasse = s => (intern.has(s.vid) || vidIntern.has(s.vid) || s.intern || TESTTOKENS.has(s.mail)) ? 'intern' : s.bot ? 'bot' : 'echt';
 
 /* ===== Koppeling met de e-mailcampagne ===== */
 const CONTACT = new Map((RAW.contacten || []).map(r => [r[0], { token: r[0], bedrijf: r[1], naam: r[2], email: r[3], segment: r[4] }]));
 const VERZONDEN = new Map((RAW.verzonden || []).map(r => [r[0] + '|' + r[1], { t: new Date(r[2]), test: r[3] }]));
-// Ontvangers die alleen testmails kregen (eigen adressen) tellen als intern
-const TESTTOKENS = new Set();
+const TESTTOKENS = new Set(); // ontvangers die alleen testmails kregen (eigen adressen) tellen als intern
 { const echt = new Set(); for (const r of RAW.verzonden || []) (r[3] ? TESTTOKENS : echt).add(r[0]); for (const t of echt) TESTTOKENS.delete(t); }
 const KLIKS = (RAW.kliks || []).map(r => ({ t: new Date(r[0]), token: r[1], c: r[2], v: r[3], link: r[4], bot: r[5] }));
-// Scanners zoals in het e-maildashboard: bot-vlag, binnen 60 s na verzending, of 3+ links binnen 10 minuten
 {
+  // Scanner: bot-vlag, twee links binnen 5 s, binnen 60 s na verzending, of 3+ links binnen 10 minuten
   const eerste = new Map(), links = new Map();
   for (const k of KLIKS) { const key = k.token + '|' + k.c; if (!eerste.has(key)) { eerste.set(key, k.t); links.set(key, new Set()); } links.get(key).add(k.link); }
   for (const k of KLIKS) {
     const key = k.token + '|' + k.c, vz = VERZONDEN.get(key);
-    k.test = !!(vz && vz.test);
-    // ook: twee verschillende links van dezelfde ontvanger binnen 5 seconden (een mens klikt er één)
+    k.test = !!(vz && vz.test) || TESTTOKENS.has(k.token);
     const tegelijk = KLIKS.some(x => x !== k && x.token === k.token && x.link !== k.link && Math.abs(x.t - k.t) < 5000);
-    k.scanner = k.bot || tegelijk || (vz && k.t - vz.t < 60000) || (links.get(key).size >= 3 && k.t - eerste.get(key) <= 600000);
+    k.scanner = !!(k.bot || tegelijk || (vz && k.t - vz.t < 60000) || (links.get(key).size >= 3 && k.t - eerste.get(key) <= 600000));
   }
+  const sc = KLIKS.filter(k => k.scanner).map(k => +k.t);
+  for (const e of anon) if (e.p.utm_source === 'email' && sc.some(x => e.t - x >= 0 && e.t - x < 30000)) e.scanner = true;
 }
-// Anonieme weergaven vanuit een mail die binnen 30 s na een scannerklik komen, zijn die scanner
-{
-  const sc = KLIKS.filter(k => k.scanner).map(k => +k.t).sort((a, b) => a - b);
-  for (const e of anon) if (e.p.utm_source === 'email') { const t = +e.t; if (sc.some(x => t - x >= 0 && t - x < 30000)) e.scanner = true; }
-}
-// Sessie → contact: zeker via het token uit /m/, anders vermoedelijk als de sessie binnen 2 minuten na precies één klik met dezelfde campagne en link begon
 for (const s of sessies.values()) {
-  const st = s.ev.find(e => e.ev === 'session_start');
-  if (!st) continue;
+  const st = s.ev.find(e => e.ev === 'session_start'); if (!st) continue;
   if (st.p.mail && CONTACT.has(st.p.mail)) { s.mail = st.p.mail; s.mailZeker = true; continue; }
   if (st.p.utm_source !== 'email') continue;
   const kand = new Set(KLIKS.filter(k => k.c === (st.p.utm_campaign || k.c) && (!st.p.utm_content || st.p.utm_content === k.v + '-' + k.link) && st.t - k.t >= 0 && st.t - k.t < 120000).map(k => k.token));
   if (kand.size === 1) { s.mail = [...kand][0]; s.mailZeker = false; }
 }
-// Eén gekoppelde sessie koppelt alle sessies van dezelfde browser
 for (const lijst of perVid.values()) {
   const bron = lijst.find(s => s.mail && s.mailZeker) || lijst.find(s => s.mail);
   if (bron) for (const s of lijst) if (!s.mail) { s.mail = bron.mail; s.mailZeker = bron.mailZeker; }
 }
-// Een klik gevolgd door een gekoppelde sessie is een mens
 for (const s of sessies.values()) if (s.mail) for (const k of KLIKS) if (k.token === s.mail && s.start - k.t >= 0 && s.start - k.t < 120000) k.scanner = false;
-const bedrijfVan = s => s.mail && CONTACT.get(s.mail) ? CONTACT.get(s.mail) : null;
-const bronSoort = (ref, utm) => { const b = bronNaam(ref, utm); return b === 'E-mailcampagne' ? 'email' : b === 'Direct' ? 'direct' : ['Google', 'Bing', 'DuckDuckGo'].includes(b) ? 'zoek' : 'overig'; };
+const bedrijfVan = s => s && s.mail && CONTACT.get(s.mail) ? CONTACT.get(s.mail) : null;
+const sessieKlasse = s => (intern.has(s.vid) || vidIntern.has(s.vid) || s.intern || TESTTOKENS.has(s.mail)) ? 'intern' : s.bot ? 'bot' : 'echt';
 
 /* ===== Filters ===== */
-const F = { periode: 7, wie: 'echt', app: '', bron: '', zoek: '', focus: null };
+const F = { periode: 7, wie: 'echt', app: '', bron: '', zoek: '', focus: null, tab: 'overzicht' };
+try { const t = localStorage.getItem('sod-dash-tab'); if (t && document.querySelector(`.tab[data-tab="${t}"]`)) F.tab = t; } catch (e) {}
 function bereik() {
-  const nu = new Date(), vandaag = dagKey(nu);
-  if (F.periode === 0) return d => dagKey(d) === vandaag;
-  if (F.periode === 1) { const g = dagKey(new Date(nu - 86400000)); return d => dagKey(d) === g; }
-  const grens = new Date(nu - F.periode * 86400000); return d => d >= grens;
+  const nu = Date.now(), D = 86400000;
+  if (F.periode <= 1) {
+    const dag = dagKey(new Date(nu - F.periode * D)), vorige = dagKey(new Date(nu - (F.periode + 1) * D));
+    return { in: d => dagKey(d) === dag, vorig: d => dagKey(d) === vorige, perUur: true, dagen: [dag] };
+  }
+  const n = F.periode, grens = nu - n * D, grensV = nu - 2 * n * D, dagen = [];
+  for (let i = n - 1; i >= 0; i--) dagen.push(dagKey(new Date(nu - i * D)));
+  return { in: d => +d >= grens, vorig: d => +d >= grensV && +d < grens, perUur: false, dagen };
 }
 const wieOk = k => F.wie === 'alles' || F.wie === k;
-const appOk = mobile => !F.app || (F.app === 'mobiel' ? mobile === true : mobile === false);
+const appOk = mobile => !F.app || (mobile == null ? false : F.app === 'mobiel' ? mobile === true : mobile === false);
 const bronOk = s => !F.bron || bronSoort(s.ref, s.mail ? 'email' : s.utm) === F.bron;
 function zoekOk(s) {
   if (!F.zoek) return true;
   const c = bedrijfVan(s), q = F.zoek.toLowerCase();
-  return s.vid.startsWith(q) || s.id.startsWith(q) || (c && [c.bedrijf, c.naam, c.email].some(x => x && x.toLowerCase().includes(q)));
+  return (s.vid || '').startsWith(q) || (s.id || '').startsWith(q) || !!(c && [c.bedrijf, c.naam, c.email].some(x => x && x.toLowerCase().includes(q)));
 }
 const focusOk = s => !F.focus || (F.focus.type === 'mail' ? s.mail === F.focus.id : F.focus.type === 'vid' ? s.vid === F.focus.id : s.id === F.focus.id);
+const anonFilter = (lijst, f, metBron) => F.focus || F.zoek ? [] : lijst.filter(e => f(e.t) && wieOk(anonKlasse(e)) && appOk(e.p.mobile ?? e.p.m) && (!F.bron || (metBron ? bronSoort(e.p.ref, e.p.utm_source) === F.bron : false)));
+function selectie(f) {
+  const S = [...sessies.values()].filter(s => f(s.start) && wieOk(sessieKlasse(s)) && appOk(s.mobile) && bronOk(s) && zoekOk(s) && focusOk(s)).sort((a, b) => b.start - a.start);
+  const A = anonFilter(anon, f, true), AL = anonFilter(anonLeave, f, false), AP = anonFilter(anonPerf, f, false);
+  const sidSet = new Set(S.map(s => s.id));
+  const C = CALC.filter(c => f(c.t) && (c.sid ? sidSet.has(c.sid) : F.wie !== 'intern' && F.wie !== 'bot' && !F.focus && !F.zoek && !F.bron && !F.app));
+  return { S, A, AL, AP, C };
+}
 function zetFocus(type, id, naam) {
   F.focus = type ? { type, id } : null;
   $('focusVeld').hidden = !type; $('focusNaam').textContent = naam || '';
@@ -295,245 +430,363 @@ function zetFocus(type, id, naam) {
   render(); scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ===== Hulpjes ===== */
-function bars(el, rijen, opts = {}) {
-  rijen = rijen.filter(r => r[1] > 0);
-  if (!rijen.length) { $(el).innerHTML = '<div class="leeg">Geen data</div>'; return; }
-  const max = Math.max(...rijen.map(r => r[1])), tot = opts.tot ?? rijen.reduce((a, r) => a + r[1], 0);
-  $(el).innerHTML = rijen.slice(0, opts.max || 8).map(([k, v, extra]) =>
-    `<div class="bar-row" title="${esc(k)}: ${nf.format(v)}${extra ? ' · ' + esc(extra) : ''}"><div class="k">${esc(k)}</div><div class="track"><div class="fill" style="width:${(100 * v / max).toFixed(1)}%"></div></div><div class="v">${opts.pct === false ? nf.format(v) : pct(v, tot)}</div></div>`).join('');
-}
-const tel = (arr, f) => { const m = new Map(); for (const x of arr) { const k = f(x); if (k == null) continue; m.set(k, (m.get(k) || 0) + 1); } return [...m].sort((a, b) => b[1] - a[1]); };
-const bronNaam = (ref, utm) => {
-  if (utm === 'email') return 'E-mailcampagne';
-  if (utm) return utm;
-  if (!ref) return 'Direct';
-  const h = ref.replace(/^www\./, '');
-  if (/google\./.test(h)) return 'Google'; if (/bing\./.test(h)) return 'Bing'; if (/duckduckgo/.test(h)) return 'DuckDuckGo';
-  if (/linkedin|lnkd/.test(h)) return 'LinkedIn'; if (/facebook|fb\./.test(h)) return 'Facebook'; if (/chatgpt|openai/.test(h)) return 'ChatGPT';
-  return h;
-};
-const schermNaam = vw => vw == null ? null : vw < 640 ? 'Telefoon (< 640)' : vw < 1024 ? 'Tablet (640–1023)' : vw < 1440 ? 'Laptop (1024–1439)' : 'Groot (1440+)';
+/* ===== Grafiekbouwstenen ===== */
 function tipper(box) {
+  if (box._tip) return; box._tip = true;
   const tip = document.createElement('div'); tip.className = 'tip'; box.appendChild(tip);
   box.addEventListener('mousemove', e => {
     const m = e.target.closest('[data-tip]');
     if (!m) { tip.style.display = 'none'; return; }
     const r = box.getBoundingClientRect();
     tip.innerHTML = m.dataset.tip; tip.style.display = 'block';
-    tip.style.left = Math.min(Math.max(e.clientX - r.left, 70), r.width - 70) + 'px'; tip.style.top = (e.clientY - r.top) + 'px';
+    tip.style.left = Math.min(Math.max(e.clientX - r.left, 80), r.width - 80) + 'px'; tip.style.top = (e.clientY - r.top) + 'px';
   });
   box.addEventListener('mouseleave', () => tip.style.display = 'none');
 }
+function setChart(id, svg) { const el = $(id); const tip = el.querySelector('.tip'); el.innerHTML = svg; if (tip) el.appendChild(tip); else { el._tip = false; } tipper(el); }
+// Horizontale balken: rijen [label, waarde, extra?]
+function bars(el, rijen, opts = {}) {
+  rijen = rijen.filter(r => r[1] > 0);
+  if (!rijen.length) { $(el).innerHTML = `<div class="leeg">${opts.leeg || 'Geen data'}</div>`; return; }
+  const max = opts.maxWaarde || Math.max(...rijen.map(r => r[1])), tot = opts.tot ?? rijen.reduce((a, r) => a + r[1], 0);
+  const fmt = opts.fmt || (v => opts.pct === false ? nf.format(v) : pct(v, tot));
+  $(el).innerHTML = rijen.slice(0, opts.max || 8).map(([k, v, extra]) =>
+    `<div class="bar-row" title="${esc(k)}: ${esc(fmt(v))}${extra ? ' · ' + esc(extra) : ''}"><div class="k">${esc(k)}</div><div class="track"><div class="fill" style="width:${(100 * v / max).toFixed(1)}%;${opts.kleur ? 'background:' + opts.kleur : ''}"></div></div><div class="v">${esc(fmt(v))}</div></div>`).join('');
+}
+// Gestapelde horizontale balken (100%): rijen [label, [waarden...]], reeksen [[naam, kleur]]
+function stackBars(el, rijen, reeksen, opts = {}) {
+  rijen = rijen.filter(r => r[1].some(v => v > 0));
+  if (!rijen.length) { $(el).innerHTML = '<div class="leeg">Geen data</div>'; return; }
+  $(el).innerHTML = rijen.slice(0, opts.max || 10).map(([k, vals]) => {
+    const tot = vals.reduce((a, b) => a + b, 0);
+    return `<div class="bar-row" title="${esc(k)}: ${vals.map((v, i) => reeksen[i][0] + ' ' + pct(v, tot)).join(' · ')}"><div class="k">${esc(k)}</div><div class="track" style="background:none">${vals.map((v, i) => v ? `<div class="seg1" style="width:${(100 * v / tot).toFixed(1)}%;background:${reeksen[i][1]}"></div>` : '').join('')}</div><div class="v">${nf.format(tot)}</div></div>`;
+  }).join('');
+}
+// Verticale (gestapelde) staven: rijen [{k, vals:[...], tip}], kleuren per reeks
+function staven(id, rijen, kleuren, opts = {}) {
+  const el = $(id);
+  if (!rijen.some(r => r.vals.some(v => v))) { el.innerHTML = `<div class="leeg">${opts.leeg || 'Geen data'}</div>`; el._tip = false; return; }
+  const W = Math.max(320, el.clientWidth || 600), H = opts.h || (W < 600 ? 150 : 180), L = 36, B = 22;
+  const max = Math.max(1, ...rijen.map(r => r.vals.reduce((a, b) => a + b, 0)));
+  const stap = Math.pow(10, Math.floor(Math.log10(max))), top = Math.ceil(max / stap) * stap;
+  const bw = (W - L) / Math.max(1, rijen.length), w = Math.max(2, Math.min(opts.breed || 34, bw - 4)), y = v => (H - B) - (H - B - 8) * v / top;
+  const elk = Math.max(1, Math.ceil(rijen.length / Math.max(3, Math.floor(W / (opts.labelBreedte || 70)))));
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  for (const g of [0, top / 2, top]) svg += `<line x1="${L}" x2="${W}" y1="${y(g)}" y2="${y(g)}" stroke="#ECECE8"/><text x="${L - 6}" y="${y(g) + 3.5}" text-anchor="end">${opts.yFmt ? opts.yFmt(g) : nf.format(g)}</text>`;
+  rijen.forEach((r, i) => {
+    const x = L + i * bw + (bw - w) / 2; let acc = 0;
+    svg += `<g data-tip="${esc(r.tip || r.k + ': ' + nf.format(r.vals.reduce((a, b) => a + b, 0)))}"><rect x="${L + i * bw}" y="0" width="${bw}" height="${H - B}" fill="transparent"/>`;
+    r.vals.forEach((v, j) => { if (!v) return; const y0 = y(acc), y1 = y(acc + v); const gap = acc ? 2 : 0; acc += v; const last = r.vals.slice(j + 1).every(x => !x); svg += `<rect x="${x}" y="${y1}" width="${w}" height="${Math.max(0, y0 - y1 - gap)}" ${last ? `rx="${Math.min(3, w / 2)}"` : ''} fill="${kleuren[j]}"/>`; if (last && w > 6) svg += `<rect x="${x}" y="${Math.min(y0 - gap, y1 + 4)}" width="${w}" height="${Math.max(0, y0 - gap - Math.min(y0 - gap, y1 + 4))}" fill="${kleuren[j]}"/>`; });
+    svg += '</g>';
+    if (i % elk === 0 || i === rijen.length - 1 && rijen.length < 30) svg += `<text x="${x + w / 2}" y="${H - 6}" text-anchor="middle">${esc(r.k)}</text>`;
+  });
+  setChart(id, svg + '</svg>');
+}
+// Sparkline voor een KPI-tegel
+function spark(waarden) {
+  if (waarden.length < 2) return '';
+  const W = 160, H = 30, max = Math.max(1, ...waarden), x = i => i * W / (waarden.length - 1), y = v => H - 2 - (H - 6) * v / max;
+  const pad = waarden.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${pad}L${W},${H}L0,${H}Z" fill="#E7F4EE"/><path d="${pad}" fill="none" stroke="${KLEUR.volt}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+}
+// Matrix-heatmap
+function matrix(id, rijLabels, kolLabels, grid, opts = {}) {
+  const el = $(id), W = Math.max(320, el.clientWidth || 600), L = opts.links || 120, T = opts.boven || 18;
+  const cw = (W - L) / kolLabels.length, ch = opts.cel || 24, H = T + rijLabels.length * ch + 2;
+  const max = Math.max(1, ...grid.flat());
+  const kleur = v => { if (!v) return '#F5F5F2'; const a = Math.sqrt(v / max), l = [231, 244, 238], d = [7, 115, 74]; return `rgb(${l.map((x, i) => Math.round(x + (d[i] - x) * a))})`; };
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  kolLabels.forEach((k, j) => { if (k !== '') svg += `<text x="${L + j * cw + cw / 2}" y="11" text-anchor="middle">${esc(opts.kortKol ? k.slice(0, Math.max(3, Math.floor(cw / 7))) : k)}</text>`; });
+  grid.forEach((rij, i) => {
+    svg += `<text x="${L - 8}" y="${T + i * ch + ch / 2 + 4}" text-anchor="end">${esc(rijLabels[i].slice(0, Math.floor(L / 6.5)))}</text>`;
+    rij.forEach((v, j) => {
+      svg += `<rect data-tip="${esc(opts.tip ? opts.tip(i, j, v) : rijLabels[i] + ' · ' + kolLabels[j] + ': ' + nf.format(v))}" x="${L + j * cw + 1}" y="${T + i * ch + 1}" width="${cw - 2}" height="${ch - 2}" rx="3" fill="${kleur(v)}"/>`;
+      if (opts.waarden && v && cw > 26) svg += `<text x="${L + j * cw + cw / 2}" y="${T + i * ch + ch / 2 + 4}" text-anchor="middle" style="fill:${v / max > .45 ? '#fff' : '#4F565D'};pointer-events:none">${nf.format(v)}</text>`;
+    });
+  });
+  setChart(id, svg + '</svg>');
+}
+function legenda(id, reeksen) { $(id).innerHTML = reeksen.map(([n, k]) => `<span><i style="background:${k}"></i>${esc(n)}</span>`).join(''); }
 
 /* ===== Render ===== */
+let SEL = null;
 function render() {
-  const inPeriode = bereik();
-  const S = [...sessies.values()].filter(s => inPeriode(s.start) && wieOk(sessieKlasse(s)) && appOk(s.mobile) && bronOk(s) && zoekOk(s) && focusOk(s)).sort((a, b) => b.start - a.start);
-  const A = F.focus || F.zoek ? [] : anon.filter(e => inPeriode(e.t) && wieOk(anonKlasse(e)) && appOk(e.p.mobile) && (!F.bron || bronSoort(e.p.ref, e.p.utm_source) === F.bron));
-  const sidSet = new Set(S.map(s => s.id));
-  const viewsStat = S.reduce((a, s) => a + s.views.length, 0);
-  const bezoekers = new Set(S.map(s => s.vid));
-  const metTijd = S.filter(s => s.sec > 0);
-  const gemTijd = metTijd.length ? metTijd.reduce((a, s) => a + s.sec, 0) / metTijd.length : 0;
-  const bounce = S.filter(s => s.views.length <= 1).length;
-  const berekend = S.filter(s => s.ev.some(e => e.ev === 'wizard_complete')).length;
-  const calcRuns = CALC.filter(c => inPeriode(c.t) && (c.sid ? sidSet.has(c.sid) : F.wie !== 'intern' && !F.focus && !F.zoek && !F.bron)).length;
+  const B = bereik(), cur = selectie(B.in), vorig = selectie(B.vorig);
+  SEL = { B, ...cur, vorig };
+  const t = F.tab;
+  overzicht(); // KPI's en de grote lijnen zijn altijd actueel
+  if (t === 'paginas') paginas();
+  if (t === 'gedrag') gedrag();
+  if (t === 'calculator') calculator();
+  if (t === 'herkomst') herkomst();
+  if (t === 'techniek') techniek();
+  if (t === 'email') email();
+  if (t === 'sessies') sessieTabel();
+}
+const viewsVan = S => S.reduce((a, s) => a + s.views.length, 0);
+function tijdenPerWeergave(S, AL) { const t = []; for (const s of S) for (const v of s.views) if (v.leave) t.push(v.sec); for (const e of AL) t.push(Math.min(+e.p.sec || 0, 3600)); return t; }
 
-  $('kpis').innerHTML = [
-    [nf.format(viewsStat + A.length), 'Paginaweergaven', nf.format(A.length) + ' zonder cookies'],
-    [nf.format(bezoekers.size), 'Bezoekers met cookies', nf.format(S.length) + ' sessies'],
-    [duur(gemTijd), 'Gem. tijd per sessie', S.length ? (viewsStat / S.length).toFixed(1).replace('.', ',') + ' pagina\'s per sessie' : '–'],
-    [pct(bounce, S.length), 'Na één pagina weg', nf.format(berekend) + ' sessies met berekening · ' + nf.format(calcRuns) + ' berekeningen'],
-  ].map(([n, l, d]) => `<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div><div class="d">${d}</div></div>`).join('');
+function kpiData(sel) {
+  const { S, A, AL, C } = sel, tijden = tijdenPerWeergave(S, AL);
+  return {
+    views: viewsVan(S) + A.length, bezoekers: new Set(S.map(s => s.vid)).size, sessies: S.length,
+    tijd: tijden.length ? tijden.reduce((a, b) => a + b, 0) / tijden.length : 0,
+    sesTijd: S.length ? S.reduce((a, s) => a + s.sec, 0) / S.length : 0,
+    bounce: S.length ? S.filter(s => s.views.length <= 1).length / S.length : 0,
+    calc: C.length, berekend: S.filter(s => s.ev.some(e => e.ev === 'wizard_complete')).length,
+  };
+}
+function perDagReeks(B, items, tijd, waarde = () => 1) {
+  const idx = new Map(), uur = t => +fmtUur.formatToParts(t).find(p => p.type === 'hour').value;
+  if (B.perUur) { const r = Array(24).fill(0); for (const x of items) r[uur(tijd(x))] += waarde(x); return r; }
+  B.dagen.forEach((d, i) => idx.set(d, i)); const r = Array(B.dagen.length).fill(0);
+  for (const x of items) { const i = idx.get(dagKey(tijd(x))); if (i != null) r[i] += waarde(x); }
+  return r;
+}
+const xLabels = B => B.perUur ? Array.from({ length: 24 }, (_, h) => String(h).padStart(2, '0') + ':00') : B.dagen.map(d => fmtKort.format(new Date(d + 'T12:00:00')));
 
-  perDag(S, A, inPeriode);
-  paginas(S, A);
-  routes(S);
-  herkomst(S, A);
-  apparaat(S, A);
-  verblijf(S);
-  heat(S, A);
-  acties(S);
-  mailTabel(S, A, inPeriode);
-  sessieTabel(S);
-  bezoekerTabel(inPeriode, S);
+function overzicht() {
+  const { B, S, A, AL, C, vorig } = SEL, k = kpiData(SEL), kv = kpiData(vorig);
+  const delta = (a, b, omgekeerd) => { if (!b) return ''; const d = (a - b) / b; if (Math.abs(d) < .005) return '<b>=</b>'; const goed = omgekeerd ? d < 0 : d > 0; return `<b class="${goed ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${Math.abs(Math.round(d * 100))}%</b>`; };
+  const vsTekst = F.periode === 0 ? 'gisteren' : F.periode === 1 ? 'eergisteren' : 'vorige ' + F.periode + ' dagen';
+  const sesTijdPerDag = (() => { const som = perDagReeks(B, S, s => s.start, s => s.sec), n = perDagReeks(B, S, s => s.start); return som.map((v, i) => n[i] ? v / n[i] : 0); })();
+  const tegels = [
+    ['Weergaven', nf.format(k.views), delta(k.views, kv.views), perDagReeks(B, [...S.flatMap(s => s.views), ...A], x => x.t)],
+    ['Bezoekers', nf.format(k.bezoekers), delta(k.bezoekers, kv.bezoekers), perDagReeks(B, S, s => s.start)],
+    ['Tijd per pagina', duur(k.tijd), delta(k.tijd, kv.tijd), null],
+    ['Tijd per sessie', duur(k.sesTijd), delta(k.sesTijd, kv.sesTijd), sesTijdPerDag],
+    ['Na 1 pagina weg', Math.round(k.bounce * 100) + '%', delta(k.bounce, kv.bounce, true), null],
+    ['Berekeningen', nf.format(k.calc), delta(k.calc, kv.calc), perDagReeks(B, C, c => c.t)],
+  ];
+  $('kpis').innerHTML = tegels.map(([l, n, d, r]) => `<div class="kpi" title="Vergeleken met ${vsTekst}"><div class="l">${l}</div><div class="n">${n}</div><div class="d">${d ? d + ' <span>vs ' + vsTekst + '</span>' : '&nbsp;'}</div>${r ? spark(r) : ''}</div>`).join('');
+
+  // Weergaven per dag/uur
+  const lab = xLabels(B), stat = perDagReeks(B, S.flatMap(s => s.views), v => v.t), an = perDagReeks(B, A, e => e.t), ses = perDagReeks(B, S, s => s.start);
+  staven('perDag', lab.map((x, i) => ({ k: x, vals: [stat[i], an[i]], tip: `${x}<br>${nf.format(stat[i] + an[i])} weergaven<br>${nf.format(stat[i])} met cookies · ${nf.format(an[i])} zonder<br>${nf.format(ses[i])} sessies` })), [KLEUR.volt, KLEUR.voltM]);
+  $('perDagSub').textContent = nf.format(k.views) + ' totaal';
+  // Sessies naar bron
+  const perBron = BRONNEN.map(([b]) => perDagReeks(B, S.filter(s => bronSoort(s.ref, s.mail ? 'email' : s.utm) === b), s => s.start));
+  staven('bronDag', lab.map((x, i) => ({ k: x, vals: perBron.map(r => r[i]), tip: `${x}<br>` + BRONNEN.map(([, n], j) => `${n}: ${perBron[j][i]}`).join('<br>') })), BRONNEN.map(b => b[2]));
+  legenda('bronLegend', BRONNEN.map(([, n, c]) => [n, c]));
+  // Nu op de site
+  const grens = Date.now() - 30 * 60000, recent = EV.filter(e => +e.t >= grens && (e.ev === 'page_view') && (e.consent === 'anon' ? wieOk(anonKlasse(e)) : (() => { const s = sessies.get(e.sid); return s ? wieOk(sessieKlasse(s)) : true; })()));
+  const actief = new Set(recent.filter(e => e.sid).map(e => e.sid)).size, anonNu = recent.filter(e => !e.sid).length;
+  $('live').innerHTML = recent.length ? `<i></i>${recent.length} weergaven in 30 min` : '';
+  $('nu').innerHTML = recent.length ? `<div class="stats"><div class="stat"><div class="n">${actief}</div><div class="l">sessies met cookies</div></div><div class="stat"><div class="n">${anonNu}</div><div class="l">weergaven zonder</div></div></div><div class="livelijst">` + recent.slice(-8).reverse().map(e => { const s = sessies.get(e.sid), c = bedrijfVan(s); return `<div><span class="t">${fmtTijd.format(e.t)}</span><span>${esc(paginaNaam(e.page, e.p.hash))}</span><span class="gok" style="margin-left:auto">${esc(c ? c.bedrijf : (e.land ? landLabel(e.land) : (e.consent === 'anon' ? 'anoniem' : '')))}</span></div>`; }).join('') + '</div>' : '<div class="leeg">Niemand in de laatste 30 minuten</div>';
+  // Wanneer
+  const dagenW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], namen = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
+  const g = Array.from({ length: 7 }, () => Array(24).fill(0));
+  for (const x of [...S.flatMap(s => s.views), ...A]) { const p = fmtUur.formatToParts(x.t); g[dagenW.indexOf(p.find(z => z.type === 'weekday').value)][+p.find(z => z.type === 'hour').value]++; }
+  matrix('heat', namen, Array.from({ length: 24 }, (_, h) => h % 3 ? '' : String(h).padStart(2, '0')), g, { links: 28, cel: 22, tip: (i, j, v) => `${namen[i]} ${String(j).padStart(2, '0')}:00 · ${nf.format(v)} weergaven` });
+  // Top pagina's, bron, land, apparaat
+  bars('topPaginas', tel([...S.flatMap(s => s.views), ...A.map(e => ({ naam: paginaNaam(e.page, e.p.hash) }))], v => v.naam), { max: 9 });
+  bars('oBron', tel([...S.map(s => bronNaam(s.ref, s.mail ? 'email' : s.utm)), ...A.map(e => bronNaam(e.p.ref, e.p.utm_source))], x => x), { max: 6 });
+  bars('oLand', tel([...S.map(s => landLabel(s.land)), ...A.map(e => landLabel(e.land))], x => x), { max: 6, leeg: 'Wordt vanaf nu gemeten' });
+  bars('oApp', tel([...S.map(s => s.mobile), ...A.map(e => e.p.mobile)], m => m == null ? null : m ? 'Mobiel' : 'Desktop'), { max: 3 });
 }
 
-function perDag(S, A, inPeriode) {
-  const nu = new Date(), dagen = [];
-  const n = F.periode <= 1 ? 0 : F.periode;
-  if (n === 0) {
-    // Vandaag of gisteren: per uur
-    const uren = Array.from({ length: 24 }, (_, h) => ({ k: String(h).padStart(2, '0') + ':00', stat: 0, anon: 0 }));
-    const uur = t => +fmtUur.formatToParts(t).find(p => p.type === 'hour').value;
-    for (const s of S) for (const v of s.views) uren[uur(v.t)].stat++;
-    for (const e of A) uren[uur(e.t)].anon++;
-    return staven(uren, i => i % ($('perDag').clientWidth < 600 ? 6 : 3) === 0);
-  }
-  for (let i = n - 1; i >= 0; i--) { const d = new Date(nu - i * 86400000); dagen.push({ key: dagKey(d), k: fmtKort.format(d), stat: 0, anon: 0, ses: 0 }); }
-  const idx = new Map(dagen.map((d, i) => [d.key, i]));
-  for (const s of S) { const i = idx.get(dagKey(s.start)); if (i != null) dagen[i].ses++; for (const v of s.views) { const j = idx.get(dagKey(v.t)); if (j != null) dagen[j].stat++; } }
-  for (const e of A) { const i = idx.get(dagKey(e.t)); if (i != null) dagen[i].anon++; }
-  const elk = Math.ceil(n / ($('perDag').clientWidth < 600 ? 4 : 10)); staven(dagen, i => i % elk === 0 || i === n - 1);
-}
-function staven(rijen, toonLabel) {
-  const W = Math.max(320, $('perDag').clientWidth || 1000), H = W < 600 ? 160 : 190, L = 34, B = 22, max = Math.max(1, ...rijen.map(r => r.stat + r.anon));
-  const stap = Math.pow(10, Math.floor(Math.log10(max))), top = Math.ceil(max / stap) * stap;
-  const bw = (W - L) / rijen.length, w = Math.max(2, Math.min(36, bw - 4)), y = v => H - B - (H - B - 8) * v / top;
-  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Paginaweergaven">`;
-  for (const g of [0, top / 2, top]) svg += `<line x1="${L}" x2="${W}" y1="${y(g)}" y2="${y(g)}" stroke="#ECECE8"/><text x="${L - 6}" y="${y(g) + 3.5}" text-anchor="end">${nf.format(g)}</text>`;
-  rijen.forEach((r, i) => {
-    const x = L + i * bw + (bw - w) / 2, tip = `${esc(r.k)}<br>${nf.format(r.stat)} met cookies<br>${nf.format(r.anon)} zonder cookies${r.ses != null ? '<br>' + nf.format(r.ses) + ' sessies' : ''}`;
-    const hS = H - B - y(r.stat), hA = H - B - y(r.anon);
-    svg += `<g data-tip="${tip}"><rect x="${L + i * bw}" y="0" width="${bw}" height="${H - B}" fill="transparent"/>`;
-    if (r.stat) svg += `<rect x="${x}" y="${y(r.stat)}" width="${w}" height="${hS}" fill="#0A8F5B"/>`;
-    if (r.anon) svg += `<rect x="${x}" y="${y(r.stat) - hA - (r.stat ? 2 : 0)}" width="${w}" height="${hA}" rx="${Math.min(3, w / 2)}" fill="#9BCBB4"/>`;
-    svg += `</g>`;
-    if (toonLabel(i)) svg += `<text x="${x + w / 2}" y="${H - 6}" text-anchor="middle">${esc(r.k)}</text>`;
-  });
-  $('perDag').innerHTML = svg + '</svg>'; tipper($('perDag'));
-}
-
-function paginas(S, A) {
-  const m = new Map(), get = k => { if (!m.has(k)) m.set(k, { k, views: 0, ses: new Set(), sec: 0, nSec: 0, depth: 0, nDepth: 0, in: 0, uit: 0 }); return m.get(k); };
+/* ----- Pagina's ----- */
+function paginaStats() {
+  const { S, A, AL, AP } = SEL, m = new Map();
+  const get = k => { if (!m.has(k)) m.set(k, { k, views: 0, ses: new Set(), tijden: [], depths: [], in: 0, uit: 0, nSes: 0, lcp: [] }); return m.get(k); };
   for (const s of S) {
-    s.views.forEach((v, i) => {
-      const r = get(v.naam); r.views++; r.ses.add(s.id);
-      if (v.sec > 0) { r.sec += v.sec; r.nSec++; r.depth += v.depth; r.nDepth++; }
-      if (i === 0) r.in++; if (i === s.views.length - 1) r.uit++;
-    });
+    s.views.forEach((v, i) => { const r = get(v.naam); r.views++; r.ses.add(s.id); if (v.leave) { r.tijden.push(v.sec); r.depths.push(v.depth); } if (i === 0) r.in++; if (i === s.views.length - 1) r.uit++; });
+    for (const p of s.perf) if (p.p.lcp) get(paginaNaam(p.p.p || p.page, null)).lcp.push(+p.p.lcp);
   }
   for (const e of A) get(paginaNaam(e.page, e.p.hash)).views++;
-  const rijen = [...m.values()].sort((a, b) => b.views - a.views);
-  $('paginas').innerHTML = rijen.length ? rijen.map(r => `<tr><td>${esc(r.k)}</td><td class="r num">${nf.format(r.views)}</td><td class="r num">${nf.format(r.ses.size)}</td><td class="r num">${r.nSec ? duur(r.sec / r.nSec) : '–'}</td><td class="r num">${r.nDepth ? Math.round(r.depth / r.nDepth) + '%' : '–'}</td><td class="r num">${nf.format(r.in)}</td><td class="r num">${nf.format(r.uit)}</td><td class="r num">${pct(r.uit, r.ses.size)}</td></tr>`).join('') : '<tr><td colspan="8" class="leeg">Geen weergaven in deze periode</td></tr>';
+  for (const e of AL) { const r = get(paginaNaam(e.p.p || e.page, e.p.hash)); r.tijden.push(Math.min(+e.p.sec || 0, 3600)); r.depths.push(+e.p.depth || 0); }
+  for (const e of AP) if (e.p.lcp) get(paginaNaam(e.p.p || e.page, null)).lcp.push(+e.p.lcp);
+  return [...m.values()].filter(r => r.views).sort((a, b) => b.views - a.views);
+}
+function paginas() {
+  const rijen = paginaStats(), gem = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+  $('paginas').innerHTML = rijen.length ? rijen.map(r => { const lcp = kwantiel(r.lcp, .75); return `<tr><td>${esc(r.k)}</td><td class="r num">${nf.format(r.views)}</td><td class="r num">${nf.format(r.ses.size)}</td><td class="r num">${r.tijden.length ? duur(gem(r.tijden)) : '–'}</td><td class="r num">${r.tijden.length ? duur(kwantiel(r.tijden, .5)) : '–'}</td><td class="r num">${r.depths.length ? Math.round(gem(r.depths)) + '%' : '–'}</td><td class="r num">${nf.format(r.in)}</td><td class="r num">${pct(r.uit, r.ses.size)}</td><td class="r num">${lcp ? `<span class="tag ${lcp <= 2500 ? 'r-goed' : lcp <= 4000 ? 'r-matig' : 'r-slecht'}">${ms(lcp)}</span>` : '–'}</td></tr>`; }).join('') : '<tr><td colspan="9" class="leeg">Geen weergaven in deze periode</td></tr>';
+  const metTijd = rijen.filter(r => r.tijden.length).map(r => [r.k, gem(r.tijden), r.tijden.length + ' metingen']).sort((a, b) => b[1] - a[1]);
+  bars('tijdPagina', metTijd, { max: 12, fmt: duur });
+  const SC = [['0–25%', '#D7EDE2'], ['25–50%', '#9BCBB4'], ['50–75%', '#4FA884'], ['75–100%', '#07734A']];
+  stackBars('scrollPagina', rijen.filter(r => r.depths.length).map(r => { const v = [0, 0, 0, 0]; for (const d of r.depths) v[d >= 75 ? 3 : d >= 50 ? 2 : d >= 25 ? 1 : 0]++; return [r.k, v]; }), SC, { max: 12 });
+  legenda('scrollLegend', SC);
+  bars('instap', rijen.map(r => [r.k, r.in]).sort((a, b) => b[1] - a[1]), { max: 8 });
+  bars('uitstap', rijen.map(r => [r.k, r.uit, pct(r.uit, r.ses.size) + ' van sessies op deze pagina']).sort((a, b) => b[1] - a[1]), { max: 8 });
+  bars('gidsen', rijen.filter(r => r.k.startsWith('Gids · ')).map(r => [r.k.slice(7), r.views]), { max: 12, pct: false });
+  const { S } = SEL;
+  bars('modellen', tel(S.flatMap(s => s.ev.filter(e => e.ev === 'model_open' || e.ev === 'model_apply')), e => (e.p.id || '').replace(/-/g, ' ')), { max: 12, pct: false });
 }
 
+/* ----- Gedrag ----- */
 const routeVan = s => s.views.map(v => v.naam).filter((n, i, a) => i === 0 || n !== a[i - 1]);
-function routes(S) {
+function gedrag() {
+  const { S } = SEL;
+  const vak = [['<10s', 10], ['10–30s', 30], ['30s–1m', 60], ['1–3m', 180], ['3–10m', 600], ['10–30m', 1800], ['30m+', Infinity]];
+  const d = vak.map(() => 0); for (const s of S) d[vak.findIndex(([, g]) => s.sec < g)]++;
+  staven('duurHist', vak.map(([k], i) => ({ k, vals: [d[i]], tip: `${k}: ${d[i]} sessies (${pct(d[i], S.length)})` })), [KLEUR.volt], { breed: 60, labelBreedte: 40 });
+  const pv = [['1', 1], ['2', 2], ['3', 3], ['4', 4], ['5–6', 6], ['7–9', 9], ['10–19', 19], ['20+', Infinity]], dp = pv.map(() => 0);
+  for (const s of S) dp[pv.findIndex(([, g]) => s.views.length <= g)]++;
+  staven('diepteHist', pv.map(([k], i) => ({ k, vals: [dp[i]], tip: `${k} pagina's: ${dp[i]} sessies (${pct(dp[i], S.length)})` })), [KLEUR.volt], { breed: 60, labelBreedte: 36 });
+  // Van → naar
+  const paginaTel = tel(S.flatMap(s => routeVan(s)), x => x).slice(0, 9).map(x => x[0]);
+  const kol = [...paginaTel, 'Weg'], grid = paginaTel.map(() => kol.map(() => 0));
+  for (const s of S) { const r = routeVan(s); r.forEach((p, i) => { const a = paginaTel.indexOf(p); if (a < 0) return; const b = i + 1 < r.length ? paginaTel.indexOf(r[i + 1]) : kol.length - 1; if (b >= 0) grid[a][b]++; }); }
+  if (paginaTel.length) matrix('matrix', paginaTel, kol, grid, { links: 150, cel: 26, waarden: true, kortKol: true, tip: (i, j, v) => `${paginaTel[i]} → ${kol[j]}: ${nf.format(v)}` }); else $('matrix').innerHTML = '<div class="leeg">Geen sessies</div>';
+  // Routes
   const r = tel(S.filter(s => s.views.length), s => { const x = routeVan(s); return x.length > 5 ? x.slice(0, 5).join(' → ') + ' → …' : x.join(' → '); });
-  $('routes').innerHTML = r.length ? r.slice(0, 12).map(([k, v]) => `<div class="bar-row" style="grid-template-columns:1fr 50px"><div class="route">${k.split(' → ').map(x => '<b>' + esc(x) + '</b>').join(' → ')}</div><div class="v">${nf.format(v)}</div></div>`).join('') : '<div class="leeg">Geen sessies</div>';
-  const st = [];
-  for (const s of S) { const x = routeVan(s); for (let i = 0; i < x.length; i++) st.push(x[i] + ' → ' + (x[i + 1] || 'weg')); }
-  bars('stappen', tel(st, x => x), { max: 12, pct: false });
+  $('routes').innerHTML = r.length ? r.slice(0, 14).map(([k, v]) => `<div class="bar-row" style="grid-template-columns:1fr 50px"><div class="route">${k.split(' → ').map(x => '<b>' + esc(x) + '</b>').join(' → ')}</div><div class="v">${nf.format(v)}</div></div>`).join('') : '<div class="leeg">Geen sessies</div>';
+  // Acties
+  const ac = new Map(); for (const s of S) { const gezien = new Set(); for (const e of s.ev) if (ACTIES[e.ev] && !gezien.has(e.ev)) { gezien.add(e.ev); ac.set(e.ev, (ac.get(e.ev) || 0) + 1); } }
+  bars('acties', [...ac].sort((a, b) => b[1] - a[1]).map(([k, v]) => [ACTIES[k], v]), { max: 16, tot: S.length });
+  // Kliks
+  const kl = S.flatMap(s => s.ev.filter(e => e.ev === 'klik').map(e => ({ ...e, sid: s.id })));
+  const km = new Map(); for (const e of kl) { const key = paginaNaam(e.p.p || e.page) + '|' + (e.p.el || e.p.id || e.p.tag); if (!km.has(key)) km.set(key, { p: paginaNaam(e.p.p || e.page), el: e.p.el || e.p.id || e.p.tag, n: 0, ses: new Set(), yp: [] }); const x = km.get(key); x.n++; x.ses.add(e.sid); if (e.p.yp != null) x.yp.push(+e.p.yp); }
+  const kr = [...km.values()].sort((a, b) => b.n - a.n);
+  $('kliks').innerHTML = kr.length ? kr.slice(0, 80).map(x => `<tr><td>${esc(x.p)}</td><td>${esc(x.el)}</td><td class="r num">${x.n}</td><td class="r num">${x.ses.size}</td><td class="r num">${x.yp.length ? Math.round(kwantiel(x.yp, .5)) + '%' : '–'}</td></tr>`).join('') : '<tr><td colspan="5" class="leeg">Wordt vanaf nu gemeten</td></tr>';
+  const hb = Array(10).fill(0); for (const e of kl) if (e.p.yp != null) hb[Math.min(9, Math.floor(+e.p.yp / 10))]++;
+  staven('klikHoogte', hb.map((v, i) => ({ k: i * 10 + '%', vals: [v], tip: `${i * 10}–${i * 10 + 10}% van de pagina: ${v} kliks` })), [KLEUR.volt], { labelBreedte: 50, leeg: 'Wordt vanaf nu gemeten' });
+  bars('rage', tel(S.flatMap(s => s.ev.filter(e => e.ev === 'rage')), e => paginaNaam(e.p.p || e.page) + ' · ' + (e.p.el || '?')), { pct: false, leeg: 'Geen' });
+  bars('outbound', tel(S.flatMap(s => s.ev.filter(e => e.ev === 'outbound')), e => e.p.host), { pct: false, leeg: 'Geen' });
+  bars('terug', tel(S, s => s.n == null ? null : s.n <= 1 ? 'Eerste bezoek' : s.n <= 3 ? '2e–3e bezoek' : '4+ bezoeken'), { max: 4 });
+  bars('copy', tel(S.flatMap(s => s.ev.filter(e => e.ev === 'copy')), e => paginaNaam(e.p.p || e.page)), { pct: false, leeg: 'Geen' });
 }
 
-function herkomst(S, A) {
-  const bron = [...S.map(s => bronNaam(s.ref, s.utm)), ...A.map(e => bronNaam(e.p.ref, e.p.utm_source))];
-  bars('bron', tel(bron, x => x));
-  bars('campagne', tel(S.filter(s => s.camp), s => s.camp), { pct: false });
-  if (!S.some(s => s.camp)) $('campagne').innerHTML = '<div class="leeg">Geen</div>';
-}
-function apparaat(S, A) {
-  bars('type', tel([...S.map(s => s.mobile), ...A.map(e => e.p.mobile)], m => m == null ? null : m ? 'Mobiel' : 'Desktop'));
-  bars('scherm', tel(S, s => schermNaam(s.vw)));
-  bars('browser', tel([...S, ...A], x => x.browser));
-  bars('os', tel([...S, ...A], x => x.os));
-  if (![...S, ...A].some(x => x.browser)) $('browser').innerHTML = $('os').innerHTML = '<div class="leeg">Wordt vanaf nu gemeten</div>';
-}
-function verblijf(S) {
-  const vakken = [['< 10 s', 10], ['10–30 s', 30], ['30 s – 1 m', 60], ['1–3 m', 180], ['3–10 m', 600], ['10–30 m', 1800], ['30 m +', Infinity]];
-  const d = vakken.map(([k]) => [k, 0]);
-  for (const s of S) d[vakken.findIndex(([, g]) => s.sec < g)][1]++;
-  bars('duur', d.filter(x => x[1]), { max: 10 });
-  const p = [['1', 1], ['2', 2], ['3–4', 4], ['5–9', 9], ['10+', Infinity]].map(([k, g]) => [k, g, 0]);
-  for (const s of S) p.find(x => s.views.length <= x[1])[2]++;
-  bars('diepte', p.map(([k, , v]) => [k, v]), { max: 10 });
-  bars('terug', tel(S, s => s.n == null ? null : s.n <= 1 ? 'Eerste bezoek' : 'Terugkerend'));
-  bars('taal', tel(S, s => s.lang ? s.lang.slice(0, 2).toUpperCase() : null));
-}
-function heat(S, A) {
-  const dagen = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], namen = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
-  const g = Array.from({ length: 7 }, () => Array(24).fill(0));
-  const add = t => { const p = fmtUur.formatToParts(t); g[dagen.indexOf(p.find(x => x.type === 'weekday').value)][+p.find(x => x.type === 'hour').value]++; };
-  for (const s of S) for (const v of s.views) add(v.t);
-  for (const e of A) add(e.t);
-  const max = Math.max(1, ...g.flat()), cw = 22, ch = 22, L = 26, T = 16;
-  const kleur = v => { if (!v) return '#F3F3F0'; const a = v / max; const l = [[231, 244, 238], [7, 115, 74]]; const c = l[0].map((x, i) => Math.round(x + (l[1][i] - x) * Math.sqrt(a))); return `rgb(${c})`; };
-  let svg = `<svg viewBox="0 0 ${L + 24 * cw} ${T + 7 * ch + 4}" role="img" aria-label="Weergaven per dag en uur">`;
-  for (let h = 0; h < 24; h += 3) svg += `<text x="${L + h * cw + cw / 2}" y="10" text-anchor="middle">${String(h).padStart(2, '0')}</text>`;
-  g.forEach((rij, d) => {
-    svg += `<text x="0" y="${T + d * ch + 15}">${namen[d]}</text>`;
-    rij.forEach((v, h) => svg += `<rect data-tip="${namen[d]} ${String(h).padStart(2, '0')}:00 · ${nf.format(v)}" x="${L + h * cw + 1}" y="${T + d * ch + 1}" width="${cw - 2}" height="${ch - 2}" rx="3" fill="${kleur(v)}"/>`);
-  });
-  $('heat').innerHTML = svg + '</svg>'; tipper($('heat'));
-}
-function acties(S) {
-  const r = new Map();
-  for (const s of S) { const gezien = new Set(); for (const e of s.ev) if (ACTIES[e.ev] && !gezien.has(e.ev)) { gezien.add(e.ev); r.set(e.ev, (r.get(e.ev) || 0) + 1); } }
-  const rijen = [...r].sort((a, b) => b[1] - a[1]).map(([k, v]) => [ACTIES[k], v]);
-  bars('acties', rijen, { max: 14, tot: S.length });
+/* ----- Calculator ----- */
+function calculator() {
+  const { S, C, B } = SEL, heeft = (s, f) => s.ev.some(f);
+  const stappen = [
+    ['Op de calculator', s => s.views.some(v => v.naam === 'Calculator' || v.naam === 'Uitgebreid')],
+    ['Invulvenster geopend', s => heeft(s, e => e.ev === 'wizard_open')],
+    ...['use', 'buy', 'sub', 'en', 'up'].map(st => ['Stap ' + STAPPEN[st], s => heeft(s, e => e.ev === 'wizard_step' && e.p.step === st)]),
+    ['Berekening afgerond', s => heeft(s, e => e.ev === 'wizard_complete')],
+    ['Uitgebreid bekeken', s => s.views.some(v => v.naam === 'Uitgebreid')],
+    ['PDF, print of gedeeld', s => heeft(s, e => ['print', 'share', 'pdf_email'].includes(e.ev))],
+    ['Vlootanalyse of offerte', s => heeft(s, e => ['fleet_request_sent', 'quote_sent', 'fleet_cta_click'].includes(e.ev))],
+  ];
+  const n = stappen.map(([, f]) => S.filter(f).length), max = Math.max(1, n[0]);
+  $('trechter').innerHTML = stappen.map(([k], i) => `<div class="stap"><div>${esc(k)}</div><div><div class="balk" style="width:${(100 * n[i] / max).toFixed(1)}%;${i >= 7 ? 'background:' + KLEUR.voltM : ''}"></div></div><div class="v">${nf.format(n[i])} · ${pct(n[i], n[0])}${i > 0 && i < 8 && n[i - 1] > n[i] ? ` <span class="val">−${n[i - 1] - n[i]}</span>` : ''}</div></div>`).join('');
+  const lab = xLabels(B), e = perDagReeks(B, C.filter(c => c.goedkoper === 'e'), c => c.t), d = perDagReeks(B, C.filter(c => c.goedkoper !== 'e'), c => c.t);
+  staven('calcDag', lab.map((x, i) => ({ k: x, vals: [e[i], d[i]], tip: `${x}<br>${e[i] + d[i]} berekeningen<br>elektrisch goedkoper: ${e[i]}<br>diesel goedkoper: ${d[i]}` })), [KLEUR.volt, KLEUR.oranje]);
+  bars('afhaken', tel(S.flatMap(s => s.ev.filter(x => x.ev === 'wizard_close')), x => 'Bij ' + (STAPPEN[x.p.step] || x.p.step || '?')), { leeg: 'Niemand haakte af' });
+  // Unieke berekeningen: laatste stand per sessie of per reeks
+  bars('cVt', tel(C, c => VT[c.vt] || c.vt));
+  bars('cModus', tel(C, c => c.modus === 'uitgebreid' ? 'Uitgebreid' : 'Simpel'));
+  stackBars('cUitkomst', Object.keys(VT).map(vt => [VT[vt], [C.filter(c => c.vt === vt && c.goedkoper === 'e').length, C.filter(c => c.vt === vt && c.goedkoper !== 'e').length]]), [['Elektrisch', KLEUR.volt], ['Diesel', KLEUR.oranje]]);
+  const kmV = [['<20', 20000], ['20–40', 40000], ['40–60', 60000], ['60–80', 80000], ['80–100', 100000], ['100–150', 150000], ['150+', Infinity]], kmN = kmV.map(() => 0);
+  for (const c of C) if (c.km != null) kmN[kmV.findIndex(([, g]) => +c.km < g)]++;
+  staven('cKm', kmV.map(([k], i) => ({ k, vals: [kmN[i]], tip: `${k}.000 km: ${kmN[i]}` })), [KLEUR.volt], { breed: 50, labelBreedte: 44 });
+  const vv = [['< −20k', -20000], ['−20 – −10k', -10000], ['−10 – −5k', -5000], ['−5k – 0', 0], ['0 – 5k', 5000], ['5 – 10k', 10000], ['10 – 20k', 20000], ['20k+', Infinity]], vn = vv.map(() => 0);
+  for (const c of C) if (c.verschil != null) vn[vv.findIndex(([, g]) => +c.verschil < g)]++;
+  staven('cVerschil', vv.map(([k], i) => ({ k, vals: [i < 4 ? vn[i] : 0, i >= 4 ? vn[i] : 0], tip: `${k} € per jaar: ${vn[i]}` })), [KLEUR.oranje, KLEUR.volt], { breed: 50, labelBreedte: 60 });
+  bars('cModel', tel(C.filter(c => c.model), c => c.model.replace(/-/g, ' ')), { max: 12, pct: false, leeg: 'Geen model gekozen' });
 }
 
-function mailTabel(S, A, inPeriode) {
-  const K = KLIKS.filter(k => inPeriode(k.t) && !k.test && !k.scanner && (!F.focus || F.focus.type !== 'mail' || k.token === F.focus.id));
+/* ----- Herkomst ----- */
+function herkomst() {
+  const { S, A } = SEL;
+  bars('hBron', tel([...S.map(s => bronNaam(s.ref, s.mail ? 'email' : s.utm)), ...A.map(e => bronNaam(e.p.ref, e.p.utm_source))], x => x), { max: 10 });
+  bars('hRef', tel([...S.map(s => s.ref), ...A.map(e => e.p.ref)], x => x ? x.replace(/^www\./, '') : null), { max: 12, pct: false, leeg: 'Alleen direct verkeer' });
+  bars('hLand', tel([...S.map(s => landLabel(s.land)), ...A.map(e => landLabel(e.land))], x => x), { max: 12, leeg: 'Wordt vanaf nu gemeten' });
+  bars('hTaal', tel(S, s => s.lang ? s.lang.slice(0, 2).toUpperCase() : null), { max: 8 });
+  bars('hSiteTaal', tel([...S.flatMap(s => s.ev.filter(e => e.ev === 'page_view')), ...A], e => e.p.taal ? (e.p.taal === 'en' ? 'Engels' : 'Nederlands') : null), { max: 3, leeg: 'Wordt vanaf nu gemeten' });
+  bars('hCamp', tel(S.filter(s => s.camp), s => s.camp), { pct: false, leeg: 'Geen' });
+  bars('hTz', tel(S, s => s.tz), { max: 6, leeg: 'Wordt vanaf nu gemeten' });
+  const inst = new Map(); for (const s of S) if (s.views.length) { const b = bronSoort(s.ref, s.mail ? 'email' : s.utm), p = s.views[0].naam; if (!inst.has(p)) inst.set(p, [0, 0, 0, 0]); inst.get(p)[BRONNEN.findIndex(x => x[0] === b)]++; }
+  for (const e of A) { const b = bronSoort(e.p.ref, e.p.utm_source), p = paginaNaam(e.page, e.p.hash); if (!inst.has(p)) inst.set(p, [0, 0, 0, 0]); }
+  const rij = [...inst].filter(([, v]) => v.some(x => x)).sort((a, b) => b[1].reduce((x, y) => x + y) - a[1].reduce((x, y) => x + y)).slice(0, 10);
+  if (rij.length) matrix('hInstap', rij.map(r => r[0]), BRONNEN.map(b => b[1]), rij.map(r => r[1]), { links: 150, cel: 26, waarden: true }); else $('hInstap').innerHTML = '<div class="leeg">Geen sessies</div>';
+}
+
+/* ----- Apparaat en snelheid ----- */
+function techniek() {
+  const { S, A, AP } = SEL;
+  bars('tType', tel([...S.map(s => s.mobile), ...A.map(e => e.p.mobile)], m => m == null ? null : m ? 'Mobiel' : 'Desktop'));
+  bars('tScherm', tel([...S.map(s => s.vw), ...A.map(e => e.p.vw)], schermNaam));
+  bars('tBrowser', tel([...S, ...A], x => x.browser), { leeg: 'Wordt vanaf nu gemeten' });
+  bars('tOs', tel([...S, ...A], x => x.os), { leeg: 'Wordt vanaf nu gemeten' });
+  bars('tDpr', tel(S, s => s.dpr == null ? null : s.dpr >= 2 ? 'Scherp (2x+)' : s.dpr > 1 ? 'Geschaald (1,25–1,75x)' : 'Normaal (1x)'), { leeg: 'Wordt vanaf nu gemeten' });
+  bars('tDark', tel(S, s => s.dark == null ? null : s.dark ? 'Donker' : 'Licht'), { leeg: 'Wordt vanaf nu gemeten' });
+  bars('tNet', tel(S, s => s.net ? s.net.toUpperCase() : null), { leeg: 'Wordt vanaf nu gemeten' });
+  const P = [...S.flatMap(s => s.perf), ...AP], m = new Map();
+  for (const e of P) { const k = paginaNaam(e.p.p || e.page, null); if (!m.has(k)) m.set(k, []); m.get(k).push(e.p); }
+  const r = (v, g, s) => v == null ? '–' : `<span class="tag ${v <= g ? 'r-goed' : v <= s ? 'r-matig' : 'r-slecht'}">${g < 1 ? v.toFixed(2).replace('.', ',') : ms(v)}</span>`;
+  const q = (arr, k) => kwantiel(arr.map(x => x[k]).filter(x => x != null).map(Number), .75);
+  $('snelheid').innerHTML = m.size ? [...m].sort((a, b) => b[1].length - a[1].length).map(([k, a]) => `<tr><td>${esc(k)}</td><td class="r num">${a.length}</td><td class="r num">${r(q(a, 'ttfb'), 800, 1800)}</td><td class="r num">${r(q(a, 'lcp'), 2500, 4000)}</td><td class="r num">${r(q(a, 'inp'), 200, 500)}</td><td class="r num">${r(q(a, 'cls'), .1, .25)}</td><td class="r num">${ms(q(a, 'load'))}</td></tr>`).join('') : '<tr><td colspan="7" class="leeg">Wordt vanaf nu gemeten</td></tr>';
+  const lv = [['<1s', 1000], ['1–1,5s', 1500], ['1,5–2,5s', 2500], ['2,5–4s', 4000], ['4–6s', 6000], ['6s+', Infinity]], ln = lv.map(() => 0);
+  for (const p of P) if (p.p.lcp) ln[lv.findIndex(([, g]) => +p.p.lcp < g)]++;
+  staven('lcpHist', lv.map(([k], i) => ({ k, vals: [i < 3 ? ln[i] : 0, i === 3 ? ln[i] : 0, i > 3 ? ln[i] : 0], tip: `${k}: ${ln[i]} pagina's` })), [KLEUR.volt, '#B45309', '#B42318'], { breed: 60, labelBreedte: 50 });
+  const fm = new Map(); for (const e of S.flatMap(s => s.ev.filter(x => x.ev === 'js_error'))) { const k = (e.p.m || '?') + (e.p.src ? ' · ' + e.p.src + ':' + (e.p.line || '') : ''); const x = fm.get(k) || { n: 0, t: e.t }; x.n++; if (e.t > x.t) x.t = e.t; fm.set(k, x); }
+  $('fouten').innerHTML = fm.size ? [...fm].sort((a, b) => b[1].t - a[1].t).map(([k, x]) => `<tr><td class="num">${fmtVol.format(x.t)}</td><td style="overflow-wrap:anywhere">${esc(k)}</td><td class="r num">${x.n}</td></tr>`).join('') : '<tr><td colspan="3" class="leeg">Geen fouten</td></tr>';
+}
+
+/* ----- E-mail ----- */
+function email() {
+  const { S, B } = SEL, f = B.in;
+  const K = KLIKS.filter(k => f(k.t) && !k.test && !k.scanner && (!F.focus || F.focus.type !== 'mail' || k.token === F.focus.id));
   const per = new Map(), get = t => { if (!per.has(t)) per.set(t, { token: t, kliks: [], ses: [] }); return per.get(t); };
   for (const k of K) get(k.token).kliks.push(k);
   for (const s of S) if (s.mail) get(s.mail).ses.push(s);
-  const rijen = [...per.values()].filter(r => CONTACT.has(r.token) && (!F.zoek || zoekOk({ vid: '', id: '', mail: r.token })))
+  const rijen = [...per.values()].filter(r => CONTACT.has(r.token) && (!F.zoek || zoekOk({ mail: r.token })))
     .map(r => ({ ...r, c: CONTACT.get(r.token), laatst: r.ses.length ? Math.max(...r.ses.map(s => +s.eind)) : 0, eerste: r.kliks.length ? r.kliks[0].t : null }))
     .sort((a, b) => (b.laatst || 0) - (a.laatst || 0) || (b.eerste || 0) - (a.eerste || 0));
-  const scanners = KLIKS.filter(k => inPeriode(k.t) && !k.test && k.scanner).length;
-  const zonderCookies = anon.filter(e => inPeriode(e.t) && e.p.utm_source === 'email' && anonKlasse(e) === 'echt').length;
-  $('mailKpi').innerHTML = [
-    [new Set(K.map(k => k.token)).size, 'mensen klikten'], [rijen.filter(r => r.ses.length).length, 'gekoppeld aan een bezoek'],
-    [zonderCookies, 'weergaven vanuit mail zonder cookies'], [scanners, 'scannerkliks weggelaten'],
-  ].map(([n, l]) => `<span><b class="num" style="color:var(--ink)">${nf.format(n)}</b> ${l}</span>`).join('');
+  const alle = KLIKS.filter(k => f(k.t) && !k.test), scanners = alle.filter(k => k.scanner).length;
+  const zonder = anon.filter(e => f(e.t) && e.p.utm_source === 'email' && anonKlasse(e) === 'echt').length;
+  $('mailKpi').innerHTML = [[new Set(K.map(k => k.token)).size, 'mensen klikten'], [rijen.filter(r => r.ses.length).length, 'gekoppeld aan een bezoek'], [rijen.filter(r => r.ses.some(s => s.ev.some(e => e.ev === 'wizard_complete'))).length, 'maakten een berekening'], [zonder, 'weergaven zonder cookies'], [scanners, 'scannerkliks weggelaten']]
+    .map(([n, l]) => `<div class="stat"><div class="n">${nf.format(n)}</div><div class="l">${l}</div></div>`).join('');
   $('mailBody').innerHTML = rijen.length ? rijen.map(r => {
-    const sec = r.ses.reduce((a, s) => a + s.sec, 0), views = r.ses.reduce((a, s) => a + s.views.length, 0), zeker = r.ses.some(s => s.mailZeker);
-    const berekend = r.ses.some(s => s.ev.some(e => e.ev === 'wizard_complete'));
+    const sec = r.ses.reduce((a, s) => a + s.sec, 0), views = r.ses.reduce((a, s) => a + s.views.length, 0), zeker = r.ses.some(s => s.mailZeker), berekend = r.ses.some(s => s.ev.some(e => e.ev === 'wizard_complete'));
     return `<tr class="klik" data-mail="${r.token}"><td class="bedrijf">${esc(r.c.bedrijf || '–')}</td><td>${esc(r.c.naam || r.c.email || '')}</td><td>${esc(r.c.segment || '')}</td><td class="r num">${r.kliks.length}</td><td class="num">${r.eerste ? fmtVol.format(r.eerste) : '–'}</td><td class="r num">${r.ses.length}${r.ses.length && !zeker ? ' <span class="gok">≈</span>' : ''}</td><td class="r num">${r.ses.length ? duur(sec) : '–'}</td><td class="r num">${r.ses.length ? views : '–'}</td><td>${berekend ? '<span class="vink">✓</span>' : ''}</td><td class="num">${r.laatst ? fmtVol.format(new Date(r.laatst)) : '–'}</td></tr>`;
-  }).join('') : '<tr><td colspan="10" class="leeg">Geen kliks uit e-mail in deze periode</td></tr>';
+  }).join('') : '<tr><td colspan="10" class="leeg">Nog niemand geklikt in deze periode</td></tr>';
+  const lab = xLabels(B), mens = perDagReeks(B, alle.filter(k => !k.scanner), k => k.t), sc = perDagReeks(B, alle.filter(k => k.scanner), k => k.t);
+  staven('mailDag', lab.map((x, i) => ({ k: x, vals: [mens[i], sc[i]], tip: `${x}<br>mens: ${mens[i]}<br>scanner: ${sc[i]}` })), [KLEUR.volt, KLEUR.voltM]);
+  bars('mailLink', tel(alle.filter(k => !k.scanner), k => k.link), { pct: false, leeg: 'Nog geen menselijke kliks' });
 }
-$('mailBody').addEventListener('click', e => {
-  const tr = e.target.closest('tr[data-mail]'); if (!tr) return;
-  const c = CONTACT.get(tr.dataset.mail); zetFocus('mail', tr.dataset.mail, c ? c.bedrijf || c.email : 'contact');
-});
+$('mailBody').addEventListener('click', e => { const tr = e.target.closest('tr[data-mail]'); if (!tr) return; const c = CONTACT.get(tr.dataset.mail); zetFocus('mail', tr.dataset.mail, c ? c.bedrijf || c.email : 'contact'); });
 
+/* ----- Sessies ----- */
 const bedrijfHtml = s => { const c = bedrijfVan(s); return c ? `<span class="bedrijf">${esc(c.bedrijf || c.email)}</span>${s.mailZeker ? '' : ' <span class="gok" title="Vermoedelijk, op tijdstip van de klik">≈</span>'}` : ''; };
 const tagHtml = k => `<span class="tag t-${k}">${{ echt: 'Echt', intern: 'Intern', bot: 'Bot/test' }[k]}</span>`;
-function sessieTabel(S) {
-  $('sessies').innerHTML = S.length ? S.slice(0, 300).map(s => {
-    const r = routeVan(s);
-    return `<tr class="klik" data-sid="${s.id}"><td class="num">${fmtVol.format(s.start)}</td><td>${tagHtml(sessieKlasse(s))}</td><td>${bedrijfHtml(s)}</td><td class="r num">${duur(s.sec)}</td><td class="r num">${s.views.length}</td><td class="route">${esc(r.slice(0, 6).join(' → '))}${r.length > 6 ? ' → …' : ''}</td><td>${esc(bronNaam(s.ref, s.utm))}</td><td class="num">${s.mobile == null ? '–' : s.mobile ? 'mobiel' : 'desktop'}${s.vw ? ' · ' + s.vw : ''}${s.browser ? ' · ' + esc(s.browser) : ''}</td></tr>`;
-  }).join('') : '<tr><td colspan="8" class="leeg">Geen sessies met cookies in deze periode</td></tr>';
-}
-$('sessies').addEventListener('click', e => {
-  const tr = e.target.closest('tr[data-sid]'); if (!tr) return;
-  document.querySelectorAll('#sessies tr.actief').forEach(x => x.classList.remove('actief')); tr.classList.add('actief');
-  const s = sessies.get(tr.dataset.sid), c = bedrijfVan(s);
-  $('detail').hidden = false; $('detail').dataset.vid = s.vid;
-  $('detailTitel').textContent = fmtVol.format(s.start) + ' · ' + duur(s.sec) + ' · ' + (c ? (c.bedrijf || c.email) + (s.mailZeker ? '' : ' (vermoedelijk)') : 'bezoeker ' + s.vid.slice(0, 8));
-  $('detailLijst').innerHTML = s.ev.map(e => {
-    let p = '';
-    if (e.ev === 'page_view') p = paginaNaam(e.page, e.p.hash);
-    else if (e.ev === 'page_leave') p = paginaNaam(e.p.p || e.page) + ' · ' + duur(e.p.sec) + ' · ' + (e.p.depth ?? 0) + '% gescrold';
-    else if (e.ev === 'session_start') p = bronNaam(e.p.ref, e.p.utm_source) + ' · ' + (e.p.vw || '') + ' px · ' + (e.p.lang || '') + (e.p.n ? ' · bezoek ' + e.p.n : '');
-    else p = Object.entries(e.p).filter(([k]) => k !== 'inputs').map(([k, v]) => k + ': ' + (typeof v === 'object' ? JSON.stringify(v) : v)).join(' · ').slice(0, 160);
-    return `<li><span class="t">${fmtTijd.format(e.t)}</span><span class="e">${esc(ACTIES[e.ev] || e.ev)}</span><span class="p">${esc(p)}</span></li>`;
-  }).join('');
-  $('detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-$('detailFocus').addEventListener('click', () => { const v = $('detail').dataset.vid, s = perVid.get(v)[0], c = bedrijfVan(s); zetFocus('vid', v, c ? c.bedrijf || c.email : 'bezoeker ' + v.slice(0, 8)); });
-function bezoekerTabel(inPeriode, S) {
+function sessieTabel() {
+  const { S } = SEL;
+  $('sesAantal').textContent = nf.format(S.length) + ' sessies';
+  $('sessies').innerHTML = S.length ? S.slice(0, 400).map(s => { const r = routeVan(s); return `<tr class="klik" data-sid="${s.id}"><td class="num">${fmtVol.format(s.start)}</td><td>${tagHtml(sessieKlasse(s))}</td><td>${bedrijfHtml(s)}</td><td class="r num">${duur(s.sec)}</td><td class="r num">${s.views.length}</td><td class="route">${esc(r.slice(0, 6).join(' → '))}${r.length > 6 ? ' → …' : ''}</td><td>${esc(bronNaam(s.ref, s.mail ? 'email' : s.utm))}</td><td>${esc(s.land || '')}</td><td class="num">${s.mobile == null ? '–' : s.mobile ? 'mobiel' : 'desktop'}${s.vw ? ' · ' + s.vw : ''}${s.browser ? ' · ' + esc(s.browser) : ''}</td></tr>`; }).join('') : '<tr><td colspan="9" class="leeg">Geen sessies met cookies in deze periode</td></tr>';
   const rijen = [], zicht = new Set(S.map(s => s.vid));
   for (const [vid, lijst] of perVid) {
     if (!zicht.has(vid)) continue;
     const k = intern.has(vid) || vidIntern.has(vid) || lijst.some(s => TESTTOKENS.has(s.mail)) ? 'intern' : lijst.every(s => s.bot) ? 'bot' : 'echt';
-    if (!wieOk(k)) continue;
     const b = lijst.find(s => s.vw) || lijst[0];
-    if (!appOk(b.mobile)) continue;
-    rijen.push({ vid, k, s0: lijst.find(s => s.mail) || lijst[0], eerst: lijst[0].start, laatst: lijst[lijst.length - 1].eind, ses: lijst.length, views: lijst.reduce((a, s) => a + s.views.length, 0), sec: lijst.reduce((a, s) => a + s.sec, 0), vw: b.vw, lang: b.lang });
+    rijen.push({ vid, k, s0: lijst.find(s => s.mail) || lijst[0], eerst: lijst[0].start, laatst: lijst[lijst.length - 1].eind, ses: lijst.length, views: viewsVan(lijst), sec: lijst.reduce((a, s) => a + s.sec, 0), vw: b.vw, lang: b.lang });
   }
   rijen.sort((a, b) => b.laatst - a.laatst);
   $('bezoekers').innerHTML = rijen.length ? rijen.map(r => `<tr class="klik" data-vid="${r.vid}"><td class="num">${r.vid.slice(0, 8)}</td><td>${tagHtml(r.k)}</td><td>${bedrijfHtml(r.s0)}</td><td class="num">${fmtKort.format(r.eerst)}</td><td class="num">${fmtVol.format(r.laatst)}</td><td class="r num">${r.ses}</td><td class="r num">${r.views}</td><td class="r num">${duur(r.sec)}</td><td class="num">${r.vw || '–'} · ${esc(r.lang || '–')}</td><td><button class="ghost mini" data-intern="${r.vid}" data-aan="${r.k === 'intern' ? 0 : 1}">${r.k === 'intern' ? 'Niet intern' : 'Intern'}</button></td></tr>`).join('') : '<tr><td colspan="10" class="leeg">Geen bezoekers met cookies in deze periode</td></tr>';
 }
+function toonDetail(s) {
+  const c = bedrijfVan(s);
+  $('detail').hidden = false; $('detail').dataset.vid = s.vid;
+  $('detailTitel').textContent = fmtVol.format(s.start) + ' · ' + (c ? (c.bedrijf || c.email) + (s.mailZeker ? '' : ' (vermoedelijk)') : 'bezoeker ' + s.vid.slice(0, 8));
+  const kl = s.ev.filter(e => e.ev === 'klik').length, ander = (perVid.get(s.vid) || []).length;
+  $('detailStats').innerHTML = [[duur(s.sec), 'actieve tijd'], [s.views.length, "pagina's"], [kl, 'kliks'], [bronNaam(s.ref, s.mail ? 'email' : s.utm), 'bron'], [landLabel(s.land) || '–', 'land'], [(s.mobile ? 'Mobiel' : 'Desktop') + (s.vw ? ' · ' + s.vw + (s.vh ? '×' + s.vh : '') : ''), 'scherm'], [(s.browser || '–') + (s.os ? ' · ' + s.os : ''), 'browser'], [s.n ? s.n + 'e' : '–', 'bezoek'], [ander, 'sessies van deze browser']]
+    .map(([n, l]) => `<div class="stat"><div class="n" style="font-size:15px">${esc(n)}</div><div class="l">${l}</div></div>`).join('');
+  $('detailLijst').innerHTML = s.ev.map(e => {
+    let p = '';
+    if (e.ev === 'page_view') p = paginaNaam(e.page, e.p.hash);
+    else if (e.ev === 'page_leave') p = paginaNaam(e.p.p || e.page, e.p.hash) + ' · ' + duur(e.p.sec) + ' actief · ' + (e.p.depth ?? 0) + '% gescrold';
+    else if (e.ev === 'session_start') p = bronNaam(e.p.ref, e.p.utm_source) + ' · ' + (e.p.vw || '') + ' px · ' + (e.p.lang || '') + (e.p.n ? ' · bezoek ' + e.p.n : '');
+    else if (e.ev === 'klik') p = (e.p.el || e.p.id || e.p.tag) + (e.p.href ? ' → ' + e.p.href : '') + (e.p.yp != null ? ' · ' + e.p.yp + '% hoogte' : '');
+    else if (e.ev === 'perf') p = 'LCP ' + ms(e.p.lcp) + ' · TTFB ' + ms(e.p.ttfb) + (e.p.inp ? ' · INP ' + ms(e.p.inp) : '');
+    else if (e.ev === 'wizard_step') p = STAPPEN[e.p.step] || e.p.step;
+    else p = Object.entries(e.p).filter(([k]) => k !== 'inputs').map(([k, v]) => k + ': ' + (typeof v === 'object' ? JSON.stringify(v) : v)).join(' · ').slice(0, 160);
+    const naam = e.ev === 'page_view' ? 'Pagina' : e.ev === 'page_leave' ? 'Pagina verlaten' : e.ev === 'session_start' ? 'Binnengekomen' : e.ev === 'klik' ? 'Klik' : e.ev === 'perf' ? 'Laadsnelheid' : e.ev === 'wizard_step' ? 'Stap' : ACTIES[e.ev] || e.ev;
+    return `<li><span class="t">${fmtSec.format(e.t)}</span><span class="e">${esc(naam)}</span><span class="p">${esc(p)}</span></li>`;
+  }).join('');
+  $('detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+$('sessies').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-sid]'); if (!tr) return;
+  document.querySelectorAll('#sessies tr.actief').forEach(x => x.classList.remove('actief')); tr.classList.add('actief');
+  toonDetail(sessies.get(tr.dataset.sid));
+});
+$('detailFocus').addEventListener('click', () => { const v = $('detail').dataset.vid, c = bedrijfVan((perVid.get(v) || []).find(s => s.mail)); zetFocus('vid', v, c ? c.bedrijf || c.email : 'bezoeker ' + v.slice(0, 8)); });
 $('bezoekers').addEventListener('click', async e => {
   const b = e.target.closest('button[data-intern]');
-  if (!b) { const tr = e.target.closest('tr[data-vid]'); if (tr) { const s = perVid.get(tr.dataset.vid)[0], c = bedrijfVan(s); zetFocus('vid', tr.dataset.vid, c ? c.bedrijf || c.email : 'bezoeker ' + tr.dataset.vid.slice(0, 8)); } return; }
-  const vid = b.dataset.intern, aan = b.dataset.aan === '1';
-  b.disabled = true;
+  if (!b) { const tr = e.target.closest('tr[data-vid]'); if (tr) { const c = bedrijfVan((perVid.get(tr.dataset.vid) || []).find(s => s.mail)); zetFocus('vid', tr.dataset.vid, c ? c.bedrijf || c.email : 'bezoeker ' + tr.dataset.vid.slice(0, 8)); } return; }
+  const vid = b.dataset.intern, aan = b.dataset.aan === '1'; b.disabled = true;
   try {
     const r = await fetch(FN, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code: sessionStorage.getItem('sod_dash_code'), intern: { visitor_id: vid, aan } }) });
     if (!r.ok) throw 0;
@@ -543,6 +796,13 @@ $('bezoekers').addEventListener('click', async e => {
 });
 
 /* ===== Bediening ===== */
+function toonTab(t) {
+  F.tab = t; try { localStorage.setItem('sod-dash-tab', t); } catch (e) {}
+  $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.tab === t));
+  document.querySelectorAll('.tab').forEach(x => x.hidden = x.dataset.tab !== t);
+  render();
+}
+$('tabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if (b) toonTab(b.dataset.tab); });
 $('fZoek').addEventListener('input', e => { F.zoek = e.target.value.trim(); render(); });
 $('focusUit').addEventListener('click', () => zetFocus(null));
 for (const [id, key, num] of [['fPeriode', 'periode', true], ['fWie', 'wie'], ['fApp', 'app'], ['fBron', 'bron']]) {
@@ -553,7 +813,8 @@ for (const [id, key, num] of [['fPeriode', 'periode', true], ['fWie', 'wie'], ['
   });
 }
 $('ververs').addEventListener('click', () => location.reload());
-render();
+let rT = 0; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(render, 200); });
+toonTab(F.tab);
 </script>
 </body>
 </html>
