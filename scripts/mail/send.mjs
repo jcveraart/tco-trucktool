@@ -123,7 +123,7 @@ for (const contact of list) {
   try {
     const resendId = await sendOne(contact, variant);
     const rec = verzendingRecord({ token: contact.token, campagne, variant, resendId, geplandVoor: planTijd || null, test: !!testTo });
-    await sql(`insert into public.email_verzonden (token, campagne, variant, resend_id, gepland_voor, test) values (${sqlStr(rec.token)}, ${sqlStr(rec.campagne)}, ${sqlStr(rec.variant)}, ${sqlStr(rec.resend_id)}, ${rec.gepland_voor ? sqlStr(rec.gepland_voor) : 'null'}, ${rec.test}) on conflict (token, campagne) do update set resend_id = excluded.resend_id, gepland_voor = excluded.gepland_voor, test = excluded.test`);
+    await sql(`insert into public.email_verzonden (token, campagne, variant, resend_id, gepland_voor, test) values (${sqlStr(rec.token)}, ${sqlStr(rec.campagne)}, ${sqlStr(rec.variant)}, ${sqlStr(rec.resend_id)}, ${rec.gepland_voor ? sqlStr(rec.gepland_voor) : 'null'}, ${rec.test}) on conflict (token, campagne) do update set resend_id = excluded.resend_id, gepland_voor = excluded.gepland_voor, test = excluded.test, verzonden_op = excluded.verzonden_op`);
     sent++;
     console.log(`${planTijd ? `ingepland voor ${planTijd}` : 'verstuurd'} (${emailLabel(campagne, variant)}) ${contact.email} ${resendId}`);
     await sleep(550); // onder de Resend-rate-limit (2/sec) blijven
