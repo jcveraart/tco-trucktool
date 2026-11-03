@@ -2,7 +2,8 @@
 // (secret DASHBOARD_CODE); pas daarna haalt de functie met de service-role de
 // maildata op en zet die in de publieke template van de website. Zo staat er
 // nooit klantdata openbaar in de sitebestanden.
-// Pogingen worden gelogd en per IP begrensd (max 15 per uur).
+// Pogingen worden gelogd; alleen mislukte pogingen zijn per IP begrensd
+// (max 15 per uur). Geslaagde aanvragen (ook vernieuwen) tellen niet mee.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const TEMPLATE_URL = 'https://stekkerofdiesel.nl/assets/maildashboard-template.html';
@@ -22,7 +23,7 @@ Deno.serve(async (req: Request) => {
 
   const uurGeleden = new Date(Date.now() - 3600_000).toISOString();
   const { count } = await supabase.from('email_dashboard_pogingen')
-    .select('id', { count: 'exact', head: true }).eq('ip', ip).gte('poging_op', uurGeleden);
+    .select('id', { count: 'exact', head: true }).eq('ip', ip).eq('geslaagd', false).gte('poging_op', uurGeleden);
   if ((count || 0) >= 15) return json(429, { error: 'te_veel_pogingen' });
 
   const { code } = await req.json().catch(() => ({ code: '' }));
