@@ -29,6 +29,9 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
 const html = template.replace('__DATA__', () => json).replace('__GEN__', () => new Date().toLocaleString('nl-NL'));
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(outFile, html);
+// Publieke template (alleen vormgeving + placeholders, geen data) waar de
+// online variant in de Edge Function de live data in zet.
+fs.writeFileSync(path.join(dir, '..', '..', 'assets', 'maildashboard-template.html'), template);
 console.log(`Dashboard: ${outFile} (${contacten.length} klanten, ${verzonden.length} verzonden, ${kliks.length} kliks)`);
 
 if (process.argv.includes('--serve')) {
