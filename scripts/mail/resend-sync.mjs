@@ -12,10 +12,12 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const sent = await sql('select resend_id, token, campagne, variant from public.email_verzonden where resend_id is not null');
 console.log(`${sent.length} verzonden mails met Resend-id.`);
 const events = [], bounces = [], klachten = [], gepland = [];
+let onbekend = 0;
 for (const s of sent) {
   const r = await fetch(`https://api.resend.com/emails/${s.resend_id}`, {
     headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}` },
   });
+  if (r.status === 404) { onbekend++; continue; } // mail van het oude Resend-account (voor de migratie)
   if (!r.ok) { console.error(`Resend HTTP ${r.status} voor ${s.resend_id}`); continue; }
   const mail = await r.json();
   const event = mail.last_event || 'sent';
@@ -37,4 +39,4 @@ for (let i = 0; i < gepland.length; i += 100) {
 }
 if (bounces.length) await sql(`update public.email_contacten set bounce_op = coalesce(bounce_op, now()) where token in (${bounces.join(',')})`);
 if (klachten.length) await sql(`update public.email_contacten set afgemeld_op = coalesce(afgemeld_op, now()) where token in (${klachten.join(',')})`);
-console.log(`${events.length} mails bijgewerkt in email_events.`);
+console.log(`${events.length} mails bijgewerkt in email_events.${onbekend ? ` ${onbekend} overgeslagen (oud Resend-account).` : ''}`);
