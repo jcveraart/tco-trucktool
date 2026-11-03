@@ -74,6 +74,7 @@ svg text{font-family:var(--mono)}
     <div class="sub">Stekker of Diesel · bijgewerkt __GEN__ · verversen: <code>node scripts/mail/dashboard.mjs</code> · <a href="https://www.notion.so/40cc947c3de3810b9a55e0176be142cf" target="_blank" rel="noopener">E-maildashboard in Notion</a> · <a href="https://www.notion.so/1c5cf07d8338422a8dd63ac4c0abb0dc" target="_blank" rel="noopener">Klanten &amp; leads in Notion</a></div>
   </div>
   <div class="spacer"></div>
+  <button id="refreshBtn" type="button">Vernieuw data</button>
   <button class="ghost" id="csvBtn" type="button">Download kliks (CSV)</button>
 </header>
 
@@ -419,6 +420,21 @@ function render() {
 }
 for (const id of ['fCampagne', 'fVariant', 'fLink', 'fVan', 'fTot', 'fZoek', 'fBots']) $(id).addEventListener('input', render);
 $('csvBtn').addEventListener('click', () => downloadCsv(gefilterd()));
+$('refreshBtn').addEventListener('click', async () => {
+  const code = sessionStorage.getItem('sod_dash_code');
+  if (!code) { location.reload(); return; }
+  const knop = $('refreshBtn');
+  knop.disabled = true; knop.textContent = 'Bezig…';
+  try {
+    const r = await fetch('https://zarvyblveyomngypwvhw.supabase.co/functions/v1/email-dashboard', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
+    if (!r.ok) throw new Error(r.status);
+    const html = await r.text();
+    document.open(); document.write(html); document.close();
+  } catch { knop.disabled = false; knop.textContent = 'Vernieuw data'; alert('Vernieuwen mislukt. Probeer opnieuw.'); }
+});
 render();
 </script>
 </body>

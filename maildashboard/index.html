@@ -34,6 +34,7 @@ document.getElementById('f').addEventListener('submit', async e => {
   e.preventDefault();
   const knop = document.getElementById('knop'), fout = document.getElementById('fout');
   knop.disabled = true; knop.textContent = 'Bezig…'; fout.textContent = '';
+  sessionStorage.setItem('sod_dash_code', document.getElementById('code').value.trim());
   try {
     const r = await fetch('https://zarvyblveyomngypwvhw.supabase.co/functions/v1/email-dashboard', {
       method: 'POST', headers: { 'content-type': 'application/json' },
