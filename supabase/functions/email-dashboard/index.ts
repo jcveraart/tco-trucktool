@@ -6,10 +6,16 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const TEMPLATE_URL = 'https://stekkerofdiesel.nl/assets/maildashboard-template.html';
+const CORS = {
+  'Access-Control-Allow-Origin': 'https://stekkerofdiesel.nl',
+  'Access-Control-Allow-Headers': 'content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
 const json = (status: number, body: unknown) =>
-  new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
+  new Response(JSON.stringify(body), { status, headers: { ...CORS, 'content-type': 'application/json', 'cache-control': 'no-store' } });
 
 Deno.serve(async (req: Request) => {
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
   if (req.method !== 'POST') return json(405, { error: 'method_not_allowed' });
   const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'onbekend';
   const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
@@ -68,5 +74,5 @@ Deno.serve(async (req: Request) => {
   const html = template
     .replace('__DATA__', () => JSON.stringify(data).replace(/</g, '\\u003c'))
     .replace('__GEN__', () => new Date().toLocaleString('nl-NL'));
-  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
+  return new Response(html, { headers: { ...CORS, 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' } });
 });
