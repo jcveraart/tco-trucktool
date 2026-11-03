@@ -41,16 +41,17 @@ Deno.serve(async (req: Request) => {
   if (!juist) return json(401, { error: 'onjuiste_code' });
 
   await registreerNetwerk(supabase, req, ip, 'E-maildashboard');
-  const [contacten, verzonden, kliks, events, afmeldingen, bezoek, templateResp] = await Promise.all([
+  const [contacten, verzonden, kliks, events, afmeldingen, bezoek, landingen, templateResp] = await Promise.all([
     supabase.from('email_contacten').select('token, email, bedrijf, naam, segment, bron, toegevoegd_op, afgemeld_op, bounce_op, notion_page_id').order('bedrijf'),
     supabase.from('email_verzonden').select('token, campagne, variant, verzonden_op, resend_id, gepland_voor, test').order('verzonden_op'),
     supabase.from('email_kliks').select('id, ontvangen_op, token, campagne, variant, link, bot, ua, intern').order('ontvangen_op', { ascending: false }).limit(10000),
     supabase.from('email_events').select('resend_id, token, campagne, variant, last_event, bijgewerkt_op'),
     supabase.from('email_afmeldingen').select('ontvangen_op, token, email, campagne').order('ontvangen_op'),
     supabase.rpc('dashboard_mail_bezoek'),
+    supabase.rpc('dashboard_mail_landingen'),
     fetch(TEMPLATE_URL),
   ]);
-  const fout = [contacten, verzonden, kliks, events, afmeldingen, bezoek].find(r => r.error);
+  const fout = [contacten, verzonden, kliks, events, afmeldingen, bezoek, landingen].find(r => r.error);
   if (fout) return json(500, { error: String(fout.error?.message || 'query_fout') });
   if (!templateResp.ok) return json(502, { error: 'template_niet_bereikbaar' });
 
@@ -83,7 +84,7 @@ Deno.serve(async (req: Request) => {
   const data = {
     gegenereerd: new Date().toISOString(),
     contacten: contacten.data, verzonden: verzonden.data, kliks: kliksGeklasseerd,
-    events: events.data, afmeldingen: afmeldingen.data, bezoek: bezoek.data || [],
+    events: events.data, afmeldingen: afmeldingen.data, bezoek: bezoek.data || [], landingen: landingen.data || [],
   };
   const template = await templateResp.text();
   const html = template

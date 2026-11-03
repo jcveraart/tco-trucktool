@@ -71,6 +71,11 @@ tr.actief td{background:var(--volt-l)}
 .k-mens{background:var(--volt-l);color:var(--volt-d)} .k-scanner{background:#FDECEA;color:var(--red)} .k-intern{background:#E2E8F0;color:#334155} .k-test{background:#FEF3C7;color:#92400E}
 .bedrijf{font-weight:500}
 .sub{font-size:12.5px;color:var(--ink3)}
+.toets{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:4px;font-size:13px}
+.toets li{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:baseline}
+.toets .ja{color:var(--red);font-weight:600} .toets .nee{color:var(--ink3)} .toets .w{font:12px var(--mono);color:var(--ink2);text-align:right}
+.ua{font:11.5px var(--mono);color:var(--ink3);word-break:break-all;margin-top:10px}
+h3.kd{font-size:13px;margin:16px 0 6px;color:var(--ink2);font-weight:600}
 .chart{position:relative}
 .chart svg{display:block;width:100%;height:auto;overflow:visible}
 svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
@@ -147,13 +152,18 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><h2 id="detailTitel" style="margin:0"></h2><span class="spacer"></span><a class="ghost mini" id="detailSite" href="#" style="font-size:12.5px">Bekijk sitebezoek</a></div>
     <div class="sub" id="detailSub" style="margin-bottom:12px"></div>
     <div class="stats" id="detailStats"></div>
+    <h3 class="kd">Alle kliks van dit adres</h3>
+    <div class="scroll" style="max-height:320px"><table><thead><tr><th>Tijd</th><th>Knop</th><th>Mail</th><th class="r">Na vorige</th><th>Type</th><th>Op de site</th></tr></thead><tbody id="detailKliks"></tbody></table></div>
+    <h3 class="kd">Tijdlijn</h3>
     <ul class="timeline" id="detailLijst"></ul>
   </section>
+  <section class="card" id="klikCardK" hidden></section>
 </div>
 
 <div class="tab" data-tab="kliks" hidden>
   <section class="card"><h2>Alle kliks<small id="kAantal"></small></h2>
-    <div class="scroll"><table><thead><tr><th>Tijd</th><th>Bedrijf</th><th>Mail</th><th>Knop</th><th>Type</th><th>Na verzending</th><th>Browser</th></tr></thead><tbody id="kliksBody"></tbody></table></div></section>
+    <div class="scroll"><table><thead><tr><th>Tijd</th><th>Bedrijf</th><th>Mail</th><th>Knop</th><th>Type</th><th>Na verzending</th><th>Browser</th><th>Op de site</th></tr></thead><tbody id="kliksBody"></tbody></table></div></section>
+  <section class="card" id="klikCard" hidden></section>
   <div class="grid">
     <section class="card"><h2>Waarom als scanner gezien</h2><div id="scannerReden"></div></section>
     <section class="card"><h2>Browser van menselijke kliks</h2><div id="kBrowser"></div></section>
@@ -215,6 +225,48 @@ const kliks = (DATA.kliks || []).map(k => {
 });
 const SOORTNAAM = { mens: 'Mens', scanner: 'Scanner', intern: 'Intern', test: 'Test' };
 const KLIKKLASSE = { mens: 'k-mens', scanner: 'k-scanner', intern: 'k-intern', test: 'k-test' };
+// Paginaweergaven die uit een mail kwamen, met de sessie erna (alleen met cookies)
+const landingen = (DATA.landingen || []).map(r => ({ t: new Date(r[0]), pagina: r[1], consent: r[2], sessie: r[3], campagne: r[4], content: r[5], browser: r[6], os: r[7], land: r[8], ua: r[9], intern: r[10], wd: r[11], weergaven: r[12], sec: r[13], paginas: r[14], berekend: r[15], einde: r[16] }));
+const PAGINA = { calc: 'Calculator', uitgebreid: 'Uitgebreid', vloot: 'Vlootanalyse', faq: 'Overstapgids', gids: 'Gidsonderwerp', model: 'Model', modellen: 'Modellen', nieuws: 'Nieuws', over: 'Over ons', privacy: 'Privacy', restwaarde: 'Restwaarde' };
+const paginaNaam = p => PAGINA[p] || (p || '').replace(/^gids\//, 'Gids: ') || '–';
+const fmtMs = d => new Date(d).toLocaleString('nl-NL', { timeZone: TZ, day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
+const preciesMs = iso => { const m = /\.(\d+)/.exec(iso || ''); return Date.parse(String(iso).replace(/\.\d+/, '')) + (m ? parseFloat('0.' + m[1]) * 1000 : 0); };
+const verschil = ms => { const a = Math.abs(ms); return a < 1000 ? (a < 1 ? a.toFixed(3).replace('.', ',') + ' ms' : '') + (a < 1 ? '' : (a < 10 ? a.toFixed(1).replace('.', ',') : Math.round(a)) + ' ms') : a < 60000 ? (a / 1000).toFixed(1).replace('.', ',') + ' s' : wacht(a); };
+const osVan = ua => !ua ? null : /iphone|ipad/i.test(ua) ? 'iOS' : /android/i.test(ua) ? 'Android' : /windows/i.test(ua) ? 'Windows' : /mac os x/i.test(ua) ? 'macOS' : /linux/i.test(ua) ? 'Linux' : 'Overig';
+// Landing bij een klik: weergave met dezelfde campagne en knop, binnen 30 s na de klik
+function landingVan(k) {
+  const doel = { calc: ['calc'], kenteken: ['calc'], modellen: ['modellen'], gids: ['faq'], heffing: ['gids'], subsidie: ['gids'], ze: ['gids'], uitgebreid: ['uitgebreid'], vloot: ['vloot'] }[k.link];
+  return landingen.filter(l => { const d = l.t - k.t; return d >= -1000 && d < 30000 && (!l.campagne || l.campagne === k.campagne) && (!l.content || l.content === (k.variant || '') + '-' + k.link) && (!doel || doel.includes(l.pagina)); });
+}
+for (const k of kliks) { k.tp = preciesMs(k.ontvangen_op); k.land = landingVan(k); k.zelfde = kliks.filter(x => x !== k && x.token && x.token === k.token).sort((a, b) => a.t - b.t); }
+function siteTekst(k) { const l = k.land; if (!l.length) return '–'; const met = l.find(x => x.sessie); return met ? `${met.weergaven} p · ${duur(met.sec)}` : l.length === 1 ? 'geladen' : l.length + '× geladen'; }
+function klikDetail(id) {
+  const k = kliks.find(x => String(x.id) === String(id)); if (!k) return '';
+  const c = contact.get(k.token), sv = verzondenOp.get(k.token + '|' + k.campagne);
+  const alle = [k, ...k.zelfde].sort((a, b) => a.tp - b.tp), i = alle.indexOf(k), vorige = alle[i - 1], volgende = alle[i + 1];
+  const buren = k.zelfde.filter(x => Math.abs(x.tp - k.tp) < 5000 && x.link !== k.link), tien = alle.filter(x => x.t - alle[0].t <= 600000);
+  const toetsen = [
+    ['Browser herkend als scanner of bot', !!k.bot, ''],
+    ['Binnen een minuut na verzending', !!(sv && k.t - sv < 60000), sv ? verschil(k.t - sv) + ' na verzending' : 'verzendtijd onbekend'],
+    ['Andere knop binnen 5 seconden', buren.length > 0, buren.length ? buren.map(x => linkNaam(x.link) + ' ' + verschil(x.tp - k.tp)).join(', ') : ''],
+    ['Drie of meer knoppen binnen 10 minuten', new Set(tien.map(x => x.link)).size >= 3 && k.t - alle[0].t <= 600000, new Set(tien.map(x => x.link)).size + ' verschillende knoppen'],
+    ['Vanaf ons eigen netwerk', !!k.intern, ''],
+    ['Testmail of testontvanger', k.soort === 'test', ''],
+  ];
+  const land = k.land.map(l => `<tr><td class="num">${fmtMs(l.t)}</td><td class="r num">${verschil(l.t - k.t)}</td><td>${esc(paginaNaam(l.pagina))}</td><td>${l.sessie ? 'Met cookies' : 'Zonder cookies'}</td><td class="num">${esc([l.browser, l.os].filter(Boolean).join(' · ') || '–')}</td><td>${l.sessie ? `${l.weergaven} pagina's · ${duur(l.sec)}${l.berekend ? ' · berekening' : ''}${(l.paginas || []).length ? '<div class="sub">' + l.paginas.map(paginaNaam).map(esc).join(' → ') + '</div>' : ''}` : '<span class="sub">niet te volgen zonder cookies</span>'}</td></tr>`).join('');
+  return `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><h2 style="margin:0">Klik op ${esc(linkNaam(k.link))}</h2><span class="tag ${KLIKKLASSE[k.soort]}">${SOORTNAAM[k.soort]}</span><span class="spacer"></span><button class="ghost mini" type="button" data-sluit>Sluiten</button></div>
+  <div class="sub" style="margin-bottom:12px">${esc(c ? [c.bedrijf, c.email].filter(Boolean).join(' · ') : 'Onbekende ontvanger')} · ${esc(k.campagne || '')} · ${mailNaam(k.variant)}</div>
+  <div class="stats">${[[fmtMs(k.t), 'tijdstip'], [sv ? verschil(k.t - sv) : '–', 'na verzending'], [vorige ? verschil(k.tp - vorige.tp) : '–', 'na vorige klik' + (vorige ? ' (' + linkNaam(vorige.link) + ')' : '')], [volgende ? verschil(volgende.tp - k.tp) : '–', 'tot volgende klik'], [[browserVan(k.ua), osVan(k.ua)].filter(Boolean).join(' · ') || '–', 'browser'], [k.land.length ? k.land.length + '×' : 'Nee', 'pagina geladen']].map(([n, l]) => `<div class="stat"><div class="n" style="font-size:14px">${esc(n)}</div><div class="l">${esc(l)}</div></div>`).join('')}</div>
+  <h3 class="kd">Waarom ${SOORTNAAM[k.soort].toLowerCase()}</h3>
+  <ul class="toets">${toetsen.map(([t, ja, w]) => `<li><span class="${ja ? 'ja' : 'nee'}">${ja ? '●' : '○'}</span><span>${esc(t)}</span><span class="w">${esc(w)}</span></li>`).join('')}</ul>
+  <h3 class="kd">Op de site na deze klik</h3>
+  ${land ? `<div class="scroll"><table><thead><tr><th>Tijd</th><th class="r">Na klik</th><th>Pagina</th><th>Cookies</th><th>Browser</th><th>Bezoek</th></tr></thead><tbody>${land}</tbody></table></div>` : '<div class="sub">Geen paginaweergave binnen 30 seconden na de klik.</div>'}
+  <div class="ua">${esc(k.ua || 'geen user-agent bewaard')}</div>`;
+}
+function klikRij(k, opts = {}) {
+  const c = contact.get(k.token);
+  return `<tr class="klik ${String(F.klik_id) === String(k.id) ? 'actief' : ''}" data-klik="${esc(k.id)}"><td class="num">${fmtMs(k.t)}</td>${opts.zonderBedrijf ? '' : `<td>${esc(c ? c.bedrijf || c.email : 'Onbekend')}</td>`}${opts.vorige !== undefined ? '' : `<td class="num">${mailNaam(k.variant)}</td>`}<td>${esc(linkNaam(k.link))}</td>${opts.vorige !== undefined ? `<td class="num">${mailNaam(k.variant)}</td><td class="r num">${opts.vorige ? verschil(k.tp - opts.vorige.tp) : '–'}</td>` : ''}<td><span class="tag ${KLIKKLASSE[k.soort]}" title="${esc(k.reden || '')}">${SOORTNAAM[k.soort]}</span></td>${opts.vorige !== undefined ? '' : `<td class="num">${k.na != null ? verschil(k.na) : '–'}</td><td class="num">${esc(browserVan(k.ua) || '–')}</td>`}<td class="num">${siteTekst(k)}</td></tr>`;
+}
 
 const campagnes = [...new Set(verzonden.filter(v => !v.test).map(v => v.campagne).filter(Boolean))].sort();
 $('fCampagne').innerHTML = '<option value="">Alle campagnes</option>' + campagnes.map(c => `<option>${esc(c)}</option>`).join('');
@@ -301,6 +353,7 @@ function render() {
   if (F.tab === 'kliks') kliksTab(sel);
   if (F.tab === 'ab') ab(sel);
   if (F.tab === 'planning') planning();
+  toonKlik(F.tab === 'klanten' ? 'klikCardK' : 'klikCard');
 }
 
 function overzicht(sel) {
@@ -389,6 +442,8 @@ function detail() {
   if (b) { items.push([b.eerste, '#07734A', `Op de site: ${b.sessies} bezoek(en), ${b.weergaven} pagina's, ${duur(b.sec)} actief${(b.paginas || []).length ? ' · ' + b.paginas.join(', ') : ''}`]); if (b.berekend) items.push([b.laatst, '#07734A', 'Berekening gemaakt op de site']); }
   for (const a of (DATA.afmeldingen || []).filter(a => a.token === c.token)) items.push([a.ontvangen_op, '#B42318', 'Afgemeld']);
   items.sort((x, y) => String(x[0]).localeCompare(String(y[0])));
+  const kk = [...km].sort((a, b) => a.tp - b.tp);
+  $('detailKliks').innerHTML = kk.length ? kk.map((k, i) => klikRij(k, { zonderBedrijf: true, vorige: kk[i - 1] || null })).join('') : '<tr><td colspan="6" class="leeg">Geen kliks</td></tr>';
   $('detailLijst').innerHTML = items.map(([t, k, s]) => `<li><span class="t">${fmtDatum(t)}</span><span class="dot" style="background:${k}"></span><span>${esc(s)}</span></li>`).join('');
 }
 $('klantenBody').addEventListener('click', e => { const tr = e.target.closest('tr[data-token]'); if (!tr) return; F.token = tr.dataset.token; render(); $('detailCard').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
@@ -397,11 +452,15 @@ $('fStap').addEventListener('click', e => { const b = e.target.closest('button')
 function kliksTab(sel) {
   const K = [...sel.K].sort((a, b) => b.t - a.t);
   $('kAantal').textContent = nf.format(K.length) + ' kliks';
-  $('kliksBody').innerHTML = K.length ? K.slice(0, 2000).map(k => { const c = contact.get(k.token); return `<tr class="${c ? 'klik' : ''}" ${c ? `data-token="${esc(k.token)}"` : ''}><td class="num">${fmtDatum(k.ontvangen_op)}</td><td>${esc(c ? c.bedrijf || c.email : 'Onbekend')}</td><td class="num">${mailNaam(k.variant)}</td><td>${esc(linkNaam(k.link))}</td><td><span class="tag ${KLIKKLASSE[k.soort]}" title="${esc(k.reden || '')}">${SOORTNAAM[k.soort]}</span></td><td class="num">${k.na != null ? wacht(k.na) : '–'}</td><td class="num">${esc(browserVan(k.ua) || '–')}</td></tr>`; }).join('') : '<tr><td colspan="7" class="leeg">Geen kliks in deze selectie</td></tr>';
+  $('kliksBody').innerHTML = K.length ? K.slice(0, 2000).map(k => klikRij(k)).join('') : '<tr><td colspan="8" class="leeg">Geen kliks in deze selectie</td></tr>';
   bars('scannerReden', tel(sel.Kalle.filter(k => k.soort === 'scanner'), k => k.reden), { leeg: 'Geen scanners' });
   bars('kBrowser', tel(sel.M, k => browserVan(k.ua)), { leeg: 'Nog geen kliks van mensen' });
 }
-$('kliksBody').addEventListener('click', e => { const tr = e.target.closest('tr[data-token]'); if (!tr) return; F.token = tr.dataset.token; toonTab('klanten'); });
+function toonKlik(kaart) { const el = $(kaart), html = F.klik_id != null ? klikDetail(F.klik_id) : ''; el.hidden = !html; el.innerHTML = html; }
+for (const [body, kaart] of [['kliksBody', 'klikCard'], ['detailKliks', 'klikCardK']]) {
+  $(body).addEventListener('click', e => { const tr = e.target.closest('tr[data-klik]'); if (!tr) return; F.klik_id = tr.dataset.klik; render(); $(kaart).scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  $(kaart).addEventListener('click', e => { if (e.target.closest('[data-sluit]')) { F.klik_id = null; render(); } });
+}
 
 function zToets(aK, aN, bK, bN) {
   if (!aN || !bN) return null; const p = (aK + bK) / (aN + bN), se = Math.sqrt(p * (1 - p) * (1 / aN + 1 / bN)); if (!se) return null;

@@ -3471,7 +3471,7 @@ function send(e,anon){
   /* Zonder toestemming alleen anonieme tellingen: paginaweergave, hoe lang en hoe ver, en de laadsnelheid */
   if(!['page_view','consent','page_leave','perf'].includes(e.event))return;
   const q=e.props||{};
-  const p=e.event==='page_view'?{ref:LAND.ref,mobile:LAND.mobile,utm_source:LAND.utm_source,hash:q.hash,taal:LAND.taal,vw:Math.round(LAND.vw/10)*10,wd:LAND.wd,intern:LAND.intern,dev:LAND.dev}
+  const p=e.event==='page_view'?{ref:LAND.ref,mobile:LAND.mobile,utm_source:LAND.utm_source,utm_campaign:LAND.utm_campaign,utm_content:LAND.utm_content,hash:q.hash,taal:LAND.taal,vw:Math.round(LAND.vw/10)*10,wd:LAND.wd,intern:LAND.intern,dev:LAND.dev}
    :e.event==='page_leave'?{p:q.p,hash:q.hash,sec:q.sec,depth:q.depth,m:LAND.mobile,wd:LAND.wd,intern:LAND.intern}:Object.assign({},q,{m:LAND.mobile,wd:LAND.wd,intern:LAND.intern});
   evq.push(Object.assign(e,{props:p,consent:'anon',visitor_id:null,session_id:null,experiments:{}}));
  }

@@ -80,6 +80,12 @@ tr.actief td{background:var(--volt-l)}
 .route b{font-weight:500;color:var(--ink)}
 .bedrijf{font-weight:500}
 .gok{color:var(--ink3);font-size:11.5px;font-family:var(--mono)}
+.toets{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:4px;font-size:13px}
+.toets li{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:baseline}
+.toets .ja{color:var(--red,#B42318);font-weight:600} .toets .nee{color:var(--ink3)} .toets .w{font:12px var(--mono);color:var(--ink2);text-align:right}
+.uastr{font:11.5px var(--mono);color:var(--ink3);word-break:break-all;margin-top:10px}
+h3.kd{font-size:13px;margin:16px 0 6px;color:var(--ink2);font-weight:600}
+.t-mens{background:var(--volt-l,#E7F5EE);color:var(--volt-d,#07734A)} .t-scanner{background:#FDECEA;color:#B42318} .t-test{background:#E2E8F0;color:#334155}
 .vink{color:var(--volt-d);font-weight:600}
 .chart{position:relative}
 .chart svg{display:block;width:100%;height:auto;overflow:visible}
@@ -268,6 +274,11 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
     <section class="card"><h2>Kliks per dag</h2><div class="chart" id="mailDag"></div><div class="legend"><span><i style="background:var(--volt)"></i>Mens</span><span><i style="background:var(--volt-m)"></i>Scanner</span></div></section>
     <section class="card"><h2>Kliks per link</h2><div id="mailLink"></div></section>
   </div>
+  <section class="card"><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px"><h2 style="margin:0">Alle kliks<small id="mkAantal"></small></h2><span class="spacer"></span><div class="seg" id="fMailKlik"><button data-v="mens">Mensen</button><button data-v="scanner">Scanners</button><button data-v="test">Intern en test</button><button data-v="" class="on">Alles</button></div></div>
+    <div class="scroll" style="max-height:460px"><table><thead><tr><th>Tijd</th><th>Bedrijf</th><th>Knop</th><th>Mail</th><th class="r">Na verzending</th><th class="r">Na vorige</th><th>Type</th><th>Browser</th><th>Op de site</th></tr></thead><tbody id="mailKliks"></tbody></table></div></section>
+  <section class="card" id="mailKlikCard" hidden></section>
+  <section class="card"><h2>Alle ontvangers<small id="moAantal"></small></h2>
+    <div class="scroll" style="max-height:460px"><table><thead><tr><th>Bedrijf</th><th>E-mail</th><th>Segment</th><th>Verzonden</th><th>Mail</th><th class="r">Kliks mens</th><th class="r">Scanner</th><th class="r">Sessies</th><th class="r">Tijd</th><th>Laatste activiteit</th></tr></thead><tbody id="mailOntv"></tbody></table></div></section>
 </div>
 
 <!-- ===== Sessies ===== -->
@@ -379,10 +390,11 @@ const vidIntern = new Map(); for (const s of sessies.values()) if (s.intern && !
 
 /* ===== Koppeling met de e-mailcampagne ===== */
 const CONTACT = new Map((RAW.contacten || []).map(r => [r[0], { token: r[0], bedrijf: r[1], naam: r[2], email: r[3], segment: r[4] }]));
-const VERZONDEN = new Map((RAW.verzonden || []).map(r => [r[0] + '|' + r[1], { t: new Date(r[2]), test: r[3] }]));
+const VERZONDEN = new Map((RAW.verzonden || []).map(r => [r[0] + '|' + r[1], { token: r[0], c: r[1], t: new Date(r[2]), test: r[3], v: r[4] }]));
 const TESTTOKENS = new Set(); // ontvangers die alleen testmails kregen (eigen adressen) tellen als intern
 { const echt = new Set(); for (const r of RAW.verzonden || []) (r[3] ? TESTTOKENS : echt).add(r[0]); for (const t of echt) TESTTOKENS.delete(t); }
-const KLIKS = (RAW.kliks || []).map(r => ({ t: new Date(r[0]), token: r[1], c: r[2], v: r[3], link: r[4], bot: r[5], intern: !!r[6] }));
+const preciesMs = iso => { const m = /\.(\d+)/.exec(iso || ''); return Date.parse(String(iso).replace(/\.\d+/, '')) + (m ? parseFloat('0.' + m[1]) * 1000 : 0); };
+const KLIKS = (RAW.kliks || []).map(r => ({ t: new Date(r[0]), tp: preciesMs(r[0]), token: r[1], c: r[2], v: r[3], link: r[4], bot: r[5], intern: !!r[6], id: r[7], ua: r[8] }));
 {
   // Scanner: bot-vlag, twee links binnen 5 s, binnen 60 s na verzending, of 3+ links binnen 10 minuten
   const eerste = new Map(), links = new Map();
@@ -548,7 +560,7 @@ function render() {
   if (t === 'calculator') calculator();
   if (t === 'herkomst') herkomst();
   if (t === 'techniek') techniek();
-  if (t === 'email') email();
+  if (t === 'email') { email(); mailAlles(); }
   if (t === 'sessies') sessieTabel();
 }
 const viewsVan = S => S.reduce((a, s) => a + s.views.length, 0);
@@ -810,6 +822,80 @@ function email() {
   bars('mailLink', tel(alle.filter(k => !k.scanner), k => k.link), { pct: false, leeg: 'Nog geen menselijke kliks' });
 }
 $('mailBody').addEventListener('click', e => { const tr = e.target.closest('tr[data-mail]'); if (!tr) return; const c = CONTACT.get(tr.dataset.mail); zetFocus('mail', tr.dataset.mail, c ? c.bedrijf || c.email : 'contact'); });
+
+/* ----- E-mail: elke klik en elk adres ----- */
+const LINKNAAM = { calc: 'Calculator', uitgebreid: 'Uitgebreid', vloot: 'Vlootanalyse', gids: 'Overstapgids', heffing: 'Heffing', subsidie: 'Subsidies', ze: 'Zero-emissiezones', modellen: 'Modellen', kenteken: 'Kenteken' };
+const linkNaam = k => LINKNAAM[k] || k || '–';
+const KSOORT = k => k.test ? 'test' : k.scanner ? 'scanner' : 'mens';
+const KNAAM = { mens: 'Mens', scanner: 'Scanner', test: 'Intern/test' };
+const fmtMs = d => new Date(d).toLocaleString('nl-NL', { timeZone: TZ, day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
+const verschil = ms => { const a = Math.abs(ms); if (a < 1) return a.toFixed(3).replace('.', ',') + ' ms'; if (a < 1000) return (a < 10 ? a.toFixed(1).replace('.', ',') : Math.round(a)) + ' ms'; if (a < 60000) return (a / 1000).toFixed(1).replace('.', ',') + ' s'; const m = a / 60000; if (m < 60) return Math.round(m) + ' min'; const u = m / 60; return u < 48 ? Math.round(u) + ' uur' : Math.round(u / 24) + ' dagen'; };
+const uaBrowser = ua => !ua ? null : /edg\//i.test(ua) ? 'Edge' : /firefox|fxios/i.test(ua) ? 'Firefox' : /chrome|crios/i.test(ua) ? 'Chrome' : /safari/i.test(ua) ? 'Safari' : 'Overig';
+const uaOs = ua => !ua ? null : /iphone|ipad/i.test(ua) ? 'iOS' : /android/i.test(ua) ? 'Android' : /windows/i.test(ua) ? 'Windows' : /mac os x/i.test(ua) ? 'macOS' : /linux/i.test(ua) ? 'Linux' : 'Overig';
+const DOELPAGINA = { calc: ['calc'], kenteken: ['calc'], modellen: ['modellen'], gids: ['faq'], heffing: ['gids'], subsidie: ['gids'], ze: ['gids'], uitgebreid: ['uitgebreid'], vloot: ['vloot'] };
+const MAILVIEWS = EV.filter(e => e.ev === 'page_view' && e.p.utm_source === 'email');
+for (const k of KLIKS) {
+  const doel = DOELPAGINA[k.link];
+  k.land = MAILVIEWS.filter(e => { const d = e.t - k.t; return d >= -1000 && d < 30000 && (!e.p.utm_campaign || e.p.utm_campaign === k.c) && (!e.p.utm_content || e.p.utm_content === (k.v || '') + '-' + k.link) && (!doel || doel.includes(e.page)); });
+  k.zelfde = KLIKS.filter(x => x !== k && x.token === k.token);
+}
+const F_MK = { soort: '', klik: null };
+function klikSite(k) { const s = k.land.map(e => e.sid && sessies.get(e.sid)).find(Boolean); return s ? `${s.views.length} p · ${duur(s.sec)}` : k.land.length ? (k.land.length === 1 ? 'geladen' : k.land.length + '× geladen') : '–'; }
+function mailKlikDetail(id) {
+  const k = KLIKS.find(x => String(x.id) === String(id)); if (!k) return '';
+  const c = CONTACT.get(k.token), vz = VERZONDEN.get(k.token + '|' + k.c), so = KSOORT(k);
+  const alle = [k, ...k.zelfde].sort((a, b) => a.tp - b.tp), i = alle.indexOf(k), vorige = alle[i - 1], volgende = alle[i + 1];
+  const buren = k.zelfde.filter(x => Math.abs(x.tp - k.tp) < 5000 && x.link !== k.link), eerste = alle.find(x => x.c === k.c) || alle[0], tien = alle.filter(x => x.c === k.c && x.t - eerste.t <= 600000);
+  const toetsen = [
+    ['Browser herkend als scanner of bot', !!k.bot, ''],
+    ['Binnen een minuut na verzending', !!(vz && k.t - vz.t < 60000), vz ? verschil(k.t - vz.t) + ' na verzending' : 'verzendtijd onbekend'],
+    ['Andere knop binnen 5 seconden', buren.length > 0, buren.map(x => linkNaam(x.link) + ' ' + verschil(x.tp - k.tp)).join(', ')],
+    ['Drie of meer knoppen binnen 10 minuten', new Set(tien.map(x => x.link)).size >= 3 && k.t - eerste.t <= 600000, new Set(tien.map(x => x.link)).size + ' verschillende knoppen'],
+    ['Vanaf ons eigen netwerk', !!k.intern, ''],
+    ['Testmail of testontvanger', !!(vz && vz.test) || TESTTOKENS.has(k.token), ''],
+    ['Later gevolgd door een bezoek met cookies', !k.scanner && !k.test && [...sessies.values()].some(s => s.mail === k.token && s.start - k.t >= 0 && s.start - k.t < 120000), ''],
+  ];
+  const land = k.land.map(e => { const s = e.sid ? sessies.get(e.sid) : null; return `<tr${s ? ` class="klik" data-sid="${s.id}"` : ''}><td class="num">${fmtMs(e.t)}</td><td class="r num">${verschil(e.t - k.t)}</td><td>${esc(paginaNaam(e.page, e.p.hash))}</td><td>${s ? 'Met cookies' : 'Zonder cookies'}</td><td class="num">${esc([e.browser, e.os].filter(Boolean).join(' · ') || '–')}</td><td>${s ? `${s.views.length} pagina's · ${duur(s.sec)}<div class="gok">${esc(routeVan(s).join(' → '))}</div>` : `<span class="gok">${esc(anonReden(e) || 'niet te volgen zonder cookies')}</span>`}</td></tr>`; }).join('');
+  return `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><h2 style="margin:0">Klik op ${esc(linkNaam(k.link))}</h2><span class="tag t-${so}">${KNAAM[so]}</span><span class="spacer"></span>${c ? `<button class="ghost mini" type="button" data-focus="${k.token}">Alleen dit adres</button>` : ''}<button class="ghost mini" type="button" data-sluit>Sluiten</button></div>
+  <div class="gok" style="margin-bottom:12px">${esc(c ? [c.bedrijf, c.email].filter(Boolean).join(' · ') : 'Onbekende ontvanger')} · ${esc(k.c || '')}${k.v ? ' · Mail ' + esc(k.v.toUpperCase()) : ''}</div>
+  <div class="stats">${[[fmtMs(k.t), 'tijdstip'], [vz ? verschil(k.t - vz.t) : '–', 'na verzending'], [vorige ? verschil(k.tp - vorige.tp) : '–', 'na vorige klik' + (vorige ? ' (' + linkNaam(vorige.link) + ')' : '')], [volgende ? verschil(volgende.tp - k.tp) : '–', 'tot volgende klik'], [[uaBrowser(k.ua), uaOs(k.ua)].filter(Boolean).join(' · ') || '–', 'browser'], [k.land.length ? k.land.length + '×' : 'Nee', 'pagina geladen']].map(([n, l]) => `<div class="stat"><div class="n" style="font-size:14px">${esc(n)}</div><div class="l">${esc(l)}</div></div>`).join('')}</div>
+  <h3 class="kd">Waarom ${KNAAM[so].toLowerCase()}</h3>
+  <ul class="toets">${toetsen.map(([t, ja, w]) => `<li><span class="${ja ? 'ja' : 'nee'}">${ja ? '●' : '○'}</span><span>${esc(t)}</span><span class="w">${esc(w)}</span></li>`).join('')}</ul>
+  <h3 class="kd">Op de site na deze klik</h3>
+  ${land ? `<div class="scroll"><table><thead><tr><th>Tijd</th><th class="r">Na klik</th><th>Pagina</th><th>Cookies</th><th>Browser</th><th>Bezoek</th></tr></thead><tbody>${land}</tbody></table></div>` : '<div class="gok">Geen paginaweergave binnen 30 seconden na de klik.</div>'}
+  <div class="uastr">${esc(k.ua || 'geen user-agent bewaard')}</div>`;
+}
+function mailAlles() {
+  const f = SEL.B.in, fo = F.focus && F.focus.type === 'mail' ? F.focus.id : null;
+  const zoek = t => !F.zoek || zoekOk({ mail: t });
+  const K = KLIKS.filter(k => f(k.t) && (!fo || k.token === fo) && zoek(k.token)).sort((a, b) => b.tp - a.tp);
+  const tel = { mens: 0, scanner: 0, test: 0 }; for (const k of K) tel[KSOORT(k)]++;
+  $('fMailKlik').querySelectorAll('button').forEach(b => { b.classList.toggle('on', b.dataset.v === F_MK.soort); b.innerHTML = b.textContent.replace(/\s*\d[\d.]*$/, '') + `<span class="c">${nf.format(b.dataset.v ? tel[b.dataset.v] : K.length)}</span>`; });
+  const Z = K.filter(k => !F_MK.soort || KSOORT(k) === F_MK.soort);
+  $('mkAantal').textContent = nf.format(Z.length) + ' kliks';
+  $('mailKliks').innerHTML = Z.length ? Z.slice(0, 1500).map(k => {
+    const c = CONTACT.get(k.token), vz = VERZONDEN.get(k.token + '|' + k.c), so = KSOORT(k), vorige = [k, ...k.zelfde].sort((a, b) => a.tp - b.tp).filter(x => x.tp < k.tp).pop();
+    return `<tr class="klik ${String(F_MK.klik) === String(k.id) ? 'actief' : ''}" data-klik="${esc(k.id)}"><td class="num">${fmtMs(k.t)}</td><td class="bedrijf">${esc(c ? c.bedrijf || c.email : 'Onbekend')}</td><td>${esc(linkNaam(k.link))}</td><td class="num">${k.v ? 'Mail ' + esc(k.v.toUpperCase()) : '–'}</td><td class="r num">${vz ? verschil(k.t - vz.t) : '–'}</td><td class="r num">${vorige ? verschil(k.tp - vorige.tp) : '–'}</td><td><span class="tag t-${so}">${KNAAM[so]}</span></td><td class="num">${esc(uaBrowser(k.ua) || '–')}</td><td class="num">${klikSite(k)}</td></tr>`;
+  }).join('') : '<tr><td colspan="9" class="leeg">Geen kliks in deze selectie</td></tr>';
+  const kaart = $('mailKlikCard'), html = F_MK.klik != null ? mailKlikDetail(F_MK.klik) : ''; kaart.hidden = !html; kaart.innerHTML = html;
+  // Elk adres dat een echte mail kreeg
+  const per = new Map();
+  for (const v of VERZONDEN.values()) { if (v.test || !CONTACT.has(v.token) || (fo && v.token !== fo) || !zoek(v.token)) continue; const r = per.get(v.token) || { token: v.token, v: [], km: 0, ks: 0, ses: [] }; r.v.push(v); per.set(v.token, r); }
+  for (const k of KLIKS) { const r = per.get(k.token); if (r && f(k.t)) { if (KSOORT(k) === 'mens') r.km++; else if (k.scanner) r.ks++; } }
+  for (const s of sessies.values()) { const r = s.mail && per.get(s.mail); if (r && f(s.start)) r.ses.push(s); }
+  const rijen = [...per.values()].map(r => ({ ...r, c: CONTACT.get(r.token), laatst: Math.max(...r.v.map(v => +v.t), ...r.ses.map(s => +s.eind), ...KLIKS.filter(k => k.token === r.token).map(k => +k.t)) }))
+    .sort((a, b) => (b.ses.length > 0) - (a.ses.length > 0) || (b.km > 0) - (a.km > 0) || b.laatst - a.laatst);
+  $('moAantal').textContent = nf.format(rijen.length) + ' adressen';
+  $('mailOntv').innerHTML = rijen.length ? rijen.map(r => { const v = r.v[r.v.length - 1]; return `<tr class="klik" data-mail="${r.token}"><td class="bedrijf">${esc(r.c.bedrijf || '–')}</td><td>${esc(r.c.email || '')}</td><td>${esc(r.c.segment || '')}</td><td class="num">${fmtVol.format(v.t)}</td><td class="num">${v.v ? 'Mail ' + esc(v.v.toUpperCase()) : '–'}</td><td class="r num">${r.km || ''}</td><td class="r num">${r.ks || ''}</td><td class="r num">${r.ses.length || ''}</td><td class="r num">${r.ses.length ? duur(r.ses.reduce((a, s) => a + s.sec, 0)) : ''}</td><td class="num">${fmtVol.format(new Date(r.laatst))}</td></tr>`; }).join('') : '<tr><td colspan="10" class="leeg">Geen verzonden mails in deze selectie</td></tr>';
+}
+$('fMailKlik').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; F_MK.soort = b.dataset.v; mailAlles(); });
+$('mailKliks').addEventListener('click', e => { const tr = e.target.closest('tr[data-klik]'); if (!tr) return; F_MK.klik = tr.dataset.klik; mailAlles(); $('mailKlikCard').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+$('mailKlikCard').addEventListener('click', e => {
+  if (e.target.closest('[data-sluit]')) { F_MK.klik = null; mailAlles(); return; }
+  const fb = e.target.closest('[data-focus]'); if (fb) { const c = CONTACT.get(fb.dataset.focus); zetFocus('mail', fb.dataset.focus, c ? c.bedrijf || c.email : 'contact'); return; }
+  const tr = e.target.closest('tr[data-sid]'); if (tr) { toonTab('sessies'); toonDetail(sessies.get(tr.dataset.sid)); }
+});
+$('mailOntv').addEventListener('click', e => { const tr = e.target.closest('tr[data-mail]'); if (!tr) return; const c = CONTACT.get(tr.dataset.mail); zetFocus('mail', tr.dataset.mail, c ? c.bedrijf || c.email : 'contact'); });
 
 /* ----- Sessies ----- */
 const bedrijfHtml = s => { const c = bedrijfVan(s); return c ? `<span class="bedrijf">${esc(c.bedrijf || c.email)}</span>${s.mailZeker ? '' : ' <span class="gok" title="Vermoedelijk, op tijdstip van de klik">≈</span>'}` : ''; };
