@@ -23,7 +23,7 @@ nav.app a.on{background:var(--ink);color:#fff}
 .live i{width:8px;height:8px;border-radius:50%;background:var(--volt);box-shadow:0 0 0 3px var(--volt-l)}
 button{font:inherit;font-weight:600;font-size:13.5px;padding:8px 14px;border:1px solid var(--ink);border-radius:6px;background:var(--ink);color:#fff;cursor:pointer}
 button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
-button.mini{font-size:12px;padding:3px 9px;font-weight:500}
+button.mini{font-size:12px;padding:3px 9px;font-weight:500;white-space:nowrap}
 button:hover{opacity:.88}
 .top{position:sticky;top:0;z-index:5;background:var(--page);border-bottom:1px solid var(--line);margin-bottom:18px}
 .filters{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:end;padding:12px 0 10px}
@@ -100,6 +100,15 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
 .stat{border:1px solid var(--soft);border-radius:6px;padding:9px 11px}
 .stat .n{font:600 19px var(--mono)}
 .stat .l{font-size:12px;color:var(--ink2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 10px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff;border-radius:99px;padding:3px 5px 3px 11px;font-size:12.5px}
+.chip b{font-weight:500;color:#C9CDD1}
+.chip button{background:#fff;color:var(--ink);border:0;border-radius:99px;padding:0 7px;font-size:12px;line-height:18px}
+.seg button .c{font:11px var(--mono);opacity:.65;margin-left:5px}
+[data-drill]{cursor:pointer}
+[data-drill]:hover .k{text-decoration:underline;text-underline-offset:3px}
+.chart [data-dag]{cursor:pointer}
+.reden{font:11px var(--mono);color:var(--ink3);margin-left:4px}
 .livelijst{font-size:13px}
 .livelijst div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--soft)}
 .livelijst .t{font:12px var(--mono);color:var(--ink3);min-width:44px}
@@ -136,6 +145,7 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
     <div class="field"><span>Zoek</span><input class="zoek" type="search" id="fZoek" placeholder="bedrijf, naam of bezoeker"></div>
     <div class="field" id="focusVeld" hidden><span>Alleen</span><div class="focus"><span id="focusNaam"></span><button type="button" id="focusUit">×</button></div></div>
   </div>
+  <div class="chips" id="chips" hidden></div>
   <nav class="tabs" id="tabs">
     <button data-tab="overzicht" class="on">Overzicht</button><button data-tab="paginas">Pagina's</button><button data-tab="gedrag">Gedrag</button><button data-tab="calculator">Calculator</button><button data-tab="herkomst">Herkomst</button><button data-tab="techniek">Apparaat en snelheid</button><button data-tab="email">E-mail</button><button data-tab="sessies">Sessies</button>
   </nav>
@@ -158,6 +168,10 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
     <section class="card"><h2>Bron</h2><div id="oBron"></div></section>
     <section class="card"><h2>Land</h2><div id="oLand"></div></section>
     <section class="card"><h2>Apparaat</h2><div id="oApp"></div></section>
+  </div>
+  <div class="grid">
+    <section class="card"><h2>Weggefilterd<small id="filterSub"></small></h2><div id="redenen"></div><div class="legend"><span><i style="background:#64748B"></i>Intern</span><span><i style="background:#B42318"></i>Bot of test</span></div></section>
+    <section class="card"><h2>Interne netwerken</h2><div class="scroll" style="max-height:300px"><table><thead><tr><th>Netwerk</th><th>Laatst gezien</th><th>Geldig</th><th></th></tr></thead><tbody id="netwerken"></tbody></table></div></section>
   </div>
 </div>
 
@@ -317,8 +331,8 @@ const landLabel = c => { if (!c) return null; try { return landNaam.of(c) || c; 
 
 /* ===== Data voorbereiden ===== */
 const intern = new Set(RAW.intern || []);
-const EV = RAW.events.map(r => ({ t: new Date(r[0]), ev: r[1], page: r[2], consent: r[3], vid: r[4], sid: r[5], p: r[6] || {}, ua: r[7], browser: r[8], os: r[9], land: r[10] }));
-const CALC = (RAW.calc || []).map(r => ({ t: new Date(r[0]), vid: r[1], sid: r[2], vt: r[3], goedkoper: r[4], trigger: r[5], modus: r[6], model: r[7], km: r[8], jaren: r[9], verschil: r[10] }));
+const EV = RAW.events.map(r => ({ t: new Date(r[0]), ev: r[1], page: r[2], consent: r[3], vid: r[4], sid: r[5], p: r[6] || {}, ua: r[7], browser: r[8], os: r[9], land: r[10], intern: !!r[11] }));
+const CALC = (RAW.calc || []).map(r => ({ t: new Date(r[0]), vid: r[1], sid: r[2], vt: r[3], goedkoper: r[4], trigger: r[5], modus: r[6], model: r[7], km: r[8], jaren: r[9], verschil: r[10], intern: !!r[12] }));
 
 // Anonieme events (zonder cookies): weergaven, tijd op pagina en laadsnelheid
 const anon = EV.filter(e => e.consent === 'anon' && e.ev === 'page_view');
@@ -331,7 +345,9 @@ for (let i = 0, j = 0, k = 0; i < anon.length; i++) {
   if (k < i) k = i; while (k + 1 < anon.length && anon[k + 1].t.getTime() <= t + 30000) k++;
   anon[i].salvo = (k - j + 1) >= 8;
 }
-const anonKlasse = e => e.p.intern ? 'intern' : (e.ua === 'bot' || e.p.wd || (e.salvo && !e.p.ref) || e.scanner) ? 'bot' : 'echt';
+const anonReden = e => e.intern ? 'Eigen netwerk' : e.p.intern ? 'Eigen browser' : e.p.dev ? 'Testomgeving' : e.ua === 'bot' ? 'Bot (user-agent)' : e.p.wd ? 'Automatische browser' : e.scanner ? 'Mailscanner' : (e.salvo && !e.p.ref) ? 'Salvo van weergaven' : null;
+const INTERNE_REDENEN = new Set(['Eigen netwerk', 'Eigen browser', 'Testmail-ontvanger', 'Als intern gemarkeerd']);
+const anonKlasse = e => { const r = anonReden(e); return !r ? 'echt' : INTERNE_REDENEN.has(r) ? 'intern' : 'bot'; };
 
 // Sessies (met cookies)
 const sessies = new Map();
@@ -340,8 +356,10 @@ for (const e of EV) {
   let s = sessies.get(e.sid);
   if (!s) { s = { id: e.sid, vid: e.vid, start: e.t, eind: e.t, ev: [], views: [], sec: 0, bot: false, intern: false, mobile: null, vw: null, vh: null, lang: null, taal: null, tz: null, dpr: null, dark: null, net: null, ref: '', utm: null, camp: null, n: null, land: null, land0: null, browser: null, os: null, perf: [] }; sessies.set(e.sid, s); }
   s.ev.push(e); s.eind = e.t;
-  if (e.ua === 'bot' || e.p.wd) s.bot = true;
-  if (e.p.intern) s.intern = true;
+  if (e.ua === 'bot' || e.p.wd) s.bot = s.bot || (e.ua === 'bot' ? 'Bot (user-agent)' : 'Automatische browser');
+  if (e.p.dev) s.bot = 'Testomgeving';
+  if (e.p.intern) s.intern = s.intern || 'Eigen browser';
+  if (e.intern) s.intern = 'Eigen netwerk';
   if (e.browser && !s.browser) { s.browser = e.browser; s.os = e.os; }
   if (e.land && !s.land) s.land = e.land;
   if (e.ev === 'session_start') Object.assign(s, { mobile: !!e.p.mobile, vw: e.p.vw, vh: e.p.vh, lang: e.p.lang, taal: e.p.taal, tz: e.p.tz, dpr: e.p.dpr, dark: e.p.dark, net: e.p.net, ref: e.p.ref || '', utm: e.p.utm_source || null, camp: e.p.utm_campaign || null, n: e.p.n, land0: e.p.land });
@@ -356,22 +374,22 @@ for (const e of EV) {
 const perVid = new Map();
 for (const s of sessies.values()) { if (!perVid.has(s.vid)) perVid.set(s.vid, []); perVid.get(s.vid).push(s); }
 for (const lijst of perVid.values()) { const bron = lijst.find(s => s.vw); if (bron) for (const s of lijst) if (s.vw == null) Object.assign(s, { vw: bron.vw, mobile: bron.mobile, lang: bron.lang, vh: bron.vh, dpr: bron.dpr, tz: bron.tz, dark: bron.dark }); }
-for (const s of sessies.values()) if (s.views.length >= 5 && (s.eind - s.start) / s.views.length < 1500) s.bot = true; // 5+ pagina's in een paar seconden
-const vidIntern = new Set([...sessies.values()].filter(s => s.intern).map(s => s.vid));
+for (const s of sessies.values()) if (!s.bot && s.views.length >= 5 && (s.eind - s.start) / s.views.length < 1500) s.bot = 'Te snel door pagina\'s'; // 5+ pagina's in een paar seconden
+const vidIntern = new Map(); for (const s of sessies.values()) if (s.intern && !vidIntern.has(s.vid)) vidIntern.set(s.vid, s.intern);
 
 /* ===== Koppeling met de e-mailcampagne ===== */
 const CONTACT = new Map((RAW.contacten || []).map(r => [r[0], { token: r[0], bedrijf: r[1], naam: r[2], email: r[3], segment: r[4] }]));
 const VERZONDEN = new Map((RAW.verzonden || []).map(r => [r[0] + '|' + r[1], { t: new Date(r[2]), test: r[3] }]));
 const TESTTOKENS = new Set(); // ontvangers die alleen testmails kregen (eigen adressen) tellen als intern
 { const echt = new Set(); for (const r of RAW.verzonden || []) (r[3] ? TESTTOKENS : echt).add(r[0]); for (const t of echt) TESTTOKENS.delete(t); }
-const KLIKS = (RAW.kliks || []).map(r => ({ t: new Date(r[0]), token: r[1], c: r[2], v: r[3], link: r[4], bot: r[5] }));
+const KLIKS = (RAW.kliks || []).map(r => ({ t: new Date(r[0]), token: r[1], c: r[2], v: r[3], link: r[4], bot: r[5], intern: !!r[6] }));
 {
   // Scanner: bot-vlag, twee links binnen 5 s, binnen 60 s na verzending, of 3+ links binnen 10 minuten
   const eerste = new Map(), links = new Map();
   for (const k of KLIKS) { const key = k.token + '|' + k.c; if (!eerste.has(key)) { eerste.set(key, k.t); links.set(key, new Set()); } links.get(key).add(k.link); }
   for (const k of KLIKS) {
     const key = k.token + '|' + k.c, vz = VERZONDEN.get(key);
-    k.test = !!(vz && vz.test) || TESTTOKENS.has(k.token);
+    k.test = !!(vz && vz.test) || TESTTOKENS.has(k.token) || k.intern;
     const tegelijk = KLIKS.some(x => x !== k && x.token === k.token && x.link !== k.link && Math.abs(x.t - k.t) < 5000);
     k.scanner = !!(k.bot || tegelijk || (vz && k.t - vz.t < 60000) || (links.get(key).size >= 3 && k.t - eerste.get(key) <= 600000));
   }
@@ -391,13 +409,16 @@ for (const lijst of perVid.values()) {
 }
 for (const s of sessies.values()) if (s.mail) for (const k of KLIKS) if (k.token === s.mail && s.start - k.t >= 0 && s.start - k.t < 120000) k.scanner = false;
 const bedrijfVan = s => s && s.mail && CONTACT.get(s.mail) ? CONTACT.get(s.mail) : null;
-const sessieKlasse = s => (intern.has(s.vid) || vidIntern.has(s.vid) || s.intern || TESTTOKENS.has(s.mail)) ? 'intern' : s.bot ? 'bot' : 'echt';
+const sessieReden = s => s.intern || vidIntern.get(s.vid) || (intern.has(s.vid) ? 'Als intern gemarkeerd' : null) || (TESTTOKENS.has(s.mail) ? 'Testmail-ontvanger' : null) || (s.bot ? s.bot : null);
+const sessieKlasse = s => { const r = sessieReden(s); return !r ? 'echt' : INTERNE_REDENEN.has(r) ? 'intern' : 'bot'; };
+const NETWERKEN = RAW.netwerken || [];
 
 /* ===== Filters ===== */
-const F = { periode: 7, wie: 'echt', app: '', bron: '', zoek: '', focus: null, tab: 'overzicht' };
+const F = { periode: 7, wie: 'echt', app: '', bron: '', zoek: '', focus: null, tab: 'overzicht', drill: [], dag: null };
 try { const t = localStorage.getItem('sod-dash-tab'); if (t && document.querySelector(`.tab[data-tab="${t}"]`)) F.tab = t; } catch (e) {}
 function bereik() {
   const nu = Date.now(), D = 86400000;
+  if (F.dag) { const vorige = dagKey(new Date(new Date(F.dag + 'T12:00:00') - D)); return { in: d => dagKey(d) === F.dag, vorig: d => dagKey(d) === vorige, perUur: true, dagen: [F.dag] }; }
   if (F.periode <= 1) {
     const dag = dagKey(new Date(nu - F.periode * D)), vorige = dagKey(new Date(nu - (F.periode + 1) * D));
     return { in: d => dagKey(d) === dag, vorig: d => dagKey(d) === vorige, perUur: true, dagen: [dag] };
@@ -415,12 +436,18 @@ function zoekOk(s) {
   return (s.vid || '').startsWith(q) || (s.id || '').startsWith(q) || !!(c && [c.bedrijf, c.naam, c.email].some(x => x && x.toLowerCase().includes(q)));
 }
 const focusOk = s => !F.focus || (F.focus.type === 'mail' ? s.mail === F.focus.id : F.focus.type === 'vid' ? s.vid === F.focus.id : s.id === F.focus.id);
-const anonFilter = (lijst, f, metBron) => F.focus || F.zoek ? [] : lijst.filter(e => f(e.t) && wieOk(anonKlasse(e)) && appOk(e.p.mobile ?? e.p.m) && (!F.bron || (metBron ? bronSoort(e.p.ref, e.p.utm_source) === F.bron : false)));
+const drillS = (d, s) => d.type === 'pagina' ? s.views.some(v => v.naam === d.w) : d.type === 'land' ? landLabel(s.land) === d.w : d.type === 'browser' ? s.browser === d.w : d.type === 'os' ? s.os === d.w
+  : d.type === 'apparaat' ? (s.mobile == null ? false : (s.mobile ? 'Mobiel' : 'Desktop') === d.w) : d.type === 'scherm' ? schermNaam(s.vw) === d.w : d.type === 'bron' ? bronNaam(s.ref, s.mail ? 'email' : s.utm) === d.w
+  : d.type === 'instap' ? (s.views[0] && s.views[0].naam === d.w) : d.type === 'reden' ? sessieReden(s) === d.w : true;
+const drillA = (d, e) => d.type === 'pagina' || d.type === 'instap' ? paginaNaam(e.ev === 'page_view' ? e.page : (e.p.p || e.page), e.p.hash) === d.w : d.type === 'land' ? landLabel(e.land) === d.w : d.type === 'browser' ? e.browser === d.w : d.type === 'os' ? e.os === d.w
+  : d.type === 'apparaat' ? ((e.p.mobile ?? e.p.m) == null ? false : ((e.p.mobile ?? e.p.m) ? 'Mobiel' : 'Desktop') === d.w) : d.type === 'scherm' ? schermNaam(e.p.vw) === d.w : d.type === 'bron' ? (e.ev === 'page_view' && bronNaam(e.p.ref, e.p.utm_source) === d.w) : d.type === 'reden' ? anonReden(e) === d.w : true;
+const DRILLNAAM = { pagina: 'Pagina', land: 'Land', browser: 'Browser', os: 'Systeem', apparaat: 'Apparaat', scherm: 'Scherm', bron: 'Bron', instap: 'Instap', reden: 'Reden' };
+const anonFilter = (lijst, f, metBron) => F.focus || F.zoek ? [] : lijst.filter(e => f(e.t) && wieOk(anonKlasse(e)) && appOk(e.p.mobile ?? e.p.m) && (!F.bron || (metBron ? bronSoort(e.p.ref, e.p.utm_source) === F.bron : false)) && F.drill.every(d => drillA(d, e)));
 function selectie(f) {
-  const S = [...sessies.values()].filter(s => f(s.start) && wieOk(sessieKlasse(s)) && appOk(s.mobile) && bronOk(s) && zoekOk(s) && focusOk(s)).sort((a, b) => b.start - a.start);
+  const S = [...sessies.values()].filter(s => f(s.start) && wieOk(sessieKlasse(s)) && appOk(s.mobile) && bronOk(s) && zoekOk(s) && focusOk(s) && F.drill.every(d => drillS(d, s))).sort((a, b) => b.start - a.start);
   const A = anonFilter(anon, f, true), AL = anonFilter(anonLeave, f, false), AP = anonFilter(anonPerf, f, false);
   const sidSet = new Set(S.map(s => s.id));
-  const C = CALC.filter(c => f(c.t) && (c.sid ? sidSet.has(c.sid) : F.wie !== 'intern' && F.wie !== 'bot' && !F.focus && !F.zoek && !F.bron && !F.app));
+  const C = CALC.filter(c => f(c.t) && (c.sid ? sidSet.has(c.sid) : wieOk(c.intern ? 'intern' : 'echt') && !F.focus && !F.zoek && !F.bron && !F.app && !F.drill.length));
   return { S, A, AL, AP, C };
 }
 function zetFocus(type, id, naam) {
@@ -451,7 +478,7 @@ function bars(el, rijen, opts = {}) {
   const max = opts.maxWaarde || Math.max(...rijen.map(r => r[1])), tot = opts.tot ?? rijen.reduce((a, r) => a + r[1], 0);
   const fmt = opts.fmt || (v => opts.pct === false ? nf.format(v) : pct(v, tot));
   $(el).innerHTML = rijen.slice(0, opts.max || 8).map(([k, v, extra]) =>
-    `<div class="bar-row" title="${esc(k)}: ${esc(fmt(v))}${extra ? ' · ' + esc(extra) : ''}"><div class="k">${esc(k)}</div><div class="track"><div class="fill" style="width:${(100 * v / max).toFixed(1)}%;${opts.kleur ? 'background:' + opts.kleur : ''}"></div></div><div class="v">${esc(fmt(v))}</div></div>`).join('');
+    `<div class="bar-row"${opts.drill ? ` data-drill="${opts.drill}" data-w="${esc(k)}"` : ''} title="${esc(k)}: ${esc(fmt(v))}${extra ? ' · ' + esc(extra) : ''}"><div class="k">${esc(k)}</div><div class="track"><div class="fill" style="width:${(100 * v / max).toFixed(1)}%;${opts.kleurVan ? 'background:' + opts.kleurVan(k) : opts.kleur ? 'background:' + opts.kleur : ''}"></div></div><div class="v">${esc(fmt(v))}</div></div>`).join('');
 }
 // Gestapelde horizontale balken (100%): rijen [label, [waarden...]], reeksen [[naam, kleur]]
 function stackBars(el, rijen, reeksen, opts = {}) {
@@ -475,7 +502,7 @@ function staven(id, rijen, kleuren, opts = {}) {
   for (const g of [0, top / 2, top]) svg += `<line x1="${L}" x2="${W}" y1="${y(g)}" y2="${y(g)}" stroke="#ECECE8"/><text x="${L - 6}" y="${y(g) + 3.5}" text-anchor="end">${opts.yFmt ? opts.yFmt(g) : nf.format(g)}</text>`;
   rijen.forEach((r, i) => {
     const x = L + i * bw + (bw - w) / 2; let acc = 0;
-    svg += `<g data-tip="${esc(r.tip || r.k + ': ' + nf.format(r.vals.reduce((a, b) => a + b, 0)))}"><rect x="${L + i * bw}" y="0" width="${bw}" height="${H - B}" fill="transparent"/>`;
+    svg += `<g ${r.dag ? `data-dag="${r.dag}"` : ''} data-tip="${esc(r.tip || r.k + ': ' + nf.format(r.vals.reduce((a, b) => a + b, 0)))}"><rect x="${L + i * bw}" y="0" width="${bw}" height="${H - B}" fill="transparent"/>`;
     r.vals.forEach((v, j) => { if (!v) return; const y0 = y(acc), y1 = y(acc + v); const gap = acc ? 2 : 0; acc += v; const last = r.vals.slice(j + 1).every(x => !x); svg += `<rect x="${x}" y="${y1}" width="${w}" height="${Math.max(0, y0 - y1 - gap)}" ${last ? `rx="${Math.min(3, w / 2)}"` : ''} fill="${kleuren[j]}"/>`; if (last && w > 6) svg += `<rect x="${x}" y="${Math.min(y0 - gap, y1 + 4)}" width="${w}" height="${Math.max(0, y0 - gap - Math.min(y0 - gap, y1 + 4))}" fill="${kleuren[j]}"/>`; });
     svg += '</g>';
     if (i % elk === 0 || i === rijen.length - 1 && rijen.length < 30) svg += `<text x="${x + w / 2}" y="${H - 6}" text-anchor="middle">${esc(r.k)}</text>`;
@@ -511,6 +538,7 @@ function legenda(id, reeksen) { $(id).innerHTML = reeksen.map(([n, k]) => `<span
 /* ===== Render ===== */
 let SEL = null;
 function render() {
+  chips();
   const B = bereik(), cur = selectie(B.in), vorig = selectie(B.vorig);
   SEL = { B, ...cur, vorig };
   const t = F.tab;
@@ -548,7 +576,7 @@ const xLabels = B => B.perUur ? Array.from({ length: 24 }, (_, h) => String(h).p
 function overzicht() {
   const { B, S, A, AL, C, vorig } = SEL, k = kpiData(SEL), kv = kpiData(vorig);
   const delta = (a, b, omgekeerd) => { if (!b) return ''; const d = (a - b) / b; if (Math.abs(d) < .005) return '<b>=</b>'; const goed = omgekeerd ? d < 0 : d > 0; return `<b class="${goed ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${Math.abs(Math.round(d * 100))}%</b>`; };
-  const vsTekst = F.periode === 0 ? 'gisteren' : F.periode === 1 ? 'eergisteren' : 'vorige ' + F.periode + ' dagen';
+  const vsTekst = F.dag ? 'dag ervoor' : F.periode === 0 ? 'gisteren' : F.periode === 1 ? 'eergisteren' : 'vorige ' + F.periode + ' dagen';
   const sesTijdPerDag = (() => { const som = perDagReeks(B, S, s => s.start, s => s.sec), n = perDagReeks(B, S, s => s.start); return som.map((v, i) => n[i] ? v / n[i] : 0); })();
   const tegels = [
     ['Weergaven', nf.format(k.views), delta(k.views, kv.views), perDagReeks(B, [...S.flatMap(s => s.views), ...A], x => x.t)],
@@ -562,7 +590,7 @@ function overzicht() {
 
   // Weergaven per dag/uur
   const lab = xLabels(B), stat = perDagReeks(B, S.flatMap(s => s.views), v => v.t), an = perDagReeks(B, A, e => e.t), ses = perDagReeks(B, S, s => s.start);
-  staven('perDag', lab.map((x, i) => ({ k: x, vals: [stat[i], an[i]], tip: `${x}<br>${nf.format(stat[i] + an[i])} weergaven<br>${nf.format(stat[i])} met cookies · ${nf.format(an[i])} zonder<br>${nf.format(ses[i])} sessies` })), [KLEUR.volt, KLEUR.voltM]);
+  staven('perDag', lab.map((x, i) => ({ k: x, dag: B.perUur ? null : B.dagen[i], vals: [stat[i], an[i]], tip: `${x}<br>${nf.format(stat[i] + an[i])} weergaven<br>${nf.format(stat[i])} met cookies · ${nf.format(an[i])} zonder<br>${nf.format(ses[i])} sessies` })), [KLEUR.volt, KLEUR.voltM]);
   $('perDagSub').textContent = nf.format(k.views) + ' totaal';
   // Sessies naar bron
   const perBron = BRONNEN.map(([b]) => perDagReeks(B, S.filter(s => bronSoort(s.ref, s.mail ? 'email' : s.utm) === b), s => s.start));
@@ -579,11 +607,55 @@ function overzicht() {
   for (const x of [...S.flatMap(s => s.views), ...A]) { const p = fmtUur.formatToParts(x.t); g[dagenW.indexOf(p.find(z => z.type === 'weekday').value)][+p.find(z => z.type === 'hour').value]++; }
   matrix('heat', namen, Array.from({ length: 24 }, (_, h) => h % 3 ? '' : String(h).padStart(2, '0')), g, { links: 28, cel: 22, tip: (i, j, v) => `${namen[i]} ${String(j).padStart(2, '0')}:00 · ${nf.format(v)} weergaven` });
   // Top pagina's, bron, land, apparaat
-  bars('topPaginas', tel([...S.flatMap(s => s.views), ...A.map(e => ({ naam: paginaNaam(e.page, e.p.hash) }))], v => v.naam), { max: 9 });
-  bars('oBron', tel([...S.map(s => bronNaam(s.ref, s.mail ? 'email' : s.utm)), ...A.map(e => bronNaam(e.p.ref, e.p.utm_source))], x => x), { max: 6 });
-  bars('oLand', tel([...S.map(s => landLabel(s.land)), ...A.map(e => landLabel(e.land))], x => x), { max: 6, leeg: 'Wordt vanaf nu gemeten' });
-  bars('oApp', tel([...S.map(s => s.mobile), ...A.map(e => e.p.mobile)], m => m == null ? null : m ? 'Mobiel' : 'Desktop'), { max: 3 });
+  bars('topPaginas', tel([...S.flatMap(s => s.views), ...A.map(e => ({ naam: paginaNaam(e.page, e.p.hash) }))], v => v.naam), { max: 9, drill: 'pagina' });
+  bars('oBron', tel([...S.map(s => bronNaam(s.ref, s.mail ? 'email' : s.utm)), ...A.map(e => bronNaam(e.p.ref, e.p.utm_source))], x => x), { max: 6, drill: 'bron' });
+  bars('oLand', tel([...S.map(s => landLabel(s.land)), ...A.map(e => landLabel(e.land))], x => x), { max: 6, leeg: 'Wordt vanaf nu gemeten', drill: 'land' });
+  filterInfo();
+  bars('oApp', tel([...S.map(s => s.mobile), ...A.map(e => e.p.mobile)], m => m == null ? null : m ? 'Mobiel' : 'Desktop'), { max: 3, drill: 'apparaat' });
 }
+
+function filterInfo() {
+  // Tellingen per 'Wie' met dezelfde overige filters
+  const B = SEL.B, wieBak = F.wie; const tellen = {};
+  for (const w of ['echt', 'intern', 'bot', 'alles']) { F.wie = w; const x = selectie(B.in); tellen[w] = viewsVan(x.S) + x.A.length; }
+  F.wie = wieBak;
+  $('fWie').querySelectorAll('button').forEach(b => { const n = tellen[b.dataset.v]; b.innerHTML = b.textContent.replace(/\s*\d[\d.]*$/, '') + `<span class="c">${nf.format(n)}</span>`; });
+  // Redenen
+  F.wie = 'alles'; const al = selectie(B.in); F.wie = wieBak;
+  const red = new Map(); const add = (r, n) => { if (r) red.set(r, (red.get(r) || 0) + n); };
+  for (const s of al.S) add(sessieReden(s), s.views.length);
+  for (const e of al.A) add(anonReden(e), 1);
+  const tot = viewsVan(al.S) + al.A.length, weg = [...red.values()].reduce((a, b) => a + b, 0);
+  $('filterSub').textContent = `${nf.format(weg)} van ${nf.format(tot)} weergaven`;
+  bars('redenen', [...red].sort((a, b) => b[1] - a[1]), { pct: false, max: 12, leeg: 'Niets weggefilterd', kleurVan: k => INTERNE_REDENEN.has(k) ? '#64748B' : '#B42318' });
+  $('redenen').querySelectorAll('.bar-row').forEach((el, i) => { const k = [...red].sort((a, b) => b[1] - a[1])[i][0]; el.dataset.drill = 'reden'; el.dataset.w = k; el.dataset.wie = INTERNE_REDENEN.has(k) ? 'intern' : 'bot'; });
+  $('netwerken').innerHTML = NETWERKEN.length ? NETWERKEN.map(([id, label, , laatst, dagen]) => { const verlopen = Date.now() - new Date(laatst) > dagen * 86400000; return `<tr><td>${esc(label || id)}</td><td class="num">${fmtVol.format(new Date(laatst))}</td><td class="num">${verlopen ? '<span class="tag t-bot">verlopen</span>' : dagen + ' dagen'}</td><td><button class="ghost mini" data-net="${id}">Niet intern</button></td></tr>`; }).join('') : '<tr><td colspan="4" class="leeg">Nog geen. Open het dashboard op elk netwerk dat je gebruikt.</td></tr>';
+}
+$('netwerken').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-net]'); if (!b) return; b.disabled = true;
+  try { const r = await fetch(FN, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code: sessionStorage.getItem('sod_dash_code'), net_weg: b.dataset.net }) }); if (!r.ok) throw 0; b.closest('tr').remove(); } catch { b.disabled = false; b.textContent = 'Mislukt'; }
+});
+function chips() {
+  const lijst = [...F.drill.map((d, i) => [DRILLNAAM[d.type], d.w, 'drill', i])];
+  if (F.dag) lijst.unshift(['Dag', fmtKort.format(new Date(F.dag + 'T12:00:00')), 'dag', 0]);
+  $('chips').hidden = !lijst.length;
+  $('chips').innerHTML = lijst.map(([t, w, soort, i]) => `<span class="chip"><b>${esc(t)}</b>${esc(w)}<button type="button" data-weg="${soort}" data-i="${i}">×</button></span>`).join('') + (lijst.length > 1 ? '<button class="ghost mini" data-weg="alles">Alles wissen</button>' : '');
+}
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('[data-weg]'); if (!b) return;
+  if (b.dataset.weg === 'alles') { F.drill = []; F.dag = null; } else if (b.dataset.weg === 'dag') F.dag = null; else F.drill.splice(+b.dataset.i, 1);
+  render();
+});
+document.addEventListener('click', e => {
+  const d = e.target.closest('[data-drill]');
+  if (d) {
+    if (d.dataset.wie && F.wie !== 'alles' && F.wie !== d.dataset.wie) { F.wie = d.dataset.wie; $('fWie').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.v === F.wie)); }
+    if (!F.drill.some(x => x.type === d.dataset.drill && x.w === d.dataset.w)) F.drill = F.drill.filter(x => x.type !== d.dataset.drill).concat({ type: d.dataset.drill, w: d.dataset.w });
+    render(); return;
+  }
+  const g = e.target.closest('[data-dag]');
+  if (g) { F.dag = g.dataset.dag; render(); }
+});
 
 /* ----- Pagina's ----- */
 function paginaStats() {
@@ -602,12 +674,12 @@ function paginas() {
   const rijen = paginaStats(), gem = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
   $('paginas').innerHTML = rijen.length ? rijen.map(r => { const lcp = kwantiel(r.lcp, .75); return `<tr><td>${esc(r.k)}</td><td class="r num">${nf.format(r.views)}</td><td class="r num">${nf.format(r.ses.size)}</td><td class="r num">${r.tijden.length ? duur(gem(r.tijden)) : '–'}</td><td class="r num">${r.tijden.length ? duur(kwantiel(r.tijden, .5)) : '–'}</td><td class="r num">${r.depths.length ? Math.round(gem(r.depths)) + '%' : '–'}</td><td class="r num">${nf.format(r.in)}</td><td class="r num">${pct(r.uit, r.ses.size)}</td><td class="r num">${lcp ? `<span class="tag ${lcp <= 2500 ? 'r-goed' : lcp <= 4000 ? 'r-matig' : 'r-slecht'}">${ms(lcp)}</span>` : '–'}</td></tr>`; }).join('') : '<tr><td colspan="9" class="leeg">Geen weergaven in deze periode</td></tr>';
   const metTijd = rijen.filter(r => r.tijden.length).map(r => [r.k, gem(r.tijden), r.tijden.length + ' metingen']).sort((a, b) => b[1] - a[1]);
-  bars('tijdPagina', metTijd, { max: 12, fmt: duur });
+  bars('tijdPagina', metTijd, { max: 12, fmt: duur, drill: 'pagina' });
   const SC = [['0–25%', '#D7EDE2'], ['25–50%', '#9BCBB4'], ['50–75%', '#4FA884'], ['75–100%', '#07734A']];
   stackBars('scrollPagina', rijen.filter(r => r.depths.length).map(r => { const v = [0, 0, 0, 0]; for (const d of r.depths) v[d >= 75 ? 3 : d >= 50 ? 2 : d >= 25 ? 1 : 0]++; return [r.k, v]; }), SC, { max: 12 });
   legenda('scrollLegend', SC);
-  bars('instap', rijen.map(r => [r.k, r.in]).sort((a, b) => b[1] - a[1]), { max: 8 });
-  bars('uitstap', rijen.map(r => [r.k, r.uit, pct(r.uit, r.ses.size) + ' van sessies op deze pagina']).sort((a, b) => b[1] - a[1]), { max: 8 });
+  bars('instap', rijen.map(r => [r.k, r.in]).sort((a, b) => b[1] - a[1]), { max: 8, drill: 'instap' });
+  bars('uitstap', rijen.map(r => [r.k, r.uit, pct(r.uit, r.ses.size) + ' van sessies op deze pagina']).sort((a, b) => b[1] - a[1]), { max: 8, drill: 'pagina' });
   bars('gidsen', rijen.filter(r => r.k.startsWith('Gids · ')).map(r => [r.k.slice(7), r.views]), { max: 12, pct: false });
   const { S } = SEL;
   bars('modellen', tel(S.flatMap(s => s.ev.filter(e => e.ev === 'model_open' || e.ev === 'model_apply')), e => (e.p.id || '').replace(/-/g, ' ')), { max: 12, pct: false });
@@ -680,9 +752,9 @@ function calculator() {
 /* ----- Herkomst ----- */
 function herkomst() {
   const { S, A } = SEL;
-  bars('hBron', tel([...S.map(s => bronNaam(s.ref, s.mail ? 'email' : s.utm)), ...A.map(e => bronNaam(e.p.ref, e.p.utm_source))], x => x), { max: 10 });
+  bars('hBron', tel([...S.map(s => bronNaam(s.ref, s.mail ? 'email' : s.utm)), ...A.map(e => bronNaam(e.p.ref, e.p.utm_source))], x => x), { max: 10, drill: 'bron' });
   bars('hRef', tel([...S.map(s => s.ref), ...A.map(e => e.p.ref)], x => x ? x.replace(/^www\./, '') : null), { max: 12, pct: false, leeg: 'Alleen direct verkeer' });
-  bars('hLand', tel([...S.map(s => landLabel(s.land)), ...A.map(e => landLabel(e.land))], x => x), { max: 12, leeg: 'Wordt vanaf nu gemeten' });
+  bars('hLand', tel([...S.map(s => landLabel(s.land)), ...A.map(e => landLabel(e.land))], x => x), { max: 12, leeg: 'Wordt vanaf nu gemeten', drill: 'land' });
   bars('hTaal', tel(S, s => s.lang ? s.lang.slice(0, 2).toUpperCase() : null), { max: 8 });
   bars('hSiteTaal', tel([...S.flatMap(s => s.ev.filter(e => e.ev === 'page_view')), ...A], e => e.p.taal ? (e.p.taal === 'en' ? 'Engels' : 'Nederlands') : null), { max: 3, leeg: 'Wordt vanaf nu gemeten' });
   bars('hCamp', tel(S.filter(s => s.camp), s => s.camp), { pct: false, leeg: 'Geen' });
@@ -696,10 +768,10 @@ function herkomst() {
 /* ----- Apparaat en snelheid ----- */
 function techniek() {
   const { S, A, AP } = SEL;
-  bars('tType', tel([...S.map(s => s.mobile), ...A.map(e => e.p.mobile)], m => m == null ? null : m ? 'Mobiel' : 'Desktop'));
-  bars('tScherm', tel([...S.map(s => s.vw), ...A.map(e => e.p.vw)], schermNaam));
-  bars('tBrowser', tel([...S, ...A], x => x.browser), { leeg: 'Wordt vanaf nu gemeten' });
-  bars('tOs', tel([...S, ...A], x => x.os), { leeg: 'Wordt vanaf nu gemeten' });
+  bars('tType', tel([...S.map(s => s.mobile), ...A.map(e => e.p.mobile)], m => m == null ? null : m ? 'Mobiel' : 'Desktop'), { drill: 'apparaat' });
+  bars('tScherm', tel([...S.map(s => s.vw), ...A.map(e => e.p.vw)], schermNaam), { drill: 'scherm' });
+  bars('tBrowser', tel([...S, ...A], x => x.browser), { leeg: 'Wordt vanaf nu gemeten', drill: 'browser' });
+  bars('tOs', tel([...S, ...A], x => x.os), { leeg: 'Wordt vanaf nu gemeten', drill: 'os' });
   bars('tDpr', tel(S, s => s.dpr == null ? null : s.dpr >= 2 ? 'Scherp (2x+)' : s.dpr > 1 ? 'Geschaald (1,25–1,75x)' : 'Normaal (1x)'), { leeg: 'Wordt vanaf nu gemeten' });
   bars('tDark', tel(S, s => s.dark == null ? null : s.dark ? 'Donker' : 'Licht'), { leeg: 'Wordt vanaf nu gemeten' });
   bars('tNet', tel(S, s => s.net ? s.net.toUpperCase() : null), { leeg: 'Wordt vanaf nu gemeten' });
@@ -741,20 +813,21 @@ $('mailBody').addEventListener('click', e => { const tr = e.target.closest('tr[d
 
 /* ----- Sessies ----- */
 const bedrijfHtml = s => { const c = bedrijfVan(s); return c ? `<span class="bedrijf">${esc(c.bedrijf || c.email)}</span>${s.mailZeker ? '' : ' <span class="gok" title="Vermoedelijk, op tijdstip van de klik">≈</span>'}` : ''; };
-const tagHtml = k => `<span class="tag t-${k}">${{ echt: 'Echt', intern: 'Intern', bot: 'Bot/test' }[k]}</span>`;
+const tagHtml = (k, reden) => `<span class="tag t-${k}" ${reden ? `title="${esc(reden)}"` : ''}>${{ echt: 'Echt', intern: 'Intern', bot: 'Bot/test' }[k]}</span>${reden ? `<span class="reden">${esc(reden)}</span>` : ''}`;
 function sessieTabel() {
   const { S } = SEL;
   $('sesAantal').textContent = nf.format(S.length) + ' sessies';
-  $('sessies').innerHTML = S.length ? S.slice(0, 400).map(s => { const r = routeVan(s); return `<tr class="klik" data-sid="${s.id}"><td class="num">${fmtVol.format(s.start)}</td><td>${tagHtml(sessieKlasse(s))}</td><td>${bedrijfHtml(s)}</td><td class="r num">${duur(s.sec)}</td><td class="r num">${s.views.length}</td><td class="route">${esc(r.slice(0, 6).join(' → '))}${r.length > 6 ? ' → …' : ''}</td><td>${esc(bronNaam(s.ref, s.mail ? 'email' : s.utm))}</td><td>${esc(s.land || '')}</td><td class="num">${s.mobile == null ? '–' : s.mobile ? 'mobiel' : 'desktop'}${s.vw ? ' · ' + s.vw : ''}${s.browser ? ' · ' + esc(s.browser) : ''}</td></tr>`; }).join('') : '<tr><td colspan="9" class="leeg">Geen sessies met cookies in deze periode</td></tr>';
+  $('sessies').innerHTML = S.length ? S.slice(0, 400).map(s => { const r = routeVan(s); return `<tr class="klik" data-sid="${s.id}"><td class="num">${fmtVol.format(s.start)}</td><td style="white-space:nowrap">${tagHtml(sessieKlasse(s), sessieReden(s))}</td><td>${bedrijfHtml(s)}</td><td class="r num">${duur(s.sec)}</td><td class="r num">${s.views.length}</td><td class="route">${esc(r.slice(0, 6).join(' → '))}${r.length > 6 ? ' → …' : ''}</td><td>${esc(bronNaam(s.ref, s.mail ? 'email' : s.utm))}</td><td>${esc(s.land || '')}</td><td class="num">${s.mobile == null ? '–' : s.mobile ? 'mobiel' : 'desktop'}${s.vw ? ' · ' + s.vw : ''}${s.browser ? ' · ' + esc(s.browser) : ''}</td></tr>`; }).join('') : '<tr><td colspan="9" class="leeg">Geen sessies met cookies in deze periode</td></tr>';
   const rijen = [], zicht = new Set(S.map(s => s.vid));
   for (const [vid, lijst] of perVid) {
     if (!zicht.has(vid)) continue;
-    const k = intern.has(vid) || vidIntern.has(vid) || lijst.some(s => TESTTOKENS.has(s.mail)) ? 'intern' : lijst.every(s => s.bot) ? 'bot' : 'echt';
+    const reden = lijst.map(sessieReden).find(x => x && INTERNE_REDENEN.has(x)) || (lijst.every(s => s.bot) ? lijst[0].bot : null);
+    const k = !reden ? 'echt' : INTERNE_REDENEN.has(reden) ? 'intern' : 'bot';
     const b = lijst.find(s => s.vw) || lijst[0];
-    rijen.push({ vid, k, s0: lijst.find(s => s.mail) || lijst[0], eerst: lijst[0].start, laatst: lijst[lijst.length - 1].eind, ses: lijst.length, views: viewsVan(lijst), sec: lijst.reduce((a, s) => a + s.sec, 0), vw: b.vw, lang: b.lang });
+    rijen.push({ vid, k, reden, s0: lijst.find(s => s.mail) || lijst[0], eerst: lijst[0].start, laatst: lijst[lijst.length - 1].eind, ses: lijst.length, views: viewsVan(lijst), sec: lijst.reduce((a, s) => a + s.sec, 0), vw: b.vw, lang: b.lang });
   }
   rijen.sort((a, b) => b.laatst - a.laatst);
-  $('bezoekers').innerHTML = rijen.length ? rijen.map(r => `<tr class="klik" data-vid="${r.vid}"><td class="num">${r.vid.slice(0, 8)}</td><td>${tagHtml(r.k)}</td><td>${bedrijfHtml(r.s0)}</td><td class="num">${fmtKort.format(r.eerst)}</td><td class="num">${fmtVol.format(r.laatst)}</td><td class="r num">${r.ses}</td><td class="r num">${r.views}</td><td class="r num">${duur(r.sec)}</td><td class="num">${r.vw || '–'} · ${esc(r.lang || '–')}</td><td><button class="ghost mini" data-intern="${r.vid}" data-aan="${r.k === 'intern' ? 0 : 1}">${r.k === 'intern' ? 'Niet intern' : 'Intern'}</button></td></tr>`).join('') : '<tr><td colspan="10" class="leeg">Geen bezoekers met cookies in deze periode</td></tr>';
+  $('bezoekers').innerHTML = rijen.length ? rijen.map(r => `<tr class="klik" data-vid="${r.vid}"><td class="num">${r.vid.slice(0, 8)}</td><td style="white-space:nowrap">${tagHtml(r.k, r.reden)}</td><td>${bedrijfHtml(r.s0)}</td><td class="num">${fmtKort.format(r.eerst)}</td><td class="num">${fmtVol.format(r.laatst)}</td><td class="r num">${r.ses}</td><td class="r num">${r.views}</td><td class="r num">${duur(r.sec)}</td><td class="num">${r.vw || '–'} · ${esc(r.lang || '–')}</td><td><button class="ghost mini" data-intern="${r.vid}" data-aan="${r.k === 'intern' ? 0 : 1}">${r.k === 'intern' ? 'Niet intern' : 'Intern'}</button></td></tr>`).join('') : '<tr><td colspan="10" class="leeg">Geen bezoekers met cookies in deze periode</td></tr>';
 }
 function toonDetail(s) {
   const c = bedrijfVan(s);
@@ -790,7 +863,7 @@ $('bezoekers').addEventListener('click', async e => {
   try {
     const r = await fetch(FN, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code: sessionStorage.getItem('sod_dash_code'), intern: { visitor_id: vid, aan } }) });
     if (!r.ok) throw 0;
-    if (aan) intern.add(vid); else { intern.delete(vid); vidIntern.delete(vid); }
+    if (aan) intern.add(vid); else { intern.delete(vid); vidIntern.delete(vid); for (const x of perVid.get(vid) || []) if (x.intern === 'Eigen browser') x.intern = false; }
     render();
   } catch { b.disabled = false; b.textContent = 'Mislukt'; }
 });
@@ -809,12 +882,15 @@ for (const [id, key, num] of [['fPeriode', 'periode', true], ['fWie', 'wie'], ['
   $(id).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
-    F[key] = num ? +b.dataset.v : b.dataset.v; $('detail').hidden = true; render();
+    F[key] = num ? +b.dataset.v : b.dataset.v; if (key === 'periode') F.dag = null; $('detail').hidden = true; render();
   });
 }
 $('ververs').addEventListener('click', () => location.reload());
 let rT = 0; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(render, 200); });
-toonTab(F.tab);
+/* Link vanuit het e-maildashboard: #mail=<token> of #vid=<visitor> zet meteen de focus */
+const hashM = /^#(mail|vid)=([0-9a-f-]{8,36})$/i.exec(location.hash);
+if (hashM) { const [, type, id] = hashM, c = type === 'mail' ? CONTACT.get(id) : null; F.tab = 'sessies'; toonTab(F.tab); zetFocus(type, id, c ? c.bedrijf || c.email : type === 'mail' ? 'contact' : 'bezoeker ' + id.slice(0, 8)); history.replaceState(null, '', location.pathname); }
+else toonTab(F.tab);
 </script>
 </body>
 </html>

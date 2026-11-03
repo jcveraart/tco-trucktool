@@ -12,6 +12,15 @@ const CORS = {
   'Access-Control-Allow-Headers': 'content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
+// Het netwerk van wie het dashboard opent telt voortaan als intern (gehasht in de database).
+// Telefoonnetwerken delen IP-adressen met veel mensen: die gelden 2 dagen, vaste netwerken 90.
+async function registreerNetwerk(supabase: any, req: Request, ip: string, bron: string) {
+  if (!ip || ip === 'onbekend') return;
+  const ua = req.headers.get('user-agent') || '';
+  const mobiel = /iphone|android|mobile/i.test(ua);
+  const label = `${bron} · ${mobiel ? 'mobiel' : 'vast'} · ${new Date().toISOString().slice(0, 10)}`;
+  await supabase.rpc('registreer_intern_net', { ip, label, dagen: mobiel ? 2 : 90 });
+}
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, 'content-type': 'application/json', 'cache-control': 'no-store' } });
 
@@ -31,15 +40,17 @@ Deno.serve(async (req: Request) => {
   await supabase.from('email_dashboard_pogingen').insert({ ip, geslaagd: juist });
   if (!juist) return json(401, { error: 'onjuiste_code' });
 
-  const [contacten, verzonden, kliks, events, afmeldingen, templateResp] = await Promise.all([
+  await registreerNetwerk(supabase, req, ip, 'E-maildashboard');
+  const [contacten, verzonden, kliks, events, afmeldingen, bezoek, templateResp] = await Promise.all([
     supabase.from('email_contacten').select('token, email, bedrijf, naam, segment, bron, toegevoegd_op, afgemeld_op, bounce_op, notion_page_id').order('bedrijf'),
     supabase.from('email_verzonden').select('token, campagne, variant, verzonden_op, resend_id, gepland_voor, test').order('verzonden_op'),
-    supabase.from('email_kliks').select('id, ontvangen_op, token, campagne, variant, link, bot, ua').order('ontvangen_op', { ascending: false }).limit(10000),
+    supabase.from('email_kliks').select('id, ontvangen_op, token, campagne, variant, link, bot, ua, intern').order('ontvangen_op', { ascending: false }).limit(10000),
     supabase.from('email_events').select('resend_id, token, campagne, variant, last_event, bijgewerkt_op'),
     supabase.from('email_afmeldingen').select('ontvangen_op, token, email, campagne').order('ontvangen_op'),
+    supabase.rpc('dashboard_mail_bezoek'),
     fetch(TEMPLATE_URL),
   ]);
-  const fout = [contacten, verzonden, kliks, events, afmeldingen].find(r => r.error);
+  const fout = [contacten, verzonden, kliks, events, afmeldingen, bezoek].find(r => r.error);
   if (fout) return json(500, { error: String(fout.error?.message || 'query_fout') });
   if (!templateResp.ok) return json(502, { error: 'template_niet_bereikbaar' });
 
@@ -59,7 +70,10 @@ Deno.serve(async (req: Request) => {
     const p = perToken.get(k.token + '|' + k.campagne);
     const vz = verzondenOp.get(k.token + '|' + k.campagne);
     let klasse = 'menselijk';
-    if (k.bot) klasse = 'scanner';
+    const tegelijk = (kliks.data || []).some((x: any) => x.id !== k.id && x.token && x.token === k.token && x.link !== k.link && Math.abs(new Date(x.ontvangen_op).getTime() - new Date(k.ontvangen_op).getTime()) < 5000);
+    if (k.intern) klasse = 'intern';
+    else if (k.bot) klasse = 'scanner';
+    else if (tegelijk) klasse = 'scanner_vermoedelijk';
     else if (!k.token) klasse = 'onbekend';
     else if (vz && new Date(k.ontvangen_op).getTime() < new Date(vz).getTime() + 60_000) klasse = 'scanner_vermoedelijk';
     else if (p && p.links.size >= 3 && new Date(k.ontvangen_op).getTime() <= new Date(p.eerste).getTime() + 600_000) klasse = 'scanner_vermoedelijk';
@@ -69,7 +83,7 @@ Deno.serve(async (req: Request) => {
   const data = {
     gegenereerd: new Date().toISOString(),
     contacten: contacten.data, verzonden: verzonden.data, kliks: kliksGeklasseerd,
-    events: events.data, afmeldingen: afmeldingen.data,
+    events: events.data, afmeldingen: afmeldingen.data, bezoek: bezoek.data || [],
   };
   const template = await templateResp.text();
   const html = template

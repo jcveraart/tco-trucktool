@@ -12,6 +12,15 @@ const CORS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// Het netwerk van wie het dashboard opent telt voortaan als intern (gehasht in de database).
+// Telefoonnetwerken delen IP-adressen met veel mensen: die gelden 2 dagen, vaste netwerken 90.
+async function registreerNetwerk(supabase: any, req: Request, ip: string, bron: string) {
+  if (!ip || ip === 'onbekend') return;
+  const ua = req.headers.get('user-agent') || '';
+  const mobiel = /iphone|android|mobile/i.test(ua);
+  const label = `${bron} · ${mobiel ? 'mobiel' : 'vast'} · ${new Date().toISOString().slice(0, 10)}`;
+  await supabase.rpc('registreer_intern_net', { ip, label, dagen: mobiel ? 2 : 90 });
+}
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, 'content-type': 'application/json', 'cache-control': 'no-store' } });
 
@@ -31,6 +40,12 @@ Deno.serve(async (req: Request) => {
   await supabase.from('email_dashboard_pogingen').insert({ ip, geslaagd: juist });
   if (!juist) return json(401, { error: 'onjuiste_code' });
 
+  await registreerNetwerk(supabase, req, ip, 'Bezoekersdashboard');
+  // Netwerk handmatig weer extern maken
+  if (typeof body.net_weg === 'string' && /^[0-9a-f]{10}$/.test(body.net_weg)) {
+    const r = await supabase.rpc('verwijder_intern_net', { prefix: body.net_weg });
+    return r.error ? json(500, { error: r.error.message }) : json(200, { ok: true });
+  }
   // Eigen browser automatisch als intern markeren
   if (typeof body.vid === 'string' && UUID.test(body.vid)) {
     await supabase.from('web_intern').upsert({ visitor_id: body.vid, label: 'Dashboard geopend' }, { onConflict: 'visitor_id', ignoreDuplicates: true });

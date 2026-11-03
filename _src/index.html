@@ -3433,7 +3433,7 @@ function gaEvent(e){
 }
 const LAND=(()=>{const q=new URLSearchParams(location.search),o={};['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{const x=q.get(k);if(x)o[k]=x.slice(0,80)});
  let r='';try{const u=new URL(document.referrer);if(u.host!==location.host)r=u.host}catch(e){}o.ref=r;o.land=(location.hash.slice(1)||location.pathname.replace(/^\/|\/$/g,'').replace(/^overstapgids(\/|$)/,(m,x)=>x?'gids/':'faq')).slice(0,40)||'calc';
- o.mobile=matchMedia('(pointer:coarse)').matches;o.vw=innerWidth;o.lang=(navigator.language||'').slice(0,10);try{o.vh=window.innerHeight;o.dpr=Math.round((window.devicePixelRatio||1)*100)/100;o.tz=Intl.DateTimeFormat().resolvedOptions().timeZone.slice(0,40);o.dark=matchMedia('(prefers-color-scheme: dark)').matches;if(navigator.connection&&navigator.connection.effectiveType)o.net=navigator.connection.effectiveType}catch(e){}o.taal=document.documentElement.lang||'nl';if(navigator.webdriver)o.wd=true;if(store('sod-intern'))o.intern=true;const mt=store('sod-mail');if(mt&&/^[0-9a-f-]{36}$/.test(mt))o.mail=mt;return o})();
+ o.mobile=matchMedia('(pointer:coarse)').matches;o.vw=innerWidth;o.lang=(navigator.language||'').slice(0,10);try{o.vh=window.innerHeight;o.dpr=Math.round((window.devicePixelRatio||1)*100)/100;o.tz=Intl.DateTimeFormat().resolvedOptions().timeZone.slice(0,40);o.dark=matchMedia('(prefers-color-scheme: dark)').matches;if(navigator.connection&&navigator.connection.effectiveType)o.net=navigator.connection.effectiveType}catch(e){}o.taal=document.documentElement.lang||'nl';if(navigator.webdriver)o.wd=true;if(store('sod-intern'))o.intern=true;if(!/^(www\.)?stekkerofdiesel\.nl$/.test(location.hostname))o.dev=true;const mt=store('sod-mail');if(mt&&/^[0-9a-f-]{36}$/.test(mt))o.mail=mt;return o})();
 const fnv=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
 function ab(id){
  const x=EXPERIMENTS[id];if(!x||!x.on||!statOK()||!vid)return'a';
@@ -3466,7 +3466,7 @@ function send(e,anon){
   /* Zonder toestemming alleen anonieme tellingen: paginaweergave, hoe lang en hoe ver, en de laadsnelheid */
   if(!['page_view','consent','page_leave','perf'].includes(e.event))return;
   const q=e.props||{};
-  const p=e.event==='page_view'?{ref:LAND.ref,mobile:LAND.mobile,utm_source:LAND.utm_source,hash:q.hash,taal:LAND.taal,vw:Math.round(LAND.vw/10)*10,wd:LAND.wd,intern:LAND.intern}
+  const p=e.event==='page_view'?{ref:LAND.ref,mobile:LAND.mobile,utm_source:LAND.utm_source,hash:q.hash,taal:LAND.taal,vw:Math.round(LAND.vw/10)*10,wd:LAND.wd,intern:LAND.intern,dev:LAND.dev}
    :e.event==='page_leave'?{p:q.p,hash:q.hash,sec:q.sec,depth:q.depth,m:LAND.mobile,wd:LAND.wd,intern:LAND.intern}:Object.assign({},q,{m:LAND.mobile,wd:LAND.wd,intern:LAND.intern});
   evq.push(Object.assign(e,{props:p,consent:'anon',visitor_id:null,session_id:null,experiments:{}}));
  }
