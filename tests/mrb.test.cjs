@@ -56,8 +56,10 @@ test('kentekenlookup schat wegenbelasting uit RDW-gewicht per voertuigsoort', ()
   assert.equal(ctx.mrbJaar('bestel', 1850, 2800, true), 330);
   assert.equal(ctx.mrbJaar('bestel', 0, 2800, false), 0); // geen ledig gewicht: niet overschrijven
   assert.equal(ctx.mrbJaar('bakwagen', 0, 16000, false), 800);
-  assert.equal(ctx.mrbJaar('trekker', 0, 40000, false), 1100);
-  assert.equal(ctx.mrbJaar('trekker', 0, 40000, true), 1000);
+  assert.equal(ctx.mrbJaar('bakwagen', 0, 16000, true), 800); // vrachtauto: brandstof maakt niet uit
+  assert.equal(ctx.mrbJaar('bakwagen', 0, 10000, false), 0); // onder 12 ton nihiltarief sinds 1 juli 2026
+  assert.equal(ctx.mrbJaar('trekker', 0, 40000, false), 925); // Europees minimum, hooguit 929 per jaar
+  assert.equal(ctx.mrbJaar('trekker', 0, 40000, true), 925);
   assert.equal(ctx.mrbJaar('bus', 0, 19000, false), 1200);
   assert.match(SOURCE, /mrbJaar\(i\.vt,i\.ledig,i\.mass,false\)/);
   assert.match(SOURCE, /mrbJaar\(i\.vt,i\.ledig,i\.mass,true\)/);
@@ -66,7 +68,7 @@ test('kentekenlookup schat wegenbelasting uit RDW-gewicht per voertuigsoort', ()
 
 test('elektrische modellen nemen hun wegenbelasting uit de database mee', () => {
   assert.match(SOURCE, /r\.roadtax_annual_eur != null\) m\.bel = parseFloat\(r\.roadtax_annual_eur\)/);
-  assert.match(SOURCE, /if\(m\.bel\)setNum\(\$\('wE'\),m\.bel\)/);
+  assert.match(SOURCE, /if\(m\.bel&&!VT\[m\.c\]\.truck\)setNum\(\$\('wE'\),m\.bel\)/);
 });
 
 test('wegenbelasting staat in velden, voorbeeldwaarden, stappen en terugverdientijd', () => {
