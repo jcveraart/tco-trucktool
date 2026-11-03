@@ -2636,11 +2636,18 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 @media(max-width:640px){.vzf .ff textarea{min-height:88px}}
 .vz{grid-template-areas:"h f" "s f" "v f" "p f" "r f" "t t" "k k" "q q"}
 /* Veelgestelde vragen: één blok over de volle breedte, direct onder "Waarom Stekker of Diesel" */
-.vzq{grid-area:q;margin-top:24px;padding:26px 28px 30px;border-radius:8px;background:var(--card);box-shadow:0 0 0 1px var(--line)}
-.vzq h2{margin:0;max-width:none}
-.vzqg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;margin-top:22px}
-.vzqg h3{margin:0;font-size:18px;line-height:1.35}
-.vzqg p{margin:8px 0 0;color:var(--ink-2);line-height:1.6}
+/* Veelgestelde vragen: grote smalle kop, vragen als regels die openklappen (gekozen ontwerp A, 3 nov 2026). */
+.vzq{grid-area:q;margin-top:24px;padding:30px 32px 14px;border-radius:14px;background:var(--card)}
+.vz .vzq>h2{margin:0 0 14px;max-width:none;font:600 30px/1.15 var(--display);letter-spacing:-.005em;text-transform:none;color:var(--ink)}
+.vzqg details{border-top:1px solid var(--line)}
+.vzqg summary{list-style:none;cursor:pointer;position:relative;padding:18px 44px 18px 0}
+.vzqg summary::-webkit-details-marker{display:none}
+.vzqg summary::after{content:"";position:absolute;right:4px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:linear-gradient(var(--ink),var(--ink)) center/12px 2px no-repeat,linear-gradient(var(--ink),var(--ink)) center/2px 12px no-repeat,var(--soft);transition:transform .2s}
+.vzqg details[open] summary::after{transform:rotate(45deg);background-color:var(--volt-soft)}
+.vzqg h3{margin:0;font:600 19px/1.35 var(--display)}
+.vzqg summary:hover h3{color:var(--volt-ink)}
+.vzqg p{margin:-4px 0 20px;max-width:68ch;color:var(--ink-2);font-size:16px;line-height:1.65}
+@media (prefers-reduced-motion:reduce){.vzqg summary::after{transition:none}}
 .vzt{grid-area:t;margin-top:64px}
 .vzf{position:static;align-self:stretch}
 .vzf>.ffm{position:sticky;top:84px}
@@ -2670,7 +2677,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 .vztx{margin:8px 0 0;color:var(--ink-2);font-size:16px;line-height:1.55;max-width:62ch}
 .vztn{margin:10px 0 0;color:var(--ink-3);font-size:13px;line-height:1.5;max-width:60ch}
 @media(max-width:900px){.vz{grid-template-areas:"h" "f" "s" "v" "p" "r" "t" "k" "q" "c"}}
-@media(max-width:760px){.vzqg{grid-template-columns:minmax(0,1fr);gap:22px}.vzq{margin-left:-16px;margin-right:-16px;padding:24px 16px 26px;border-radius:0;box-shadow:0 1px 0 var(--line),0 -1px 0 var(--line)}}
+@media(max-width:760px){.vzq{margin-left:-16px;margin-right:-16px;padding:24px 16px 10px;border-radius:0}.vz .vzq>h2{font-size:25px}}
 @media(max-width:760px){.vzt2{grid-template-columns:minmax(0,1fr);gap:18px}.vzrg{max-width:520px;margin:0 auto}.vzt2 h3{font-size:24px}}
 </style>
 </head>
@@ -3319,7 +3326,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
   <section class="vzr"><h2>Wat we per rit nakijken</h2><ol><li data-s="1"><b>Depot</b><span>’s Nachts laden als de wagens stilstaan. Met jouw aansluiting en het aantal laadpunten.</span><a href="/overstapgids/netcongestie/">Netcongestie</a></li><li data-s="2"><b>Onderweg</b><span>Actieradius met jouw lading, en het hogere verbruik in de winter.</span><a href="/overstapgids/actieradius/">Actieradius</a></li><li data-s="3"><b>Zero-emissiezone</b><span>Welke zones op je routes liggen en tot wanneer je diesel er nog in mag.</span><a href="/overstapgids/zero-emissiezones/">Zero-emissiezones</a></li><li data-s="4"><b>Snellader</b><span>Laden onderweg met CCS of MCS, als een rit langer is dan de accu.</span><a href="/overstapgids/laden/">Laden</a></li><li data-s="5"><b>Klant</b><span>Een stop bij de klant kan een laadmoment zijn, als tijd, toegang en laadsnelheid bevestigd zijn.</span><a href="/overstapgids/laden/">Laden</a></li></ol></section>
   <section class="vzt"><h2>Wat levert een plan voor je wagenpark op?</h2><div class="vzt2" id="vzT"></div></section>
     <section class="vzk"><h2>Waarom Stekker of Diesel</h2><p class="vzkl">Onafhankelijk wagenparkadvies. We verkopen geen voertuigen en hebben geen merkvoorkeur.</p><ul><li><a href="/modellen/"><b data-mcount>67</b><span>elektrische voertuigen in onze catalogus</span></a></li><li><a href="/overstapgids/"><b>12</b><span>onderwerpen uitgezocht in de Overstapgids</span></a></li><li><a href="/over-ons/"><b>Bronnen</b><span>en aannames inzichtelijk</span></a></li><li><a href="/"><b>Open</b><span>kostenbasis uit de calculator</span></a></li></ul></section>
-  <section class="vzq"><h2>Veelgestelde vragen over wagenparkanalyse en wagenparkadvies</h2><div class="vzqg"><div><h3>Is een wagenparkanalyse hetzelfde als wagenparkadvies?</h3><p>Bijna. De wagenparkanalyse is de doorrekening zelf: per voertuig zetten we kosten, actieradius, laden en vervangmoment op een rij. Het wagenparkadvies is het plan dat daaruit volgt, met een vervangvolgorde en concrete stappen. Wij leveren beide in een traject. Een wagenparkanalyse wordt ook wel vlootanalyse genoemd.</p></div><div><h3>Welke gegevens heb je nodig voor een wagenpark analyse?</h3><p>Je huidige voertuigen, je jaarkilometers en dagritten, je energie- en dieselprijzen en je laadlocaties. Heb je niet alles paraat, dan werken we met aannames die we samen toetsen in de kennismaking.</p></div><div><h3>Wat kost een wagenparkanalyse?</h3><p>Dat hangt af van het aantal voertuigen en locaties dat we doorrekenen. De kennismaking is vrijblijvend; daarna hoor je vooraf wat de analyse kost, voordat we beginnen.</p></div><div><h3>Voor welke voertuigen is een wagenparkanalyse geschikt?</h3><p>Voor bestelbussen, bakwagens, trekkers en bussen, van een paar voertuigen tot een complete vloot. Ook als een deel van je wagenpark voorlopig op diesel blijft rijden, laat de analyse zien waar elektrisch al loont en waar nog niet.</p></div></div></section>
+  <section class="vzq"><h2>Veelgestelde vragen over wagenparkanalyse en wagenparkadvies</h2><div class="vzqg"><details open><summary><h3>Is een wagenparkanalyse hetzelfde als wagenparkadvies?</h3></summary><p>Bijna. De wagenparkanalyse is de doorrekening zelf: per voertuig zetten we kosten, actieradius, laden en vervangmoment op een rij. Het wagenparkadvies is het plan dat daaruit volgt, met een vervangvolgorde en concrete stappen. Wij leveren beide in een traject. Een wagenparkanalyse wordt ook wel vlootanalyse genoemd.</p></details><details><summary><h3>Welke gegevens heb je nodig voor een wagenpark analyse?</h3></summary><p>Je huidige voertuigen, je jaarkilometers en dagritten, je energie- en dieselprijzen en je laadlocaties. Heb je niet alles paraat, dan werken we met aannames die we samen toetsen in de kennismaking.</p></details><details><summary><h3>Wat kost een wagenparkanalyse?</h3></summary><p>Dat hangt af van het aantal voertuigen en locaties dat we doorrekenen. De kennismaking is vrijblijvend; daarna hoor je vooraf wat de analyse kost, voordat we beginnen.</p></details><details><summary><h3>Voor welke voertuigen is een wagenparkanalyse geschikt?</h3></summary><p>Voor bestelbussen, bakwagens, trekkers en bussen, van een paar voertuigen tot een complete vloot. Ook als een deel van je wagenpark voorlopig op diesel blijft rijden, laat de analyse zien waar elektrisch al loont en waar nog niet.</p></details></div></section>
   <div class="vzc"><button class="cta" type="button" id="fGo"><span>Plan een kennismaking</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button><span>Reactie binnen 1 werkdag</span></div>
  </div>
 </section>
