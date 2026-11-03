@@ -22,6 +22,8 @@
   var safe = function (s, n) { return s && new RegExp('^[a-z0-9-]{1,' + n + '}$').test(s) ? s : null; };
   c = safe(c, 30); v = safe(v, 20); t = t && uuid.test(t) ? t.toLowerCase() : null;
 
+  // Token bewaren: met statistiektoestemming koppelt de site het bezoek aan deze klik
+  if (t) { try { localStorage.setItem('sod-mail', t); } catch (e) {} }
   var doel = DOEL[k];
   var p = new URLSearchParams();
   p.set('utm_source', 'email'); p.set('utm_medium', 'email');

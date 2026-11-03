@@ -69,6 +69,12 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
 .timeline .t{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap;min-width:64px}
 .timeline .e{font-family:var(--mono);font-size:12px;min-width:120px}
 .timeline .p{color:var(--ink2)}
+.zoek{font:inherit;font-size:13.5px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;min-width:200px}
+.focus{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:99px;padding:5px 6px 5px 12px;font-size:13px}
+.focus button{background:#fff;color:var(--ink);border:0;border-radius:99px;padding:1px 8px;font-size:12px}
+.bedrijf{font-weight:500}
+.gok{color:var(--ink3);font-size:11.5px;font-family:var(--mono)}
+.vink{color:var(--volt-d);font-weight:600}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--ink2);margin-top:8px;flex-wrap:wrap}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 @media (max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)} .grid,.grid3{grid-template-columns:1fr}}
@@ -95,6 +101,11 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
   <div class="field"><span>Apparaat</span><div class="seg" id="fApp">
     <button data-v="" class="on">Alle</button><button data-v="desktop">Desktop</button><button data-v="mobiel">Mobiel</button>
   </div></div>
+  <div class="field"><span>Bron</span><div class="seg" id="fBron">
+    <button data-v="" class="on">Alle</button><button data-v="email">E-mail</button><button data-v="zoek">Zoekmachine</button><button data-v="direct">Direct</button><button data-v="overig">Overig</button>
+  </div></div>
+  <div class="field"><span>Zoek</span><input class="zoek" type="search" id="fZoek" placeholder="bedrijf, naam of bezoeker"></div>
+  <div class="field" id="focusVeld" hidden><span>Alleen</span><div class="focus"><span id="focusNaam"></span><button type="button" id="focusUit">×</button></div></div>
 </div>
 
 <section class="kpis" id="kpis"></section>
@@ -103,6 +114,12 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
   <h2>Per dag</h2>
   <div class="chart" id="perDag"></div>
   <div class="legend"><span><i style="background:var(--volt)"></i>Met cookies</span><span><i style="background:#9BCBB4"></i>Zonder cookies</span></div>
+</section>
+
+<section class="card">
+  <h2>Uit e-mail</h2>
+  <div id="mailKpi" class="legend" style="margin:0 0 12px"></div>
+  <div class="scroll"><table><thead><tr><th>Bedrijf</th><th>Contact</th><th>Segment</th><th class="r">Kliks</th><th>Eerste klik</th><th class="r">Sessies</th><th class="r">Tijd</th><th class="r">Pagina's</th><th>Berekend</th><th>Laatst op de site</th></tr></thead><tbody id="mailBody"></tbody></table></div>
 </section>
 
 <section class="card">
@@ -128,17 +145,17 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
 
 <section class="card">
   <h2>Sessies</h2>
-  <div class="scroll"><table><thead><tr><th>Start</th><th>Wie</th><th class="r">Tijd</th><th class="r">Pagina's</th><th>Route</th><th>Bron</th><th>Apparaat</th></tr></thead><tbody id="sessies"></tbody></table></div>
+  <div class="scroll"><table><thead><tr><th>Start</th><th>Wie</th><th>Bedrijf</th><th class="r">Tijd</th><th class="r">Pagina's</th><th>Route</th><th>Bron</th><th>Apparaat</th></tr></thead><tbody id="sessies"></tbody></table></div>
 </section>
 
 <section class="card" id="detail" hidden>
-  <h2 id="detailTitel"></h2>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px"><h2 id="detailTitel" style="margin:0"></h2><span class="spacer"></span><button class="ghost mini" id="detailFocus" type="button">Alleen deze bezoeker</button></div>
   <ul class="timeline" id="detailLijst"></ul>
 </section>
 
 <section class="card">
   <h2>Browsers met cookies</h2>
-  <div class="scroll"><table><thead><tr><th>Bezoeker</th><th>Wie</th><th>Eerst</th><th>Laatst</th><th class="r">Sessies</th><th class="r">Weergaven</th><th class="r">Tijd</th><th>Scherm · taal</th><th></th></tr></thead><tbody id="bezoekers"></tbody></table></div>
+  <div class="scroll"><table><thead><tr><th>Bezoeker</th><th>Wie</th><th>Bedrijf</th><th>Eerst</th><th>Laatst</th><th class="r">Sessies</th><th class="r">Weergaven</th><th class="r">Tijd</th><th>Scherm · taal</th><th></th></tr></thead><tbody id="bezoekers"></tbody></table></div>
 </section>
 </div>
 
@@ -179,7 +196,7 @@ for (let i = 0, j = 0, k = 0; i < anon.length; i++) {
   if (k < i) k = i; while (k + 1 < anon.length && anon[k + 1].t.getTime() <= t + 30000) k++;
   anon[i].salvo = (k - j + 1) >= 8;
 }
-const anonKlasse = e => e.p.intern ? 'intern' : (e.ua === 'bot' || e.p.wd || (e.salvo && !e.p.ref)) ? 'bot' : 'echt';
+const anonKlasse = e => e.p.intern ? 'intern' : (e.ua === 'bot' || e.p.wd || (e.salvo && !e.p.ref) || e.scanner) ? 'bot' : 'echt';
 
 // Sessies (met cookies)
 const sessies = new Map();
@@ -209,10 +226,53 @@ for (const s of sessies.values()) {
   s.sec = Math.max(s.sec, 0);
 }
 const vidIntern = new Set([...sessies.values()].filter(s => s.intern).map(s => s.vid));
-const sessieKlasse = s => (intern.has(s.vid) || vidIntern.has(s.vid) || s.intern) ? 'intern' : s.bot ? 'bot' : 'echt';
+const sessieKlasse = s => (intern.has(s.vid) || vidIntern.has(s.vid) || s.intern || TESTTOKENS.has(s.mail)) ? 'intern' : s.bot ? 'bot' : 'echt';
+
+/* ===== Koppeling met de e-mailcampagne ===== */
+const CONTACT = new Map((RAW.contacten || []).map(r => [r[0], { token: r[0], bedrijf: r[1], naam: r[2], email: r[3], segment: r[4] }]));
+const VERZONDEN = new Map((RAW.verzonden || []).map(r => [r[0] + '|' + r[1], { t: new Date(r[2]), test: r[3] }]));
+// Ontvangers die alleen testmails kregen (eigen adressen) tellen als intern
+const TESTTOKENS = new Set();
+{ const echt = new Set(); for (const r of RAW.verzonden || []) (r[3] ? TESTTOKENS : echt).add(r[0]); for (const t of echt) TESTTOKENS.delete(t); }
+const KLIKS = (RAW.kliks || []).map(r => ({ t: new Date(r[0]), token: r[1], c: r[2], v: r[3], link: r[4], bot: r[5] }));
+// Scanners zoals in het e-maildashboard: bot-vlag, binnen 60 s na verzending, of 3+ links binnen 10 minuten
+{
+  const eerste = new Map(), links = new Map();
+  for (const k of KLIKS) { const key = k.token + '|' + k.c; if (!eerste.has(key)) { eerste.set(key, k.t); links.set(key, new Set()); } links.get(key).add(k.link); }
+  for (const k of KLIKS) {
+    const key = k.token + '|' + k.c, vz = VERZONDEN.get(key);
+    k.test = !!(vz && vz.test);
+    // ook: twee verschillende links van dezelfde ontvanger binnen 5 seconden (een mens klikt er één)
+    const tegelijk = KLIKS.some(x => x !== k && x.token === k.token && x.link !== k.link && Math.abs(x.t - k.t) < 5000);
+    k.scanner = k.bot || tegelijk || (vz && k.t - vz.t < 60000) || (links.get(key).size >= 3 && k.t - eerste.get(key) <= 600000);
+  }
+}
+// Anonieme weergaven vanuit een mail die binnen 30 s na een scannerklik komen, zijn die scanner
+{
+  const sc = KLIKS.filter(k => k.scanner).map(k => +k.t).sort((a, b) => a - b);
+  for (const e of anon) if (e.p.utm_source === 'email') { const t = +e.t; if (sc.some(x => t - x >= 0 && t - x < 30000)) e.scanner = true; }
+}
+// Sessie → contact: zeker via het token uit /m/, anders vermoedelijk als de sessie binnen 2 minuten na precies één klik met dezelfde campagne en link begon
+for (const s of sessies.values()) {
+  const st = s.ev.find(e => e.ev === 'session_start');
+  if (!st) continue;
+  if (st.p.mail && CONTACT.has(st.p.mail)) { s.mail = st.p.mail; s.mailZeker = true; continue; }
+  if (st.p.utm_source !== 'email') continue;
+  const kand = new Set(KLIKS.filter(k => k.c === (st.p.utm_campaign || k.c) && (!st.p.utm_content || st.p.utm_content === k.v + '-' + k.link) && st.t - k.t >= 0 && st.t - k.t < 120000).map(k => k.token));
+  if (kand.size === 1) { s.mail = [...kand][0]; s.mailZeker = false; }
+}
+// Eén gekoppelde sessie koppelt alle sessies van dezelfde browser
+for (const lijst of perVid.values()) {
+  const bron = lijst.find(s => s.mail && s.mailZeker) || lijst.find(s => s.mail);
+  if (bron) for (const s of lijst) if (!s.mail) { s.mail = bron.mail; s.mailZeker = bron.mailZeker; }
+}
+// Een klik gevolgd door een gekoppelde sessie is een mens
+for (const s of sessies.values()) if (s.mail) for (const k of KLIKS) if (k.token === s.mail && s.start - k.t >= 0 && s.start - k.t < 120000) k.scanner = false;
+const bedrijfVan = s => s.mail && CONTACT.get(s.mail) ? CONTACT.get(s.mail) : null;
+const bronSoort = (ref, utm) => { const b = bronNaam(ref, utm); return b === 'E-mailcampagne' ? 'email' : b === 'Direct' ? 'direct' : ['Google', 'Bing', 'DuckDuckGo'].includes(b) ? 'zoek' : 'overig'; };
 
 /* ===== Filters ===== */
-const F = { periode: 7, wie: 'echt', app: '' };
+const F = { periode: 7, wie: 'echt', app: '', bron: '', zoek: '', focus: null };
 function bereik() {
   const nu = new Date(), vandaag = dagKey(nu);
   if (F.periode === 0) return d => dagKey(d) === vandaag;
@@ -221,6 +281,19 @@ function bereik() {
 }
 const wieOk = k => F.wie === 'alles' || F.wie === k;
 const appOk = mobile => !F.app || (F.app === 'mobiel' ? mobile === true : mobile === false);
+const bronOk = s => !F.bron || bronSoort(s.ref, s.mail ? 'email' : s.utm) === F.bron;
+function zoekOk(s) {
+  if (!F.zoek) return true;
+  const c = bedrijfVan(s), q = F.zoek.toLowerCase();
+  return s.vid.startsWith(q) || s.id.startsWith(q) || (c && [c.bedrijf, c.naam, c.email].some(x => x && x.toLowerCase().includes(q)));
+}
+const focusOk = s => !F.focus || (F.focus.type === 'mail' ? s.mail === F.focus.id : F.focus.type === 'vid' ? s.vid === F.focus.id : s.id === F.focus.id);
+function zetFocus(type, id, naam) {
+  F.focus = type ? { type, id } : null;
+  $('focusVeld').hidden = !type; $('focusNaam').textContent = naam || '';
+  if (type) { F.wie = 'alles'; $('fWie').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.v === 'alles')); }
+  render(); scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 /* ===== Hulpjes ===== */
 function bars(el, rijen, opts = {}) {
@@ -256,8 +329,8 @@ function tipper(box) {
 /* ===== Render ===== */
 function render() {
   const inPeriode = bereik();
-  const S = [...sessies.values()].filter(s => inPeriode(s.start) && wieOk(sessieKlasse(s)) && appOk(s.mobile)).sort((a, b) => b.start - a.start);
-  const A = anon.filter(e => inPeriode(e.t) && wieOk(anonKlasse(e)) && appOk(e.p.mobile));
+  const S = [...sessies.values()].filter(s => inPeriode(s.start) && wieOk(sessieKlasse(s)) && appOk(s.mobile) && bronOk(s) && zoekOk(s) && focusOk(s)).sort((a, b) => b.start - a.start);
+  const A = F.focus || F.zoek ? [] : anon.filter(e => inPeriode(e.t) && wieOk(anonKlasse(e)) && appOk(e.p.mobile) && (!F.bron || bronSoort(e.p.ref, e.p.utm_source) === F.bron));
   const sidSet = new Set(S.map(s => s.id));
   const viewsStat = S.reduce((a, s) => a + s.views.length, 0);
   const bezoekers = new Set(S.map(s => s.vid));
@@ -265,7 +338,7 @@ function render() {
   const gemTijd = metTijd.length ? metTijd.reduce((a, s) => a + s.sec, 0) / metTijd.length : 0;
   const bounce = S.filter(s => s.views.length <= 1).length;
   const berekend = S.filter(s => s.ev.some(e => e.ev === 'wizard_complete')).length;
-  const calcRuns = CALC.filter(c => inPeriode(c.t) && (c.sid ? sidSet.has(c.sid) : F.wie !== 'intern')).length;
+  const calcRuns = CALC.filter(c => inPeriode(c.t) && (c.sid ? sidSet.has(c.sid) : F.wie !== 'intern' && !F.focus && !F.zoek && !F.bron)).length;
 
   $('kpis').innerHTML = [
     [nf.format(viewsStat + A.length), 'Paginaweergaven', nf.format(A.length) + ' zonder cookies'],
@@ -282,8 +355,9 @@ function render() {
   verblijf(S);
   heat(S, A);
   acties(S);
+  mailTabel(S, A, inPeriode);
   sessieTabel(S);
-  bezoekerTabel(inPeriode);
+  bezoekerTabel(inPeriode, S);
 }
 
 function perDag(S, A, inPeriode) {
@@ -391,19 +465,45 @@ function acties(S) {
   bars('acties', rijen, { max: 14, tot: S.length });
 }
 
+function mailTabel(S, A, inPeriode) {
+  const K = KLIKS.filter(k => inPeriode(k.t) && !k.test && !k.scanner && (!F.focus || F.focus.type !== 'mail' || k.token === F.focus.id));
+  const per = new Map(), get = t => { if (!per.has(t)) per.set(t, { token: t, kliks: [], ses: [] }); return per.get(t); };
+  for (const k of K) get(k.token).kliks.push(k);
+  for (const s of S) if (s.mail) get(s.mail).ses.push(s);
+  const rijen = [...per.values()].filter(r => CONTACT.has(r.token) && (!F.zoek || zoekOk({ vid: '', id: '', mail: r.token })))
+    .map(r => ({ ...r, c: CONTACT.get(r.token), laatst: r.ses.length ? Math.max(...r.ses.map(s => +s.eind)) : 0, eerste: r.kliks.length ? r.kliks[0].t : null }))
+    .sort((a, b) => (b.laatst || 0) - (a.laatst || 0) || (b.eerste || 0) - (a.eerste || 0));
+  const scanners = KLIKS.filter(k => inPeriode(k.t) && !k.test && k.scanner).length;
+  const zonderCookies = anon.filter(e => inPeriode(e.t) && e.p.utm_source === 'email' && anonKlasse(e) === 'echt').length;
+  $('mailKpi').innerHTML = [
+    [new Set(K.map(k => k.token)).size, 'mensen klikten'], [rijen.filter(r => r.ses.length).length, 'gekoppeld aan een bezoek'],
+    [zonderCookies, 'weergaven vanuit mail zonder cookies'], [scanners, 'scannerkliks weggelaten'],
+  ].map(([n, l]) => `<span><b class="num" style="color:var(--ink)">${nf.format(n)}</b> ${l}</span>`).join('');
+  $('mailBody').innerHTML = rijen.length ? rijen.map(r => {
+    const sec = r.ses.reduce((a, s) => a + s.sec, 0), views = r.ses.reduce((a, s) => a + s.views.length, 0), zeker = r.ses.some(s => s.mailZeker);
+    const berekend = r.ses.some(s => s.ev.some(e => e.ev === 'wizard_complete'));
+    return `<tr class="klik" data-mail="${r.token}"><td class="bedrijf">${esc(r.c.bedrijf || '–')}</td><td>${esc(r.c.naam || r.c.email || '')}</td><td>${esc(r.c.segment || '')}</td><td class="r num">${r.kliks.length}</td><td class="num">${r.eerste ? fmtVol.format(r.eerste) : '–'}</td><td class="r num">${r.ses.length}${r.ses.length && !zeker ? ' <span class="gok">≈</span>' : ''}</td><td class="r num">${r.ses.length ? duur(sec) : '–'}</td><td class="r num">${r.ses.length ? views : '–'}</td><td>${berekend ? '<span class="vink">✓</span>' : ''}</td><td class="num">${r.laatst ? fmtVol.format(new Date(r.laatst)) : '–'}</td></tr>`;
+  }).join('') : '<tr><td colspan="10" class="leeg">Geen kliks uit e-mail in deze periode</td></tr>';
+}
+$('mailBody').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-mail]'); if (!tr) return;
+  const c = CONTACT.get(tr.dataset.mail); zetFocus('mail', tr.dataset.mail, c ? c.bedrijf || c.email : 'contact');
+});
+
+const bedrijfHtml = s => { const c = bedrijfVan(s); return c ? `<span class="bedrijf">${esc(c.bedrijf || c.email)}</span>${s.mailZeker ? '' : ' <span class="gok" title="Vermoedelijk, op tijdstip van de klik">≈</span>'}` : ''; };
 const tagHtml = k => `<span class="tag t-${k}">${{ echt: 'Echt', intern: 'Intern', bot: 'Bot/test' }[k]}</span>`;
 function sessieTabel(S) {
   $('sessies').innerHTML = S.length ? S.slice(0, 300).map(s => {
     const r = routeVan(s);
-    return `<tr class="klik" data-sid="${s.id}"><td class="num">${fmtVol.format(s.start)}</td><td>${tagHtml(sessieKlasse(s))}</td><td class="r num">${duur(s.sec)}</td><td class="r num">${s.views.length}</td><td class="route">${esc(r.slice(0, 6).join(' → '))}${r.length > 6 ? ' → …' : ''}</td><td>${esc(bronNaam(s.ref, s.utm))}</td><td class="num">${s.mobile == null ? '–' : s.mobile ? 'mobiel' : 'desktop'}${s.vw ? ' · ' + s.vw : ''}${s.browser ? ' · ' + esc(s.browser) : ''}</td></tr>`;
-  }).join('') : '<tr><td colspan="7" class="leeg">Geen sessies met cookies in deze periode</td></tr>';
+    return `<tr class="klik" data-sid="${s.id}"><td class="num">${fmtVol.format(s.start)}</td><td>${tagHtml(sessieKlasse(s))}</td><td>${bedrijfHtml(s)}</td><td class="r num">${duur(s.sec)}</td><td class="r num">${s.views.length}</td><td class="route">${esc(r.slice(0, 6).join(' → '))}${r.length > 6 ? ' → …' : ''}</td><td>${esc(bronNaam(s.ref, s.utm))}</td><td class="num">${s.mobile == null ? '–' : s.mobile ? 'mobiel' : 'desktop'}${s.vw ? ' · ' + s.vw : ''}${s.browser ? ' · ' + esc(s.browser) : ''}</td></tr>`;
+  }).join('') : '<tr><td colspan="8" class="leeg">Geen sessies met cookies in deze periode</td></tr>';
 }
 $('sessies').addEventListener('click', e => {
   const tr = e.target.closest('tr[data-sid]'); if (!tr) return;
   document.querySelectorAll('#sessies tr.actief').forEach(x => x.classList.remove('actief')); tr.classList.add('actief');
-  const s = sessies.get(tr.dataset.sid);
-  $('detail').hidden = false;
-  $('detailTitel').textContent = fmtVol.format(s.start) + ' · ' + duur(s.sec) + ' · bezoeker ' + s.vid.slice(0, 8);
+  const s = sessies.get(tr.dataset.sid), c = bedrijfVan(s);
+  $('detail').hidden = false; $('detail').dataset.vid = s.vid;
+  $('detailTitel').textContent = fmtVol.format(s.start) + ' · ' + duur(s.sec) + ' · ' + (c ? (c.bedrijf || c.email) + (s.mailZeker ? '' : ' (vermoedelijk)') : 'bezoeker ' + s.vid.slice(0, 8));
   $('detailLijst').innerHTML = s.ev.map(e => {
     let p = '';
     if (e.ev === 'page_view') p = paginaNaam(e.page, e.p.hash);
@@ -415,21 +515,23 @@ $('sessies').addEventListener('click', e => {
   $('detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
-function bezoekerTabel(inPeriode) {
-  const rijen = [];
+$('detailFocus').addEventListener('click', () => { const v = $('detail').dataset.vid, s = perVid.get(v)[0], c = bedrijfVan(s); zetFocus('vid', v, c ? c.bedrijf || c.email : 'bezoeker ' + v.slice(0, 8)); });
+function bezoekerTabel(inPeriode, S) {
+  const rijen = [], zicht = new Set(S.map(s => s.vid));
   for (const [vid, lijst] of perVid) {
-    if (!lijst.some(s => inPeriode(s.start))) continue;
-    const k = intern.has(vid) || vidIntern.has(vid) ? 'intern' : lijst.every(s => s.bot) ? 'bot' : 'echt';
+    if (!zicht.has(vid)) continue;
+    const k = intern.has(vid) || vidIntern.has(vid) || lijst.some(s => TESTTOKENS.has(s.mail)) ? 'intern' : lijst.every(s => s.bot) ? 'bot' : 'echt';
     if (!wieOk(k)) continue;
     const b = lijst.find(s => s.vw) || lijst[0];
     if (!appOk(b.mobile)) continue;
-    rijen.push({ vid, k, eerst: lijst[0].start, laatst: lijst[lijst.length - 1].eind, ses: lijst.length, views: lijst.reduce((a, s) => a + s.views.length, 0), sec: lijst.reduce((a, s) => a + s.sec, 0), vw: b.vw, lang: b.lang });
+    rijen.push({ vid, k, s0: lijst.find(s => s.mail) || lijst[0], eerst: lijst[0].start, laatst: lijst[lijst.length - 1].eind, ses: lijst.length, views: lijst.reduce((a, s) => a + s.views.length, 0), sec: lijst.reduce((a, s) => a + s.sec, 0), vw: b.vw, lang: b.lang });
   }
   rijen.sort((a, b) => b.laatst - a.laatst);
-  $('bezoekers').innerHTML = rijen.length ? rijen.map(r => `<tr><td class="num">${r.vid.slice(0, 8)}</td><td>${tagHtml(r.k)}</td><td class="num">${fmtKort.format(r.eerst)}</td><td class="num">${fmtVol.format(r.laatst)}</td><td class="r num">${r.ses}</td><td class="r num">${r.views}</td><td class="r num">${duur(r.sec)}</td><td class="num">${r.vw || '–'} · ${esc(r.lang || '–')}</td><td><button class="ghost mini" data-intern="${r.vid}" data-aan="${r.k === 'intern' ? 0 : 1}">${r.k === 'intern' ? 'Niet intern' : 'Intern'}</button></td></tr>`).join('') : '<tr><td colspan="9" class="leeg">Geen bezoekers met cookies in deze periode</td></tr>';
+  $('bezoekers').innerHTML = rijen.length ? rijen.map(r => `<tr class="klik" data-vid="${r.vid}"><td class="num">${r.vid.slice(0, 8)}</td><td>${tagHtml(r.k)}</td><td>${bedrijfHtml(r.s0)}</td><td class="num">${fmtKort.format(r.eerst)}</td><td class="num">${fmtVol.format(r.laatst)}</td><td class="r num">${r.ses}</td><td class="r num">${r.views}</td><td class="r num">${duur(r.sec)}</td><td class="num">${r.vw || '–'} · ${esc(r.lang || '–')}</td><td><button class="ghost mini" data-intern="${r.vid}" data-aan="${r.k === 'intern' ? 0 : 1}">${r.k === 'intern' ? 'Niet intern' : 'Intern'}</button></td></tr>`).join('') : '<tr><td colspan="10" class="leeg">Geen bezoekers met cookies in deze periode</td></tr>';
 }
 $('bezoekers').addEventListener('click', async e => {
-  const b = e.target.closest('button[data-intern]'); if (!b) return;
+  const b = e.target.closest('button[data-intern]');
+  if (!b) { const tr = e.target.closest('tr[data-vid]'); if (tr) { const s = perVid.get(tr.dataset.vid)[0], c = bedrijfVan(s); zetFocus('vid', tr.dataset.vid, c ? c.bedrijf || c.email : 'bezoeker ' + tr.dataset.vid.slice(0, 8)); } return; }
   const vid = b.dataset.intern, aan = b.dataset.aan === '1';
   b.disabled = true;
   try {
@@ -441,7 +543,9 @@ $('bezoekers').addEventListener('click', async e => {
 });
 
 /* ===== Bediening ===== */
-for (const [id, key, num] of [['fPeriode', 'periode', true], ['fWie', 'wie'], ['fApp', 'app']]) {
+$('fZoek').addEventListener('input', e => { F.zoek = e.target.value.trim(); render(); });
+$('focusUit').addEventListener('click', () => zetFocus(null));
+for (const [id, key, num] of [['fPeriode', 'periode', true], ['fWie', 'wie'], ['fApp', 'app'], ['fBron', 'bron']]) {
   $(id).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
