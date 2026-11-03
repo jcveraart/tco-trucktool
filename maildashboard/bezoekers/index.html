@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Bezoekers</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#F3F3F0;color:#15171A;font:15px/1.5 'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif}
+main{background:#fff;border:1px solid #DCDCD7;border-radius:8px;padding:32px 34px;width:min(380px,calc(100vw - 40px));box-sizing:border-box}
+h1{font-size:20px;margin:0 0 18px}
+label{font:500 10.5px 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;color:#7A8188;display:block;margin-bottom:6px}
+input{width:100%;box-sizing:border-box;font:inherit;font-size:17px;letter-spacing:.35em;padding:11px 12px;border:1px solid #DCDCD7;border-radius:6px;margin-bottom:12px}
+button{width:100%;font:inherit;font-weight:600;padding:11px;border:0;border-radius:6px;background:#0A8F5B;color:#fff;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.fout{color:#B42318;font-size:13.5px;min-height:20px;margin-top:10px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Bezoekers</h1>
+  <form id="f">
+    <label for="code">Toegangscode</label>
+    <input id="code" type="password" inputmode="numeric" autocomplete="off" maxlength="12" required>
+    <button id="knop" type="submit">Open dashboard</button>
+    <div class="fout" id="fout"></div>
+  </form>
+</main>
+<script>
+/* Deze browser is intern: de site stuurt dat mee, zodat eigen bezoeken apart blijven */
+try { localStorage.setItem('sod-intern', '1'); } catch (e) {}
+const bewaard = sessionStorage.getItem('sod_dash_code');
+if (bewaard) {
+  document.getElementById('code').value = bewaard;
+  document.getElementById('knop').textContent = 'Dashboard openen…';
+  setTimeout(() => document.getElementById('f').requestSubmit(), 50);
+}
+document.getElementById('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const knop = document.getElementById('knop'), fout = document.getElementById('fout');
+  knop.disabled = true; knop.textContent = 'Bezig…'; fout.textContent = '';
+  const code = document.getElementById('code').value.trim();
+  sessionStorage.setItem('sod_dash_code', code);
+  let vid = null; try { vid = localStorage.getItem('sod-vid'); } catch (e) {}
+  try {
+    const r = await fetch('https://zarvyblveyomngypwvhw.supabase.co/functions/v1/bezoekers-dashboard', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ code, vid }),
+    });
+    if (r.status === 401) { fout.textContent = 'Onjuiste code.'; sessionStorage.removeItem('sod_dash_code'); return; }
+    if (r.status === 429) { fout.textContent = 'Te veel pogingen. Probeer het over een uur opnieuw.'; return; }
+    if (!r.ok) { fout.textContent = 'Er ging iets mis (' + r.status + ').'; return; }
+    const html = await r.text();
+    document.open(); document.write(html); document.close();
+  } catch { fout.textContent = 'Geen verbinding. Probeer opnieuw.'; }
+  finally { knop.disabled = false; knop.textContent = 'Open dashboard'; }
+});
+</script>
+</body>
+</html>

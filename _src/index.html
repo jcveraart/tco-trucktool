@@ -3433,7 +3433,7 @@ function gaEvent(e){
 }
 const LAND=(()=>{const q=new URLSearchParams(location.search),o={};['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k=>{const x=q.get(k);if(x)o[k]=x.slice(0,80)});
  let r='';try{const u=new URL(document.referrer);if(u.host!==location.host)r=u.host}catch(e){}o.ref=r;o.land=(location.hash.slice(1)||location.pathname.replace(/^\/|\/$/g,'').replace(/^overstapgids(\/|$)/,(m,x)=>x?'gids/':'faq')).slice(0,40)||'calc';
- o.mobile=matchMedia('(pointer:coarse)').matches;o.vw=innerWidth;o.lang=(navigator.language||'').slice(0,10);return o})();
+ o.mobile=matchMedia('(pointer:coarse)').matches;o.vw=innerWidth;o.lang=(navigator.language||'').slice(0,10);if(navigator.webdriver)o.wd=true;if(store('sod-intern'))o.intern=true;return o})();
 const fnv=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
 function ab(id){
  const x=EXPERIMENTS[id];if(!x||!x.on||!statOK()||!vid)return'a';
@@ -3464,7 +3464,7 @@ function send(e,anon){
   gaEvent(e);
  }else{
   if(e.event!=='page_view'&&e.event!=='consent')return;
-  const p=e.event==='page_view'?{ref:LAND.ref,mobile:LAND.mobile,utm_source:LAND.utm_source}:e.props;
+  const p=e.event==='page_view'?{ref:LAND.ref,mobile:LAND.mobile,utm_source:LAND.utm_source,hash:e.props&&e.props.hash,wd:LAND.wd,intern:LAND.intern}:e.props;
   evq.push(Object.assign(e,{props:p,consent:'anon',visitor_id:null,session_id:null,experiments:{}}));
  }
  clearTimeout(evT);if(evq.length>=20)flush();else evT=setTimeout(flush,3000);
