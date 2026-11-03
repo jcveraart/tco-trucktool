@@ -1760,7 +1760,12 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 @media(max-width:640px){
  .hA{gap:14px;padding-top:20px;padding-bottom:28px}
  .hA h1{font-size:30px}
- .hgo{padding:17px 20px!important;font-size:18px!important}
+ /* Zo bedacht: de knop stond als sticky bedoeld, maar .cta.big zette hem terug op relative, dus hij scrolde mee en schokte op telefoons mee met de inklappende adresbalk.
+    Nu vast onderaan het scherm, op een eigen laag, zonder scroll-code. De pagina krijgt onderaan ruimte zodat niets eronder verdwijnt. */
+ .cta.big.hgo{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:25;width:auto;padding:17px 20px!important;font-size:18px!important;transform:translateZ(0);backface-visibility:hidden}
+ html.fresh body:has(#calc:not([hidden]) .hgo){padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ html.fresh .uvend{display:none}
+ .cta.big.hgo::before{animation:none!important;opacity:0!important}
  .hAg{gap:14px}
  .hAl{gap:10px;padding:0;background:none;box-shadow:none}
  .hx{gap:14px;padding:18px}
