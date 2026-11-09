@@ -80,6 +80,23 @@ for(const {k,l,u,html}of pending){
  fs.mkdirSync(path.dirname(file),{recursive:true});
  fs.writeFileSync(file,optimizePage(html,k,shells[l],writeAsset,l));
 }
+// Verdwenen model- en zonepagina's (bv. hernoemd model) worden een doorverwijzing met noindex, zodat er geen losse dubbele pagina blijft staan.
+const written=new Set(pending.map(x=>new URL(x.u).pathname));
+const parents=new Set(pending.map(x=>new URL(x.u).pathname).filter(p=>/^\/(?:en\/)?(?:modellen|models|zero-emissiezone|zero-emission-zone)\/(?:[a-z-]+\/)?[a-z0-9-]+\/$/.test(p)).map(p=>p.replace(/[a-z0-9-]+\/$/,'')));
+const lcp=(a,b)=>{let i=0;while(i<a.length&&a[i]===b[i])i++;return i};
+const stub=(to,lang)=>`<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0;url=${to}"><title>${BRAND}</title></head><body><a href="${to}">${SITE}${to}</a></body></html>\n`;
+// Oude adressen die ooit in de sitemap stonden.
+for(const [from,to] of Object.entries({'/restwaarde/':'/overstapgids/accu/','/en/residual-value/':'/en/switching-guide/battery-and-residual-value/'})){if(written.has(from))continue;const f=path.join(ROOT,from,'index.html');fs.mkdirSync(path.dirname(f),{recursive:true});fs.writeFileSync(f,stub(to,from.startsWith('/en/')?'en':'nl'))}
+for(const dir of parents){
+ const abs=path.join(ROOT,dir);if(!fs.existsSync(abs))continue;
+ const live=fs.readdirSync(abs).filter(n=>written.has(dir+n+'/'));
+ for(const n of fs.readdirSync(abs)){
+  const p=dir+n+'/',f=path.join(abs,n,'index.html');
+  if(written.has(p)||!fs.existsSync(f))continue;
+  const best=live.map(x=>[x,lcp(x,n)]).sort((a,b)=>b[1]-a[1])[0],to=best&&best[1]>=Math.min(n.length,best[0].length)*.6?dir+best[0]+'/':written.has(dir)?dir:'/';
+  fs.writeFileSync(f,stub(to,dir.startsWith('/en/')?'en':'nl'));
+ }
+}
 fs.writeFileSync(path.join(ROOT,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'+entries.join('\n')+'\n</urlset>\n');
 const fonts404=[...src.matchAll(/@font-face \{[^}]*?font-family: '(IBM Plex Sans|IBM Plex Sans Condensed)';[^}]*?unicode-range: U\+0000-00FF[^}]*\}/g)].map(m=>m[0].replace(/\s+/g,' ')).join('');
 fs.writeFileSync(path.join(ROOT,'404.html'),`<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Pagina niet gevonden | ${BRAND}</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>${fonts404}*{box-sizing:border-box}body{margin:0;font:17px/1.6 'IBM Plex Sans',system-ui,sans-serif;background:#F3F3F0;color:#15171A}header{border-bottom:1px solid #DCDCD7;background:#fff}header a{display:block;max-width:56rem;margin:0 auto;padding:16px 24px;font:600 20px 'IBM Plex Sans Condensed','Arial Narrow',sans-serif;color:#15171A;text-decoration:none}main{max-width:56rem;margin:0 auto;padding:12vh 24px 48px}small{font:500 12px 'IBM Plex Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6B6F6A}h1{margin:.2em 0 .4em;font:600 40px/1.15 'IBM Plex Sans Condensed','Arial Narrow',sans-serif}h2{margin:2.4em 0 .3em;font:600 24px/1.2 'IBM Plex Sans Condensed','Arial Narrow',sans-serif}a{color:#0A8F5B}</style></head><body><header><a href="/">${BRAND}</a></header><main><small>404</small><h1>Deze pagina bestaat niet</h1><p>Ga naar de <a href="/">calculator</a>, <a href="/modellen/">elektrische modellen</a> of de <a href="/overstapgids/">overstapgids</a>.</p><section lang="en"><h2>Page not found</h2><p>Try the <a href="/en/">calculator</a>, <a href="/en/models/">electric models</a> or <a href="/en/switching-guide/">switching guide</a>.</p></section></main></body></html>`);
