@@ -343,6 +343,9 @@ const landLabel = c => { if (!c) return null; try { return landNaam.of(c) || c; 
 /* ===== Data voorbereiden ===== */
 const intern = new Set(RAW.intern || []);
 const EV = RAW.events.map(r => ({ t: new Date(r[0]), ev: r[1], page: r[2], consent: r[3], vid: r[4], sid: r[5], p: r[6] || {}, ua: r[7], browser: r[8], os: r[9], land: r[10], intern: !!r[11] }));
+// Oudere laadmetingen (zonder v) telden een tabblad dat op de achtergrond laadde mee tot het moment van openen.
+// Die herken je aan een LCP ruim na het load-event; die waarde laten we weg.
+for (const e of EV) if (e.ev === 'perf' && !e.p.v && e.p.lcp != null && +e.p.lcp - (+e.p.load || +e.p.dcl || 0) > 4000) { e.p = { ...e.p }; delete e.p.lcp; }
 const CALC = (RAW.calc || []).map(r => ({ t: new Date(r[0]), vid: r[1], sid: r[2], vt: r[3], goedkoper: r[4], trigger: r[5], modus: r[6], model: r[7], km: r[8], jaren: r[9], verschil: r[10], intern: !!r[12] }));
 
 // Anonieme events (zonder cookies): weergaven, tijd op pagina en laadsnelheid

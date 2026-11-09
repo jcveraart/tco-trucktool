@@ -7315,11 +7315,11 @@ document.addEventListener('click',e=>{const b=e.target.closest('.tlb');if(!b)ret
 (()=>{
  const wrap=(name,before,after)=>{const o=window[name];if(typeof o!=='function')return;window[name]=function(...a){if(before)before(...a);const r=o.apply(this,a);if(after)after(...a);return r}};
  /* Paginaweergaven, tijd op de pagina (zichtbaar) en hoe ver er is gescrold */
- let cur=null,curPath=null,curHash='',curTitle='',vis=0,since=performance.now(),depth=0,scrollMarks=new Set();
+ let perfPage=null,cur=null,curPath=null,curHash='',curTitle='',vis=0,since=performance.now(),depth=0,scrollMarks=new Set();
  const engaged=()=>Math.round((vis+(document.hidden?0:performance.now()-since))/1000);
  const scrolled=()=>{const h=document.documentElement.scrollHeight-innerHeight;depth=Math.max(depth,h>0?Math.min(100,Math.round(scrollY/h*100)):100);if(statOK()&&h>0)for(const percent of [25,50,75,90])if(depth>=percent&&!scrollMarks.has(percent)){scrollMarks.add(percent);track('scroll_depth',{percent})}};
  function leave(){if(cur)track('page_leave',{p:cur,hash:curHash,sec:engaged(),depth},cur,{path:curPath,title:curTitle})}
- function view(){const path=location.pathname;if(page===cur&&path===curPath)return;leave();cur=page;curPath=path;curHash=routeKey().slice(0,40);curTitle=document.title;vis=0;since=performance.now();depth=0;scrollMarks=new Set();track('page_view',{p:page,hash:routeKey().slice(0,40),taal:document.documentElement.lang||'nl'});scrolled()}
+ function view(){const path=location.pathname;if(page===cur&&path===curPath)return;leave();cur=page;if(perfPage===null)perfPage=page;curPath=path;curHash=routeKey().slice(0,40);curTitle=document.title;vis=0;since=performance.now();depth=0;scrollMarks=new Set();track('page_view',{p:page,hash:routeKey().slice(0,40),taal:document.documentElement.lang||'nl'});scrolled()}
  wrap('route',null,view);view();
  addEventListener('scroll',()=>{if(!scrolled.t)scrolled.t=setTimeout(()=>{scrolled.t=0;scrolled()},400)},{passive:true});
  document.addEventListener('visibilitychange',()=>{
@@ -7363,15 +7363,21 @@ document.addEventListener('click',e=>{const b=e.target.closest('.tlb');if(!b)ret
  let qT=0;document.addEventListener('input',e=>{if(e.target.id!=='mSearch')return;clearTimeout(qT);qT=setTimeout(()=>{const q=e.target.value.trim();if(q.length>1)track('model_search',{q:q.slice(0,60),n:document.querySelectorAll('#mList .mc').length})},1200)});
 
  /* Laadsnelheid (Core Web Vitals), één keer per geladen pagina */
- const PF={};let perfSent=false;
+ /* Alleen meten zolang de pagina zichtbaar is: een tab die op de achtergrond laadt (nieuw tabblad, link uit e-mail) schildert pas als je hem opent,
+    dan telt de wachttijd anders mee als laadtijd. Bij vooraf laden (prerender) telt de tijd vanaf het openen. */
+ const PF={v:2};let perfSent=false,hid=document.visibilityState==='hidden'?0:Infinity;
+ const act=(()=>{try{return performance.getEntriesByType('navigation')[0].activationStart||0}catch(e){return 0}})(),rel=t=>Math.max(0,Math.round(t-act));
+ try{for(const x of performance.getEntriesByType('visibility-state'))if(x.name==='hidden')hid=Math.min(hid,x.startTime)}catch(e){}
+ addEventListener('visibilitychange',()=>{if(document.hidden)hid=Math.min(hid,performance.now())},true);
+ if(hid===0)PF.bg=1;
  try{
-  new PerformanceObserver(l=>{const x=l.getEntries().pop();if(x)PF.lcp=Math.round(x.startTime)}).observe({type:'largest-contentful-paint',buffered:true});
+  new PerformanceObserver(l=>{for(const x of l.getEntries())if(x.startTime<hid)PF.lcp=rel(x.startTime)}).observe({type:'largest-contentful-paint',buffered:true});
   let cls=0;new PerformanceObserver(l=>{for(const x of l.getEntries())if(!x.hadRecentInput)cls+=x.value;PF.cls=Math.round(cls*1000)/1000}).observe({type:'layout-shift',buffered:true});
   new PerformanceObserver(l=>{for(const x of l.getEntries())PF.inp=Math.max(PF.inp||0,Math.round(x.duration))}).observe({type:'event',buffered:true,durationThreshold:40});
  }catch(e){}
  function perf(){
-  if(perfSent)return;perfSent=true;const n=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0],o={p:cur,...PF};
-  if(n){o.ttfb=Math.round(n.responseStart);o.dcl=Math.round(n.domContentLoadedEventEnd);if(n.loadEventEnd)o.load=Math.round(n.loadEventEnd);o.nav=n.type}
+  if(perfSent)return;perfSent=true;const n=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0],o={p:perfPage||cur,...PF};
+  if(n){o.ttfb=rel(n.responseStart);o.dcl=rel(n.domContentLoadedEventEnd);if(n.loadEventEnd)o.load=rel(n.loadEventEnd);o.nav=act?'prerender':n.type}
   track('perf',o,cur);
  }
 
