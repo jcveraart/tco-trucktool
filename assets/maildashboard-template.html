@@ -217,12 +217,28 @@ const verzonden = (DATA.verzonden || []).map(v => ({ ...v, t: v.verzonden_op ? n
 const verzondenOp = new Map(verzonden.filter(v => !v.test).map(v => [v.token + '|' + v.campagne, v.t]));
 const bezoek = new Map((DATA.bezoek || []).map(b => [b.token, b]));
 const eventsPer = new Map((DATA.events || []).map(e => [e.token + '|' + e.campagne, e.last_event]));
+// Herclassificatie in de browser (spiegel van core.mjs klasseerKlikken): wat het
+// dashboard toont en telt volgt altijd deze regel, ook als de Edge Function nog
+// een oudere klasse meegeeft. Trage eenlink-scanners (60-300 s na verzending)
+// en klikken vanaf twee apparaten tellen zo nooit als Mens.
+const klikStats = new Map();
+for (const k of DATA.kliks || []) { const key = k.token + '|' + k.campagne; if (!klikStats.has(key)) klikStats.set(key, { eerste: k.ontvangen_op, links: new Set() }); const p = klikStats.get(key); if (k.ontvangen_op < p.eerste) p.eerste = k.ontvangen_op; p.links.add(k.link); }
+function isScannerKlik(k) {
+  if (k.bot || k.klasse === 'scanner' || k.klasse === 'scanner_vermoedelijk') return true;
+  if (!k.token) return false;
+  const key = k.token + '|' + k.campagne, p = klikStats.get(key), t = new Date(k.ontvangen_op).getTime(), sv = verzondenOp.get(key);
+  if (sv && t - sv.getTime() < 300000) return true;
+  if (p && p.links.size >= 2 && t <= new Date(p.eerste).getTime() + 600000) return true;
+  return (DATA.kliks || []).some(x => x.id !== k.id && x.token === k.token && x.campagne === k.campagne
+    && ((x.link !== k.link && Math.abs(new Date(x.ontvangen_op).getTime() - t) < 5000)
+      || (String(x.ua || '') !== String(k.ua || '') && Math.abs(new Date(x.ontvangen_op).getTime() - t) < 300000)));
+}
 // Soort klik: mens, scanner, intern (ons netwerk) of test (testontvanger of testmail)
 const kliks = (DATA.kliks || []).map(k => {
   const vz = verzonden.find(v => v.token === k.token && v.campagne === k.campagne);
-  const soort = k.klasse === 'intern' || k.intern ? 'intern' : (testContact.has(k.token) || (vz && vz.test)) ? 'test' : (k.bot || k.klasse === 'scanner' || k.klasse === 'scanner_vermoedelijk') ? 'scanner' : k.token ? 'mens' : 'scanner';
+  const soort = k.klasse === 'intern' || k.intern ? 'intern' : (testContact.has(k.token) || (vz && vz.test)) ? 'test' : isScannerKlik(k) ? 'scanner' : k.token ? 'mens' : 'scanner';
   let reden = null;
-  if (soort === 'scanner') { const sv = verzondenOp.get(k.token + '|' + k.campagne); reden = k.bot ? 'Herkend aan browser (scanner/bot)' : sv && new Date(k.ontvangen_op) - sv < 60000 ? 'Binnen een minuut na verzending' : 'Meerdere knoppen tegelijk'; }
+  if (soort === 'scanner') { const sv = verzondenOp.get(k.token + '|' + k.campagne); reden = k.bot ? 'Herkend aan browser (scanner/bot)' : sv && new Date(k.ontvangen_op) - sv < 300000 ? 'Binnen vijf minuten na verzending' : 'Meerdere knoppen of apparaten tegelijk'; }
   return { ...k, t: new Date(k.ontvangen_op), soort, reden, na: (verzondenOp.get(k.token + '|' + k.campagne) ? new Date(k.ontvangen_op) - verzondenOp.get(k.token + '|' + k.campagne) : null) };
 });
 const SOORTNAAM = { mens: 'Mens', scanner: 'Scanner', intern: 'Intern', test: 'Test' };
@@ -249,9 +265,10 @@ function klikDetail(id) {
   const buren = k.zelfde.filter(x => Math.abs(x.tp - k.tp) < 5000 && x.link !== k.link), tien = alle.filter(x => x.t - alle[0].t <= 600000);
   const toetsen = [
     ['Browser herkend als scanner of bot', !!k.bot, ''],
-    ['Binnen een minuut na verzending', !!(sv && k.t - sv < 60000), sv ? verschil(k.t - sv) + ' na verzending' : 'verzendtijd onbekend'],
+    ['Binnen vijf minuten na verzending', !!(sv && k.t - sv < 300000), sv ? verschil(k.t - sv) + ' na verzending' : 'verzendtijd onbekend'],
     ['Andere knop binnen 5 seconden', buren.length > 0, buren.length ? buren.map(x => linkNaam(x.link) + ' ' + verschil(x.tp - k.tp)).join(', ') : ''],
-    ['Drie of meer knoppen binnen 10 minuten', new Set(tien.map(x => x.link)).size >= 3 && k.t - alle[0].t <= 600000, new Set(tien.map(x => x.link)).size + ' verschillende knoppen'],
+    ['Ander apparaat binnen 5 minuten', k.zelfde.some(x => String(x.ua || '') !== String(k.ua || '') && Math.abs(x.tp - k.tp) < 300000), ''],
+    ['Twee of meer knoppen binnen 10 minuten', new Set(tien.map(x => x.link)).size >= 2 && k.t - alle[0].t <= 600000, new Set(tien.map(x => x.link)).size + ' verschillende knoppen'],
     ['Vanaf ons eigen netwerk', !!k.intern, ''],
     ['Testmail of testontvanger', k.soort === 'test', ''],
   ];

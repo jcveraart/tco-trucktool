@@ -109,6 +109,49 @@ export function verzendingRecord({ token, campagne, variant, resendId, geplandVo
 
 // SQL-literal voor de Management-API-syncscripts. Alleen voor waarden die uit
 // onze eigen tabellen/Notion komen; spiegel van het invoerbeleid elders.
+// Scanner-classificatie van kliks; spiegel in de SQL-view
+// analytics.email_kliks_geklasseerd en in de Edge Function email-dashboard.
+// Beveiligingsscanners draaien een echte browser (bot-vlag en UA verraden ze
+// niet), maar klikken vrijwel direct na aflevering: in de live data zaten
+// alle eenlink-scanners binnen 146 s na verzending en de eerste echte klik
+// pas na uren. Daarom: eerste klik binnen 5 minuten = vermoedelijke scanner,
+// net als meerdere knoppen tegelijk of 2+ verschillende knoppen binnen
+// 10 minuten na de eerste klik, of klikken vanaf twee apparaten binnen
+// 5 minuten (een mens wisselt niet binnen een minuut van apparaat om
+// dezelfde knop nog eens te klikken; twee scanners bij dezelfde ontvanger
+// doen dat wel). Alleen 'menselijk' telt als echte klik.
+export const SCANNER_EERSTE_KLIK_SEC = 300;
+export const SCANNER_KNOPPEN_SEC = 600;
+export function klasseerKlikken(kliks, verzonden) {
+  const verzondenOp = new Map((verzonden || []).map(v => [v.token + '|' + v.campagne, v.verzonden_op]));
+  const perToken = new Map();
+  for (const k of kliks) {
+    const key = k.token + '|' + k.campagne;
+    if (!perToken.has(key)) perToken.set(key, { eerste: k.ontvangen_op, links: new Set() });
+    const p = perToken.get(key);
+    if (k.ontvangen_op < p.eerste) p.eerste = k.ontvangen_op;
+    p.links.add(k.link);
+  }
+  return kliks.map(k => {
+    const key = k.token + '|' + k.campagne;
+    const p = perToken.get(key);
+    const vz = verzondenOp.get(key);
+    const tegelijk = kliks.some(x => x !== k && x.token && x.token === k.token && x.campagne === k.campagne && x.link !== k.link
+      && Math.abs(new Date(x.ontvangen_op).getTime() - new Date(k.ontvangen_op).getTime()) < 5000);
+    const anderApparaat = kliks.some(x => x !== k && x.token && x.token === k.token && x.campagne === k.campagne
+      && String(x.ua || '') !== String(k.ua || '')
+      && Math.abs(new Date(x.ontvangen_op).getTime() - new Date(k.ontvangen_op).getTime()) < SCANNER_EERSTE_KLIK_SEC * 1000);
+    let klasse = 'menselijk';
+    if (k.intern) klasse = 'intern';
+    else if (k.bot) klasse = 'scanner';
+    else if (!k.token) klasse = 'onbekend';
+    else if (tegelijk || anderApparaat) klasse = 'scanner_vermoedelijk';
+    else if (vz && new Date(k.ontvangen_op).getTime() < new Date(vz).getTime() + SCANNER_EERSTE_KLIK_SEC * 1000) klasse = 'scanner_vermoedelijk';
+    else if (p && p.links.size >= 2 && new Date(k.ontvangen_op).getTime() <= new Date(p.eerste).getTime() + SCANNER_KNOPPEN_SEC * 1000) klasse = 'scanner_vermoedelijk';
+    return { ...k, klasse };
+  });
+}
+
 export function sqlStr(value) {
   if (value === null || value === undefined || value === '') return 'null';
   return `'${String(value).replace(/'/g, "''")}'`;

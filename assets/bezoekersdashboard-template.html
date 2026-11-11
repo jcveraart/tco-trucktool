@@ -399,14 +399,15 @@ const TESTTOKENS = new Set(); // ontvangers die alleen testmails kregen (eigen a
 const preciesMs = iso => { const m = /\.(\d+)/.exec(iso || ''); return Date.parse(String(iso).replace(/\.\d+/, '')) + (m ? parseFloat('0.' + m[1]) * 1000 : 0); };
 const KLIKS = (RAW.kliks || []).map(r => ({ t: new Date(r[0]), tp: preciesMs(r[0]), token: r[1], c: r[2], v: r[3], link: r[4], bot: r[5], intern: !!r[6], id: r[7], ua: r[8] }));
 {
-  // Scanner: bot-vlag, twee links binnen 5 s, binnen 60 s na verzending, of 3+ links binnen 10 minuten
+  // Scanner: bot-vlag, twee links binnen 5 s, binnen 5 min na verzending, of 2+ links binnen 10 minuten (spiegel van core.mjs klasseerKlikken)
   const eerste = new Map(), links = new Map();
   for (const k of KLIKS) { const key = k.token + '|' + k.c; if (!eerste.has(key)) { eerste.set(key, k.t); links.set(key, new Set()); } links.get(key).add(k.link); }
   for (const k of KLIKS) {
     const key = k.token + '|' + k.c, vz = VERZONDEN.get(key);
     k.test = !!(vz && vz.test) || TESTTOKENS.has(k.token) || k.intern;
     const tegelijk = KLIKS.some(x => x !== k && x.token === k.token && x.link !== k.link && Math.abs(x.t - k.t) < 5000);
-    k.scanner = !!(k.bot || tegelijk || (vz && k.t - vz.t < 60000) || (links.get(key).size >= 3 && k.t - eerste.get(key) <= 600000));
+    const anderApparaat = KLIKS.some(x => x !== k && x.token === k.token && x.c === k.c && String(x.ua || '') !== String(k.ua || '') && Math.abs(x.t - k.t) < 300000);
+    k.scanner = !!(k.bot || tegelijk || anderApparaat || (vz && k.t - vz.t < 300000) || (links.get(key).size >= 2 && k.t - eerste.get(key) <= 600000));
   }
   const sc = KLIKS.filter(k => k.scanner).map(k => +k.t);
   for (const e of anon) if (e.p.utm_source === 'email' && sc.some(x => e.t - x >= 0 && e.t - x < 30000)) e.scanner = true;
@@ -851,9 +852,10 @@ function mailKlikDetail(id) {
   const buren = k.zelfde.filter(x => Math.abs(x.tp - k.tp) < 5000 && x.link !== k.link), eerste = alle.find(x => x.c === k.c) || alle[0], tien = alle.filter(x => x.c === k.c && x.t - eerste.t <= 600000);
   const toetsen = [
     ['Browser herkend als scanner of bot', !!k.bot, ''],
-    ['Binnen een minuut na verzending', !!(vz && k.t - vz.t < 60000), vz ? verschil(k.t - vz.t) + ' na verzending' : 'verzendtijd onbekend'],
+    ['Binnen vijf minuten na verzending', !!(vz && k.t - vz.t < 300000), vz ? verschil(k.t - vz.t) + ' na verzending' : 'verzendtijd onbekend'],
     ['Andere knop binnen 5 seconden', buren.length > 0, buren.map(x => linkNaam(x.link) + ' ' + verschil(x.tp - k.tp)).join(', ')],
-    ['Drie of meer knoppen binnen 10 minuten', new Set(tien.map(x => x.link)).size >= 3 && k.t - eerste.t <= 600000, new Set(tien.map(x => x.link)).size + ' verschillende knoppen'],
+    ['Ander apparaat binnen 5 minuten', k.zelfde.some(x => String(x.ua || '') !== String(k.ua || '') && Math.abs(x.tp - k.tp) < 300000), ''],
+    ['Twee of meer knoppen binnen 10 minuten', new Set(tien.map(x => x.link)).size >= 2 && k.t - eerste.t <= 600000, new Set(tien.map(x => x.link)).size + ' verschillende knoppen'],
     ['Vanaf ons eigen netwerk', !!k.intern, ''],
     ['Testmail of testontvanger', !!(vz && vz.test) || TESTTOKENS.has(k.token), ''],
     ['Later gevolgd door een bezoek met cookies', !k.scanner && !k.test && [...sessies.values()].some(s => s.mail === k.token && s.start - k.t >= 0 && s.start - k.t < 120000), ''],

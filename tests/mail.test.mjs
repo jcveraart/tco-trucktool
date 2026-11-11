@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { splitVariant, trackedUrl, unsubscribeUrl, renderText, buildEmail, LINKS, templateVariables, emailLabel, verzendingRecord } from '../scripts/mail/core.mjs';
+import { splitVariant, trackedUrl, unsubscribeUrl, renderText, buildEmail, LINKS, templateVariables, emailLabel, verzendingRecord, klasseerKlikken } from '../scripts/mail/core.mjs';
 
 const contact = { token: '123e4567-e89b-12d3-a456-426614174000', bedrijf: 'Jansen Transport', naam: 'Piet Jansen' };
 
@@ -63,6 +63,33 @@ test('verzendingen worden gelogd, testmails apart gemarkeerd', () => {
   const echt = verzendingRecord({ token: contact.token, campagne: 'campagne-1', variant: 'b', resendId: 're_echt' });
   assert.equal(echt.test, false);
   assert.equal(echt.gepland_voor, null);
+});
+
+test('klikclassificatie: trage eenlink-scanners zijn scanner, late echte klik blijft menselijk', () => {
+  const verzonden = [{ token: contact.token, campagne: 'campagne-1', verzonden_op: '2026-11-11T14:45:00.000Z' }];
+  const klikOp = (sec, link = 'gids', extra = {}) => ({ token: contact.token, campagne: 'campagne-1', variant: 'a', link, bot: false, ontvangen_op: new Date(Date.parse('2026-11-11T14:45:00.000Z') + sec * 1000).toISOString(), ...extra });
+  const klasse = (kliks, vz = verzonden) => klasseerKlikken(kliks, vz).map(k => k.klasse);
+  // Golf van 11 nov 2026: een link, 60-146 s na verzending = beveiligingsscanner
+  assert.deepEqual(klasse([klikOp(90)]), ['scanner_vermoedelijk']);
+  assert.deepEqual(klasse([klikOp(146)]), ['scanner_vermoedelijk']);
+  assert.deepEqual(klasse([klikOp(30)]), ['scanner_vermoedelijk']);
+  // Echte klik (Alberto): een link, uren later = menselijk
+  assert.deepEqual(klasse([klikOp(21860, 'calc')]), ['menselijk']);
+  assert.deepEqual(klasse([klikOp(3600)]), ['menselijk']);
+  // Alle knoppen tegelijk, ook uren na verzending = scanner
+  assert.deepEqual(klasse([klikOp(20000, 'calc'), klikOp(20000, 'gids'), klikOp(20001, 'modellen')]),
+    ['scanner_vermoedelijk', 'scanner_vermoedelijk', 'scanner_vermoedelijk']);
+  // Twee verschillende knoppen binnen 10 minuten = scanner
+  assert.deepEqual(klasse([klikOp(20000, 'calc'), klikOp(20300, 'gids')]), ['scanner_vermoedelijk', 'scanner_vermoedelijk']);
+  // Zelfde knop binnen 5 min vanaf twee apparaten = scanner (Perfection-geval);
+  // twee keer klikken vanaf hetzelfde apparaat blijft menselijk
+  const uaKlik = (sec, ua) => klikOp(sec, 'modellen', { ua });
+  assert.deepEqual(klasse([uaKlik(20000, 'Windows Chrome'), uaKlik(20045, 'Linux Chrome')]), ['scanner_vermoedelijk', 'scanner_vermoedelijk']);
+  assert.deepEqual(klasse([uaKlik(20000, 'Windows Chrome'), uaKlik(20045, 'Windows Chrome')]), ['menselijk', 'menselijk']);
+  // Bot-vlag, intern en onbekend token houden hun eigen klasse
+  assert.deepEqual(klasse([klikOp(20000, 'calc', { bot: true })]), ['scanner']);
+  assert.deepEqual(klasse([klikOp(20000, 'calc', { intern: true })]), ['intern']);
+  assert.deepEqual(klasse([{ ...klikOp(20000, 'calc'), token: null }]), ['onbekend']);
 });
 
 test('resend template variables are filled per customer, never bestelwagen', () => {

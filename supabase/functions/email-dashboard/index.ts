@@ -56,8 +56,8 @@ Deno.serve(async (req: Request) => {
   if (!templateResp.ok) return json(502, { error: 'template_niet_bereikbaar' });
 
   // Scanner-classificatie zoals in analytics.email_kliks_geklasseerd (SQL-view
-  // is niet via de API bereikbaar, dus hier in code): binnen 60 sec na
-  // verzending, of (vrijwel) alle links binnen 10 minuten = vermoedelijke scanner.
+  // is niet via de API bereikbaar, dus hier in code; kanoniek in core.mjs): binnen 5 min na
+  // verzending, knoppen tegelijk, of 2+ knoppen binnen 10 minuten = vermoedelijke scanner.
   const verzondenOp = new Map((verzonden.data || []).map((v: any) => [v.token + '|' + v.campagne, v.verzonden_op]));
   const perToken = new Map<string, { eerste: string; links: Set<string> }>();
   for (const k of kliks.data || []) {
@@ -74,10 +74,10 @@ Deno.serve(async (req: Request) => {
     const tegelijk = (kliks.data || []).some((x: any) => x.id !== k.id && x.token && x.token === k.token && x.link !== k.link && Math.abs(new Date(x.ontvangen_op).getTime() - new Date(k.ontvangen_op).getTime()) < 5000);
     if (k.intern) klasse = 'intern';
     else if (k.bot) klasse = 'scanner';
-    else if (tegelijk) klasse = 'scanner_vermoedelijk';
+    else if (tegelijk || (kliks.data || []).some((x: any) => x.id !== k.id && x.token && x.token === k.token && String(x.ua || '') !== String(k.ua || '') && Math.abs(new Date(x.ontvangen_op).getTime() - new Date(k.ontvangen_op).getTime()) < 300_000)) klasse = 'scanner_vermoedelijk';
     else if (!k.token) klasse = 'onbekend';
-    else if (vz && new Date(k.ontvangen_op).getTime() < new Date(vz).getTime() + 60_000) klasse = 'scanner_vermoedelijk';
-    else if (p && p.links.size >= 3 && new Date(k.ontvangen_op).getTime() <= new Date(p.eerste).getTime() + 600_000) klasse = 'scanner_vermoedelijk';
+    else if (vz && new Date(k.ontvangen_op).getTime() < new Date(vz).getTime() + 300_000) klasse = 'scanner_vermoedelijk';
+    else if (p && p.links.size >= 2 && new Date(k.ontvangen_op).getTime() <= new Date(p.eerste).getTime() + 600_000) klasse = 'scanner_vermoedelijk';
     return { ...k, klasse };
   });
 
