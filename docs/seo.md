@@ -61,3 +61,10 @@ Use the HTTPS apex domain consistently. In GitHub Pages settings, enable **Enfor
 - [Google: canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)
 - [GitHub Pages: HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https)
 - [GitHub Pages: custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
+
+## Round 4 (11 November 2026)
+
+- Vehicle pages show energy cost per 100 km (calculator defaults: `VT[c].p`, `mEnergy`, `mDiesel`) and five similar models by range. One pure function `vMore` renders this in the browser and in `scripts/seo-render.cjs`.
+- Zone pages list the six nearest zero-emission zones with distance (`zPage`, from the coordinates in `ZES`) and link to vans and trucks.
+- `/modellen/bestelbussen/goedkoopste/` is a list page with its own sort order: a route with `page:"modellen"`, `category` and `sort`. `mCatOf` maps such a route to its category. Routes can carry `more` links (and `en.more`) shown below the list.
+- English pages no longer contain half-translated dialog text. After adding Dutch copy, check `/en/` output for leftovers.

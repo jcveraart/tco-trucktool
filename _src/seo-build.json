@@ -16,12 +16,12 @@
     "hash": "60c2654c509b"
   },
   "https://stekkerofdiesel.nl/modellen/": {
-    "date": "2026-11-10",
-    "hash": "1e6a8840a4db"
+    "date": "2026-11-11",
+    "hash": "9feec9c2908a"
   },
   "https://stekkerofdiesel.nl/en/models/": {
-    "date": "2026-11-02",
-    "hash": "a11f535a4340"
+    "date": "2026-11-11",
+    "hash": "382da0f9dfff"
   },
   "https://stekkerofdiesel.nl/overstapgids/": {
     "date": "2026-11-10",
@@ -52,8 +52,8 @@
     "hash": "cf7ffd18acc7"
   },
   "https://stekkerofdiesel.nl/en/switching-guide/charging/": {
-    "date": "2026-11-10",
-    "hash": "841d2ab59df0"
+    "date": "2026-11-11",
+    "hash": "387076dc3ae2"
   },
   "https://stekkerofdiesel.nl/overstapgids/stroom/": {
     "date": "2026-11-10",
@@ -156,855 +156,863 @@
     "hash": "02c6b86a55c5"
   },
   "https://stekkerofdiesel.nl/en/privacy/": {
-    "date": "2026-11-03",
-    "hash": "a3bfcdf0fbb2"
+    "date": "2026-11-11",
+    "hash": "5335715d51fa"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/": {
-    "date": "2026-11-10",
-    "hash": "b9c609cb5298"
+    "date": "2026-11-11",
+    "hash": "eb43e40df6e8"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/": {
-    "date": "2026-11-10",
-    "hash": "192a70dc2e62"
+    "date": "2026-11-11",
+    "hash": "02202dbdd9d6"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/": {
-    "date": "2026-11-10",
-    "hash": "bfef16b83e4d"
+    "date": "2026-11-11",
+    "hash": "b646f0e4f43a"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/": {
-    "date": "2026-11-10",
-    "hash": "092ce7b9d12f"
+    "date": "2026-11-11",
+    "hash": "0e344aef96f6"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/": {
-    "date": "2026-11-10",
-    "hash": "ab1567a3efa7"
+    "date": "2026-11-11",
+    "hash": "6dbe58a2572c"
   },
   "https://stekkerofdiesel.nl/en/models/vans/": {
-    "date": "2026-11-10",
-    "hash": "399e2c35ced3"
+    "date": "2026-11-11",
+    "hash": "7afffeafb43c"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/": {
-    "date": "2026-11-10",
-    "hash": "5ff424e9e310"
+    "date": "2026-11-11",
+    "hash": "1ef7fe650eb5"
   },
   "https://stekkerofdiesel.nl/en/models/buses/": {
-    "date": "2026-11-10",
-    "hash": "d5f3fe067908"
+    "date": "2026-11-11",
+    "hash": "c1c7e56d53ec"
+  },
+  "https://stekkerofdiesel.nl/modellen/bestelbussen/goedkoopste/": {
+    "date": "2026-11-11",
+    "hash": "5e48d0ad79da"
+  },
+  "https://stekkerofdiesel.nl/en/models/vans/cheapest/": {
+    "date": "2026-11-11",
+    "hash": "b3f636fdc7e6"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/volvo-fh-aero-electric/": {
-    "date": "2026-11-10",
-    "hash": "1529bd23268f"
+    "date": "2026-11-11",
+    "hash": "57a8be1309f3"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/volvo-fh-aero-electric/": {
-    "date": "2026-11-10",
-    "hash": "bdb7936e2d41"
+    "date": "2026-11-11",
+    "hash": "51b29e9afb31"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/man-etgx/": {
-    "date": "2026-11-10",
-    "hash": "4712e64e5d04"
+    "date": "2026-11-11",
+    "hash": "a68fe577f01f"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/man-etgx/": {
-    "date": "2026-11-10",
-    "hash": "48f03ba50820"
+    "date": "2026-11-11",
+    "hash": "06cd7d6e0a8d"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/renault-trucks-e-tech-t/": {
-    "date": "2026-11-10",
-    "hash": "8156b271d37d"
+    "date": "2026-11-11",
+    "hash": "c75a194ceb43"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/renault-trucks-e-tech-t/": {
-    "date": "2026-11-10",
-    "hash": "12f7f0020d4e"
+    "date": "2026-11-11",
+    "hash": "b39f9d831845"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/byd-ebus-b12-b/": {
-    "date": "2026-11-10",
-    "hash": "1d6590065c1a"
+    "date": "2026-11-11",
+    "hash": "ec4d0ea4771c"
   },
   "https://stekkerofdiesel.nl/en/models/buses/byd-ebus-b12-b/": {
-    "date": "2026-11-10",
-    "hash": "68d94faae0ad"
+    "date": "2026-11-11",
+    "hash": "1a2e1d2b37ac"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/iveco-s-eway/": {
-    "date": "2026-11-10",
-    "hash": "1d177fb0ac34"
+    "date": "2026-11-11",
+    "hash": "00e2c2cec3bd"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/iveco-s-eway/": {
-    "date": "2026-11-10",
-    "hash": "38bc7d2387c3"
+    "date": "2026-11-11",
+    "hash": "0fa0473dcc8c"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/man-etgs-4-2-chassis/": {
-    "date": "2026-11-10",
-    "hash": "c88ad8c62c25"
+    "date": "2026-11-11",
+    "hash": "0a68dd2f0b18"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/man-etgs-4-2-chassis/": {
-    "date": "2026-11-10",
-    "hash": "f9338b8f650e"
+    "date": "2026-11-11",
+    "hash": "3052f9bf8d27"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/mercedes-benz-ecitaro/": {
-    "date": "2026-11-10",
-    "hash": "027089ccbab4"
+    "date": "2026-11-11",
+    "hash": "365443b98d3e"
   },
   "https://stekkerofdiesel.nl/en/models/buses/mercedes-benz-ecitaro/": {
-    "date": "2026-11-10",
-    "hash": "0e8b5821652a"
+    "date": "2026-11-11",
+    "hash": "e86e9226cf39"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/solaris-urbino-12-electric-modulair/": {
-    "date": "2026-11-10",
-    "hash": "0ab59f263a55"
+    "date": "2026-11-11",
+    "hash": "076e683c3ced"
   },
   "https://stekkerofdiesel.nl/en/models/buses/solaris-urbino-12-electric-modulair/": {
-    "date": "2026-11-10",
-    "hash": "3a611d31ff8a"
+    "date": "2026-11-11",
+    "hash": "c69905ea1bea"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/solaris-urbino-18-electric-modulair/": {
-    "date": "2026-11-10",
-    "hash": "5e8ba90a3c45"
+    "date": "2026-11-11",
+    "hash": "3e5cbf038cd5"
   },
   "https://stekkerofdiesel.nl/en/models/buses/solaris-urbino-18-electric-modulair/": {
-    "date": "2026-11-10",
-    "hash": "1576482c5e7e"
+    "date": "2026-11-11",
+    "hash": "f2d06c964d8e"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/vdl-citea-le-122/": {
-    "date": "2026-11-10",
-    "hash": "230a49e7baed"
+    "date": "2026-11-11",
+    "hash": "e0a4b5e38aa7"
   },
   "https://stekkerofdiesel.nl/en/models/buses/vdl-citea-le-122/": {
-    "date": "2026-11-10",
-    "hash": "2b7349359b8a"
+    "date": "2026-11-11",
+    "hash": "09eec9b511e1"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/tesla-semi-europa/": {
-    "date": "2026-11-10",
-    "hash": "d74dcff96ada"
+    "date": "2026-11-11",
+    "hash": "58ada40bdeae"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/tesla-semi-europa/": {
-    "date": "2026-11-10",
-    "hash": "4afeacb74719"
+    "date": "2026-11-11",
+    "hash": "3d0704c66981"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/scania-r-serie-elektrisch/": {
-    "date": "2026-11-10",
-    "hash": "02d265d5f9cf"
+    "date": "2026-11-11",
+    "hash": "3392b6e766de"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/scania-r-serie-elektrisch/": {
-    "date": "2026-11-10",
-    "hash": "9e6b121bb219"
+    "date": "2026-11-11",
+    "hash": "8a7fb3980773"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/daf-xd-electric/": {
-    "date": "2026-11-10",
-    "hash": "4568d2388f39"
+    "date": "2026-11-11",
+    "hash": "0ed87bb5c869"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/daf-xd-electric/": {
-    "date": "2026-11-10",
-    "hash": "f4791122b2b7"
+    "date": "2026-11-11",
+    "hash": "a8f8ee8dac4f"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/daf-xf-electric/": {
-    "date": "2026-11-10",
-    "hash": "4345ddb136c9"
+    "date": "2026-11-11",
+    "hash": "c352c9b09e55"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/daf-xf-electric/": {
-    "date": "2026-11-10",
-    "hash": "7b0f3fa8078c"
+    "date": "2026-11-11",
+    "hash": "e5e206c2eed3"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/daf-xg-electric/": {
-    "date": "2026-11-10",
-    "hash": "977315dfc55d"
+    "date": "2026-11-11",
+    "hash": "807a7aa54d4e"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/daf-xg-electric/": {
-    "date": "2026-11-10",
-    "hash": "b0c7a6d18b6b"
+    "date": "2026-11-11",
+    "hash": "18d913b8c6ec"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/karsan-e-ata-12/": {
-    "date": "2026-11-10",
-    "hash": "abf71c1497d8"
+    "date": "2026-11-11",
+    "hash": "a95ab8949051"
   },
   "https://stekkerofdiesel.nl/en/models/buses/karsan-e-ata-12/": {
-    "date": "2026-11-10",
-    "hash": "3085b0ea44a0"
+    "date": "2026-11-11",
+    "hash": "bd30ab349cec"
   },
   "https://stekkerofdiesel.nl/modellen/trekkers/mercedes-benz-eactros-600/": {
-    "date": "2026-11-10",
-    "hash": "b9608448860c"
+    "date": "2026-11-11",
+    "hash": "ad825e86be71"
   },
   "https://stekkerofdiesel.nl/en/models/tractor-units/mercedes-benz-eactros-600/": {
-    "date": "2026-11-10",
-    "hash": "fe0398f00754"
+    "date": "2026-11-11",
+    "hash": "8a75bb772200"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/mercedes-benz-eintouro/": {
-    "date": "2026-11-10",
-    "hash": "a8a485bd09ce"
+    "date": "2026-11-11",
+    "hash": "df8f84860e12"
   },
   "https://stekkerofdiesel.nl/en/models/buses/mercedes-benz-eintouro/": {
-    "date": "2026-11-10",
-    "hash": "b1f13b9abca3"
+    "date": "2026-11-11",
+    "hash": "3ac4aa868490"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/man-etgm-4-accupakketten/": {
-    "date": "2026-11-10",
-    "hash": "46d8283cf58e"
+    "date": "2026-11-11",
+    "hash": "b51c9cca2c8d"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/man-etgm-4-accupakketten/": {
-    "date": "2026-11-10",
-    "hash": "7e1cfb54f2b5"
+    "date": "2026-11-11",
+    "hash": "2fe501dd9718"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/mercedes-benz-eactros-400/": {
-    "date": "2026-11-10",
-    "hash": "6facb5221340"
+    "date": "2026-11-11",
+    "hash": "aed510c761a4"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/mercedes-benz-eactros-400/": {
-    "date": "2026-11-10",
-    "hash": "dd709b6900e0"
+    "date": "2026-11-11",
+    "hash": "8a3d248d812c"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/mercedes-benz-ecitaro-g/": {
-    "date": "2026-11-10",
-    "hash": "488926d40df6"
+    "date": "2026-11-11",
+    "hash": "34c4d6f7f993"
   },
   "https://stekkerofdiesel.nl/en/models/buses/mercedes-benz-ecitaro-g/": {
-    "date": "2026-11-10",
-    "hash": "a338ab521dbb"
+    "date": "2026-11-11",
+    "hash": "ecf630927932"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/renault-trafic-van-e-tech-nieuwe-generatie/": {
-    "date": "2026-11-10",
-    "hash": "13dd2c4b62de"
+    "date": "2026-11-11",
+    "hash": "56c0b085ff43"
   },
   "https://stekkerofdiesel.nl/en/models/vans/renault-trafic-van-e-tech-nieuwe-generatie/": {
-    "date": "2026-11-10",
-    "hash": "cc64b76db5c2"
+    "date": "2026-11-11",
+    "hash": "bc10fbc347bf"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/volvo-fm-electric/": {
-    "date": "2026-11-10",
-    "hash": "8fc8c856a0d3"
+    "date": "2026-11-11",
+    "hash": "e45ec42b8665"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/volvo-fm-electric/": {
-    "date": "2026-11-10",
-    "hash": "48b87147e0b9"
+    "date": "2026-11-11",
+    "hash": "415a799ec22a"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/volvo-fmx-electric/": {
-    "date": "2026-11-10",
-    "hash": "a4de478df3e6"
+    "date": "2026-11-11",
+    "hash": "d9dfd207746e"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/volvo-fmx-electric/": {
-    "date": "2026-11-10",
-    "hash": "3feaad18272b"
+    "date": "2026-11-11",
+    "hash": "7234af167939"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/volkswagen-id-buzz-cargo/": {
-    "date": "2026-11-10",
-    "hash": "2c3f148ca268"
+    "date": "2026-11-11",
+    "hash": "63f00f5325eb"
   },
   "https://stekkerofdiesel.nl/en/models/vans/volkswagen-id-buzz-cargo/": {
-    "date": "2026-11-10",
-    "hash": "44d7e3d3532a"
+    "date": "2026-11-11",
+    "hash": "6ccfbe313ef3"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/volvo-fl-electric/": {
-    "date": "2026-11-10",
-    "hash": "194dda35a97d"
+    "date": "2026-11-11",
+    "hash": "01a3af144bba"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/volvo-fl-electric/": {
-    "date": "2026-11-10",
-    "hash": "b0ec6bd26f61"
+    "date": "2026-11-11",
+    "hash": "7a08b2eb883a"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/opel-movano-electric/": {
-    "date": "2026-11-10",
-    "hash": "47e38d1da8dc"
+    "date": "2026-11-11",
+    "hash": "9747b80f03b5"
   },
   "https://stekkerofdiesel.nl/en/models/vans/opel-movano-electric/": {
-    "date": "2026-11-10",
-    "hash": "e528c16d412c"
+    "date": "2026-11-11",
+    "hash": "84deb302aa7f"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/citroen-e-jumper/": {
-    "date": "2026-11-10",
-    "hash": "b160fd2ee1e9"
+    "date": "2026-11-11",
+    "hash": "e53f754a3ce7"
   },
   "https://stekkerofdiesel.nl/en/models/vans/citroen-e-jumper/": {
-    "date": "2026-11-10",
-    "hash": "162b51af584c"
+    "date": "2026-11-11",
+    "hash": "81ef15b39f98"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/peugeot-e-boxer/": {
-    "date": "2026-11-10",
-    "hash": "3e9deed2939d"
+    "date": "2026-11-11",
+    "hash": "7f83509f0e44"
   },
   "https://stekkerofdiesel.nl/en/models/vans/peugeot-e-boxer/": {
-    "date": "2026-11-10",
-    "hash": "e21e60f79f87"
+    "date": "2026-11-11",
+    "hash": "8c1f8ca09f0b"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/toyota-proace-max-electric/": {
-    "date": "2026-11-10",
-    "hash": "79de76ccdffd"
+    "date": "2026-11-11",
+    "hash": "8ad87f52e9dc"
   },
   "https://stekkerofdiesel.nl/en/models/vans/toyota-proace-max-electric/": {
-    "date": "2026-11-10",
-    "hash": "473ed236e996"
+    "date": "2026-11-11",
+    "hash": "ebc4615202dc"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/kia-pv5-cargo/": {
-    "date": "2026-11-10",
-    "hash": "02fee0956b8e"
+    "date": "2026-11-11",
+    "hash": "25d68bfaa762"
   },
   "https://stekkerofdiesel.nl/en/models/vans/kia-pv5-cargo/": {
-    "date": "2026-11-10",
-    "hash": "aab136b5126f"
+    "date": "2026-11-11",
+    "hash": "be85ad13e74c"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/nissan-interstar-e/": {
-    "date": "2026-11-10",
-    "hash": "0d8f1aaed476"
+    "date": "2026-11-11",
+    "hash": "829baa8f5cde"
   },
   "https://stekkerofdiesel.nl/en/models/vans/nissan-interstar-e/": {
-    "date": "2026-11-10",
-    "hash": "e0a50d46a4e6"
+    "date": "2026-11-11",
+    "hash": "eb889187b42d"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/renault-master-e-tech/": {
-    "date": "2026-11-10",
-    "hash": "733152515ed7"
+    "date": "2026-11-11",
+    "hash": "b7d8fe213a38"
   },
   "https://stekkerofdiesel.nl/en/models/vans/renault-master-e-tech/": {
-    "date": "2026-11-10",
-    "hash": "e5f8544aa434"
+    "date": "2026-11-11",
+    "hash": "60922834d7ee"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/iveco-s-eway-rigid/": {
-    "date": "2026-11-10",
-    "hash": "718631e56618"
+    "date": "2026-11-11",
+    "hash": "64a7bd86d215"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/iveco-s-eway-rigid/": {
-    "date": "2026-11-10",
-    "hash": "b002f4bdff33"
+    "date": "2026-11-11",
+    "hash": "d5430c410171"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/man-lion-s-city-12-e/": {
-    "date": "2026-11-10",
-    "hash": "6d2ccf08ec1f"
+    "date": "2026-11-11",
+    "hash": "5dcb0f3088b0"
   },
   "https://stekkerofdiesel.nl/en/models/buses/man-lion-s-city-12-e/": {
-    "date": "2026-11-10",
-    "hash": "fcf9b82d6e30"
+    "date": "2026-11-11",
+    "hash": "ffda633eff5d"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/fiat-e-ducato/": {
-    "date": "2026-11-10",
-    "hash": "0476606558a6"
+    "date": "2026-11-11",
+    "hash": "46347bf55425"
   },
   "https://stekkerofdiesel.nl/en/models/vans/fiat-e-ducato/": {
-    "date": "2026-11-10",
-    "hash": "e5f1e02b942a"
+    "date": "2026-11-11",
+    "hash": "00db4e8e4958"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/volkswagen-e-transporter/": {
-    "date": "2026-11-10",
-    "hash": "e377df5d372b"
+    "date": "2026-11-11",
+    "hash": "32ef58795838"
   },
   "https://stekkerofdiesel.nl/en/models/vans/volkswagen-e-transporter/": {
-    "date": "2026-11-10",
-    "hash": "d313c0c365cf"
+    "date": "2026-11-11",
+    "hash": "a6ff9eedca10"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/ford-e-transit-custom/": {
-    "date": "2026-11-10",
-    "hash": "328863f257ba"
+    "date": "2026-11-11",
+    "hash": "711da37a27fa"
   },
   "https://stekkerofdiesel.nl/en/models/vans/ford-e-transit-custom/": {
-    "date": "2026-11-10",
-    "hash": "3ee67de176e4"
+    "date": "2026-11-11",
+    "hash": "e2428546b36e"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/maxus-edeliver-7/": {
-    "date": "2026-11-10",
-    "hash": "46d94140bd9b"
+    "date": "2026-11-11",
+    "hash": "44e83ec8ab94"
   },
   "https://stekkerofdiesel.nl/en/models/vans/maxus-edeliver-7/": {
-    "date": "2026-11-10",
-    "hash": "c9b84a5ba9a9"
+    "date": "2026-11-11",
+    "hash": "5d82d01a23f8"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/citroen-e-jumpy-comfort-range/": {
-    "date": "2026-11-10",
-    "hash": "fda7dc8d5c63"
+    "date": "2026-11-11",
+    "hash": "24b426a3dabe"
   },
   "https://stekkerofdiesel.nl/en/models/vans/citroen-e-jumpy-comfort-range/": {
-    "date": "2026-11-10",
-    "hash": "a332c86bef75"
+    "date": "2026-11-11",
+    "hash": "52933c976c22"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/fiat-e-scudo-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "19e0956cc2ad"
+    "date": "2026-11-11",
+    "hash": "2b07c4c4be03"
   },
   "https://stekkerofdiesel.nl/en/models/vans/fiat-e-scudo-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "5aaa54e19227"
+    "date": "2026-11-11",
+    "hash": "4434b72792c1"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/peugeot-e-expert-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "0f647c855dd8"
+    "date": "2026-11-11",
+    "hash": "60cea16e81d1"
   },
   "https://stekkerofdiesel.nl/en/models/vans/peugeot-e-expert-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "ef23e2493a02"
+    "date": "2026-11-11",
+    "hash": "d7a4917d9b91"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/daf-xb-electric/": {
-    "date": "2026-11-10",
-    "hash": "b45b8a0bce6d"
+    "date": "2026-11-11",
+    "hash": "6b6c6ecc9a1e"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/daf-xb-electric/": {
-    "date": "2026-11-10",
-    "hash": "8675e1c27f5a"
+    "date": "2026-11-11",
+    "hash": "6a237e488c3e"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/man-lion-s-city-18-e/": {
-    "date": "2026-11-10",
-    "hash": "300dd5cf71ea"
+    "date": "2026-11-11",
+    "hash": "038e6576640c"
   },
   "https://stekkerofdiesel.nl/en/models/buses/man-lion-s-city-18-e/": {
-    "date": "2026-11-10",
-    "hash": "03a73a383a82"
+    "date": "2026-11-11",
+    "hash": "f467c755c60c"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/opel-vivaro-electric-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "b9aa4d9f0947"
+    "date": "2026-11-11",
+    "hash": "2df383388aa1"
   },
   "https://stekkerofdiesel.nl/en/models/vans/opel-vivaro-electric-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "532eb59c6f0e"
+    "date": "2026-11-11",
+    "hash": "60097f9101aa"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/toyota-proace-electric-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "d36fa0ac60c3"
+    "date": "2026-11-11",
+    "hash": "fe6332e83ad8"
   },
   "https://stekkerofdiesel.nl/en/models/vans/toyota-proace-electric-75-kwh/": {
-    "date": "2026-11-10",
-    "hash": "486ff9f4945b"
+    "date": "2026-11-11",
+    "hash": "b1bf30436726"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/yutong-t12e-touringcar/": {
-    "date": "2026-11-10",
-    "hash": "3287b3e4a089"
+    "date": "2026-11-11",
+    "hash": "ea9912c0f23e"
   },
   "https://stekkerofdiesel.nl/en/models/buses/yutong-t12e-touringcar/": {
-    "date": "2026-11-10",
-    "hash": "f9d13b5226e2"
+    "date": "2026-11-11",
+    "hash": "0ef463087e41"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/maxus-edeliver-9/": {
-    "date": "2026-11-10",
-    "hash": "b561f89f5940"
+    "date": "2026-11-11",
+    "hash": "65464c55e15b"
   },
   "https://stekkerofdiesel.nl/en/models/vans/maxus-edeliver-9/": {
-    "date": "2026-11-10",
-    "hash": "2b376a0f5833"
+    "date": "2026-11-11",
+    "hash": "bd39d3e13cbf"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/fiat-e-doblo/": {
-    "date": "2026-11-10",
-    "hash": "2fa8917598d1"
+    "date": "2026-11-11",
+    "hash": "d533f8192760"
   },
   "https://stekkerofdiesel.nl/en/models/vans/fiat-e-doblo/": {
-    "date": "2026-11-10",
-    "hash": "7aa6e54a1d19"
+    "date": "2026-11-11",
+    "hash": "32292898b8c1"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/opel-combo-cargo-electric/": {
-    "date": "2026-11-10",
-    "hash": "044fcf971464"
+    "date": "2026-11-11",
+    "hash": "9619f818d1f7"
   },
   "https://stekkerofdiesel.nl/en/models/vans/opel-combo-cargo-electric/": {
-    "date": "2026-11-10",
-    "hash": "ee19ca81ad15"
+    "date": "2026-11-11",
+    "hash": "e2946d2baaef"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/peugeot-e-partner/": {
-    "date": "2026-11-10",
-    "hash": "468b2d08c665"
+    "date": "2026-11-11",
+    "hash": "0e89db40e489"
   },
   "https://stekkerofdiesel.nl/en/models/vans/peugeot-e-partner/": {
-    "date": "2026-11-10",
-    "hash": "ce72f5779152"
+    "date": "2026-11-11",
+    "hash": "bb0da93034da"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/ford-e-transit/": {
-    "date": "2026-11-10",
-    "hash": "dc7411700ec7"
+    "date": "2026-11-11",
+    "hash": "5f240db8ebb0"
   },
   "https://stekkerofdiesel.nl/en/models/vans/ford-e-transit/": {
-    "date": "2026-11-10",
-    "hash": "4de4c757ad07"
+    "date": "2026-11-11",
+    "hash": "709a64683a49"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/citroen-e-berlingo-van/": {
-    "date": "2026-11-10",
-    "hash": "10a05796be86"
+    "date": "2026-11-11",
+    "hash": "0c536627b8d7"
   },
   "https://stekkerofdiesel.nl/en/models/vans/citroen-e-berlingo-van/": {
-    "date": "2026-11-10",
-    "hash": "7bb6cb7b01d4"
+    "date": "2026-11-11",
+    "hash": "674b6c2de926"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/maxus-edeliver-5/": {
-    "date": "2026-11-10",
-    "hash": "829a8f8692d5"
+    "date": "2026-11-11",
+    "hash": "1885452b75d5"
   },
   "https://stekkerofdiesel.nl/en/models/vans/maxus-edeliver-5/": {
-    "date": "2026-11-10",
-    "hash": "8dda0105770d"
+    "date": "2026-11-11",
+    "hash": "da0f0e10bc30"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/ford-e-transit-courier/": {
-    "date": "2026-11-10",
-    "hash": "e8ed624619e8"
+    "date": "2026-11-11",
+    "hash": "84a78f0d4a8c"
   },
   "https://stekkerofdiesel.nl/en/models/vans/ford-e-transit-courier/": {
-    "date": "2026-11-10",
-    "hash": "7d92a549d623"
+    "date": "2026-11-11",
+    "hash": "ff53ffff8615"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/renault-trucks-e-tech-d-16-t/": {
-    "date": "2026-11-10",
-    "hash": "093368d47ca5"
+    "date": "2026-11-11",
+    "hash": "7825fbf780a5"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/renault-trucks-e-tech-d-16-t/": {
-    "date": "2026-11-10",
-    "hash": "fe19fa7ddf25"
+    "date": "2026-11-11",
+    "hash": "e9c6d7a4d936"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/toyota-proace-city-electric/": {
-    "date": "2026-11-10",
-    "hash": "671aefcd3484"
+    "date": "2026-11-11",
+    "hash": "84d7a1cfb52b"
   },
   "https://stekkerofdiesel.nl/en/models/vans/toyota-proace-city-electric/": {
-    "date": "2026-11-10",
-    "hash": "e87763e7d0d0"
+    "date": "2026-11-11",
+    "hash": "652afd4ce13c"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/renault-trucks-e-tech-d-wide-375/": {
-    "date": "2026-11-10",
-    "hash": "d8b5c4bf4fe3"
+    "date": "2026-11-11",
+    "hash": "6f9328188cdb"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/renault-trucks-e-tech-d-wide-375/": {
-    "date": "2026-11-10",
-    "hash": "28cdef19854e"
+    "date": "2026-11-11",
+    "hash": "047ff8f22183"
   },
   "https://stekkerofdiesel.nl/modellen/bussen/man-lion-s-city-10-e/": {
-    "date": "2026-11-10",
-    "hash": "f8fbe6724642"
+    "date": "2026-11-11",
+    "hash": "2be2c0ad7b7e"
   },
   "https://stekkerofdiesel.nl/en/models/buses/man-lion-s-city-10-e/": {
-    "date": "2026-11-10",
-    "hash": "871a10b2b454"
+    "date": "2026-11-11",
+    "hash": "f8fef90624e3"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/nissan-townstar-ev-van/": {
-    "date": "2026-11-10",
-    "hash": "8797377a52ac"
+    "date": "2026-11-11",
+    "hash": "8b2fb9f8da28"
   },
   "https://stekkerofdiesel.nl/en/models/vans/nissan-townstar-ev-van/": {
-    "date": "2026-11-10",
-    "hash": "6a95f2a5863d"
+    "date": "2026-11-11",
+    "hash": "d1663f5c296c"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/renault-kangoo-van-e-tech-electric/": {
-    "date": "2026-11-10",
-    "hash": "b541d9678388"
+    "date": "2026-11-11",
+    "hash": "f5b0e69e4d78"
   },
   "https://stekkerofdiesel.nl/en/models/vans/renault-kangoo-van-e-tech-electric/": {
-    "date": "2026-11-10",
-    "hash": "18d3e353b644"
+    "date": "2026-11-11",
+    "hash": "3dc966f54e13"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/mercedes-benz-evito/": {
-    "date": "2026-11-10",
-    "hash": "a53cfa178491"
+    "date": "2026-11-11",
+    "hash": "0b8fa386a599"
   },
   "https://stekkerofdiesel.nl/en/models/vans/mercedes-benz-evito/": {
-    "date": "2026-11-10",
-    "hash": "0cee0f5a96ce"
+    "date": "2026-11-11",
+    "hash": "f5b0d3789d3c"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/mercedes-benz-ecitan/": {
-    "date": "2026-11-10",
-    "hash": "606bd30c8e51"
+    "date": "2026-11-11",
+    "hash": "a9994e70a4e6"
   },
   "https://stekkerofdiesel.nl/en/models/vans/mercedes-benz-ecitan/": {
-    "date": "2026-11-10",
-    "hash": "00387eab46aa"
+    "date": "2026-11-11",
+    "hash": "885c9b93cbd6"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/volvo-fe-electric/": {
-    "date": "2026-11-10",
-    "hash": "743454550433"
+    "date": "2026-11-11",
+    "hash": "5c5652f8247a"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/volvo-fe-electric/": {
-    "date": "2026-11-10",
-    "hash": "4172e7ddd3a7"
+    "date": "2026-11-11",
+    "hash": "e5e33a241336"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/mercedes-benz-esprinter/": {
-    "date": "2026-11-10",
-    "hash": "31a57287b17c"
+    "date": "2026-11-11",
+    "hash": "dc3570437a80"
   },
   "https://stekkerofdiesel.nl/en/models/vans/mercedes-benz-esprinter/": {
-    "date": "2026-11-10",
-    "hash": "2e2777fc485b"
+    "date": "2026-11-11",
+    "hash": "1dea8b446659"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/iveco-edaily/": {
-    "date": "2026-11-10",
-    "hash": "5bb9c6bf9995"
+    "date": "2026-11-11",
+    "hash": "a0de505fc03c"
   },
   "https://stekkerofdiesel.nl/en/models/vans/iveco-edaily/": {
-    "date": "2026-11-10",
-    "hash": "8599f5f6a8a4"
+    "date": "2026-11-11",
+    "hash": "c5c6f4da0071"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/mercedes-benz-earocs-400/": {
-    "date": "2026-11-10",
-    "hash": "ccd48b76a8de"
+    "date": "2026-11-11",
+    "hash": "286ffedf96ce"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/mercedes-benz-earocs-400/": {
-    "date": "2026-11-10",
-    "hash": "c71ffd984614"
+    "date": "2026-11-11",
+    "hash": "0d2dbc8406f3"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/man-etgl/": {
-    "date": "2026-11-10",
-    "hash": "32a96295a999"
+    "date": "2026-11-11",
+    "hash": "e2ecdd02284c"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/man-etgl/": {
-    "date": "2026-11-10",
-    "hash": "c1522082151c"
+    "date": "2026-11-11",
+    "hash": "cd72f537c285"
   },
   "https://stekkerofdiesel.nl/modellen/bestelbussen/maxus-edeliver-3/": {
-    "date": "2026-11-10",
-    "hash": "4193a2c289c6"
+    "date": "2026-11-11",
+    "hash": "bf96fbc6f6ab"
   },
   "https://stekkerofdiesel.nl/en/models/vans/maxus-edeliver-3/": {
-    "date": "2026-11-10",
-    "hash": "72e53c8501ac"
+    "date": "2026-11-11",
+    "hash": "8a3388ac5011"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/renault-trucks-e-tech-d-14t/": {
-    "date": "2026-11-10",
-    "hash": "51c588f72a39"
+    "date": "2026-11-11",
+    "hash": "2bf0a7428ed0"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/renault-trucks-e-tech-d-14t/": {
-    "date": "2026-11-10",
-    "hash": "5a66c6be82b2"
+    "date": "2026-11-11",
+    "hash": "42db697d348e"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/fuso-ecanter-9c18e-l/": {
-    "date": "2026-11-10",
-    "hash": "704d60d534ed"
+    "date": "2026-11-11",
+    "hash": "e5b9611b79cb"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/fuso-ecanter-9c18e-l/": {
-    "date": "2026-11-10",
-    "hash": "66753dae688d"
+    "date": "2026-11-11",
+    "hash": "054c96558eab"
   },
   "https://stekkerofdiesel.nl/modellen/bakwagens/volvo-fm-low-entry/": {
-    "date": "2026-11-10",
-    "hash": "c9e04a3cd4f9"
+    "date": "2026-11-11",
+    "hash": "1863c6d1cc91"
   },
   "https://stekkerofdiesel.nl/en/models/rigid-trucks/volvo-fm-low-entry/": {
-    "date": "2026-11-10",
-    "hash": "fec70177e6c3"
+    "date": "2026-11-11",
+    "hash": "314683677d4b"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/amersfoort/": {
-    "date": "2026-11-10",
-    "hash": "2f7fbd0109d2"
+    "date": "2026-11-11",
+    "hash": "bb61888a338d"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/amersfoort/": {
-    "date": "2026-11-10",
-    "hash": "57a6ef5235ad"
+    "date": "2026-11-11",
+    "hash": "5b0a986dab6e"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/amsterdam/": {
-    "date": "2026-11-10",
-    "hash": "29e641d13646"
+    "date": "2026-11-11",
+    "hash": "140b8c7d9b86"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/amsterdam/": {
-    "date": "2026-11-10",
-    "hash": "d1fb4ea50c3c"
+    "date": "2026-11-11",
+    "hash": "c2f009adb8d1"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/assen/": {
-    "date": "2026-11-10",
-    "hash": "bdd49d869d42"
+    "date": "2026-11-11",
+    "hash": "2d22d195ebbe"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/assen/": {
-    "date": "2026-11-10",
-    "hash": "0081ba93880d"
+    "date": "2026-11-11",
+    "hash": "87200231557a"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/delft/": {
-    "date": "2026-11-10",
-    "hash": "f16d8e9ec6ac"
+    "date": "2026-11-11",
+    "hash": "6673e259ba92"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/delft/": {
-    "date": "2026-11-10",
-    "hash": "896fc0f15fc9"
+    "date": "2026-11-11",
+    "hash": "c84428fbf866"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/den-haag/": {
-    "date": "2026-11-10",
-    "hash": "e1922223b6d0"
+    "date": "2026-11-11",
+    "hash": "36db06252a5d"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/den-haag/": {
-    "date": "2026-11-10",
-    "hash": "d8d84499da2e"
+    "date": "2026-11-11",
+    "hash": "d7f6020ccf96"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/eindhoven/": {
-    "date": "2026-11-10",
-    "hash": "c0c8786f202c"
+    "date": "2026-11-11",
+    "hash": "f501b61e1c5f"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/eindhoven/": {
-    "date": "2026-11-10",
-    "hash": "7c39715c91e3"
+    "date": "2026-11-11",
+    "hash": "6dc738d83d0e"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/gouda/": {
-    "date": "2026-11-10",
-    "hash": "9959381693e3"
+    "date": "2026-11-11",
+    "hash": "413684cba4b9"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/gouda/": {
-    "date": "2026-11-10",
-    "hash": "5b618ab57ed5"
+    "date": "2026-11-11",
+    "hash": "ddb865c67d2c"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/leiden/": {
-    "date": "2026-11-10",
-    "hash": "8f48b2c7dbd4"
+    "date": "2026-11-11",
+    "hash": "042bcb9467f8"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/leiden/": {
-    "date": "2026-11-10",
-    "hash": "69a20260b276"
+    "date": "2026-11-11",
+    "hash": "06a9e49c4a71"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/maastricht/": {
-    "date": "2026-11-10",
-    "hash": "98b8996e5a22"
+    "date": "2026-11-11",
+    "hash": "afd676b97be2"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/maastricht/": {
-    "date": "2026-11-10",
-    "hash": "88df0d2c65a4"
+    "date": "2026-11-11",
+    "hash": "b40d38a3a37c"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/nijmegen/": {
-    "date": "2026-11-10",
-    "hash": "1ca43054fdcf"
+    "date": "2026-11-11",
+    "hash": "39cbede14367"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/nijmegen/": {
-    "date": "2026-11-10",
-    "hash": "9df603ba542a"
+    "date": "2026-11-11",
+    "hash": "f5290015752a"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/rotterdam/": {
-    "date": "2026-11-10",
-    "hash": "133fba7e04e4"
+    "date": "2026-11-11",
+    "hash": "a7709ef697ef"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/rotterdam/": {
-    "date": "2026-11-10",
-    "hash": "2301f7944281"
+    "date": "2026-11-11",
+    "hash": "aae6ab2dd77c"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/tilburg/": {
-    "date": "2026-11-10",
-    "hash": "586703ea572f"
+    "date": "2026-11-11",
+    "hash": "a01ff96befea"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/tilburg/": {
-    "date": "2026-11-10",
-    "hash": "bd548548d147"
+    "date": "2026-11-11",
+    "hash": "ae650d643fb6"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/utrecht/": {
-    "date": "2026-11-10",
-    "hash": "f1c9d7d752fc"
+    "date": "2026-11-11",
+    "hash": "06d73a3eafea"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/utrecht/": {
-    "date": "2026-11-10",
-    "hash": "1d137cd764b2"
+    "date": "2026-11-11",
+    "hash": "d634ad35a394"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/zwolle/": {
-    "date": "2026-11-10",
-    "hash": "df94ed7aee76"
+    "date": "2026-11-11",
+    "hash": "cb758685f263"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/zwolle/": {
-    "date": "2026-11-10",
-    "hash": "ee27b87a2e5f"
+    "date": "2026-11-11",
+    "hash": "41018b5293a4"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/s-hertogenbosch/": {
-    "date": "2026-11-10",
-    "hash": "cb4b9c75c0b8"
+    "date": "2026-11-11",
+    "hash": "7042cf54a38c"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/s-hertogenbosch/": {
-    "date": "2026-11-10",
-    "hash": "d70bbd0ba4e5"
+    "date": "2026-11-11",
+    "hash": "376c9a07a8b0"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/groningen/": {
-    "date": "2026-11-10",
-    "hash": "b2b1ddd0ba88"
+    "date": "2026-11-11",
+    "hash": "a9ea21584678"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/groningen/": {
-    "date": "2026-11-10",
-    "hash": "b49bbfd289c3"
+    "date": "2026-11-11",
+    "hash": "7e8393041795"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/haarlem/": {
-    "date": "2026-11-10",
-    "hash": "3cc4c20aba04"
+    "date": "2026-11-11",
+    "hash": "759b5dea7ade"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/haarlem/": {
-    "date": "2026-11-10",
-    "hash": "433a0c0234ed"
+    "date": "2026-11-11",
+    "hash": "c08820d6e53f"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/enschede/": {
-    "date": "2026-11-10",
-    "hash": "2f0933ce00d8"
+    "date": "2026-11-11",
+    "hash": "381159485f2e"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/enschede/": {
-    "date": "2026-11-10",
-    "hash": "e3c19ee77972"
+    "date": "2026-11-11",
+    "hash": "53a073b168b0"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/schiphol/": {
-    "date": "2026-11-10",
-    "hash": "b66f88c1205c"
+    "date": "2026-11-11",
+    "hash": "f0091ed87a86"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/schiphol/": {
-    "date": "2026-11-10",
-    "hash": "ee6228c78a3c"
+    "date": "2026-11-11",
+    "hash": "333553735c0c"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/dordrecht/": {
-    "date": "2026-11-10",
-    "hash": "75efaa169a5e"
+    "date": "2026-11-11",
+    "hash": "e2457ffd7de0"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/dordrecht/": {
-    "date": "2026-11-10",
-    "hash": "6fe9942554a7"
+    "date": "2026-11-11",
+    "hash": "27d13619e39c"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/arnhem/": {
-    "date": "2026-11-10",
-    "hash": "7111680a448b"
+    "date": "2026-11-11",
+    "hash": "50a3bc111eed"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/arnhem/": {
-    "date": "2026-11-10",
-    "hash": "1456bb55ff9e"
+    "date": "2026-11-11",
+    "hash": "7da1f24d60ec"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/alphen-aan-den-rijn/": {
-    "date": "2026-11-10",
-    "hash": "e42b43976bbc"
+    "date": "2026-11-11",
+    "hash": "559e6152f788"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/alphen-aan-den-rijn/": {
-    "date": "2026-11-10",
-    "hash": "e10713c54828"
+    "date": "2026-11-11",
+    "hash": "58f5374ff543"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/venlo/": {
-    "date": "2026-11-10",
-    "hash": "f5c350e83d3e"
+    "date": "2026-11-11",
+    "hash": "c595792aa629"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/venlo/": {
-    "date": "2026-11-10",
-    "hash": "ea1d4a8a4c3c"
+    "date": "2026-11-11",
+    "hash": "7a7b416cbc84"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/hilversum/": {
-    "date": "2026-11-10",
-    "hash": "53ac6b1cdeed"
+    "date": "2026-11-11",
+    "hash": "5ee599f7b5bb"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/hilversum/": {
-    "date": "2026-11-10",
-    "hash": "ad31045d06f6"
+    "date": "2026-11-11",
+    "hash": "caf936b97d31"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/almere/": {
-    "date": "2026-11-10",
-    "hash": "eddb0b08892d"
+    "date": "2026-11-11",
+    "hash": "43db4e1c24df"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/almere/": {
-    "date": "2026-11-10",
-    "hash": "f7392dcd9d57"
+    "date": "2026-11-11",
+    "hash": "5b1afea68156"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/deventer/": {
-    "date": "2026-11-10",
-    "hash": "afd71fdd1341"
+    "date": "2026-11-11",
+    "hash": "314eb82f5793"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/deventer/": {
-    "date": "2026-11-10",
-    "hash": "fd2d4c2e2db1"
+    "date": "2026-11-11",
+    "hash": "28dc574ffc35"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/breda/": {
-    "date": "2026-11-10",
-    "hash": "92ec81a1b7c2"
+    "date": "2026-11-11",
+    "hash": "79f2489f949b"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/breda/": {
-    "date": "2026-11-10",
-    "hash": "bf28968dd7aa"
+    "date": "2026-11-11",
+    "hash": "3c1b539bf5ee"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/apeldoorn/": {
-    "date": "2026-11-10",
-    "hash": "4f4172e5d515"
+    "date": "2026-11-11",
+    "hash": "c05afb6a61a3"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/apeldoorn/": {
-    "date": "2026-11-10",
-    "hash": "58ec91ab035f"
+    "date": "2026-11-11",
+    "hash": "651fccb4599f"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/ede/": {
-    "date": "2026-11-10",
-    "hash": "bfff2db1545d"
+    "date": "2026-11-11",
+    "hash": "21ed50628fb8"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/ede/": {
-    "date": "2026-11-10",
-    "hash": "5f11389561d5"
+    "date": "2026-11-11",
+    "hash": "961ac70f37b2"
   },
   "https://stekkerofdiesel.nl/zero-emissiezone/zaanstad/": {
-    "date": "2026-11-10",
-    "hash": "e70ffb87fb5b"
+    "date": "2026-11-11",
+    "hash": "7dea03699267"
   },
   "https://stekkerofdiesel.nl/en/zero-emission-zone/zaanstad/": {
-    "date": "2026-11-10",
-    "hash": "44c80d8e43db"
+    "date": "2026-11-11",
+    "hash": "d3b711de58d4"
   }
 }

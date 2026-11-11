@@ -52,3 +52,10 @@ test('glossary explains jargon, is linked from the guide index and old terms are
 test('a rebuild preserves dates and produces identical sitemap and canonical entry files',()=>{
  const paths=['sitemap.xml','index.html','en/index.html','modellen/bestelbussen/index.html'],before=paths.map(p=>fs.readFileSync(path.join(ROOT,p),'utf8'));cp.execFileSync(process.execPath,[path.join(ROOT,'scripts/seo.mjs')],{env:{...process.env,SOD_BUILD_DATE:'2099-01-01'}});paths.forEach((p,i)=>assert.equal(fs.readFileSync(path.join(ROOT,p),'utf8'),before[i],p));
 });
+test('vehicle and zone pages link onwards: energy costs, similar models, nearby zones and the cheapest-vans list',()=>{
+ for(const g of modelGroups){const route=routes['modellen/'+g.top.c],h=read(route.path+g.slug+'/');assert.match(h,/<h2 class="vh2">Energiekosten per 100 km<\/h2>/,g.slug);const sim=h.match(/<h2 class="vh2">Vergelijkbare [\s\S]*?<\/table>/);assert.ok(sim&&(sim[0].match(new RegExp('href="'+route.path+'[a-z0-9-]+/"','g'))||[]).length>=3,g.slug+' vergelijkbare modellen');}
+ for(const z of zones){const h=read('/zero-emissiezone/'+z+'/'),n=(h.match(/<th><a href="\/zero-emissiezone\/[a-z0-9-]+\/">/g)||[]).length;assert.equal(n,6,z);assert.ok(!h.includes('<th><a href="/zero-emissiezone/'+z+'/">'),z+' linkt naar zichzelf');assert.ok(h.includes('href="/modellen/bestelbussen/"'),z);}
+ const r=routes['modellen/bestel-goedkoopste'],h=read(r.path),prices=[...h.match(/<section class="page" data-page="modellen">([\s\S]*?)\n<\/section>/)[1].matchAll(/<article class="mc[\s\S]*?<\/article>/g)].map(a=>a[0].match(/€\s?([\d.]+)/)).filter(Boolean).map(m=>+m[1].replace(/\./g,''));
+ assert.ok(prices.length>=8);assert.ok(prices[0]<=prices[prices.length-1],'goedkoopste eerst');assert.ok(read(routes['modellen/bestel'].path).includes('href="'+r.path+'"'));
+ assert.doesNotMatch(read('/en/'),/One overzicht|Vul One geldig/);
+});
