@@ -119,6 +119,7 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
   <div class="filters">
     <div class="field"><span>Campagne</span><select id="fCampagne"></select></div>
     <div class="field"><span>Mail</span><div class="seg" id="fVariant"><button data-v="" class="on">A + B</button><button data-v="a">A</button><button data-v="b">B</button></div></div>
+    <div class="field"><span>Via</span><div class="seg" id="fDienst"><button data-v="" class="on">Alle</button><button data-v="resend">Resend</button><button data-v="brevo">Brevo</button></div></div>
     <div class="field"><span>Segment</span><select id="fSegment"></select></div>
     <div class="field"><span>Periode</span><div class="seg" id="fPeriode"><button data-v="0" class="on">Alles</button><button data-v="1">Vandaag</button><button data-v="7">7 dagen</button><button data-v="30">30 dagen</button></div></div>
     <div class="field"><span>Kliks</span><div class="seg" id="fKlik"><button data-v="mens" class="on">Mensen</button><button data-v="scanner">Scanners</button><button data-v="intern">Intern en test</button><button data-v="alles">Alles</button></div></div>
@@ -147,7 +148,7 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
 <div class="tab" data-tab="klanten" hidden>
   <div class="filters" style="padding-top:0"><div class="field"><span>Stap</span><div class="seg" id="fStap"></div></div></div>
   <section class="card"><h2>Ontvangers<small id="klAantal"></small></h2>
-    <div class="scroll"><table><thead><tr><th>Bedrijf</th><th>Segment</th><th>Stap</th><th>Mail</th><th>Verzonden</th><th class="r">Kliks</th><th class="r">Op de site</th><th class="r">Tijd</th><th>Berekend</th><th>Laatste activiteit</th></tr></thead><tbody id="klantenBody"></tbody></table></div></section>
+    <div class="scroll"><table><thead><tr><th>Bedrijf</th><th>Segment</th><th>Stap</th><th>Mail</th><th>Via</th><th>Verzonden</th><th class="r">Kliks</th><th class="r">Op de site</th><th class="r">Tijd</th><th>Berekend</th><th>Laatste activiteit</th></tr></thead><tbody id="klantenBody"></tbody></table></div></section>
   <section class="card" id="detailCard" hidden>
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><h2 id="detailTitel" style="margin:0"></h2><span class="spacer"></span><a class="ghost mini" id="detailSite" href="#" style="font-size:12.5px">Bekijk sitebezoek</a></div>
     <div class="sub" id="detailSub" style="margin-bottom:12px"></div>
@@ -182,7 +183,7 @@ svg text{font-family:var(--mono);font-size:10.5px;fill:var(--ink3)}
   <section class="card"><h2>Geplande mails<small id="geplandSamenvatting"></small></h2>
     <div class="scroll" style="max-height:380px"><table><thead><tr><th>Gepland voor</th><th>Bedrijf</th><th>E-mail</th><th>Campagne</th><th>Mail</th><th>Status</th></tr></thead><tbody id="geplandBody"></tbody></table></div></section>
   <section class="card"><h2>Testmails</h2>
-    <div class="scroll" style="max-height:380px"><table><thead><tr><th>Verzonden</th><th>Naar</th><th>Campagne</th><th>Mail</th><th>Status</th><th class="r">Kliks</th></tr></thead><tbody id="testBody"></tbody></table></div></section>
+    <div class="scroll" style="max-height:380px"><table><thead><tr><th>Verzonden</th><th>Naar</th><th>Campagne</th><th>Mail</th><th>Via</th><th>Status</th><th class="r">Kliks</th></tr></thead><tbody id="testBody"></tbody></table></div></section>
 </div>
 </div>
 
@@ -211,6 +212,7 @@ const browserVan = ua => !ua ? null : /edg\//i.test(ua) ? 'Edge' : /firefox|fxio
 const contacten = DATA.contacten || [];
 const contact = new Map(contacten.map(c => [c.token, c]));
 const testContact = new Set(contacten.filter(c => c.bron === 'test').map(c => c.token));
+const dienstNaam = d => ({ resend: 'Resend', brevo: 'Brevo' })[d || 'resend'] || d;
 const verzonden = (DATA.verzonden || []).map(v => ({ ...v, t: v.verzonden_op ? new Date(v.verzonden_op) : null }));
 const verzondenOp = new Map(verzonden.filter(v => !v.test).map(v => [v.token + '|' + v.campagne, v.t]));
 const bezoek = new Map((DATA.bezoek || []).map(b => [b.token, b]));
@@ -274,7 +276,7 @@ const segmenten = [...new Set(contacten.filter(c => c.bron !== 'test').map(c => 
 $('fSegment').innerHTML = '<option value="">Alle segmenten</option>' + segmenten.map(s => `<option>${esc(s)}</option>`).join('');
 
 /* ===== Filters ===== */
-const F = { campagne: '', variant: '', segment: '', periode: 0, klik: 'mens', zoek: '', stap: '', tab: 'overzicht', token: null };
+const F = { campagne: '', variant: '', dienst: '', segment: '', periode: 0, klik: 'mens', zoek: '', stap: '', tab: 'overzicht', token: null };
 try { const t = localStorage.getItem('sod-mail-tab'); if (t && document.querySelector(`.tab[data-tab="${t}"]`)) F.tab = t; } catch (e) {}
 function inPeriode(t) {
   if (!F.periode || !t) return true;
@@ -286,7 +288,9 @@ function zoekOk(token) {
   return `${c.bedrijf || ''} ${c.naam || ''} ${c.email || ''}`.toLowerCase().includes(F.zoek.toLowerCase());
 }
 const segOk = token => !F.segment || ((contact.get(token) || {}).segment || 'onbekend') === F.segment;
-const basis = r => (!F.campagne || r.campagne === F.campagne) && (!F.variant || r.variant === F.variant) && segOk(r.token) && zoekOk(r.token);
+const dienstVanToken = new Map(verzonden.filter(v => !v.test).map(v => [v.token, v.dienst || 'resend']));
+const dienstOk = t => !F.dienst || dienstVanToken.get(t) === F.dienst;
+const basis = r => (!F.campagne || r.campagne === F.campagne) && (!F.variant || r.variant === F.variant) && dienstOk(r.token) && segOk(r.token) && zoekOk(r.token);
 function selectie() {
   const V = verzonden.filter(v => !v.test && !testContact.has(v.token) && basis(v) && inPeriode(v.t));
   const Kalle = kliks.filter(k => basis(k) && inPeriode(k.t));
@@ -408,7 +412,7 @@ function klanten(sel) {
       const km = kliks.filter(k => k.token === c.token && k.soort === 'mens'), b = bezoek.get(c.token);
       const laatst = Math.max(0, ...km.map(k => +k.t), b && !b.intern ? +new Date(b.laatst) : 0, v && v.t ? +v.t : 0);
       return { c, v, km, b: b && !b.intern ? b : null, stap: stapVan(c.token), laatst };
-    }).filter(r => (!F.variant || (r.v && r.v.variant === F.variant)) && (!F.campagne || r.v));
+    }).filter(r => (!F.variant || (r.v && r.v.variant === F.variant)) && (!F.dienst || (r.v && (r.v.dienst || 'resend') === F.dienst)) && (!F.campagne || r.v));
   const telS = tel(rijen, r => r.stap); const m = new Map(telS);
   $('fStap').innerHTML = [['', 'Alle', rijen.length], ...STAPPEN.filter(s => m.get(s)).map(s => [s, s, m.get(s)])].map(([v, l, n]) => `<button data-v="${v}" class="${F.stap === v ? 'on' : ''}">${l}<span class="c">${n}</span></button>`).join('');
   const zicht = rijen.filter(r => !F.stap || r.stap === F.stap).sort((a, b) => ((b.b ? 2 : 0) + (b.km.length ? 1 : 0)) - ((a.b ? 2 : 0) + (a.km.length ? 1 : 0)) || b.laatst - a.laatst);
@@ -416,9 +420,9 @@ function klanten(sel) {
   $('klantenBody').innerHTML = zicht.length ? zicht.map(r => `<tr class="klik ${F.token === r.c.token ? 'actief' : ''}" data-token="${esc(r.c.token)}">
     <td><span class="bedrijf">${esc(r.c.bedrijf || '–')}</span><br><span class="sub">${esc(r.c.naam ? r.c.naam + ' · ' : '')}${esc(r.c.email)}</span></td>
     <td>${esc(r.c.segment || '–')}</td><td><span class="tag ${STAPKLASSE[r.stap]}">${r.stap}</span></td>
-    <td class="num">${r.v ? mailNaam(r.v.variant) : '–'}</td><td class="num">${r.v ? fmtDatum(r.v.verzonden_op) : '–'}</td>
+    <td class="num">${r.v ? mailNaam(r.v.variant) : '–'}</td><td>${r.v ? dienstNaam(r.v.dienst) : '–'}</td><td class="num">${r.v ? fmtDatum(r.v.verzonden_op) : '–'}</td>
     <td class="r num">${r.km.length || ''}</td><td class="r num">${r.b ? r.b.sessies + ' × · ' + r.b.weergaven + ' p' : ''}</td><td class="r num">${r.b ? duur(r.b.sec) : ''}</td>
-    <td>${r.b && r.b.berekend ? '<span class="tag s-geklikt">✓</span>' : ''}</td><td class="num">${r.laatst ? fmtDatum(r.laatst) : '–'}</td></tr>`).join('') : '<tr><td colspan="10" class="leeg">Geen ontvangers in deze selectie</td></tr>';
+    <td>${r.b && r.b.berekend ? '<span class="tag s-geklikt">✓</span>' : ''}</td><td class="num">${r.laatst ? fmtDatum(r.laatst) : '–'}</td></tr>`).join('') : '<tr><td colspan="11" class="leeg">Geen ontvangers in deze selectie</td></tr>';
   detail();
 }
 function detail() {
@@ -433,7 +437,7 @@ function detail() {
     .map(([n, l]) => `<div class="stat"><div class="n">${esc(n)}</div><div class="l">${l}</div></div>`).join('');
   const items = [];
   if (c.toegevoegd_op) items.push([c.toegevoegd_op, '#94A3B8', 'Toegevoegd' + (c.bron ? ' uit ' + c.bron : '')]);
-  for (const v of verzonden.filter(v => v.token === c.token)) { if (v.gepland_voor) items.push([v.gepland_voor, '#7C3AED', `Ingepland · ${v.campagne} · ${mailNaam(v.variant)}`]); if (v.verzonden_op) items.push([v.verzonden_op, '#4F565D', `${v.test ? 'Testmail' : 'Mail'} verzonden · ${v.campagne} · ${mailNaam(v.variant)}`]); }
+  for (const v of verzonden.filter(v => v.token === c.token)) { if (v.gepland_voor) items.push([v.gepland_voor, '#7C3AED', `Ingepland · ${v.campagne} · ${mailNaam(v.variant)}`]); if (v.verzonden_op) items.push([v.verzonden_op, '#4F565D', `${v.test ? 'Testmail' : 'Mail'} verzonden via ${dienstNaam(v.dienst)} · ${v.campagne} · ${mailNaam(v.variant)}`]); }
   for (const e of (DATA.events || []).filter(e => e.token === c.token)) items.push([e.bijgewerkt_op, e.last_event === 'bounced' ? '#B42318' : '#64748B', `Resend: ${{ delivered: 'bezorgd', bounced: 'bounce', opened: 'geopend', clicked: 'geklikt', sent: 'verstuurd', complained: 'klacht' }[e.last_event] || e.last_event}`]);
   const groep = new Map();
   for (const k of km.filter(k => k.soort !== 'mens')) { const g = k.soort + '|' + (k.reden || ''); if (!groep.has(g)) groep.set(g, []); groep.get(g).push(k); }
@@ -490,7 +494,7 @@ function planning() {
   $('geplandBody').innerHTML = rijen.length ? rijen.map(v => { const c = contact.get(v.token), st = eventsPer.get(v.token + '|' + v.campagne) || (new Date(v.gepland_voor) > nu ? 'scheduled' : 'sent'); const [l, k] = st === 'scheduled' ? ['Ingepland', 's-gepland'] : st === 'delivered' ? ['Bezorgd', 's-geklikt'] : st === 'bounced' ? ['Bounce', 's-bounce'] : ['Verstuurd', 's-verstuurd']; return `<tr><td class="num">${fmtDatum(v.gepland_voor)}</td><td>${esc(c?.bedrijf || '–')}</td><td class="num">${esc(c?.email || '–')}</td><td>${esc(v.campagne)}</td><td class="num">${mailNaam(v.variant)}</td><td><span class="tag ${k}">${l}</span></td></tr>`; }).join('') : '<tr><td colspan="6" class="leeg">Geen geplande mails</td></tr>';
   const ev = new Map((DATA.events || []).map(e => [e.resend_id, e.last_event]));
   const tests = verzonden.filter(v => v.test || testContact.has(v.token)).sort((x, y) => String(y.verzonden_op).localeCompare(String(x.verzonden_op)));
-  $('testBody').innerHTML = tests.length ? tests.map(v => { const c = contact.get(v.token), st = ev.get(v.resend_id) || 'sent', n = kliks.filter(k => k.token === v.token && k.campagne === v.campagne).length; return `<tr><td class="num">${fmtDatum(v.verzonden_op)}</td><td>${esc(c?.email || '–')}</td><td>${esc(v.campagne)}</td><td class="num">${mailNaam(v.variant)}</td><td><span class="tag ${st === 'bounced' ? 's-bounce' : 's-verstuurd'}">${{ delivered: 'Bezorgd', bounced: 'Bounce', opened: 'Geopend', clicked: 'Geklikt' }[st] || 'Verstuurd'}</span></td><td class="r num">${n}</td></tr>`; }).join('') : '<tr><td colspan="6" class="leeg">Nog geen testmails</td></tr>';
+  $('testBody').innerHTML = tests.length ? tests.map(v => { const c = contact.get(v.token), st = ev.get(v.resend_id) || 'sent', n = kliks.filter(k => k.token === v.token && k.campagne === v.campagne).length; return `<tr><td class="num">${fmtDatum(v.verzonden_op)}</td><td>${esc(c?.email || '–')}</td><td>${esc(v.campagne)}</td><td class="num">${mailNaam(v.variant)}</td><td>${dienstNaam(v.dienst)}</td><td><span class="tag ${st === 'bounced' ? 's-bounce' : 's-verstuurd'}">${{ delivered: 'Bezorgd', bounced: 'Bounce', opened: 'Geopend', clicked: 'Geklikt' }[st] || 'Verstuurd'}</span></td><td class="r num">${n}</td></tr>`; }).join('') : '<tr><td colspan="7" class="leeg">Nog geen testmails</td></tr>';
 }
 
 /* ===== Bediening ===== */
@@ -501,7 +505,7 @@ function toonTab(t) {
   render();
 }
 $('tabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if (b) toonTab(b.dataset.tab); });
-for (const [id, key, num] of [['fVariant', 'variant'], ['fPeriode', 'periode', true], ['fKlik', 'klik']]) $(id).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); F[key] = num ? +b.dataset.v : b.dataset.v; render(); });
+for (const [id, key, num] of [['fVariant', 'variant'], ['fDienst', 'dienst'], ['fPeriode', 'periode', true], ['fKlik', 'klik']]) $(id).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); F[key] = num ? +b.dataset.v : b.dataset.v; render(); });
 $('fCampagne').addEventListener('change', e => { F.campagne = e.target.value; render(); });
 $('fSegment').addEventListener('change', e => { F.segment = e.target.value; render(); });
 $('fZoek').addEventListener('input', e => { F.zoek = e.target.value.trim(); render(); });
