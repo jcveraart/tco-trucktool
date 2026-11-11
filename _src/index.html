@@ -417,7 +417,7 @@ aside.ad:not(.on),div.ad:not(.on){display:none!important}/* Lege vakken pas tone
 .disc{margin-top:40px;padding:18px 20px;border-radius:14px;background:var(--card);color:var(--ink-2);font-size:15px}
 
 /* Voet: de weg */
-.foot{margin-top:110px;background:var(--asph);color:var(--on-asph-2);font-size:15px;padding-bottom:env(safe-area-inset-bottom,0px)}
+.foot{margin-top:64px;background:var(--asph);color:var(--on-asph-2);font-size:15px;padding-bottom:env(safe-area-inset-bottom,0px)}
 .fin{display:flex;justify-content:space-between;gap:24px 48px;flex-wrap:wrap;padding-top:48px}
 .fin .brand{color:#fff}
 .fin p{margin:12px 0 0;max-width:340px}
@@ -635,7 +635,7 @@ button.in{cursor:pointer}button.in:hover{background:var(--soft)}
 .fcta svg{width:18px;height:18px}
 .fdl{display:block;margin-top:4px}
 /* Gidsonderwerpen en zones hebben een eigen kruimelpad; de algemene terug-link is daar dubbel */
-body:has(.page:is([data-page=gids],[data-page=zone]):not([hidden])) #bkw{display:none}/* Contact, privacy, cookies en KVK blijven bij elkaar en breken als groep */
+body:has(.page:is([data-page=gids],[data-page=zone],[data-page=model]):not([hidden])) #bkw{display:none}/* Contact, privacy, cookies en KVK blijven bij elkaar en breken als groep */
 /* Ruimte onder de pagina zodat de zwevende knop de laatste regels (zoals Totaal) niet bedekt */
 body:has(#fcta:not([hidden])) .page:not([hidden]){padding-bottom:96px}
 /* Laadring: bij hover pulseert een zachte groene lichtrand rond de knop, zoals rond een laadpoort tijdens het laden */
@@ -1924,6 +1924,7 @@ html.fresh .uv{display:block;padding-bottom:64px}
 /* Terug naar het startscherm op pagina's zonder eigen kop met terugknop */
 .bkw{padding-top:14px;padding-bottom:0}
 body:has(#calc:not([hidden])) .bkw,body:has([data-page=uitgebreid]:not([hidden])) .bkw{display:none}
+body:has(:is(#calc,[data-page=uitgebreid]):not([hidden])) .foot{margin-top:16px}
 .bk{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font:600 14px var(--text)}
 .bk:hover{color:var(--ink)}
 .bk svg{width:15px;height:15px}
@@ -2690,6 +2691,9 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
 .vzf{position:static;align-self:stretch}
 .vzf>.ffm{position:sticky;top:84px}
 @media(max-width:900px){.vzf>.ffm{position:relative;top:auto}}
+/* Laag scherm (laptop): het formulier blijft in beeld, inclusief de knop */
+@media(min-width:901px) and (max-height:780px){.vzf>.ffm{top:76px;gap:6px;padding-top:14px;padding-bottom:10px}.vzf .ff input{min-height:34px;padding:5px 10px}.vzf .ff textarea{min-height:40px;height:40px}}
+@media(min-width:901px) and (max-height:640px){.vzf>.ffm{position:relative;top:auto}}
 .vzt2{display:grid;grid-template-columns:minmax(0,640px) minmax(0,1fr);gap:28px 64px;align-items:center}
 .vzt2 svg{width:100%;height:auto;display:block;overflow:visible}
 .vzrg{display:flex;align-items:center;justify-content:space-between;gap:5%;width:100%}
@@ -2947,7 +2951,7 @@ input[type=range]:active::-moz-range-thumb{box-shadow:0 0 0 9px color-mix(in srg
     <article class="ga" data-g="stappenplan" hidden>
      <h1 tabindex="-1">Wagenpark elektrificeren: een praktisch stappenplan</h1>
      <p class="glead">Bepaal eerst welke ritten elektrisch kunnen en of laden op je locatie haalbaar is. Vergelijk daarna de kosten en kies per voertuig een vervangingsmoment. Deze negen stappen helpen je de investering en uitvoering op elkaar af te stemmen.</p>
-     <ol class="gst" id="gSt"><li><button type="button" class="gck" data-gst="0" aria-pressed="false" aria-label="Breng je ritten in kaart"></button><div><b>Breng je ritten in kaart</b><p>Dagritten, stilstand en waar het voertuig &#39;s nachts staat. Daarmee weet je hoeveel accu en laadsnelheid je nodig hebt.</p><a href="/overstapgids/actieradius/">Actieradius en planning</a></div></li><li><button type="button" class="gck" data-gst="1" aria-pressed="false" aria-label="Check je netaansluiting"></button><div><b>Check je netaansluiting</b><p>Doe dit als eerste: in congestiegebieden kan een zwaardere aansluiting jaren duren.</p><a href="/overstapgids/netcongestie/">Netcongestie</a></div></li><li><button type="button" class="gck" data-gst="2" aria-pressed="false" aria-label="Reken de kosten door"></button><div><b>Reken de kosten door</b><p>Met je eigen kilometers, prijzen en subsidie, en met je huidige diesel als vergelijking.</p><a href="/">Naar de calculator</a></div></li><li><button type="button" class="gck" data-gst="3" aria-pressed="false" aria-label="Kies een voertuig"></button><div><b>Kies een voertuig</b><p>Let op bruikbare accu, laadsnelheid en levertijd. Rijd proef op je eigen routes.</p><a href="/modellen/">Voertuigen</a></div></li><li><button type="button" class="gck" data-gst="4" aria-pressed="false" aria-label="Regel subsidie op tijd"></button><div><b>Regel subsidie op tijd</b><p>Check bij AanZET en SPRILA wanneer je moet aanvragen, en meld de MIA binnen drie maanden.</p><a href="/overstapgids/subsidies/">Subsidies en regelingen</a></div></li><li><button type="button" class="gck" data-gst="5" aria-pressed="false" aria-label="Regel het laden"></button><div><b>Regel het laden</b><p>Laadpunten op eigen terrein, een laadpas voor onderweg en een geijkte meter voor je ERE&#39;s.</p><a href="/overstapgids/laden/">Laden</a></div></li><li><button type="button" class="gck" data-gst="6" aria-pressed="false" aria-label="Kies tussen kopen en leasen"></button><div><b>Kies tussen kopen en leasen</b><p>Vergelijk maandlasten en wie het risico op de restwaarde draagt.</p><a href="/overstapgids/financiering/">Kopen of leasen</a></div></li><li><button type="button" class="gck" data-gst="7" aria-pressed="false" aria-label="Bereid chauffeurs en werkplaats voor"></button><div><b>Bereid chauffeurs en werkplaats voor</b><p>Rijbewijs, training, NEN 9140 voor de werkplaats en de eisen van je verzekeraar.</p><a href="/overstapgids/regels/">Rijbewijs, gewicht en werkplaats</a></div></li><li><button type="button" class="gck" data-gst="8" aria-pressed="false" aria-label="Meet en stuur bij"></button><div><b>Meet en stuur bij</b><p>Houd verbruik, laadkosten en accugezondheid bij. Dat helpt bij het volgende voertuig en bij verkoop.</p><a href="/overstapgids/accu/">Accu en restwaarde</a></div></li></ol>
+     <ol class="gst" id="gSt"><li><button type="button" class="gck" data-gst="0" aria-pressed="false" aria-label="Breng je ritten in kaart"></button><div><b>Breng je ritten in kaart</b><p>Dagritten, stilstand en waar het voertuig &#39;s nachts staat. Daarmee weet je hoeveel accu en laadsnelheid je nodig hebt.</p><a href="/overstapgids/actieradius/">Actieradius en planning</a></div></li><li><button type="button" class="gck" data-gst="1" aria-pressed="false" aria-label="Check je netaansluiting"></button><div><b>Check je netaansluiting</b><p>Doe dit vroeg: in congestiegebieden kan een zwaardere aansluiting jaren duren.</p><a href="/overstapgids/netcongestie/">Netcongestie</a></div></li><li><button type="button" class="gck" data-gst="2" aria-pressed="false" aria-label="Reken de kosten door"></button><div><b>Reken de kosten door</b><p>Met je eigen kilometers, prijzen en subsidie, en met je huidige diesel als vergelijking.</p><a href="/">Naar de calculator</a></div></li><li><button type="button" class="gck" data-gst="3" aria-pressed="false" aria-label="Kies een voertuig"></button><div><b>Kies een voertuig</b><p>Let op bruikbare accu, laadsnelheid en levertijd. Rijd proef op je eigen routes.</p><a href="/modellen/">Voertuigen</a></div></li><li><button type="button" class="gck" data-gst="4" aria-pressed="false" aria-label="Regel subsidie op tijd"></button><div><b>Regel subsidie op tijd</b><p>Check bij AanZET en SPRILA wanneer je moet aanvragen, en meld de MIA binnen drie maanden.</p><a href="/overstapgids/subsidies/">Subsidies en regelingen</a></div></li><li><button type="button" class="gck" data-gst="5" aria-pressed="false" aria-label="Regel het laden"></button><div><b>Regel het laden</b><p>Laadpunten op eigen terrein, een laadpas voor onderweg en een geijkte meter voor je ERE&#39;s.</p><a href="/overstapgids/laden/">Laden</a></div></li><li><button type="button" class="gck" data-gst="6" aria-pressed="false" aria-label="Kies tussen kopen en leasen"></button><div><b>Kies tussen kopen en leasen</b><p>Vergelijk maandlasten en wie het risico op de restwaarde draagt.</p><a href="/overstapgids/financiering/">Kopen of leasen</a></div></li><li><button type="button" class="gck" data-gst="7" aria-pressed="false" aria-label="Bereid chauffeurs en werkplaats voor"></button><div><b>Bereid chauffeurs en werkplaats voor</b><p>Rijbewijs, training, NEN 9140 voor de werkplaats en de eisen van je verzekeraar.</p><a href="/overstapgids/regels/">Rijbewijs, gewicht en werkplaats</a></div></li><li><button type="button" class="gck" data-gst="8" aria-pressed="false" aria-label="Meet en stuur bij"></button><div><b>Meet en stuur bij</b><p>Houd verbruik, laadkosten en accugezondheid bij. Dat helpt bij het volgende voertuig en bij verkoop.</p><a href="/overstapgids/accu/">Accu en restwaarde</a></div></li></ol>
     <h2>Wanneer vervang je welk voertuig?</h2><p>Leg het einde van leasecontracten, verwachte onderhoudskosten en toegang tot klantlocaties naast de levertijd van voertuig en laadinfra. Reken nu vervangen én doorrijden door. Een gefaseerde overstap kan beter passen bij je budget en laadcapaciteit dan alles tegelijk vervangen.</p>
 
 <p class="gcl">Meerdere voertuigen of locaties? <a href="/vlootanalyse/">Laat een wagenparkanalyse maken</a></p>
@@ -4233,7 +4237,7 @@ function sensHTML(sv){
  const dp0=v('dp'),sp0=v('sp'),s0=sv({}),sD=sv({dp:dp0+1})-s0,sE=sv({sp:sp0+1})-s0;
  const dpB=sD>0?dp0-s0/sD:null,spB=sE<0?sp0-s0/sE:null;
  const pos=(x,m)=>Math.min(100,Math.max(0,x/m*100));
- const trk=(be,cur,good,st)=>{const m=Math.max(cur,be>0?be:0,.01)*1.5,b=be>0?pos(be,m):0,tk=[];for(let k=1;k*st<m;k++)tk.push(`<b class="tk" style="left:${pos(k*st,m)}%"><s>${nf(k*st,2)}</s></b>`);const low=be>0&&Math.abs(pos(cur,m)-b)<14;
+ const trk=(be,cur,good,st)=>{const m=Math.max(cur,be>0?be:0,.01)*1.5,b=be>0?pos(be,m):0,tk=[];const low=be>0&&Math.abs(pos(cur,m)-b)<14;for(let k=1;k*st<m;k++){const x=pos(k*st,m);tk.push(`<b class="tk" style="left:${x}%">${low&&Math.abs(x-pos(cur,m))<8?'':`<s>${nf(k*st,2)}</s>`}</b>`)}
   const zone=good==='hi'?`left:${be>0?b:0}%;right:0`:`left:0;width:${be>0?b:0}%`;
   return`<div class="trk"><i style="${zone}"></i>${tk.join('')}${be>0?`<u style="left:${b}%"><em>kantelpunt</em></u>`:''}<span class="now" style="left:${pos(cur,m)}%"><em class="${low?'lo':''}">nu</em></span></div>`};
  const card=(t,val,txt,tr)=>`<div class="bc2"><small>${t}</small><b>${val}</b>${tr}${txt?`<p>${txt}</p>`:''}</div>`;
@@ -4676,7 +4680,7 @@ addEventListener('scroll',()=>{if($('xtip')&&!$('xtip').hidden)xTip(null)},{pass
 document.addEventListener('click',e=>{
  const s=e.target.closest('[data-step]');if(s){openWz(s.dataset.step);return}
  const g0=e.target.closest('[data-go]');if(g0){go(g0.dataset.go);return}
- const vt=e.target.closest('[data-vt]');if(vt){if(vt.dataset.vt!==vtype){applyType(vt.dataset.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false;render()}return}
+ const vt=e.target.closest('[data-vt]');if(vt){if(vt.dataset.vt!==vtype){plDrop(vt.dataset.vt);applyType(vt.dataset.vt);tolSel.clear();TOL.forEach(c=>$('k_'+c[0]).value=0);touched=false;render()}return}
  const u=e.target.closest('[data-u]');if(u){unit=u.dataset.u;render();return}
  const kq=e.target.closest('[data-km]');if(kq){$('km').value=kq.dataset.km;$('km').dispatchEvent(new Event('input',{bubbles:true}));return}
  const kh=e.target.closest('[data-kmh]');if(kh){$('kmH').max=v('km');$('kmH').value=Math.round(+kh.dataset.kmh*v('km')/1000)*1000;$('kmH').dispatchEvent(new Event('input',{bubbles:true}));return}
@@ -6561,7 +6565,7 @@ function zPaint(slug){const z=zBySlug(slug);if(!z)return;const en=document.docum
 const VCATN={trekker:'trekkers',bakwagen:'bakwagens',bestel:'bestelbussen',bus:'bussen'};
 const vBest=g=>{const now=g.vs.filter(v=>v.st!=='komt'),pool=now.length?now:g.vs;return pool.reduce((a,b)=>(b.r||0)>(a.r||0)?b:a)};
 function vMore(g){const top=g.top,P=VT[top.c].p,v=vBest(g),le=mEnergy(v),ld=mDiesel(v).ld,ce=le*P.sp,cd=ld*P.dp,dif=(cd-ce)*P.km/100;
- const en=`<h2 class="vh2">Energiekosten per 100 km</h2><div class="vwrap"><table class="vspec vnum"><thead><tr><th></th><th>Verbruik</th><th>Prijs</th><th>Per 100 km</th></tr></thead><tbody><tr><td><b>Elektrisch</b></td><td>${mFmt(le)} kWh</td><td>${eur(P.sp,2)} <span>per kWh</span></td><td>${eur(ce,2)}</td></tr><tr><td><b>Diesel</b></td><td>${mFmt(ld)} l</td><td>${eur(P.dp,2)} <span>per liter</span></td><td>${eur(cd,2)}</td></tr></tbody>${dif>0?`<tfoot><tr><td colspan="3"><span>Verschil bij</span> ${nf(P.km)} km <span>per jaar</span></td><td>${eur(Math.round(dif/10)*10)}</td></tr></tfoot>`:''}</table></div>`;
+ const en=`<h2 class="vh2">Energiekosten per 100 km</h2><div class="vwrap"><table class="vspec vnum"><thead><tr><th></th><th>Verbruik</th><th>Prijs</th><th>Per 100 km</th></tr></thead><tbody><tr><td><b>Elektrisch</b></td><td>${mFmt(le)} kWh</td><td>${eur(P.sp,2)} <span>per kWh</span></td><td>${eur(ce,2)}</td></tr><tr><td><b>Diesel</b></td><td>${mFmt(ld)} liter</td><td>${eur(P.dp,2)} <span>per liter</span></td><td>${eur(cd,2)}</td></tr></tbody>${dif>0?`<tfoot><tr><td colspan="3"><span>Verschil bij</span> ${nf(P.km)} km <span>per jaar</span></td><td>${eur(Math.round(dif/10)*10)}</td></tr></tfoot>`:''}</table></div>`;
  const all=mGroups(MODELS.filter(m=>m.c===top.c)).filter(x=>x.k!==g.k).map(x=>({x,b:vBest(x)})).sort((a,b)=>Math.abs(a.b.r-v.r)-Math.abs(b.b.r-v.r)||mName(a.x.top).localeCompare(mName(b.x.top))).slice(0,5);
  const pr=x=>{const q=x.vs.map(m=>m.price).filter(Boolean);return q.length?eur(Math.min(...q)):'Op aanvraag'};
  const sim=all.length?`<h2 class="vh2">Vergelijkbare ${VCATN[top.c]}</h2><div class="vwrap"><table class="vspec vnum"><thead><tr><th>Voertuig</th><th>Actieradius</th><th>Prijs excl. btw</th></tr></thead><tbody>${all.map(({x,b})=>`<tr><td><a href="${mHref(x.k,x.vs,x.top)}">${mEsc(x.top.b+' '+(x.top.fam||x.top.m))}</a></td><td>${b.rt||nf(b.r)} km</td><td>${pr(x)}</td></tr>`).join('')}</tbody></table></div>`:'';
@@ -6628,7 +6632,7 @@ function mPaint(){
 }
 function mCompare(){
  const ms=mSel.map(id=>MI[id]),mx=Math.max(...ms.map(m=>m.r)),best=f=>Math.max(...ms.map(f));
- const row=(lab,f,num)=>`<tr><th scope="row">${lab}</th>${ms.map(m=>`<td${num&&ms.length>1&&num(m)===best(num)&&num(m)>0?' class="best"':''}>${f(m)}</td>`).join('')}</tr>`;
+ const row=(lab,f,num)=>ms.every(m=>f(m)==='–')?'':`<tr><th scope="row">${lab}</th>${ms.map(m=>`<td${num&&ms.length>1&&num(m)===best(num)&&num(m)>0?' class="best"':''}>${f(m)}</td>`).join('')}</tr>`;
  $('mDlgT').textContent='Vergelijken';
  $('mDlgB').innerHTML=`<table class="mct"><thead><tr><th></th>${ms.map(m=>`<th scope="col"><small>${m.b}</small><b>${m.m}</b></th>`).join('')}</tr></thead><tbody>
   ${row('Soort',m=>VT[m.c].n)}${row('Status',mStat)}
@@ -6784,6 +6788,8 @@ function plApplyE(i){
  const mrbE=mrbJaar(i.vt,i.ledig,i.mass,true);if(mrbE||(i.vt==='bakwagen'||i.vt==='trekker')&&i.mass)setNum($('wE'),mrbE);
 $('nw').value='g';setNum($('eag'),age);usedAuto(true);touched=true;
 }
+/* Ander soort voertuig gekozen dan het kenteken: het kenteken hoort niet meer bij de berekening */
+function plDrop(t){[['D','plk'],['E','plkE']].forEach(([k,id])=>{const i=PL[k];if(!i||i.err||!i.vt||i.vt===t)return;PL[k]=null;$(id).value='';document.querySelectorAll(`[data-plate="${k}"]`).forEach(f=>{f.elements.kt.value='';f.classList.remove('ok','bad');const o=f.querySelector('.plo');if(o)o.textContent=''});if(k==='D'&&$('dw').value==='h'){$('dw').value='n';dieselAuto(true)}})}
 async function plLookup(kind,k,apply){
  if(!k){PL[kind]=null;$(kind==='E'?'plkE':'plk').value='';if(kind==='D'&&$('dw').value==='h'){$('dw').value='n';dieselAuto(true)}render();return}
  const fs=document.querySelectorAll(`[data-plate="${kind}"]`);fs.forEach(f=>{f.classList.add('busy');f.elements.kt.value=plFmt(k)});
@@ -6795,6 +6801,7 @@ async function plLookup(kind,k,apply){
  else if(i&&kind==='D'&&i.el)err='Dit voertuig rijdt al elektrisch.';
  else if(i&&kind==='E'&&!i.el)err='Dit is geen elektrisch voertuig.';
  if(err){PL[kind]=kind==='D'?{err}:{err};render();return}
+ if(!apply&&i.vt!==vtype){PL[kind]=null;$(kind==='E'?'plkE':'plk').value='';fs.forEach(f=>f.elements.kt.value='');render();return}
  PL[kind]=i;$(kind==='E'?'plkE':'plk').value=k;
  if(apply)(kind==='D'?plApplyD:plApplyE)(i);
  render();if(page==='gids')gShow(gid);
@@ -6978,7 +6985,7 @@ $('fForm').addEventListener('submit',async e=>{
  e.preventDefault();const f=e.target,fd=new FormData(f),val=n=>String(fd.get(n)||'').trim();
  if(val('website'))return;
  let bad=null;['contact_name','company','email'].forEach(n=>{const el=f.elements[n],ok=!!el.value.trim()&&el.checkValidity();el.setAttribute('aria-invalid',String(!ok));if(!ok&&!bad)bad=el});
- if(bad){fErr('Vul je naam, bedrijf en een geldig e-mailadres in.');bad.focus();return}
+ if(bad){fErr('Vul je naam, bedrijf en een geldig e‑mailadres in.');bad.focus();return}
  fErr('');const btn=$('fSend');btn.disabled=true;
  try{
   const row={company:val('company'),contact_name:val('contact_name'),email:val('email'),phone:val('phone')||null,fleet_size:val('fleet_size')||null,message:val('message')||null,calc_link:fCalc||null};
@@ -7037,15 +7044,15 @@ async function syncSupabase() {
      };
      if (r.release_year != null) m.y = r.release_year;
      if (r.gross_battery_kwh != null) m.g = parseFloat(r.gross_battery_kwh);
-     if (r.gross_battery_text) m.gt = r.gross_battery_text;
+     if (r.gross_battery_text) m.gt = String(r.gross_battery_text).replace(/(\d)\s*-\s*(\d)/g, '$1–$2');
      if (r.usable_battery_kwh != null) m.u = parseFloat(r.usable_battery_kwh);
-     if (r.usable_battery_text) m.ut = r.usable_battery_text;
+     if (r.usable_battery_text) m.ut = String(r.usable_battery_text).replace(/(\d)\s*-\s*(\d)/g, '$1–$2');
      if (r.estimated_usable_battery_kwh != null) m.ue = parseFloat(r.estimated_usable_battery_kwh);
      if (r.advertised_battery_kwh != null) m.a = parseFloat(r.advertised_battery_kwh);
-     if (r.advertised_battery_text) m.at = r.advertised_battery_text;
+     if (r.advertised_battery_text) m.at = String(r.advertised_battery_text).replace(/(\d)\s*-\s*(\d)/g, '$1–$2');
      if (r.derived_method) m.derived = r.derived_method;
      if (r.range_km != null) m.r = parseInt(r.range_km, 10);
-     if (r.range_text) m.rt = r.range_text;
+     if (r.range_text) m.rt = String(r.range_text).replace(/(\d)\s*-\s*(\d)/g, '$1–$2');
      if (r.range_condition) m.rc = r.range_condition;
      if (r.consumption_kwh_per_100km != null) m.consumption = parseFloat(r.consumption_kwh_per_100km);
      if (r.dc_fast_charge_kw != null) m.dc = parseInt(r.dc_fast_charge_kw, 10);
@@ -7100,7 +7107,7 @@ async function syncSupabase() {
 const GIDS=[['stappenplan','Stappenplan'],['netcongestie','Netcongestie en je aansluiting'],['laden','Laden op eigen terrein en onderweg'],['stroom','Stroomcontract en zonnepanelen'],['actieradius','Actieradius en planning'],['zero-emissiezones','Zero-emissiezones'],['subsidies','Subsidies en regelingen'],['heffing','Kilometerheffing en tol'],['financiering','Kopen of leasen'],['accu','Accu, garantie en restwaarde'],['regels','Rijbewijs, gewicht en werkplaats'],['begrippen','Begrippen']];
 const GSTEPS=[
  ['Breng je ritten in kaart','Dagritten, stilstand en waar het voertuig \'s nachts staat. Daarmee weet je hoeveel accu en laadsnelheid je nodig hebt.','/overstapgids/actieradius/','Actieradius en planning'],
- ['Check je netaansluiting','Doe dit als eerste: in congestiegebieden kan een zwaardere aansluiting jaren duren.','/overstapgids/netcongestie/','Netcongestie'],
+ ['Check je netaansluiting','Doe dit vroeg: in congestiegebieden kan een zwaardere aansluiting jaren duren.','/overstapgids/netcongestie/','Netcongestie'],
  ['Reken de kosten door','Met je eigen kilometers, prijzen en subsidie, en met je huidige diesel als vergelijking.','/','Naar de calculator'],
  ['Kies een voertuig','Let op bruikbare accu, laadsnelheid en levertijd. Rijd proef op je eigen routes.','/modellen/','Voertuigen'],
  ['Regel subsidie op tijd','Check bij AanZET en SPRILA wanneer je moet aanvragen, en meld de MIA binnen drie maanden.','/overstapgids/subsidies/','Subsidies en regelingen'],
