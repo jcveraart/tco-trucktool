@@ -378,6 +378,8 @@ aside.ad:not(.on),div.ad:not(.on){display:none!important}/* Lege vakken pas tone
 .phead h1{font:700 clamp(32px,4.2vw,48px)/1.1 var(--text);letter-spacing:-.02em;outline:0}
 .phead p{margin:16px 0 0;color:var(--ink-2);font-size:19px;max-width:600px}
 .faqw{display:grid;grid-template-columns:260px minmax(0,1fr);gap:56px;align-items:start}
+/* Het onderwerpenlijstje herhaalde de kopjes ernaast; zonder advertentie krijgen de vragen de volle breedte */
+.faqw .rail nav{display:none}.faqw:not(:has(.ad.on)){grid-template-columns:minmax(0,1fr)}.faqw:not(:has(.ad.on))>.rail{display:none}
 .rail{position:sticky;top:96px;display:flex;flex-direction:column;gap:24px}
 .rail nav{display:flex;flex-direction:column;gap:2px}
 .rail button{border:0;background:none;text-align:left;padding:9px 14px;border-radius:8px;font:600 16px var(--text);color:var(--ink-2);cursor:pointer}
@@ -767,6 +769,7 @@ a.mci{text-decoration:none}
 .mnone{padding:40px 22px;text-align:center;color:var(--ink-3)}
 .mdisc{margin:18px 0 0;font-size:14px;color:var(--ink-3)}
 .mcmp{position:fixed;z-index:24;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:18px;padding:8px 8px 8px 20px;border-radius:12px;background:var(--ink);color:#fff;font:600 15px var(--text);box-shadow:0 16px 34px -12px rgba(0,0,0,.5);white-space:nowrap}
+@media(min-width:641px){.mcmp{min-width:440px;justify-content:space-between}}/* vaste breedte: de knop springt niet weg na het tweede vinkje */
 .mcmp .lnk{color:#fff}
 .mcmp .lnk:hover{color:var(--volt-soft)}
 .mcmp .cta{background:#fff;color:var(--ink)}
@@ -837,6 +840,7 @@ dialog.mdlg::backdrop{background:rgba(21,23,26,.5)}
 .wzn button.opt .num{font-size:14px}
 .wzn button.opt.on .num{background:var(--volt-soft);color:var(--volt-ink);box-shadow:none}
 .wst>.sw2.ln{padding:12px 14px;border-radius:10px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.wst>.ws-row:has(>#xZon,>.sw2>#xZon){padding:12px 14px;border-radius:10px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
 .wsti{margin:-12px 0 20px;color:var(--ink-2);font-size:15px;max-width:620px}
 .st:last-child:nth-child(odd){grid-column:1/-1}
 @media(max-width:640px){.sumb .btn span{display:inline}.add{padding:18px 16px}.addl{width:100%}.sumb{width:100%;justify-content:space-between}}
@@ -1758,7 +1762,7 @@ html.fresh #calc>.wrap:not(.home),html.fresh #cg,html.fresh .emb,html.fresh #fct
 .hxh b.d{color:var(--amber)}
 .hxl{margin:0;font-size:15px;color:var(--on-asph-2)}
 .hxl:empty{display:none}
-.hxv{margin-bottom:0;font-size:18px;line-height:1.4}
+.hxv{display:none;margin-bottom:0;font-size:18px;line-height:1.4}
 .hxv b{color:var(--volt-2)}
 .hxv b.d{color:var(--amber)}
 .hks{display:flex;flex-direction:column;gap:4px}
@@ -4085,12 +4089,14 @@ function render(){
  $('grW').hidden=!((truck&&rg==='az')||(vtype==='bus'&&rg==='stour'));$('bpmW').hidden=vtype!=='bestel'||$('dw').value==='h';$('subXW').hidden=rg!=='eigen';
  document.querySelectorAll('#grs [data-gr]').forEach(e=>e.setAttribute('aria-pressed',+e.dataset.gr===gi));
  setH($('azd'),`<div><small>Werknemers</small><b>${zd[1]}</b></div><i>${zd[3]}</i><div><small>Jaaromzet</small><b>${zd[2]}</b></div>${zd[0].startsWith('Klein')?'<p>Ook non-profitinstellingen vallen in deze categorie.</p>':''}`);
- setH($('subR'),(rg==='az'?`${eur(b.sub)} AanZET-subsidie<span>${nf(az[1]*100,1)}%, maximaal ${eur(az[2])}</span>`:rg==='stour'?`${eur(b.sub)} STour-subsidie<span>${nf((STT[gi]||STT[1])[1]*100)}% van de meerkosten tegenover diesel, maximaal ${eur((STT[gi]||STT[1])[2])}</span>`:rg.startsWith('mia')?`${eur(b.sub)} netto belastingvoordeel`:rg==='eigen'?`${eur(b.sub)} subsidie`:'Geen subsidie')+(lsOn('E')&&b.sub>0?rg.startsWith('mia')?'<span>Bij operational lease krijg je de MIA niet: de leasemaatschappij is eigenaar. Hij telt daarom niet mee.</span>':'<span>Bij operational lease vraagt de leasemaatschappij dit aan. Het zit in de leaseprijs.</span>':''));
+ setH($('subR'),(rg==='az'?`${eur(b.sub)} AanZET-subsidie<span>${nf(az[1]*100,1)}%, maximaal ${eur(az[2])}</span>`:rg==='stour'?`${eur(b.sub)} STour-subsidie<span>${nf((STT[gi]||STT[1])[1]*100)}% van de meerkosten tegenover diesel, maximaal ${eur((STT[gi]||STT[1])[2])}</span>`:rg.startsWith('mia')?`${eur(b.sub)} netto belastingvoordeel`:rg==='eigen'?`${eur(b.sub)} subsidie`:'Geen subsidie')+(lsOn('E')&&b.sub>0?rg.startsWith('mia')?'<span>Bij operational lease krijg je de MIA niet: de leasemaatschappij is eigenaar. Hij telt daarom niet mee.</span>':'<span>Bij operational lease vraagt de leasemaatschappij dit aan. Het zit in de leaseprijs.</span>':''));$('subR').style.display=rg==='geen'?'none':'';
  // Optionele kosten
  TOL.forEach(c=>{if(v('k_'+c[0])>0)tolSel.add(c[0]);const on=tolSel.has(c[0]);$('tc_'+c[0]).hidden=!on;document.querySelector(`[data-tol="${c[0]}"]`).setAttribute('aria-pressed',on)});
  $('tolBody').hidden=!tolSel.size;
  const used=TOL.reduce((a,c)=>a+v('k_'+c[0]),0);$('xth').textContent=`${nf(used)} van ${nf(kmH)} km`;$('xtb').style.width=(kmH?Math.min(100,used/kmH*100):0)+'%';
  ['xLad','xOw','xZon'].forEach(id=>{const xg=$(id).closest('.wst').querySelector('.xg');xg.hidden=false;xg.classList.toggle('xguit',!ck(id))});
+ /* ERE-opbrengst uit: de schuif staat gedimd, net als uitgeschakelde extra kosten. Schuiven zet hem weer aan (zie input-luisteraar) */
+ {const es=$('ere')&&$('ere').closest('.sl');if(es)es.classList.toggle('xguit',!ck('aERE'))}
  /* Betalen wat je koopt: eigen geld of financial lease. Zijn beide kanten operational lease, dan zit de rente in de leaseprijs */
  {const both=lsOn('D')&&lsOn('E'),f=ck('xFin');$('flW').querySelector('.seg').hidden=both;$('xFinL').hidden=!both;$('flG').hidden=both||!f;document.querySelectorAll('[data-fin]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.fin==='1')===f)));setH($('flH'),f&&!both?flHint(x):'')}
  {const big=gi===0,sv0=sprila(v('xl0'),big);setH($('xsh'),ck('xSp')?(sv0>=2500?`<b>Subsidie ${eur(sv0)}</b> (${eur(big?4880:9760)} per laadpunt, maximaal ${big?20:40}% van de laadpaal)`:`Subsidie ${eur(sv0)}: te laag, het minimum is € 2.500`):'')}
@@ -4562,9 +4568,13 @@ ${flnHTML()}
    jaarberekening. Nu dezelfde lening als financial lease (flLoan): over de prijs na subsidie, met de restwaarde als slottermijn. */
 function mLast(r){
  const L=r.L;
- const cats=ROWS.filter(z=>z[0]!=='afs'&&(T().truck||z[0]!=='hef')).map(z=>[z[0],z[1].replace(/­/g,'')]);
- /* Een geleasede kant heeft geen lening: daar staat de leaseprijs. Zonder financiering staat er de aanschaf min subsidie en restwaarde per maand */
- const fo=finOn(),one=(o,p,ls,w,sub)=>{const f=flLoan(p,w,{},sub),q=ls||!fo?{P:0,S:0,lening:o.afs/12}:{P:f.P,S:f.S,lening:f.pm};cats.forEach(z=>q[z[0]]=o[z[0]]/12);q.gk=cats.reduce((a,z)=>a+q[z[0]],0);q.tot=q.lening+q.gk;return q};
+ /* Zo bedacht (11 nov 2026): de maandlasten telden alleen de termijn van het geleende deel. Het eigen geld, de rente daarover en de
+    extra kosten (laadpaal, laden onderweg, zonnepanelen, tol) vielen weg, waardoor diesel per maand goedkoper leek terwijl de
+    totale kosten het omgekeerde zeiden. Nu is elk onderdeel het jaarbedrag gedeeld door twaalf, met financiering bij de aanschaf,
+    zodat de maandlasten optellen tot de totale kosten per maand. De termijn van de financial lease staat in de uitleg. */
+ const ex={lad:ck('xLad'),tij:ck('xOw'),zon:ck('xZon'),tol:T().truck&&tolSel.size>0};
+ const cats=ROWS.filter(z=>z[0]!=='afs'&&(T().truck||z[0]!=='hef')).map(z=>[z[0],z[1].replace(/­/g,'')]).concat(XROWS.filter(z=>ex[z[0]]&&(r.D[z[0]]||r.E[z[0]])).map(z=>[z[0],z[1]]));
+ const fo=finOn(),one=(o,p,ls,w,sub)=>{const f=flLoan(p,w,{},sub),q=ls||!fo?{P:0,S:0,pm:0,lening:(o.afs+(o.fin||0))/12}:{P:f.P,S:f.S,pm:f.pm,lening:(o.afs+(o.fin||0))/12};cats.forEach(z=>q[z[0]]=(o[z[0]]||0)/12);q.gk=cats.reduce((a,z)=>a+q[z[0]],0);q.tot=q.lening+q.gk;return q};
  return{cats,d:one(r.D,$('dw').value==='h'?0:v('pD')+(v('bpmD')||0),lsOn('D'),v('rw')/100,0),e:one(r.E,v('pE'),lsOn('E'),v('rwE')/100,r.b.sub)};
 }
 /* Uitgebreid: wat een transportondernemer nog meer wil weten. Per maand, per rit, bij een lagere restwaarde en of de dagrit past */
@@ -4611,12 +4621,12 @@ function xExtra(r,dn,en){
  const rgH=`<div class="rcb xrg">${rb('e','Actieradius',rg)}${rb('e w','In de winter',wi)}${rb('d','Gemiddelde dagrit',day)}</div><p class="xrv${day>rg?' a':''}">${rgV}</p><div class="nF"><div class="rf"><span>Laden per rijdag</span><b>± ${nf(Math.round(kwh/5)*5)} kWh <small>± ${nf(Math.max(.5,Math.round(kwh/kw*2)/2),1).replace(',0','')} uur aan een ${kw} kW-lader</small></b></div></div>`;
  /* Wat kost het per maand, in dezelfde opmaak als Alle kosten op de startpagina:
     kop links, rechts balken per onderdeel waarvan het gekozen onderdeel kleurt, knoppen met het verschil en een korte uitleg */
- const ml=mLast(r),mx2=Math.max(ml.d.tot,ml.e.tot),dM=ml.d.tot-ml.e.tot,ri=v('xri'),lsD=lsOn('D'),lsE=lsOn('E'),fo=finOn(),mc=[['lening',lsD&&lsE?uL('Lease','Lease'):fo?lsD||lsE?uL('Lease','Lease'):uL('Financial lease','Financial lease'):lsD||lsE?uL('Aanschaf of lease','Purchase or lease'):uL('Aanschaf','Purchase')],...ml.cats.map(z=>[z[0],{en:uL('Energie','Energy'),ond:uL('Onderhoud','Maintenance'),ver:uL('Verzekering','Insurance'),hef:uL('Heffing','Road charge')}[z[0]]||z[1]])];
+ const ml=mLast(r),mx2=Math.max(ml.d.tot,ml.e.tot),dM=ml.d.tot-ml.e.tot,ri=v('xri'),lsD=lsOn('D'),lsE=lsOn('E'),fo=finOn(),mc=[['lening',lsD&&lsE?uL('Lease','Lease'):lsD||lsE?uL('Aanschaf of lease','Purchase or lease'):uL('Aanschaf','Purchase')],...ml.cats.map(z=>[z[0],{en:uL('Energie','Energy'),ond:uL('Onderhoud','Maintenance'),ver:uL('Verzekering','Insurance'),hef:uL('Heffing','Road charge')}[z[0]]||z[1]])];
  if(!mc.some(c=>c[0]===mlCat))mlCat='lening';
  const mbar=(o,cl,t)=>`<div class="uvb ${cl}"><span>${t}</span><div class="uvt">${mc.map(c=>`<i data-mlc="${c[0]}" title="${c[1]}"${c[0]===mlCat?' class="on"':''} style="width:${Math.max(0,o[c[0]])/mx2*100}%"></i>`).join('')}</div><b>${eur(o.tot)}</b></div>`;
- const xr=(ml.e.lening*L*12+ml.e.S-ml.e.P)-(ml.d.lening*L*12+ml.d.S-ml.d.P),g=v,slt=q=>q.S>0?uL(`, slottermijn ${eur(q.S)}`,`, final payment ${eur(q.S)}`):'';
+ const g=v,slt=q=>q.S>0?uL(`, slottermijn ${eur(q.S)}`,`, final payment ${eur(q.S)}`):'';
  const mlx={
-  lening:!fo?[[tn(dn),ml.d,lsD],[tn(en),ml.e,lsE]].map(([n,q,ls])=>ls?uL(`${n}: lease ${eur(q.lening)} per maand`,`${n}: lease ${eur(q.lening)} a month`):uL(`${n}: aanschaf min subsidie en restwaarde, verdeeld over ${L} jaar: ${eur(q.lening)} per maand`,`${n}: purchase minus grant and residual value, spread over ${L} years: ${eur(q.lening)} a month`)).join('. ')+'.':lsD||lsE?[[tn(dn),ml.d,lsD],[tn(en),ml.e,lsE]].map(([n,q,ls])=>ls?uL(`${n}: ${eur(q.lening)} per maand`,`${n}: ${eur(q.lening)} a month`):uL(`${n}: financial lease van ${eur(q.P)} tegen ${nf(ri,1)}% rente in ${L} jaar${slt(q)}, ${eur(q.lening)} per maand`,`${n}: financial lease of ${eur(q.P)} at ${nf(ri,1)}% over ${L} years${slt(q)}, ${eur(q.lening)} a month`)).join('. ')+'.':uL(`Financial lease van ${eur(ml.e.P)} voor elektrisch en ${eur(ml.d.P)} voor diesel, tegen ${nf(ri,1)}% rente in ${L} jaar, met de restwaarde als slottermijn (${eur(ml.e.S)} en ${eur(ml.d.S)}): ${eur(ml.e.lening)} tegenover ${eur(ml.d.lening)} per maand. Daarvan is ${eur(xr/L/12)} per maand extra rente. De subsidie verlaagt de lening; het eigen deel en de slottermijn zitten niet in het maandbedrag.`,`Financial lease of ${eur(ml.e.P)} for electric and ${eur(ml.d.P)} for diesel, at ${nf(ri,1)}% interest over ${L} years, with the residual value as final payment (${eur(ml.e.S)} and ${eur(ml.d.S)}): ${eur(ml.e.lening)} against ${eur(ml.d.lening)} a month. Of that, ${eur(xr/L/12)} a month is extra interest. The grant lowers the loan; your own contribution and the final payment are not in the monthly amount.`),
+  lening:[[tn(dn),ml.d,lsD],[tn(en),ml.e,lsE]].map(([n,q,ls])=>ls?uL(`${n}: lease ${eur(q.lening)} per maand`,`${n}: lease ${eur(q.lening)} a month`):fo?uL(`${n}: financial lease van ${eur(q.P)} tegen ${nf(ri,1)}% rente in ${L} jaar${slt(q)}, termijn ${eur(q.pm)}. Met eigen geld en restwaarde ${eur(q.lening)} per maand`,`${n}: financial lease of ${eur(q.P)} at ${nf(ri,1)}% over ${L} years${slt(q)}, instalment ${eur(q.pm)}. Including own funds and residual value ${eur(q.lening)} a month`):uL(`${n}: aanschaf min subsidie en restwaarde, verdeeld over ${L} jaar: ${eur(q.lening)} per maand`,`${n}: purchase minus grant and residual value, spread over ${L} years: ${eur(q.lening)} a month`)).join('. ')+'.',
   en:uL(`${nf(r.km)} km per jaar: ${eur(ml.d.en)} per maand aan diesel tegenover ${eur(ml.e.en)} aan stroom${r.ereV?', na de ERE-opbrengst':''}.`,`${nf(r.km)} km a year: ${eur(ml.d.en)} a month on diesel against ${eur(ml.e.en)} on electricity${r.ereV?', after ERE income':''}.`),
   ond:uL(`${eur(g('oD'),2)} tegenover ${eur(g('oE'),2)} per km. Een elektromotor heeft geen olie, filters of koppeling.`,`${eur(g('oD'),2)} against ${eur(g('oE'),2)} per km. An electric motor has no oil, filters or clutch.`),
   ver:uL(`Het bedrag per jaar gedeeld door twaalf: ${eur(g('vD'))} tegenover ${eur(g('vE'))} per jaar.`,`The annual amount divided by twelve: ${eur(g('vD'))} against ${eur(g('vE'))} a year.`),
@@ -4887,9 +4897,9 @@ function rptHTML(){
  const uitH=`<div class="rpu">${[0,1,2].map(k=>`<dl>${uit.slice(k*per,(k+1)*per).map(q=>`<div><dt>${q[0]}</dt><dd>${q[1]}</dd></div>`).join('')}</dl>`).join('')}</div><p class="rpx">Bij twee waarden staat diesel eerst, dan elektrisch.</p>`;
  /* Wat kost het per maand: lening en gebruik, twee vakken naast elkaar op dezelfde schaal */
  const ml=mLast(b),mt=Math.max(ml.d.tot,ml.e.tot),dM=ml.d.tot-ml.e.tot;
- const mcol=(k,n,ls)=>{const o=ml[k];return`<div class="rpmc ${k}"><small>${n}</small><b class="num">${eur(o.tot)} <span>per maand</span></b><i style="width:${o.tot/mt*100}%"><u style="flex:${o.lening}"></u><u style="flex:${o.gk}"></u></i><p><span><s></s>${ls?'Operational lease':finOn()?'Financial lease':'Aanschaf'} <b>${eur(o.lening)}</b></span><span><s></s>Gebruik <b>${eur(o.gk)}</b></span></p></div>`};
- const vl=lD&&lE?'De lease':lD||lE?'De lease':'De financial lease';
- const mnd=`<div class="rpm2">${mcol('d',dN,lD)}${mcol('e',eN,lE)}</div><p class="rpms"><b class="${dM>=0?'good':'bad'}">Elektrisch ${eur(Math.abs(dM))} per maand ${dM>=0?'goedkoper':'duurder'}.</b> ${vl} is ${eur(Math.abs(ml.e.lening-ml.d.lening))} ${ml.e.lening>=ml.d.lening?'hoger':'lager'}, het gebruik ${eur(Math.abs(ml.d.gk-ml.e.gk))} ${ml.e.gk<=ml.d.gk?'lager':'hoger'}.</p><p class="rpx">${lD&&lE?'Lease: de leaseprijs per maand':`Lening: ${nf(v('xfs'))}% van de aanschafprijs tegen ${nf(v('xri'),1)}% rente, afgelost in ${L} jaar${lD||lE?'. Lease: de leaseprijs per maand':''}`}. Gebruik: energie, onderhoud, verzekering${truck?' en heffing':''}.</p>`;
+ const mcol=(k,n,ls)=>{const o=ml[k];return`<div class="rpmc ${k}"><small>${n}</small><b class="num">${eur(o.tot)} <span>per maand</span></b><i style="width:${o.tot/mt*100}%"><u style="flex:${o.lening}"></u><u style="flex:${o.gk}"></u></i><p><span><s></s>${ls?'Operational lease':finOn()?'Aanschaf en financiering':'Aanschaf'} <b>${eur(o.lening)}</b></span><span><s></s>Gebruik <b>${eur(o.gk)}</b></span></p></div>`};
+ const vl=lD&&lE?'De lease':lD||lE?'Aanschaf of lease':'De aanschaf';
+ const mnd=`<div class="rpm2">${mcol('d',dN,lD)}${mcol('e',eN,lE)}</div><p class="rpms"><b class="${dM>=0?'good':'bad'}">Elektrisch ${eur(Math.abs(dM))} per maand ${dM>=0?'goedkoper':'duurder'}.</b> ${vl} is ${eur(Math.abs(ml.e.lening-ml.d.lening))} ${ml.e.lening>=ml.d.lening?'hoger':'lager'}, het gebruik ${eur(Math.abs(ml.d.gk-ml.e.gk))} ${ml.e.gk<=ml.d.gk?'lager':'hoger'}.</p><p class="rpx">${lD&&lE?'Lease: de leaseprijs per maand':`Aanschaf: prijs min subsidie en restwaarde${finOn()?`, met ${nf(v('xfs'))}% geleend tegen ${nf(v('xri'),1)}% rente`:''}, verdeeld over ${L} jaar${lD||lE?'. Lease: de leaseprijs per maand':''}`}. Gebruik: energie, onderhoud, verzekering${truck?' en heffing':''} en eventuele extra kosten.</p>`;
  /* Gevoeligheid: besparing per jaar bij andere energieprijzen */
  const dp0=v('dp'),sp0=v('sp'),U=a=>[...new Set(a.map(z=>Math.round(Math.max(0,z)*1000)/1000))];
  const ds=U([-.5,-.25,0,.25,.5].map(z=>dp0+z)),es=U([-.1,-.05,0,.1,.2,.3].map(z=>sp0+z)),grid=es.map(e=>ds.map(z=>sv({dp:z,sp:e}))),gm=Math.max(1,...grid.flat().map(Math.abs));
@@ -6657,6 +6667,7 @@ function mQuote(id){
  const d=$('mDlg');if(!d.open)d.showModal();
  track('quote_open',{id});
 }
+document.addEventListener('input',e=>{if(e.target.id==='ere'&&$('aERE')&&!ck('aERE')){$('aERE').checked=true;$('aERE').dispatchEvent(new Event('change',{bubbles:true}))}});
 document.addEventListener('input',e=>{const xg=e.target.closest&&e.target.closest('.xg.xguit');if(!xg)return;const wst=xg.closest('.wst');const id=['xLad','xOw','xZon'].find(i=>$(i)&&$(i).closest('.wst')===wst);if(id)$(id).checked=true});
 document.addEventListener('submit',async e=>{
  const f=e.target;if(f.id!=='qForm')return;e.preventDefault();
