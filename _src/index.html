@@ -2203,6 +2203,22 @@ html{touch-action:manipulation}
 .lin label{padding:6px 10px}
 .dex+.flw{margin-top:28px}
 @media(min-width:761px){#xFinL{max-width:calc(50% - 14px)}}
+/* Invulvenster zonder scrollen: venster benut de schermhoogte, financiering compact op één rij, en wzFit() verkleint de stap als hij dan nog niet past */
+@media(min-width:761px){
+ .wzb .mpint{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .wzb .mpk{margin-bottom:16px}
+ .dex+.flw{margin-top:20px}
+ .flw{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px 18px}
+ .flw>.wsl{margin:0}.flw>.seg{justify-self:start}.flw>:is(.xg,.lnote){grid-column:1/-1}
+ #flG{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 28px}
+}
+@media(min-width:761px) and (min-height:701px){.wzi{height:min(920px,calc(100vh - 32px))}}
+@media(min-width:761px){#flG .slb{white-space:nowrap}#flG{gap:6px 22px}}
+@media(min-width:761px) and (max-height:700px){
+ .wzh{padding-top:8px;padding-bottom:8px}.wzh>div{display:flex;align-items:baseline;gap:12px;flex-direction:row-reverse}
+ .wzf{padding-top:8px!important;padding-bottom:8px!important}
+ #flH,#lcH{display:none}
+}
 .xdv.xil{color:var(--ink-3)}
 .xka{margin:14px 0 0;font-size:13px;line-height:1.5;color:var(--ink-3)}
 @media(max-width:640px){.xtr.xkm{grid-template-columns:62px repeat(3,minmax(0,1fr))}.xkm em{display:block;margin:2px 0 0}}
@@ -4232,7 +4248,16 @@ const seen=new Set();
 function layout(){
  const host=$('wzB');
  STEPS.forEach(s=>{const el=document.querySelector(`.wst[data-st="${s[0]}"]`);if(el.parentNode!==host)host.appendChild(el);el.hidden=s[0]!==wzStep});
+ Promise.resolve().then(wzFit);
 }
+/* Nooit scrollen in het invulvenster (desktop): past de stap niet, dan schaalt hij in kleine stapjes tot hij past (tot 70%) */
+function wzFit(){
+ const b=$('wzB');if(!b)return;
+ b.querySelectorAll('.wst').forEach(s=>s.style.zoom='');
+ const el=b.querySelector('.wst:not([hidden])');if(!el||!$('wz').open||mob())return;
+ let z=1;while(b.scrollHeight>b.clientHeight&&z>.701){z=Math.round((z-.025)*1000)/1000;el.style.zoom=z}
+}
+addEventListener('resize',wzFit);
 function wzNav(){
  const cs=coreSteps(),os=optSteps(),opt=isOpt(wzStep),i=Math.max(0,cs.findIndex(s=>s[0]===wzStep));
  const btn=(s,num,cls)=>`<button type="button" data-go="${s[0]}"${s[0]===wzStep?' aria-current="step"':''} class="${cls}"><span class="num">${num}</span>${s[1]}</button>`;
@@ -4254,6 +4279,7 @@ function go(k,focus=true,tab=0){
  wzStep=k;seen.add(k);
  document.querySelectorAll('#wzB .wst').forEach(s=>s.hidden=s.dataset.st!==k);
  dxTab(curDex(),tab);wzNav();fillRanges();$('wzB').scrollTop=0;
+ wzFit();
  if(focus)$('wh-'+k).focus({preventScroll:true});
 }
 function openWz(k){
