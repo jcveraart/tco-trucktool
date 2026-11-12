@@ -65,7 +65,8 @@ button{cursor:pointer}
 .zij .live.aan i{background:var(--volt);box-shadow:0 0 0 3px var(--volt-l)}
 
 .hoofd{min-width:0}
-.balk{position:sticky;top:0;z-index:20;background:rgba(245,245,242,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 28px;display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.kop{position:sticky;top:0;z-index:20;background:rgba(245,245,242,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.balk{padding:12px 28px 9px;display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
 .balk h1{font-size:19px;line-height:1.2;margin:0 6px 0 0;font-weight:650;letter-spacing:-.01em;white-space:nowrap}
 .balk .ruimte{flex:1}
 .inhoud{padding:22px 28px 80px;max-width:1480px}
@@ -92,7 +93,27 @@ button{cursor:pointer}
 .rij.onder{margin-bottom:14px}
 .lab{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.balk .chips{flex-basis:100%}
+.kop>.chips{padding:0 28px 11px}
+/* Periodebalk */
+.tijd{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;padding:0 28px 12px}
+.tijd .seg{max-width:100%;min-width:0;overflow-x:auto;scrollbar-width:none}
+.tijd .seg::-webkit-scrollbar{display:none}
+.tijd .seg button{padding:5px 13px}
+.tijd .knop{padding:7px 12px}
+.tijd .knop.gekozen{background:var(--ink);border-color:var(--ink);color:#fff}
+.tijd .pop .menu{left:0;right:auto}
+.tijd .stap{display:inline-flex;align-items:center;gap:2px}
+.tijd .stap button{border:0;background:none;width:28px;height:30px;border-radius:6px;font-size:18px;line-height:1;color:var(--ink2);padding:0 0 2px}
+.tijd .stap button:hover:not(:disabled){background:var(--soft)}
+.tijd .stap button:disabled{opacity:.28;cursor:default}
+.tijd .stap span{font:500 12.5px var(--mono);color:var(--ink2);white-space:nowrap;min-width:118px;text-align:center}
+.permenu{width:268px;max-width:calc(100vw - 32px)}
+.pop .permenu .eigen{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.pop .permenu .eigen label{min-width:0}
+.pop .permenu .eigen input{min-width:0;box-sizing:border-box}
+.permenu .snel{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.pop .permenu .eigen label{display:grid;gap:4px;font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink4)}
+.pop .permenu .eigen input{font:400 13px var(--sans);letter-spacing:0;text-transform:none;color:var(--ink);padding:6px 7px}
 .chip{display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:7px;font-size:12.5px;line-height:1.4;overflow:hidden}
 .chip>span{padding:3px 4px 3px 9px;cursor:pointer}
 .chip>span:hover{background:var(--hover)}
@@ -336,7 +357,7 @@ td.route{font-size:12.5px;color:var(--ink2);max-width:360px}
   .zij{position:fixed;z-index:50;left:0;top:0;width:260px;transform:translateX(-102%);transition:transform .2s;box-shadow:16px 0 48px rgba(21,23,26,.14)}
   .zij.open{transform:none}
   .knop.menuknop{display:inline-flex}
-  .balk{padding:10px 16px}
+  .balk{padding:10px 16px 8px}.tijd{padding:0 16px 10px}.kop>.chips{padding:0 16px 10px}
   .inhoud{padding:16px 16px 60px}
   .zoek input{width:150px}
 }
@@ -345,6 +366,13 @@ td.route{font-size:12.5px;color:var(--ink2);max-width:360px}
   .kpi .n{font-size:24px}
   .g4{grid-template-columns:minmax(0,1fr)}
   .balk h1{width:100%}
+  .kop{display:contents}
+  .balk,.kop>.chips{background:var(--page)}
+  .tijd{position:sticky;top:0;z-index:20;background:rgba(245,245,242,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:8px 16px;flex-wrap:nowrap;gap:8px}
+  .tijd .seg{flex:1 1 auto}.tijd .seg button{padding:5px 10px}.tijd .knop span{display:none}.tijd .knop{padding:7px 9px}
+  .tijd .stap{display:none}.tijd.eigen .stap{display:inline-flex}.tijd .stap button{display:none}.tijd .stap span{min-width:0;font-size:12px}
+  .tijd .pop .menu{left:auto;right:0}
+  .kop>.chips{padding-top:10px}
   .zoek{flex:1}.zoek input{width:100%}
   .trechter .st{grid-template-columns:104px 1fr 96px}
   .vergelijk,.ab{grid-template-columns:1fr}
@@ -352,4 +380,4 @@ td.route{font-size:12.5px;color:var(--ink2);max-width:360px}
   .paneel .lijf{padding:16px 16px 60px}
   .kaart{padding:15px 16px}
 }
-@media print{.zij,.balk,.scrim,.paneel{display:none!important}.app{display:block}}
+@media print{.zij,.kop,.balk,.scrim,.paneel{display:none!important}.app{display:block}}

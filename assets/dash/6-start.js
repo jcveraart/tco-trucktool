@@ -36,6 +36,7 @@ const ICOON = {
   Mensen: '<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.700 2.600-4 5-4s4.400 1.300 5 4"/>',
   Beheer: '<path d="M2.5 5h6M11.5 5h2M2.5 11h2M7.5 11h6"/><circle cx="10" cy="5" r="1.5"/><circle cx="6" cy="11" r="1.5"/>',
   filter: '<path d="M2.5 4h11M4.5 8h7M6.5 12h3"/>',
+  kalender: '<rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.8h11M5.5 2v3M10.5 2v3"/>',
 };
 const icoon = k => `<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICOON[k] || ''}</svg>`;
 let MENUOPEN = {}; try { MENUOPEN = JSON.parse(localStorage.getItem('sod-dash-menu') || '{}'); } catch (e) {}
@@ -91,10 +92,11 @@ async function laad(viaKnop) {
 
 /* ===== Periode-menu ===== */
 function periodeMenu(open) {
-  const m = $('perMenu'); if (!open) { m.hidden = true; return; }
-  m.innerHTML = PERIODES.map(([k, n]) => `<button class="opt${F.per === k ? ' on' : ''}" data-per="${k}">${n}</button>`).join('')
-    + `<div class="eigen"><input type="date" id="perVan" value="${dagIso(X.B.d0)}" max="${dagIso(dagNr(Date.now()))}" aria-label="Van"><input type="date" id="perTot" value="${dagIso(X.B.d1)}" max="${dagIso(dagNr(Date.now()))}" aria-label="Tot en met"><button class="knop donker" id="perEigen" style="justify-content:center">Toepassen</button></div>`;
-  m.hidden = false;
+  const m = $('perMenu'); if (!open) { m.hidden = true; $('perKnop').classList.remove('aan'); return; }
+  const max = dagIso(dagNr(Date.now()));
+  m.innerHTML = `<div class="snel">${PERIODES2.map(([k, n]) => `<button class="opt${F.per === k ? ' on' : ''}" data-per="${k}">${n}</button>`).join('')}</div>`
+    + `<div class="eigen"><label>Van<input type="date" id="perVan" value="${dagIso(X.B.d0)}" max="${max}"></label><label>Tot en met<input type="date" id="perTot" value="${dagIso(X.B.d1)}" max="${max}"></label><button class="knop donker" id="perEigen" style="justify-content:center">Toepassen</button></div>`;
+  m.hidden = false; $('perKnop').classList.add('aan');
 }
 
 /* ===== Zoeken ===== */
@@ -134,6 +136,7 @@ function koppel() {
     if ((el = bij('[data-fw]'))) { zetDim(FM.type, el.dataset.fw); return filterMenu(true, null); }
     if ((el = bij('[data-filter]'))) return filterMenu(true, el.dataset.filter);
     if ((el = bij('[data-groep]'))) { const g = el.parentNode, open = !g.classList.contains('open'); g.classList.toggle('open', open); el.setAttribute('aria-expanded', open); MENUOPEN[el.dataset.groep] = open; try { localStorage.setItem('sod-dash-menu', JSON.stringify(MENUOPEN)); } catch (x) {} return; }
+    if ((el = bij('[data-stap]'))) return stapPeriode(+el.dataset.stap);
     if ((el = bij('[data-per]'))) { periodeMenu(false); return zetPeriode(el.dataset.per); }
     if (bij('#perEigen')) { const a = $('perVan').value, b = $('perTot').value; if (!a || !b) return; const d0 = isoDag(a), d1 = isoDag(b); periodeMenu(false); return zetPeriode('eigen', Math.min(d0, d1), Math.max(d0, d1)); }
     if ((el = bij('#fWie button'))) { F.wie = el.dataset.v; bewaarF(); render(); return toonPaneel(); }

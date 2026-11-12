@@ -7,12 +7,16 @@ try { const o = JSON.parse(localStorage.getItem('sod-dash-f') || '{}'); if (o.pe
 const bewaarF = () => { try { localStorage.setItem('sod-dash-f', JSON.stringify({ per: F.per, wie: F.wie })); } catch (e) {} };
 const R = { scherm: 'overzicht', open: null };
 const PERIODES = [['vandaag', 'Vandaag'], ['gisteren', 'Gisteren'], ['7', '7 dagen'], ['30', '30 dagen'], ['90', '90 dagen'], ['alles', 'Alles']];
+const PERIODES2 = [['week', 'Deze week'], ['vweek', 'Vorige week'], ['maand', 'Deze maand'], ['vmaand', 'Vorige maand']];
 
 function bereik() {
   const nu = dagNr(Date.now()); let d0, d1, naam, vs;
   if (F.per === 'eigen') { d0 = F.d0; d1 = F.d1; naam = d0 === d1 ? dagLang(d0) : dagLabel(d0) + ' – ' + dagLabel(d1); }
   else if (F.per === 'vandaag') { d0 = d1 = nu; naam = 'Vandaag'; vs = 'gisteren'; }
   else if (F.per === 'gisteren') { d0 = d1 = nu - 1; naam = 'Gisteren'; vs = 'eergisteren'; }
+  else if (F.per === 'week') { d0 = nu - weekdag(nu); d1 = nu; naam = 'Deze week'; }
+  else if (F.per === 'vweek') { d0 = nu - weekdag(nu) - 7; d1 = d0 + 6; naam = 'Vorige week'; }
+  else if (F.per === 'maand' || F.per === 'vmaand') { const t = new Date(nu * 864e5), v = F.per === 'vmaand', m = t.getUTCMonth() - (v ? 1 : 0); d0 = Date.UTC(t.getUTCFullYear(), m, 1) / 864e5; d1 = v ? Date.UTC(t.getUTCFullYear(), m + 1, 0) / 864e5 : nu; naam = v ? 'Vorige maand' : 'Deze maand'; }
   else if (F.per === 'alles') { d0 = Math.min(D.eersteDag, D.MAILS.length ? D.MAILS[0].d : nu, D.CALC.length ? D.CALC[0].d : nu); d1 = nu; naam = 'Alles'; }
   else { const n = +F.per; d0 = nu - n + 1; d1 = nu; naam = n + ' dagen'; }
   const n = d1 - d0 + 1, korrel = n <= 2 ? 'uur' : n <= 70 ? 'dag' : 'week', alles = F.per === 'alles';
@@ -263,7 +267,7 @@ function render() {
   document.title = sch.titel + ' · Stekker of Diesel';
   $('titel').textContent = sch.titel;
   $('zij').querySelectorAll('a.nav').forEach(a => a.classList.toggle('on', a.dataset.s === R.scherm));
-  $('perKnop').textContent = X.B.naam;
+  tijdBalk();
   $('fWie').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === F.wie));
   const n = actieveFilters().length; $('filterRij').innerHTML = chipsHtml(); $('filterRij').hidden = !n; $('filterTel').textContent = n || ''; $('filterTel').hidden = !n;
   for (const g of $('zij').querySelectorAll('.groep')) { const actief = !!g.querySelector('a.nav.on'); g.classList.toggle('actief', actief); if (actief) g.classList.add('open'); }
@@ -288,6 +292,21 @@ function filterOpties(type) {
     : type === 'vt' ? tel(Rk, r => VT[r.vt]) : type === 'uitkomst' ? tel(Rk, r => uitkomstNaam(r.goedkoper)) : type === 'kanaal' ? tel([...S, ...A], x => KANAAL[x.bronSoort]) : type === 'land' ? tel([...S, ...A], x => landNaam(x.land))
     : type === 'scherm' ? tel([...S.map(s => s.vw), ...A.map(e => e.p.vw)], schermNaam) : tel([...S, ...A], x => type === 'apparaat' ? x.app : x[type]);
   return uit.map(([w, n]) => ({ w, toon: w, n }));
+}
+/* De periodebalk: snelle keuzes, zelf kiezen en een stap eerder of later */
+function tijdBalk() {
+  const B = X.B, nu = dagNr(Date.now()), extra = PERIODES2.find(p => p[0] === F.per), eigen = F.per === 'eigen', alles = F.per === 'alles';
+  $('perSeg').innerHTML = PERIODES.map(([k, n]) => `<button type="button" data-per="${k}"${F.per === k ? ' class="on"' : ''}>${n}</button>`).join('');
+  const seg = $('perSeg'), on = seg.querySelector('.on'); if (on && seg.scrollWidth > seg.clientWidth) { const r = on.getBoundingClientRect(), g = seg.getBoundingClientRect(); if (r.left < g.left || r.right > g.right) seg.scrollLeft += r.left - g.left - 24; }
+  const k = $('perKnop'); k.innerHTML = icoon('kalender') + `<span>${extra ? extra[1] : 'Zelf kiezen'}</span>`; k.classList.toggle('gekozen', eigen || !!extra); $('tijd').classList.toggle('eigen', eigen || !!extra);
+  $('perBereik').textContent = B.d0 === B.d1 ? dagLang(B.d0) : dagLabel(B.d0) + ' – ' + dagLabel(B.d1);
+  const [eerder, later] = $('tijd').querySelectorAll('[data-stap]'); eerder.disabled = alles || B.d1 - B.n < D.eersteDag - 1; later.disabled = alles || B.d1 >= nu;
+}
+function stapPeriode(richting) {
+  const B = X.B, nu = dagNr(Date.now()), d1 = Math.min(B.d1 + richting * B.n, nu), d0 = d1 - B.n + 1;
+  if (d1 === nu && B.n === 1) return zetPeriode('vandaag'); if (d1 === nu - 1 && B.n === 1) return zetPeriode('gisteren');
+  if (d1 === nu && [7, 30, 90].includes(B.n)) return zetPeriode(String(B.n));
+  zetPeriode('eigen', d0, d1);
 }
 function zetPeriode(per, d0, d1) { F.per = per; F.d0 = d0 ?? null; F.d1 = d1 ?? null; bewaarF(); render(); toonPaneel(); }
 function zetDim(type, w) {

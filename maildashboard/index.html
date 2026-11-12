@@ -7,7 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <title>Dashboard · Stekker of Diesel</title>
 <link rel="preload" href="/assets/fonts/e2291e842cf5af.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/dash/dash.css?v=3">
+<link rel="stylesheet" href="/assets/dash/dash.css?v=4">
 </head>
 <body>
 <div class="login" id="login">
@@ -23,6 +23,7 @@
 <div class="app" id="app" hidden>
   <nav class="zij" id="zij"></nav>
   <div class="hoofd">
+    <div class="kop">
     <header class="balk">
       <button class="knop menuknop" id="menuKnop" type="button" aria-label="Menu">☰</button>
       <h1 id="titel"></h1>
@@ -30,10 +31,15 @@
       <div class="zoek"><input class="veld" id="zoek" type="search" placeholder="Zoek bedrijf, bezoeker of pagina" autocomplete="off" aria-label="Zoeken"><div class="res" id="zoekRes" hidden></div></div>
       <div class="pop" id="filterPop"><button class="knop" id="filterKnop" type="button"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4h11M4.5 8h7M6.5 12h3"/></svg>Filter<span class="tel" id="filterTel" hidden></span></button><div class="menu filtermenu" id="filterMenu" hidden></div></div>
       <div class="seg" id="fWie" role="group" aria-label="Wie"><button data-v="echt" title="Zonder eigen bezoeken, bots en scanners">Echt</button><button data-v="intern" title="Eigen bezoeken en testmails">Intern</button><button data-v="bot" title="Bots, tests en mailscanners">Bots</button><button data-v="alles">Alles</button></div>
-      <div class="pop" id="perPop"><button class="knop" id="perKnop" type="button"></button><div class="menu" id="perMenu" hidden></div></div>
       <button class="knop" id="ververs" type="button">Vernieuwen</button>
-      <div class="chips" id="filterRij" hidden></div>
     </header>
+    <div class="tijd" id="tijd">
+      <div class="seg" id="perSeg" role="group" aria-label="Periode"></div>
+      <div class="pop" id="perPop"><button class="knop" id="perKnop" type="button"></button><div class="menu permenu" id="perMenu" hidden></div></div>
+      <div class="stap"><button type="button" data-stap="-1" aria-label="Periode eerder">‹</button><span id="perBereik"></span><button type="button" data-stap="1" aria-label="Periode later">›</button></div>
+    </div>
+    <div class="chips" id="filterRij" hidden></div>
+    </div>
     <main class="inhoud" id="inhoud"></main>
   </div>
 </div>
@@ -45,11 +51,11 @@
 </aside>
 <div class="tip" id="tip"></div>
 
-<script src="/assets/dash/1-kern.js?v=3"></script>
-<script src="/assets/dash/2-ui.js?v=3"></script>
-<script src="/assets/dash/3-schermen.js?v=3"></script>
-<script src="/assets/dash/4-schermen-mail.js?v=3"></script>
-<script src="/assets/dash/5-paneel.js?v=3"></script>
-<script src="/assets/dash/6-start.js?v=3"></script>
+<script src="/assets/dash/1-kern.js?v=4"></script>
+<script src="/assets/dash/2-ui.js?v=4"></script>
+<script src="/assets/dash/3-schermen.js?v=4"></script>
+<script src="/assets/dash/4-schermen-mail.js?v=4"></script>
+<script src="/assets/dash/5-paneel.js?v=4"></script>
+<script src="/assets/dash/6-start.js?v=4"></script>
 </body>
 </html>
