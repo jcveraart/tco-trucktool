@@ -72,6 +72,8 @@ button{cursor:pointer}
 .seg button.on{background:var(--ink);color:#fff}
 .seg button .c{font:500 11px var(--mono);opacity:.6;margin-left:6px}
 .seg.klein button{font-size:12px;padding:3px 8px}
+.kaart>header .seg,.rij .seg{max-width:100%;min-width:0;overflow-x:auto;scrollbar-width:none}
+.kaart>header .seg::-webkit-scrollbar,.rij .seg::-webkit-scrollbar{display:none}
 .kies{font-size:13px;padding:6px 28px 6px 10px;border:1px solid var(--line);border-radius:7px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%237C838A' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center;appearance:none}
 .veld{font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;min-width:0}
 .veld::placeholder{color:var(--ink4)}
