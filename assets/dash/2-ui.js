@@ -29,13 +29,28 @@ function reeksUniek(B, items, sleutel) { const r = B.b.map(() => new Set()); for
 
 /* ===== Selectie ===== */
 const wieOk = k => F.wie === 'alles' || F.wie === k;
-const DIMNAAM = { pagina: 'Pagina', instap: 'Instap', land: 'Land', browser: 'Browser', os: 'Systeem', apparaat: 'Apparaat', scherm: 'Scherm', bron: 'Bron', kanaal: 'Kanaal', reden: 'Reden', vt: 'Voertuig', taal: 'Taal' };
+const DIMNAAM = { pagina: 'Bezocht', instap: 'Instappagina', land: 'Land', browser: 'Browser', os: 'Systeem', apparaat: 'Apparaat', scherm: 'Scherm', bron: 'Bron', kanaal: 'Kanaal', reden: 'Reden', vt: 'Voertuig', taal: 'Taal', doel: 'Deed', bezoek: 'Bezoek', uitkomst: 'Uitkomst', campagne: 'Campagne', variant: 'Mail', dienst: 'Via', segment: 'Segment' };
 const KANAAL = Object.fromEntries(BRONNEN.map(b => [b[0], b[1]]));
-const dimS = (d, s) => d.type === 'pagina' ? s.views.some(v => v.naam === d.w) : d.type === 'instap' ? s.instap === d.w : d.type === 'land' ? landNaam(s.land) === d.w : d.type === 'browser' ? s.browser === d.w : d.type === 'os' ? s.os === d.w
-  : d.type === 'apparaat' ? s.app === d.w : d.type === 'scherm' ? schermNaam(s.vw) === d.w : d.type === 'bron' ? s.bron === d.w : d.type === 'kanaal' ? KANAAL[s.bronSoort] === d.w : d.type === 'reden' ? s.reden === d.w : d.type === 'vt' ? s.reeksen.some(r => VT[r.vt] === d.w) : d.type === 'taal' ? (s.lang || '').slice(0, 2).toUpperCase() === d.w : true;
-const dimA = (d, e) => d.type === 'pagina' || d.type === 'instap' ? paginaNaam(e.ev === 'page_view' ? e.page : (e.p.p || e.page), e.p.hash) === d.w : d.type === 'land' ? landNaam(e.land) === d.w : d.type === 'browser' ? e.browser === d.w : d.type === 'os' ? e.os === d.w
-  : d.type === 'apparaat' ? ((e.p.mobile ?? e.p.m) == null ? false : ((e.p.mobile ?? e.p.m) ? 'Mobiel' : 'Desktop') === d.w) : d.type === 'scherm' ? schermNaam(e.p.vw) === d.w : d.type === 'bron' ? e.bron === d.w : d.type === 'kanaal' ? KANAAL[e.bronSoort] === d.w : d.type === 'reden' ? anonReden(e) === d.w : false;
-const dimR = (d, r) => d.type === 'vt' ? VT[r.vt] === d.w : r.ses ? dimS(d, r.ses) : d.type === 'apparaat' ? r.app === d.w : d.type === 'bron' ? r.bron === d.w : d.type === 'kanaal' ? KANAAL[r.bronSoort] === d.w : false;
+const DOELNAAM = Object.fromEntries(DOELEN), DOELSLEUTEL = Object.fromEntries(DOELEN.map(([k, n]) => [n, k]));
+const uitkomstNaam = g => g === 'e' ? 'Elektrisch goedkoper' : g === 'd' ? 'Diesel goedkoper' : 'Gelijk';
+const bezoekNaam = s => s.n == null ? null : s.n <= 1 ? 'Eerste bezoek' : 'Terugkerend';
+const MAILDIMS = ['campagne', 'variant', 'dienst', 'segment'];
+const mailWaarde = (type, w) => type === 'variant' ? mailNaam(w) : type === 'dienst' ? dienstNaam(w) : type === 'segment' ? String(w).charAt(0).toUpperCase() + String(w).slice(1) : w;
+/* Het filtermenu: groepen met de kenmerken waarop je kunt filteren */
+const FILTERS = [['Bezoek', [['kanaal', 'Kanaal'], ['bron', 'Bron'], ['instap', 'Instappagina'], ['pagina', 'Bezochte pagina'], ['doel', 'Wat ze deden'], ['bezoek', 'Nieuw of terug'], ['land', 'Land'], ['taal', 'Taal']]],
+  ['Apparaat', [['apparaat', 'Type'], ['scherm', 'Scherm'], ['browser', 'Browser'], ['os', 'Systeem']]],
+  ['Calculator', [['vt', 'Voertuig'], ['uitkomst', 'Uitkomst']]],
+  ['E-mail', [['campagne', 'Campagne'], ['variant', 'Mail A of B'], ['dienst', 'Verzonden via'], ['segment', 'Segment']]]];
+const dimS = (d, s) => { const w = d.w; switch (d.type) {
+  case 'pagina': return s.views.some(v => v.naam === w); case 'instap': return s.instap === w; case 'land': return landNaam(s.land) === w; case 'browser': return s.browser === w; case 'os': return s.os === w;
+  case 'apparaat': return s.app === w; case 'scherm': return schermNaam(s.vw) === w; case 'bron': return s.bron === w; case 'kanaal': return KANAAL[s.bronSoort] === w; case 'reden': return s.reden === w;
+  case 'vt': return s.reeksen.some(r => VT[r.vt] === w); case 'uitkomst': return s.reeksen.some(r => uitkomstNaam(r.goedkoper) === w); case 'taal': return (s.lang || '').slice(0, 2).toUpperCase() === w;
+  case 'doel': return s.doelen.has(DOELSLEUTEL[w]); case 'bezoek': return bezoekNaam(s) === w; default: return true; } };
+const dimA = (d, e) => { const w = d.w; switch (d.type) {
+  case 'pagina': case 'instap': return paginaNaam(e.ev === 'page_view' ? e.page : (e.p.p || e.page), e.p.hash) === w; case 'land': return landNaam(e.land) === w; case 'browser': return e.browser === w; case 'os': return e.os === w;
+  case 'apparaat': { const m = e.p.mobile ?? e.p.m; return m == null ? false : (m ? 'Mobiel' : 'Desktop') === w; } case 'scherm': return schermNaam(e.p.vw) === w; case 'bron': return e.bron === w; case 'kanaal': return KANAAL[e.bronSoort] === w; case 'reden': return anonReden(e) === w;
+  default: return false; } };
+const dimR = (d, r) => d.type === 'vt' ? VT[r.vt] === d.w : d.type === 'uitkomst' ? uitkomstNaam(r.goedkoper) === d.w : r.ses ? dimS(d, r.ses) : d.type === 'apparaat' ? r.app === d.w : d.type === 'bron' ? r.bron === d.w : d.type === 'kanaal' ? KANAAL[r.bronSoort] === d.w : false;
 const mailOk = x => { const m = F.mail, c = x.contact || D.CONTACT.get(x.token); return (!m.campagne || x.c === m.campagne) && (!m.variant || x.v === m.variant) && (!m.dienst || (x.dienst || (x.mail && x.mail.dienst)) === m.dienst) && (!m.segment || ((c && c.segment) || 'onbekend') === m.segment); };
 function selectie(test) {
   const dims = F.dims, alleS = [...D.SES.values()];
@@ -250,20 +265,38 @@ function render() {
   $('zij').querySelectorAll('a.nav').forEach(a => a.classList.toggle('on', a.dataset.s === R.scherm));
   $('perKnop').textContent = X.B.naam;
   $('fWie').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === F.wie));
-  monteer($('inhoud'), () => chipsHtml() + (sch.mail ? mailFilter() : '') + sch.html());
+  const n = actieveFilters().length; $('filterRij').innerHTML = chipsHtml(); $('filterRij').hidden = !n; $('filterTel').textContent = n || ''; $('filterTel').hidden = !n;
+  for (const g of $('zij').querySelectorAll('.groep')) { const actief = !!g.querySelector('a.nav.on'); g.classList.toggle('actief', actief); if (actief) g.classList.add('open'); }
+  monteer($('inhoud'), () => sch.html());
 }
+/* Alle actieve filters, ook die op e-mail, in één lijst */
+const actieveFilters = () => [...F.dims.map(d => ({ type: d.type, w: d.w, toon: d.w })), ...MAILDIMS.filter(k => F.mail[k]).map(k => ({ type: k, w: F.mail[k], toon: mailWaarde(k, F.mail[k]) }))];
+const filterWaarde = type => MAILDIMS.includes(type) ? F.mail[type] || null : (F.dims.find(d => d.type === type) || {}).w ?? null;
 function chipsHtml() {
-  if (!F.dims.length) return '';
-  return `<div class="chips">${F.dims.map((d, i) => `<span class="chip"><b>${DIMNAAM[d.type] || d.type}</b>${esc(d.w)}<button type="button" data-dimweg="${i}" aria-label="Filter weg">×</button></span>`).join('')}${F.dims.length > 1 ? '<button class="knop mini" data-dimweg="alles">Alles wissen</button>' : ''}</div>`;
+  const a = actieveFilters();
+  return a.map(f => `<span class="chip"><span data-filter="${f.type}" title="Wijzig dit filter"><b>${DIMNAAM[f.type] || f.type}</b>${esc(f.toon)}</span><button type="button" data-dimweg="${f.type}" aria-label="Filter weg">×</button></span>`).join('') + (a.length > 1 ? '<button class="knop mini kaal" data-dimweg="alles">Wis alles</button>' : '');
 }
-function mailFilter() {
-  const m = F.mail, seg = (naam, key, opts) => `<div class="seg klein" data-mf="${key}">${opts.map(([v, l]) => `<button data-v="${v}" class="${m[key] === v ? 'on' : ''}">${l}</button>`).join('')}</div>`;
-  return `<div class="rij onder">${D.campagnes.length > 1 ? `<select class="kies" data-mfs="campagne"><option value="">Alle campagnes</option>${D.campagnes.map(c => `<option ${m.campagne === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>` : ''}
-    ${seg('Mail', 'variant', [['', 'Mail A + B'], ['a', 'A'], ['b', 'B']])}${seg('Via', 'dienst', [['', 'Resend + Brevo'], ['resend', 'Resend'], ['brevo', 'Brevo']])}
-    <select class="kies" data-mfs="segment"><option value="">Alle segmenten</option>${D.segmenten.map(s => `<option ${m.segment === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select></div>`;
+/* Waarden waaruit je bij een kenmerk kunt kiezen, met het aantal in de gekozen periode (los van dat ene filter) */
+function filterOpties(type) {
+  const B = X.B, ander = F.dims.filter(d => d.type !== type);
+  if (MAILDIMS.includes(type)) { const m = F.mail, f = x => (type === 'campagne' || !m.campagne || x.c === m.campagne) && (type === 'variant' || !m.variant || x.v === m.variant) && (type === 'dienst' || !m.dienst || x.dienst === m.dienst) && (type === 'segment' || !m.segment || ((x.contact && x.contact.segment) || 'onbekend') === m.segment);
+    const V = D.MAILS.filter(x => !x.test && B.in(x) && f(x)); return tel(V, x => type === 'campagne' ? x.c : type === 'variant' ? x.v : type === 'dienst' ? x.dienst : (x.contact && x.contact.segment) || 'onbekend').map(([w, n]) => ({ w, toon: mailWaarde(type, w), n })); }
+  const S = [...D.SES.values()].filter(s => B.in(s) && wieOk(s.klasse) && ander.every(d => dimS(d, s))), A = D.ANON.filter(e => B.in(e) && wieOk(e.klasse) && ander.every(d => dimA(d, e)));
+  const Rk = [...D.REEKS.values()].filter(r => B.in(r) && wieOk(r.klasse) && ander.every(d => dimR(d, r)));
+  const uit = type === 'pagina' ? tel([...S.flatMap(s => [...new Set(s.views.map(v => v.naam))]), ...A.map(e => e.naam)], x => x) : type === 'instap' ? tel([...S.map(s => s.instap), ...A.map(e => e.naam)], x => x)
+    : type === 'doel' ? DOELEN.map(([k, n]) => [n, S.filter(s => s.doelen.has(k)).length]).filter(x => x[1]) : type === 'bezoek' ? tel(S, bezoekNaam) : type === 'taal' ? tel(S, s => s.lang ? s.lang.slice(0, 2).toUpperCase() : null)
+    : type === 'vt' ? tel(Rk, r => VT[r.vt]) : type === 'uitkomst' ? tel(Rk, r => uitkomstNaam(r.goedkoper)) : type === 'kanaal' ? tel([...S, ...A], x => KANAAL[x.bronSoort]) : type === 'land' ? tel([...S, ...A], x => landNaam(x.land))
+    : type === 'scherm' ? tel([...S.map(s => s.vw), ...A.map(e => e.p.vw)], schermNaam) : tel([...S, ...A], x => type === 'apparaat' ? x.app : x[type]);
+  return uit.map(([w, n]) => ({ w, toon: w, n }));
 }
 function zetPeriode(per, d0, d1) { F.per = per; F.d0 = d0 ?? null; F.d1 = d1 ?? null; bewaarF(); render(); toonPaneel(); }
-function zetDim(type, w) { if (!F.dims.some(x => x.type === type && x.w === w)) F.dims = F.dims.filter(x => x.type !== type).concat({ type, w }); if (type === 'reden') { const k = INTERNE_REDENEN.has(w) ? 'intern' : 'bot'; if (F.wie !== 'alles' && F.wie !== k) F.wie = k; } render(); scrollTo({ top: 0, behavior: 'smooth' }); }
+function zetDim(type, w) {
+  if (MAILDIMS.includes(type)) F.mail[type] = F.mail[type] === w ? '' : w;
+  else { const stond = F.dims.some(x => x.type === type && x.w === w); F.dims = F.dims.filter(x => x.type !== type); if (!stond) F.dims.push({ type, w }); else { render(); return; }
+    if (type === 'reden') { const k = INTERNE_REDENEN.has(w) ? 'intern' : 'bot'; if (F.wie !== 'alles' && F.wie !== k) F.wie = k; } }
+  render();
+}
+function wisDim(type) { if (type === 'alles') { F.dims = []; for (const k of MAILDIMS) F.mail[k] = ''; } else if (MAILDIMS.includes(type)) F.mail[type] = ''; else F.dims = F.dims.filter(d => d.type !== type); render(); }
 
 /* ===== Detailpaneel ===== */
 const PANEEL = {}; // soort -> id => { soort, titel, html } of null

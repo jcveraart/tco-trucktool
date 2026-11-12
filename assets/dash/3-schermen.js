@@ -318,7 +318,7 @@ SCHERMEN.aanvragen = { titel: 'Aanvragen en doelen', html() {
 } };
 
 /* ===================== Datakwaliteit ===================== */
-SCHERMEN.kwaliteit = { titel: 'Filters en netwerken', html() {
+SCHERMEN.kwaliteit = { titel: 'Datakwaliteit', html() {
   const B = X.B, wie = F.wie; F.wie = 'alles'; const al = selectie(B.in); F.wie = wie;
   const red = new Map(), add = (r, n) => { if (r) red.set(r, (red.get(r) || 0) + n); };
   for (const s of al.S) add(s.reden, s.views.length); for (const e of al.A) add(e.reden, 1);
