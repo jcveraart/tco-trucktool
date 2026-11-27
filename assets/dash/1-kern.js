@@ -63,14 +63,16 @@ const _bron = h => /google\./.test(h) || h === 'google' ? 'Google' : /bing\./.te
   : /linkedin|lnkd/.test(h) ? 'LinkedIn' : /facebook|fb\./.test(h) ? 'Facebook' : /instagram/.test(h) ? 'Instagram' : /chatgpt|openai/.test(h) ? 'ChatGPT' : /perplexity|claude\.ai|gemini|copilot/.test(h) ? 'AI-assistent' : null;
 const bronNaam = (ref, utm) => {
   if (utm === 'email') return 'E-mailcampagne';
+  // Brievenbuskaart: de QR-code opent /?utm_source=brievenbus&utm_campaign=ktvergelijk (zonder utm_content), de korte link /kaart/ voegt utm_content=link toe
+  if (/^(brievenbus|folder)$/i.test(utm)) return 'Folder';
   if (utm) return _bron(String(utm).toLowerCase()) || utm;
   if (!ref) return 'Direct';
   const h = ref.replace(/^www\./, '');
   return _bron(h) || h;
 };
 const ZOEKERS = new Set(['Google', 'Bing', 'DuckDuckGo', 'Ecosia', 'Startpage', 'Yahoo', 'Brave']);
-const bronSoort = naam => naam === 'E-mailcampagne' ? 'email' : naam === 'Direct' ? 'direct' : ZOEKERS.has(naam) ? 'zoek' : 'overig';
-const BRONNEN = [['direct', 'Direct', KLEUR.blue], ['zoek', 'Zoekmachine', KLEUR.volt], ['email', 'E-mail', KLEUR.oranje], ['overig', 'Overig', KLEUR.paars]];
+const bronSoort = naam => naam === 'E-mailcampagne' ? 'email' : naam === 'Direct' ? 'direct' : naam === 'Folder' ? 'folder' : ZOEKERS.has(naam) ? 'zoek' : 'overig';
+const BRONNEN = [['direct', 'Direct', KLEUR.blue], ['zoek', 'Zoekmachine', KLEUR.volt], ['email', 'E-mail', KLEUR.oranje], ['folder', 'Folder', KLEUR.ink], ['overig', 'Overig', KLEUR.paars]];
 const schermNaam = vw => vw == null ? null : vw < 640 ? 'Telefoon' : vw < 1024 ? 'Tablet' : vw < 1440 ? 'Laptop' : 'Groot scherm';
 const _land = new Intl.DisplayNames(['nl'], { type: 'region' });
 const landNaam = c => { if (!c) return null; try { return _land.of(c) || c; } catch { return c; } };
@@ -125,7 +127,7 @@ function bouw(raw) {
   for (const e of EV) {
     if (e.consent !== 'stat' || !e.sid) continue;
     let s = SES.get(e.sid);
-    if (!s) { s = { id: e.sid, vid: e.vid, start: e.t, eind: e.t, d: e.d, h: e.h, ev: [], views: [], sec: 0, bot: false, intern: false, mobile: null, vw: null, vh: null, lang: null, taal: null, tz: null, dpr: null, dark: null, net: null, ref: '', utm: null, camp: null, n: null, land: null, browser: null, os: null, perf: [], calc: [], doelen: new Set(), evs: new Set(), stappen: new Set(), mail: null, mailZeker: false }; SES.set(e.sid, s); }
+    if (!s) { s = { id: e.sid, vid: e.vid, start: e.t, eind: e.t, d: e.d, h: e.h, ev: [], views: [], sec: 0, bot: false, intern: false, mobile: null, vw: null, vh: null, lang: null, taal: null, tz: null, dpr: null, dark: null, net: null, ref: '', utm: null, camp: null, utmc: null, n: null, land: null, browser: null, os: null, perf: [], calc: [], doelen: new Set(), evs: new Set(), stappen: new Set(), mail: null, mailZeker: false }; SES.set(e.sid, s); }
     s.ev.push(e); s.eind = e.t; s.evs.add(e.ev); if (e.ev === 'wizard_step') s.stappen.add(e.p.step);
     if (e.ua === 'bot' || e.p.wd) s.bot = s.bot || (e.ua === 'bot' ? 'Bot (user-agent)' : 'Automatische browser');
     if (e.p.dev) s.bot = 'Testomgeving';
@@ -133,7 +135,7 @@ function bouw(raw) {
     if (e.intern) s.intern = 'Eigen netwerk';
     if (e.browser && !s.browser) { s.browser = e.browser; s.os = e.os; }
     if (e.land && !s.land) s.land = e.land;
-    if (e.ev === 'session_start') Object.assign(s, { mobile: e.p.mobile == null ? null : !!e.p.mobile, vw: e.p.vw, vh: e.p.vh, lang: e.p.lang, taal: e.p.taal, tz: e.p.tz, dpr: e.p.dpr, dark: e.p.dark, net: e.p.net, ref: e.p.ref || '', utm: e.p.utm_source || null, camp: e.p.utm_campaign || null, n: e.p.n, start0: e });
+    if (e.ev === 'session_start') Object.assign(s, { mobile: e.p.mobile == null ? null : !!e.p.mobile, vw: e.p.vw, vh: e.p.vh, lang: e.p.lang, taal: e.p.taal, tz: e.p.tz, dpr: e.p.dpr, dark: e.p.dark, net: e.p.net, ref: e.p.ref || '', utm: e.p.utm_source || null, camp: e.p.utm_campaign || null, utmc: e.p.utm_content || null, n: e.p.n, start0: e });
     if (e.ev === 'page_view') s.views.push({ naam: paginaNaam(e.page, e.p.hash), page: e.page, hash: e.p.hash, t: e.t, d: e.d, h: e.h, sec: 0, depth: 0, leave: false, kliks: 0, s });
     if (e.ev === 'page_leave') { const sec = Math.min(+e.p.sec || 0, 3600); s.sec += sec; const v = s.views[s.views.length - 1]; if (v) { v.sec += sec; v.depth = Math.max(v.depth, +e.p.depth || 0); v.leave = true; } }
     if (e.ev === 'klik') { const v = s.views[s.views.length - 1]; if (v) v.kliks++; }
@@ -229,7 +231,7 @@ function bouw(raw) {
   /* --- Sessies afronden: wie, bron, route --- */
   const vidIntern = new Map(); for (const s of SES.values()) if (s.intern && !vidIntern.has(s.vid)) vidIntern.set(s.vid, s.intern);
   D.vidIntern = vidIntern;
-  for (const s of SES.values()) { s.contact = s.mail ? CONTACT.get(s.mail) || null : null; if (s.contact) s.contact.ses.push(s); s.bron = bronNaam(s.ref, s.mail || s.utm === 'email' ? 'email' : s.utm); s.bronSoort = bronSoort(s.bron); s.app = s.mobile == null ? null : s.mobile ? 'Mobiel' : 'Desktop'; s.route = s.views.map(v => v.naam).filter((n, i, a) => i === 0 || n !== a[i - 1]); s.instap = s.views[0] ? s.views[0].naam : null; s.uitstap = s.views.length ? s.views[s.views.length - 1].naam : null; if (s.views.some(v => v.naam === 'Uitgebreid')) s.doelen.add('uitgebreid'); }
+  for (const s of SES.values()) { s.contact = s.mail ? CONTACT.get(s.mail) || null : null; if (s.contact) s.contact.ses.push(s); s.bron = bronNaam(s.ref, /^(brievenbus|folder)$/i.test(s.utm || '') ? s.utm : s.mail || s.utm === 'email' ? 'email' : s.utm); s.bronSoort = bronSoort(s.bron); s.app = s.mobile == null ? null : s.mobile ? 'Mobiel' : 'Desktop'; s.route = s.views.map(v => v.naam).filter((n, i, a) => i === 0 || n !== a[i - 1]); s.instap = s.views[0] ? s.views[0].naam : null; s.uitstap = s.views.length ? s.views[s.views.length - 1].naam : null; if (s.views.some(v => v.naam === 'Uitgebreid')) s.doelen.add('uitgebreid'); }
   herklasseer();
 
   /* --- Berekeningen --- */

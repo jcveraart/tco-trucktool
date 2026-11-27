@@ -80,6 +80,43 @@ SCHERMEN.overzicht = { titel: 'Overzicht', html() {
   </div>`;
 } };
 
+/* ===================== Folder (brievenbuskaart) =====================
+   Zo bedacht: elke binnenkomst via de QR-code op de kaart telt als één scan. Met cookies is dat één sessie.
+   Zonder cookies komt elke pagina los binnen, maar elke weergave draagt de utm van de eerste pagina mee. Weergaven
+   van hetzelfde toestel (browser, systeem, land, schermbreedte) binnen 30 minuten na elkaar tellen daarom als één scan. */
+const FOLDERVIA = { qr: 'QR-code', link: 'Getypt (/kaart/)' };
+function folderScans(sel) {
+  const uit = sel.S.filter(s => s.bronSoort === 'folder').map(s => ({ t: s.start, d: s.d, h: s.h, ses: s, via: s.utmc === 'link' ? 'link' : 'qr', camp: s.camp, app: s.app, browser: s.browser, os: s.os, land: s.land, views: s.views.length, sec: s.sec, doelen: s.doelen }));
+  const laatst = new Map();
+  for (const e of [...sel.A].filter(e => e.bronSoort === 'folder').sort((a, b) => a.t - b.t)) {
+    const via = e.p.utm_content === 'link' ? 'link' : 'qr', k = [e.browser, e.os, e.land, e.p.vw, e.p.mobile, via].join('|'), x = laatst.get(k);
+    if (x && e.t - x.eind <= 18e5) { x.views++; x.eind = e.t; continue; }
+    const n = { t: e.t, eind: e.t, d: e.d, h: e.h, ses: null, via, camp: e.p.utm_campaign || null, app: e.app, browser: e.browser, os: e.os, land: e.land, views: 1, sec: null, doelen: null };
+    laatst.set(k, n); uit.push(n);
+  }
+  return uit.sort((a, b) => b.t - a.t);
+}
+function folderKaart() {
+  const { B } = X, sc = folderScans(X), vs = folderScans(X.vorig), qr = sc.filter(x => x.via === 'qr'), met = sc.filter(x => x.ses);
+  const calc = met.filter(x => x.doelen.has('berekening')).length, bez = uniek(met, x => x.ses.vid) + sc.filter(x => !x.ses).length;
+  const alle = folderScans(selectie(() => true)), eerste = alle.length ? alle[alle.length - 1].t : null;
+  const uitleg = `<p class="sub" style="margin:0 0 12px">Iedereen die binnenkomt via de QR-code op de brievenbuskaart (stekkerofdiesel.nl/?utm_source=brievenbus). ${eerste ? 'Eerste scan ooit: ' + esc(fKort(eerste)) + '.' : 'Nog geen enkele scan gemeten.'} Zonder cookies weten we niet wat iemand daarna deed.</p>`;
+  const tiles = `<section class="kpis k4" style="margin-bottom:14px">
+    ${kpi('Scans', nf.format(qr.length), { d: [qr.length, vs.filter(x => x.via === 'qr').length], sub: sc.length > qr.length ? '+ ' + (sc.length - qr.length) + ' via /kaart/' : '', kleur: KLEUR.ink, spark: reeks(B, qr) })}
+    ${kpi('Bezoekers', nf.format(bez), { sub: 'ongeveer, per toestel' })}
+    ${kpi('Met cookies', nf.format(met.length), { sub: pct(met.length, sc.length) + ' van de scans' })}
+    ${kpi('Berekening gemaakt', nf.format(calc), { sub: met.length ? pct(calc, met.length) + ' van wie cookies gaf' : 'alleen met cookies te zien' })}
+  </section>`;
+  const grafiek = staven({ labels: B.b, klik: true, h: 180, leeg: 'Nog geen scans in deze periode', series: [{ naam: 'QR-code', kleur: KLEUR.ink, vals: reeks(B, qr) }, { naam: 'Getypt (/kaart/)', kleur: KLEUR.grijs, vals: reeks(B, sc.filter(x => x.via === 'link')) }] });
+  const lijst = sc.length ? tabel({ id: 'folderscans', rows: sc, sort: '-0', per: 15, open: x => x.ses ? 's:' + x.ses.id : '', cols: [
+    { t: 'Wanneer', nw: true, v: x => +x.t, h: x => esc(fKort(x.t)) }, { t: 'Via', v: x => FOLDERVIA[x.via] },
+    { t: 'Wie', v: x => x.ses ? wieNaam(x.ses) : 'Zonder cookies', h: x => x.ses ? wieHtml(x.ses) : '<span class="dun">Zonder cookies</span>' },
+    { t: "Pagina's", r: true, v: x => x.views }, { t: 'Tijd', r: true, nw: true, v: x => x.sec, h: x => x.sec != null ? duur(x.sec) : '–' },
+    { t: 'Deed', v: x => x.doelen ? x.doelen.size : null, h: x => x.doelen ? doelTags(x.doelen) || '–' : '<span class="dun">onbekend</span>' },
+    { t: 'Apparaat', nw: true, v: x => x.app, h: x => esc([x.app, x.browser].filter(Boolean).join(' · ') || '–') }, { t: 'Land', v: x => landNaam(x.land), h: x => esc(landNaam(x.land) || '') }] }) : '';
+  return kaart('Folder: QR-scans', uitleg + tiles + grafiek + legenda([['QR-code', KLEUR.ink], ['Getypt (/kaart/)', KLEUR.grijs]]) + (lijst ? '<h3>Laatste scans</h3>' + lijst : ''), { id: 'folder', sub: nf.format(sc.length) + ' in ' + B.naam.toLowerCase(), acties: '<a class="knop mini" data-dim="bron" data-w="Folder">Alleen folder</a>' });
+}
+
 /* ===================== Verkeer ===================== */
 SCHERMEN.verkeer = { titel: 'Verkeer', html() {
   const { B, S, A, vorig } = X, k = kpiVan(X), kv = kpiVan(vorig), lab = B.b;
@@ -100,6 +137,7 @@ SCHERMEN.verkeer = { titel: 'Verkeer', html() {
     ${kpi('Tijd per pagina', duur(k.tijd), { d: [k.tijd, kv.tijd] })}
     ${kpi('Na 1 pagina weg', Math.round(k.bounce * 100) + '%', { d: [k.bounce, kv.bounce, true] })}
   </section>
+  ${folderKaart()}
   ${kaart('Paginaweergaven', staven({ labels: lab, klik: true, h: 240, series: [{ naam: 'Met cookies', kleur: KLEUR.volt, vals: reeks(B, X.views) }, { naam: 'Zonder cookies', kleur: KLEUR.voltM, vals: reeks(B, A) }], extra: i => [['Sessies', nf.format(reeks(B, S)[i])]] }) + legenda([['Met cookies', KLEUR.volt], ['Zonder cookies', KLEUR.voltM]]), { sub: nf.format(k.views) + ' in ' + B.naam.toLowerCase() })}
   <div class="g21">
     ${kaart('Sessies per kanaal', staven({ labels: lab, klik: true, series: perKanaal }) + legenda(BRONNEN.map(b => [b[1], b[2]])))}
@@ -172,7 +210,7 @@ SCHERMEN.gedrag = { titel: 'Gedrag', html() {
 SCHERMEN.herkomst = { titel: 'Herkomst', html() {
   const { S, A } = X, per = groep(S, s => s.bron), anonPer = new Map(tel(A, e => e.bron));
   const rijen = [...new Set([...per.keys(), ...anonPer.keys()])].map(b => { const s = per.get(b) || []; return { b, ses: s.length, bez: uniek(s, x => x.vid), anon: anonPer.get(b) || 0, bounce: s.length ? s.filter(x => x.views.length <= 1).length / s.length : null, tijd: gem(s, x => x.sec), pag: gem(s, x => x.views.length), calc: s.filter(x => x.doelen.has('berekening')).length, vloot: s.filter(x => x.doelen.has('vlootklik') || x.doelen.has('aanvraag')).length }; });
-  const inst = new Map(); for (const s of S) if (s.instap) { if (!inst.has(s.instap)) inst.set(s.instap, [0, 0, 0, 0]); inst.get(s.instap)[BRONNEN.findIndex(x => x[0] === s.bronSoort)]++; }
+  const inst = new Map(); for (const s of S) if (s.instap) { if (!inst.has(s.instap)) inst.set(s.instap, BRONNEN.map(() => 0)); inst.get(s.instap)[BRONNEN.findIndex(x => x[0] === s.bronSoort)]++; }
   const ir = [...inst].sort((a, b) => som(b[1]) - som(a[1])).slice(0, 10);
   return tabelKaart('Per bron', { id: 'bronnen', rows: rijen, sort: '-1', per: 20, zoek: r => r.b, cols: [
       { t: 'Bron', v: r => r.b, h: r => `<a class="ent" data-dim="bron" data-w="${esc(r.b)}">${esc(r.b)}</a>` }, { t: 'Sessies', r: true, v: r => r.ses }, { t: 'Bezoekers', r: true, v: r => r.bez }, { t: 'Weergaven zonder cookies', r: true, v: r => r.anon, h: r => r.anon ? nf.format(r.anon) : '' },
